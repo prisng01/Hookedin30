@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Seaside Camp Invitation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Caveat', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            height: 740px;
+            background-color: #efede6;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* --- STAGE 1: ENVELOPE --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #f7f5f0;
+            border: 2px solid #8e8d8a;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 120px solid #ece8e1;
+            z-index: 3;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-left: 160px solid #e3dec3;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid transparent;
+            z-index: 2;
+        }
+
+        .envelope-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-right: 160px solid #dfd9bd;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid transparent;
+            z-index: 2;
+        }
+
+        .envelope-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-bottom: 110px solid #d4ceb0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            z-index: 2;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #a83232 0%, #6e1d1d 100%);
+            border-radius: 50%;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 22px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border: 2px dashed #8b2525;
+        }
+
+        .arrow-indicator {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #555;
+            animation: bounce 1.2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translate(-50%, 0); }
+            to { transform: translate(-50%, -8px); }
+        }
+
+        /* --- CARDS GENERAL --- */
+        .card {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background: #faf8f5;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            transform: translateY(20px);
+        }
+
+        .card.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* CARD 1: INVITATION */
+        .card-1 .subtitle {
+            font-size: 14px;
+            color: #a33835;
+            margin-bottom: 5px;
+        }
+
+        .card-1 .title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #a33835;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .tent-icon {
+            width: 110px;
+            height: 110px;
+            margin: 15px 0;
+        }
+
+        .card-1 .date-loc {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .next-btn {
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 10px;
+            background: none;
+            border: none;
+        }
+
+        /* CARD 2: MESSAGE & PHOTOS */
+        .card-2 h2 {
+            font-size: 20px;
+            color: #a33835;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card-2 p {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+        }
+
+        .photo-frame:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* CARD 3: BDAY PLAN */
+        .card-3 h2 {
+            font-size: 22px;
+            color: #a33835;
+            margin-bottom: 20px;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .plan-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #a33835;
+        }
+
+        .plan-item svg {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 8px;
+            fill: none;
+            stroke: #a33835;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* CARD 4: INTERACTIVE RSVP */
+        .card-4 h2 {
+            font-size: 24px;
+            color: #a33835;
+            margin-bottom: 15px;
+        }
+
+        .cake-icon {
+            width: 100px;
+            height: 100px;
+            margin: 15px 0;
+        }
+
+        .rsvp-options {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .rsvp-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #a33835;
+            background: none;
+            border: none;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #a33835;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .checkbox.checked::after {
+            content: "✓";
+            font-size: 16px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f2d535;
+            position: absolute;
+            top: -10px;
+            animation: fall 2.5s infinite linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(750px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- STAGE 1: ENVELOPE -->
+    <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="envelope">
+            <div class="envelope-flap" id="flap"></div>
+            <div class="envelope-left"></div>
+            <div class="envelope-right"></div>
+            <div class="envelope-bottom"></div>
+            <div class="wax-seal">🌸</div>
+        </div>
+        <div class="arrow-indicator">➔ click to open</div>
+    </div>
+
+    <!-- STAGE 2: CARD 1 (MAIN INVITATION) -->
+    <div class="card card-1" id="card1">
+        <div>
+            <div class="subtitle">happy birthday, husband!</div>
+            <div style="font-size:12px; color:#555; margin-bottom:10px;">your wife would like to cordially invite you to a</div>
+            <div class="title">BIRTHDAY SEA SIDE CAMP</div>
+        </div>
+
+        <!-- Tent & Seaside Drawing -->
+        <svg class="tent-icon" viewBox="0 0 64 64">
+            <path d="M32 8 L8 52 L56 52 Z" stroke="#a33835" stroke-width="2" fill="none"/>
+            <path d="M32 8 L32 52" stroke="#a33835" stroke-width="2"/>
+            <path d="M24 52 L32 36 L40 52" stroke="#a33835" stroke-width="2" fill="none"/>
+            <!-- Waves -->
+            <path d="M4 58 Q 12 54, 20 58 T 36 58 T 52 58 T 60 58" stroke="#a33835" stroke-width="2" fill="none"/>
+        </svg>
+
+        <div>
+            <div class="date-loc"><b>Friday - Saturday</b><br>21st August - 22nd August 2026</div>
+            <div class="date-loc" style="font-size:13px; color:#666;">📍 East Coast Park</div>
+        </div>
+
+        <button class="next-btn" onclick="nextCard(2)">click anywhere to see more details!! ➔</button>
+    </div>
+
+    <!-- STAGE 3: CARD 2 (MESSAGE & PHOTOS) -->
+    <div class="card card-2" id="card2">
+        <h2>HAPPY BIRTHDAY, LOVE!</h2>
+        <p>Today is all about celebrating you — the person who brings so much light, peace, and joy into my life. I'm so grateful for every moment we've shared, from the quiet ones to the unforgettable ones. - ❤️</p>
+        
+        <div class="photo-grid">
+            <div class="photo-frame"><img src="photo1.jpg" alt="Photo 1" onerror="this.src='https://via.placeholder.com/150?text=Photo+1'"></div>
+            <div class="photo-frame"><img src="photo2.jpg" alt="Photo 2" onerror="this.src='https://via.placeholder.com/150?text=Photo+2'"></div>
+            <div class="photo-frame"><img src="photo3.jpg" alt="Photo 3" onerror="this.src='https://via.placeholder.com/150?text=Photo+3'"></div>
+            <div class="photo-frame"><img src="photo4.jpg" alt="Photo 4" onerror="this.src='https://via.placeholder.com/150?text=Photo+4'"></div>
+        </div>
+
+        <button class="next-btn" onclick="nextCard(3)">➔ next page</button>
+    </div>
+
+    <!-- STAGE 4: CARD 3 (THE BDAY PLAN) -->
+    <div class="card card-3" id="card3">
+        <h2>THE BDAY PLAN</h2>
+
+        <div class="plan-grid">
+            <!-- 1. Eat Good Food -->
+            <div class="plan-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+                EAT GOOD FOOD
+            </div>
+
+            <!-- 2. Fishing -->
+            <div class="plan-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M6 18c6 0 9-4 9-10"></path>
+                    <path d="M15 8l-3-3"></path>
+                    <circle cx="18" cy="18" r="3"></circle>
+                    <path d="M18 15v-5"></path>
+                </svg>
+                FISHING
+            </div>
+
+            <!-- 3. Take Photos -->
+            <div class="plan-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                TAKE PHOTOS
+            </div>
+
+            <!-- 4. Open Your Gift -->
+            <div class="plan-item">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                    <rect x="2" y="7" width="20" height="5"></rect>
+                    <line x1="12" y1="22" x2="12" y2="7"></line>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                </svg>
+                OPEN YOUR GIFTS
+            </div>
+        </div>
+
+        <button class="next-btn" onclick="nextCard(4)">➔ next page</button>
+    </div>
+
+    <!-- STAGE 5: CARD 4 (RSVP - LAST PAGE) -->
+    <div class="card card-4" id="card4">
+        <h2>SO, SEE YOU LATER?</h2>
+
+        <!-- Cake Icon -->
+        <svg class="cake-icon" viewBox="0 0 64 64">
+            <!-- Candles -->
+            <line x1="22" y1="12" x2="22" y2="22" stroke="#a33835" stroke-width="2"/>
+            <line x1="32" y1="12" x2="32" y2="22" stroke="#a33835" stroke-width="2"/>
+            <line x1="42" y1="12" x2="42" y2="22" stroke="#a33835" stroke-width="2"/>
+            <!-- Flames -->
+            <circle cx="22" cy="10" r="2" fill="#a33835"/>
+            <circle cx="32" cy="10" r="2" fill="#a33835"/>
+            <circle cx="42" cy="10" r="2" fill="#a33835"/>
+            <!-- Cake Top Layer -->
+            <rect x="14" y="22" width="36" height="14" rx="2" stroke="#a33835" stroke-width="2" fill="none"/>
+            <!-- Cake Bottom Layer -->
+            <rect x="10" y="36" width="44" height="18" rx="2" stroke="#a33835" stroke-width="2" fill="none"/>
+        </svg>
+
+        <div class="rsvp-options">
+            <button class="rsvp-btn" onclick="selectRsvp('yes')">
+                <div class="checkbox" id="check-yes"></div>
+                yes!!
+            </button>
+
+            <button class="rsvp-btn" onclick="selectRsvp('no')">
+                <div class="checkbox" id="check-no"></div>
+                no "please don't say no" :(
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function openEnvelope() {
+        const flap = document.getElementById('flap');
+        flap.style.transform = 'rotateX(180deg)';
+        
+        setTimeout(() => {
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('card1').classList.add('active');
+        }, 600);
+    }
+
+    function nextCard(cardNumber) {
+        // Hide all cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.classList.remove('active');
+        });
+
+        // Show requested card
+        document.getElementById('card' + cardNumber).classList.add('active');
+    }
+
+    function selectRsvp(option) {
+        const yesBox = document.getElementById('check-yes');
+        const noBox = document.getElementById('check-no');
+
+        if (option === 'yes') {
+            yesBox.classList.add('checked');
+            noBox.classList.remove('checked');
+            createConfetti();
+        } else {
+            noBox.classList.add('checked');
+            yesBox.classList.remove('checked');
+        }
+    }
+
+    function createConfetti() {
+        const container = document.getElementById('app');
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 1.5 + 's';
+            confetti.style.backgroundColor = ['#a33835', '#d4af37', '#e28743', '#2565ae'][Math.floor(Math.random() * 4)];
+            container.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 2500);
+        }
+    }
+</script>
+
+</body>
+</html>
