@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 26.2.4.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
+		pre { font-size: 10pt; font-family: "Liberation Mono", monospace; background: transparent }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre>
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Birthday Seaside Camp Invitation&lt;/title&gt;
+    &lt;style&gt;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Caveat', cursive, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            height: 740px;
+            background-color: #efede6;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* --- STAGE 1: ENVELOPE --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #f7f5f0;
+            border: 2px solid #8e8d8a;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 120px solid #ece8e1;
+            z-index: 3;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-left {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-left: 160px solid #e3dec3;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid transparent;
+            z-index: 2;
+        }
+
+        .envelope-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-right: 160px solid #dfd9bd;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid transparent;
+            z-index: 2;
+        }
+
+        .envelope-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-bottom: 110px solid #d4ceb0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            z-index: 2;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #a83232 0%, #6e1d1d 100%);
+            border-radius: 50%;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 22px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border: 2px dashed #8b2525;
+        }
+
+        .arrow-indicator {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #555;
+            animation: bounce 1.2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translate(-50%, 0); }
+            to { transform: translate(-50%, -8px); }
+        }
+
+        /* --- CARDS GENERAL --- */
+        .card {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background: #faf8f5;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            transform: translateY(20px);
+        }
+
+        .card.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* CARD 1: INVITATION */
+        .card-1 .subtitle {
+            font-size: 14px;
+            color: #a33835;
+            margin-bottom: 5px;
+        }
+
+        .card-1 .title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #a33835;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .tent-icon {
+            width: 110px;
+            height: 110px;
+            margin: 15px 0;
+        }
+
+        .card-1 .date-loc {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .next-btn {
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 10px;
+            background: none;
+            border: none;
+        }
+
+        /* CARD 2: MESSAGE &amp; PHOTOS */
+        .card-2 h2 {
+            font-size: 20px;
+            color: #a33835;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card-2 p {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+        }
+
+        .photo-frame:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* CARD 3: BDAY PLAN */
+        .card-3 h2 {
+            font-size: 22px;
+            color: #a33835;
+            margin-bottom: 20px;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .plan-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #a33835;
+        }
+
+        .plan-item svg {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 8px;
+            fill: none;
+            stroke: #a33835;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* CARD 4: INTERACTIVE RSVP */
+        .card-4 h2 {
+            font-size: 24px;
+            color: #a33835;
+            margin-bottom: 15px;
+        }
+
+        .cake-icon {
+            width: 100px;
+            height: 100px;
+            margin: 15px 0;
+        }
+
+        .rsvp-options {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .rsvp-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #a33835;
+            background: none;
+            border: none;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #a33835;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .checkbox.checked::after {
+            content: &quot;✓&quot;;
+            font-size: 16px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #f2d535;
+            position: absolute;
+            top: -10px;
+            animation: fall 2.5s infinite linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(750px) rotate(360deg);
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;container&quot; id=&quot;app&quot;&gt;
+
+    &lt;!-- STAGE 1: ENVELOPE --&gt;
+    &lt;div class=&quot;envelope-wrapper&quot; id=&quot;envelope&quot; onclick=&quot;openEnvelope()&quot;&gt;
+        &lt;div class=&quot;envelope&quot;&gt;
+            &lt;div class=&quot;envelope-flap&quot; id=&quot;flap&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;envelope-left&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;envelope-right&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;envelope-bottom&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;wax-seal&quot;&gt;🌸&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;arrow-indicator&quot;&gt;➔ click to open&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- STAGE 2: CARD 1 (MAIN INVITATION) --&gt;
+    &lt;div class=&quot;card card-1&quot; id=&quot;card1&quot;&gt;
+        &lt;div&gt;
+            &lt;div class=&quot;subtitle&quot;&gt;happy birthday, husband!&lt;/div&gt;
+            &lt;div style=&quot;font-size:12px; color:#555; margin-bottom:10px;&quot;&gt;your wife would like to cordially invite you to a&lt;/div&gt;
+            &lt;div class=&quot;title&quot;&gt;BIRTHDAY SEA SIDE CAMP&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Tent &amp; Seaside Drawing --&gt;
+        &lt;svg class=&quot;tent-icon&quot; viewBox=&quot;0 0 64 64&quot;&gt;
+            &lt;path d=&quot;M32 8 L8 52 L56 52 Z&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
+            &lt;path d=&quot;M32 8 L32 52&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M24 52 L32 36 L40 52&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
+            &lt;!-- Waves --&gt;
+            &lt;path d=&quot;M4 58 Q 12 54, 20 58 T 36 58 T 52 58 T 60 58&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
+        &lt;/svg&gt;
+
+        &lt;div&gt;
+            &lt;div class=&quot;date-loc&quot;&gt;&lt;b&gt;Friday - Saturday&lt;/b&gt;&lt;br&gt;21st August - 22nd August 2026&lt;/div&gt;
+            &lt;div class=&quot;date-loc&quot; style=&quot;font-size:13px; color:#666;&quot;&gt;📍 East Coast Park&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(2)&quot;&gt;click anywhere to see more details!! ➔&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- STAGE 3: CARD 2 (MESSAGE &amp; PHOTOS) --&gt;
+    &lt;div class=&quot;card card-2&quot; id=&quot;card2&quot;&gt;
+        &lt;h2&gt;HAPPY BIRTHDAY, LOVE!&lt;/h2&gt;
+        &lt;p&gt;Today is all about celebrating you — the person who brings so much light, peace, and joy into my life. I'm so grateful for every moment we've shared, from the quiet ones to the unforgettable ones. - ❤️&lt;/p&gt;
+        
+        &lt;div class=&quot;photo-grid&quot;&gt;
+            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo1.jpg&quot; alt=&quot;Photo 1&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+1'&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo2.jpg&quot; alt=&quot;Photo 2&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+2'&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo3.jpg&quot; alt=&quot;Photo 3&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+3'&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo4.jpg&quot; alt=&quot;Photo 4&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+4'&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(3)&quot;&gt;➔ next page&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- STAGE 4: CARD 3 (THE BDAY PLAN) --&gt;
+    &lt;div class=&quot;card card-3&quot; id=&quot;card3&quot;&gt;
+        &lt;h2&gt;THE BDAY PLAN&lt;/h2&gt;
+
+        &lt;div class=&quot;plan-grid&quot;&gt;
+            &lt;!-- 1. Eat Good Food --&gt;
+            &lt;div class=&quot;plan-item&quot;&gt;
+                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
+                    &lt;path d=&quot;M18 8h1a4 4 0 0 1 0 8h-1&quot;&gt;&lt;/path&gt;
+                    &lt;path d=&quot;M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z&quot;&gt;&lt;/path&gt;
+                    &lt;line x1=&quot;6&quot; y1=&quot;1&quot; x2=&quot;6&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
+                    &lt;line x1=&quot;10&quot; y1=&quot;1&quot; x2=&quot;10&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
+                    &lt;line x1=&quot;14&quot; y1=&quot;1&quot; x2=&quot;14&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
+                &lt;/svg&gt;
+                EAT GOOD FOOD
+            &lt;/div&gt;
+
+            &lt;!-- 2. Fishing --&gt;
+            &lt;div class=&quot;plan-item&quot;&gt;
+                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
+                    &lt;path d=&quot;M6 18c6 0 9-4 9-10&quot;&gt;&lt;/path&gt;
+                    &lt;path d=&quot;M15 8l-3-3&quot;&gt;&lt;/path&gt;
+                    &lt;circle cx=&quot;18&quot; cy=&quot;18&quot; r=&quot;3&quot;&gt;&lt;/circle&gt;
+                    &lt;path d=&quot;M18 15v-5&quot;&gt;&lt;/path&gt;
+                &lt;/svg&gt;
+                FISHING
+            &lt;/div&gt;
+
+            &lt;!-- 3. Take Photos --&gt;
+            &lt;div class=&quot;plan-item&quot;&gt;
+                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
+                    &lt;path d=&quot;M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z&quot;&gt;&lt;/path&gt;
+                    &lt;circle cx=&quot;12&quot; cy=&quot;13&quot; r=&quot;4&quot;&gt;&lt;/circle&gt;
+                &lt;/svg&gt;
+                TAKE PHOTOS
+            &lt;/div&gt;
+
+            &lt;!-- 4. Open Your Gift --&gt;
+            &lt;div class=&quot;plan-item&quot;&gt;
+                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
+                    &lt;polyline points=&quot;20 12 20 22 4 22 4 12&quot;&gt;&lt;/polyline&gt;
+                    &lt;rect x=&quot;2&quot; y=&quot;7&quot; width=&quot;20&quot; height=&quot;5&quot;&gt;&lt;/rect&gt;
+                    &lt;line x1=&quot;12&quot; y1=&quot;22&quot; x2=&quot;12&quot; y2=&quot;7&quot;&gt;&lt;/line&gt;
+                    &lt;path d=&quot;M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z&quot;&gt;&lt;/path&gt;
+                    &lt;path d=&quot;M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z&quot;&gt;&lt;/path&gt;
+                &lt;/svg&gt;
+                OPEN YOUR GIFTS
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(4)&quot;&gt;➔ next page&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- STAGE 5: CARD 4 (RSVP - LAST PAGE) --&gt;
+    &lt;div class=&quot;card card-4&quot; id=&quot;card4&quot;&gt;
+        &lt;h2&gt;SO, SEE YOU LATER?&lt;/h2&gt;
+
+        &lt;!-- Cake Icon --&gt;
+        &lt;svg class=&quot;cake-icon&quot; viewBox=&quot;0 0 64 64&quot;&gt;
+            &lt;!-- Candles --&gt;
+            &lt;line x1=&quot;22&quot; y1=&quot;12&quot; x2=&quot;22&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;32&quot; y1=&quot;12&quot; x2=&quot;32&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;42&quot; y1=&quot;12&quot; x2=&quot;42&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;!-- Flames --&gt;
+            &lt;circle cx=&quot;22&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
+            &lt;circle cx=&quot;32&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
+            &lt;circle cx=&quot;42&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
+            &lt;!-- Cake Top Layer --&gt;
+            &lt;rect x=&quot;14&quot; y=&quot;22&quot; width=&quot;36&quot; height=&quot;14&quot; rx=&quot;2&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
+            &lt;!-- Cake Bottom Layer --&gt;
+            &lt;rect x=&quot;10&quot; y=&quot;36&quot; width=&quot;44&quot; height=&quot;18&quot; rx=&quot;2&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
+        &lt;/svg&gt;
+
+        &lt;div class=&quot;rsvp-options&quot;&gt;
+            &lt;button class=&quot;rsvp-btn&quot; onclick=&quot;selectRsvp('yes')&quot;&gt;
+                &lt;div class=&quot;checkbox&quot; id=&quot;check-yes&quot;&gt;&lt;/div&gt;
+                yes!!
+            &lt;/button&gt;
+
+            &lt;button class=&quot;rsvp-btn&quot; onclick=&quot;selectRsvp('no')&quot;&gt;
+                &lt;div class=&quot;checkbox&quot; id=&quot;check-no&quot;&gt;&lt;/div&gt;
+                no &quot;please don't say no&quot; :(
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+    function openEnvelope() {
+        const flap = document.getElementById('flap');
+        flap.style.transform = 'rotateX(180deg)';
+        
+        setTimeout(() =&gt; {
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('card1').classList.add('active');
+        }, 600);
+    }
+
+    function nextCard(cardNumber) {
+        // Hide all cards
+        document.querySelectorAll('.card').forEach(card =&gt; {
+            card.classList.remove('active');
+        });
+
+        // Show requested card
+        document.getElementById('card' + cardNumber).classList.add('active');
+    }
+
+    function selectRsvp(option) {
+        const yesBox = document.getElementById('check-yes');
+        const noBox = document.getElementById('check-no');
+
+        if (option === 'yes') {
+            yesBox.classList.add('checked');
+            noBox.classList.remove('checked');
+            createConfetti();
+        } else {
+            noBox.classList.add('checked');
+            yesBox.classList.remove('checked');
+        }
+    }
+
+    function createConfetti() {
+        const container = document.getElementById('app');
+        for (let i = 0; i &lt; 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 1.5 + 's';
+            confetti.style.backgroundColor = ['#a33835', '#d4af37', '#e28743', '#2565ae'][Math.floor(Math.random() * 4)];
+            container.appendChild(confetti);
+
+            setTimeout(() =&gt; confetti.remove(), 2500);
+        }
+    }
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</body>
+</html>
