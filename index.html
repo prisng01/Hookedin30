@@ -1,78 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<title></title>
-	<meta name="generator" content="LibreOffice 26.2.4.2 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="00:00:00"/>
-	<style type="text/css">
-		@page { size: 8.27in 11.69in; margin: 0.79in }
-		p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
-		pre { font-size: 10pt; font-family: "Liberation Mono", monospace; background: transparent }
-	</style>
-</head>
-<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre>
-
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;Birthday Seaside Camp Invitation&lt;/title&gt;
-    &lt;style&gt;
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Caveat', cursive, sans-serif;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Birthday Expedition</title>
+    <!-- Rugged & Adventure Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,800;1,700&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: linear-gradient(135deg, #1b261c 0%, #0d130e 100%);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            width: 100vw;
+            overflow: hidden; 
+            font-family: 'Montserrat', sans-serif;
+            color: #e2e8f0;
         }
 
-        body {
-            background-color: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+        .container { 
+            width: 90vw; 
+            max-width: 1100px; 
+            height: 88vh; 
+            max-height: 780px;
+            background: radial-gradient(circle at center, #233325 0%, #151f16 100%);
+            border: 3px solid #4a5d4e;
+            border-radius: 20px; 
+            position: relative; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 0 80px rgba(0,0,0,0.5); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 25px; 
+            overflow: hidden; 
+            perspective: 1200px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            height: 740px;
-            background-color: #efede6;
-            border-radius: 12px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        /* --- STAGE 1: ENVELOPE --- */
+        /* --- ENVELOPE --- */
         .envelope-wrapper {
             position: relative;
-            width: 320px;
-            height: 220px;
+            width: 420px;
+            height: 280px;
+            max-width: 90%;
             cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .envelope-wrapper:hover {
-            transform: scale(1.02);
+            z-index: 10;
+            transition: transform 0.5s ease, opacity 0.6s ease;
         }
 
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #f7f5f0;
-            border: 2px solid #8e8d8a;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #3b2c20;
+            border: 3px solid #5c4533;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            transform-style: preserve-3d;
         }
 
         .envelope-flap {
@@ -81,480 +70,697 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 120px solid #ece8e1;
-            z-index: 3;
+            border-left: 210px solid transparent;
+            border-right: 210px solid transparent;
+            border-top: 150px solid #4a3829;
+            z-index: 5;
             transform-origin: top;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .envelope-left {
             position: absolute;
             bottom: 0;
             left: 0;
-            border-left: 160px solid #e3dec3;
-            border-top: 110px solid transparent;
-            border-bottom: 110px solid transparent;
-            z-index: 2;
+            border-left: 210px solid #31251b;
+            border-top: 140px solid transparent;
+            border-bottom: 140px solid transparent;
+            z-index: 4;
         }
 
         .envelope-right {
             position: absolute;
             bottom: 0;
             right: 0;
-            border-right: 160px solid #dfd9bd;
-            border-top: 110px solid transparent;
-            border-bottom: 110px solid transparent;
-            z-index: 2;
+            border-right: 210px solid #2a1f17;
+            border-top: 140px solid transparent;
+            border-bottom: 140px solid transparent;
+            z-index: 4;
         }
 
         .envelope-bottom {
             position: absolute;
             bottom: 0;
             left: 0;
-            border-bottom: 110px solid #d4ceb0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            z-index: 2;
+            border-bottom: 150px solid #261b13;
+            border-left: 210px solid transparent;
+            border-right: 210px solid transparent;
+            z-index: 4;
+            border-radius: 0 0 8px 8px;
         }
 
         .wax-seal {
             position: absolute;
-            top: 50%;
+            top: 52%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 55px;
-            height: 55px;
-            background: radial-gradient(circle, #a83232 0%, #6e1d1d 100%);
+            transform: translate(-50%, -50%) scale(1);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #a13d2d 0%, #611f15 100%);
             border-radius: 50%;
-            z-index: 4;
+            z-index: 6;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #d4af37;
-            font-size: 22px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            border: 2px dashed #8b2525;
+            font-size: 36px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+            border: 2px dashed #611f15;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .envelope-wrapper:hover .wax-seal {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 8px 20px rgba(161, 61, 45, 0.6);
         }
 
         .arrow-indicator {
             position: absolute;
-            bottom: -35px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 14px;
-            color: #555;
+            font-size: 18px;
+            color: #d4af37;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             animation: bounce 1.2s infinite alternate;
+            white-space: nowrap;
         }
 
         @keyframes bounce {
             from { transform: translate(-50%, 0); }
-            to { transform: translate(-50%, -8px); }
+            to { transform: translate(-50%, -10px); }
         }
 
-        /* --- CARDS GENERAL --- */
+        /* --- CARD LAYOUT --- */
         .card {
             position: absolute;
-            width: 90%;
-            height: 90%;
-            background: #faf8f5;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 24px 18px;
-            display: flex;
-            flex-direction: column;
+            width: 95%;
+            height: 92%;
+            background: #f4ede2;
+            border: 4px solid #3c2a1e;
+            border-radius: 14px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
             align-items: center;
-            justify-content: space-between;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s ease;
-            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(80px) scale(0.95);
+            z-index: 2;
+            color: #2c221e;
+            overflow-y: auto;
         }
 
         .card.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            z-index: 20;
         }
 
-        /* CARD 1: INVITATION */
-        .card-1 .subtitle {
-            font-size: 14px;
-            color: #a33835;
-            margin-bottom: 5px;
-        }
-
-        .card-1 .title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #a33835;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .tent-icon {
-            width: 110px;
-            height: 110px;
-            margin: 15px 0;
-        }
-
-        .card-1 .date-loc {
-            font-size: 15px;
-            color: #333;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .next-btn {
-            font-size: 12px;
-            color: #666;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 10px;
-            background: none;
-            border: none;
-        }
-
-        /* CARD 2: MESSAGE &amp; PHOTOS */
-        .card-2 h2 {
-            font-size: 20px;
-            color: #a33835;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .card-2 p {
-            font-size: 13px;
-            color: #444;
-            line-height: 1.4;
-            margin-bottom: 15px;
+        .card.single-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             text-align: center;
+        }
+
+        .card.shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-12px); }
+            40%, 80% { transform: translateX(12px); }
+        }
+
+        /* TYPOGRAPHY & HEADERS */
+        .adventure-title {
+            font-family: 'Special Elite', cursive, monospace;
+            color: #1b3821;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #7c5230;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* GEAR SELECTOR */
+        .gear-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .gear-btn {
+            background: #eae2d3;
+            border: 2px solid #8c6d53;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .gear-btn.selected {
+            background: #d4af37;
+            border-color: #3c2a1e;
+            transform: scale(1.1);
+        }
+
+        /* PHOTOS */
+        .photo-single {
+            background: #fff;
+            padding: 10px 10px 20px 10px;
+            border: 2px solid #8c6d53;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            transform: rotate(-2deg);
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .photo-single img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
         }
 
         .photo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            margin-bottom: 10px;
         }
 
         .photo-frame {
             background: white;
-            padding: 5px;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transform: rotate(-2deg);
+            padding: 8px 8px 16px 8px;
+            border: 2px solid #8c6d53;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transform: rotate(-3deg);
         }
 
         .photo-frame:nth-child(even) {
-            transform: rotate(2deg);
+            transform: rotate(3deg);
         }
 
         .photo-frame img {
             width: 100%;
-            height: 90px;
+            height: 160px;
             object-fit: cover;
             display: block;
         }
 
-        /* CARD 3: BDAY PLAN */
-        .card-3 h2 {
-            font-size: 22px;
-            color: #a33835;
-            margin-bottom: 20px;
-        }
-
-        .plan-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* QUIZ & PROGRESS */
+        .progress-bar-container {
             width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .plan-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: #a33835;
-        }
-
-        .plan-item svg {
-            width: 45px;
-            height: 45px;
-            margin-bottom: 8px;
-            fill: none;
-            stroke: #a33835;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* CARD 4: INTERACTIVE RSVP */
-        .card-4 h2 {
-            font-size: 24px;
-            color: #a33835;
-            margin-bottom: 15px;
-        }
-
-        .cake-icon {
-            width: 100px;
-            height: 100px;
-            margin: 15px 0;
-        }
-
-        .rsvp-options {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .rsvp-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #a33835;
-            background: none;
-            border: none;
-        }
-
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #a33835;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .checkbox.checked::after {
-            content: &quot;✓&quot;;
-            font-size: 16px;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 8px;
+            background: #d0c4b2;
             height: 8px;
-            background-color: #f2d535;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #a3532d;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-tag {
+            font-size: 13px;
+            color: #a3532d;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .question-box {
+            font-size: 22px;
+            color: #1b261c;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 12px 18px;
+            margin: 8px 0;
+            background: #233325;
+            border: 2px solid #3c523f;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .quiz-option:hover {
+            background: #3c523f;
+            border-color: #d4af37;
+            transform: translateX(5px);
+        }
+
+        .quiz-option:active {
+            transform: scale(0.98);
+        }
+
+        /* CHECKLIST PAGE */
+        .checklist-item {
+            background: #eae2d3;
+            border: 2px solid #8c6d53;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px auto;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item.checked {
+            background: #c3d6c5;
+            border-color: #233325;
+            text-decoration: line-through;
+            color: #233325;
+        }
+
+        .next-btn {
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 15px;
+            background: #a3532d;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 15px rgba(163, 83, 45, 0.4);
+        }
+
+        .next-btn:hover {
+            background: #874121;
+            transform: translateY(-2px);
+        }
+
+        .next-btn:disabled {
+            background: #aa8e82;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .love-note-box {
+            background: #eae2d3;
+            border: 2px dashed #7c5230;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px auto;
+            max-width: 700px;
+            font-size: 20px;
+            color: #2c221e;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        /* FLOATING EMBLEMS */
+        .floating-icon {
             position: absolute;
-            top: -10px;
-            animation: fall 2.5s infinite linear;
+            font-size: 28px;
+            user-select: none;
+            pointer-events: none;
+            animation: floatUp 2s ease-out forwards;
+            z-index: 100;
         }
 
-        @keyframes fall {
-            to {
-                transform: translateY(750px) rotate(360deg);
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-140px) scale(1.3); opacity: 0; }
+        }
+
+        /* MEDIA QUERIES FOR MOBILE */
+        @media (max-width: 768px) {
+            .card {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 18px;
             }
+            .question-box { font-size: 18px; }
+            .adventure-title { font-size: 22px; }
+            .photo-single img { height: 160px; }
+            .photo-frame img { height: 110px; }
         }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
+    </style>
+</head>
+<body>
 
-&lt;div class=&quot;container&quot; id=&quot;app&quot;&gt;
+<div class="container" id="app">
 
-    &lt;!-- STAGE 1: ENVELOPE --&gt;
-    &lt;div class=&quot;envelope-wrapper&quot; id=&quot;envelope&quot; onclick=&quot;openEnvelope()&quot;&gt;
-        &lt;div class=&quot;envelope&quot;&gt;
-            &lt;div class=&quot;envelope-flap&quot; id=&quot;flap&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;envelope-left&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;envelope-right&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;envelope-bottom&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;wax-seal&quot;&gt;🌸&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;arrow-indicator&quot;&gt;➔ click to open&lt;/div&gt;
-    &lt;/div&gt;
+    <!-- HIDDEN YOUTUBE PLAYER CONTAINER -->
+    <div id="player-container" style="display:none;"></div>
 
-    &lt;!-- STAGE 2: CARD 1 (MAIN INVITATION) --&gt;
-    &lt;div class=&quot;card card-1&quot; id=&quot;card1&quot;&gt;
-        &lt;div&gt;
-            &lt;div class=&quot;subtitle&quot;&gt;happy birthday, husband!&lt;/div&gt;
-            &lt;div style=&quot;font-size:12px; color:#555; margin-bottom:10px;&quot;&gt;your wife would like to cordially invite you to a&lt;/div&gt;
-            &lt;div class=&quot;title&quot;&gt;BIRTHDAY SEA SIDE CAMP&lt;/div&gt;
-        &lt;/div&gt;
+    <!-- STAGE 1: EXPEDITION ENVELOPE -->
+    <div class="envelope-wrapper" id="envelope" onclick="triggerEnvelopeOpen()">
+        <div class="envelope">
+            <div class="envelope-flap" id="flap"></div>
+            <div class="envelope-left"></div>
+            <div class="envelope-right"></div>
+            <div class="envelope-bottom"></div>
+            <div class="wax-seal" id="waxSeal">🐟</div>
+        </div>
+        <div class="arrow-indicator">🏔️ Break the seal to begin expedition 🎣</div>
+    </div>
 
-        &lt;!-- Tent &amp; Seaside Drawing --&gt;
-        &lt;svg class=&quot;tent-icon&quot; viewBox=&quot;0 0 64 64&quot;&gt;
-            &lt;path d=&quot;M32 8 L8 52 L56 52 Z&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
-            &lt;path d=&quot;M32 8 L32 52&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
-            &lt;path d=&quot;M24 52 L32 36 L40 52&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
-            &lt;!-- Waves --&gt;
-            &lt;path d=&quot;M4 58 Q 12 54, 20 58 T 36 58 T 52 58 T 60 58&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
-        &lt;/svg&gt;
+    <!-- PAGE 1: BASE CAMP & GEAR SELECTOR -->
+    <div class="card single-col" id="card-welcome">
+        <div>
+            <div class="subtitle">Expedition Base Camp</div>
+            <div class="adventure-title">Choose Your Expedition Gear</div>
+        </div>
 
-        &lt;div&gt;
-            &lt;div class=&quot;date-loc&quot;&gt;&lt;b&gt;Friday - Saturday&lt;/b&gt;&lt;br&gt;21st August - 22nd August 2026&lt;/div&gt;
-            &lt;div class=&quot;date-loc&quot; style=&quot;font-size:13px; color:#666;&quot;&gt;📍 East Coast Park&lt;/div&gt;
-        &lt;/div&gt;
+        <p style="font-size:18px; color:#4a3829; margin: 10px auto; max-width: 650px;">
+            Select your essential gear before setting off on the 5-checkpoint memory trail! 🎒
+        </p>
 
-        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(2)&quot;&gt;click anywhere to see more details!! ➔&lt;/button&gt;
-    &lt;/div&gt;
+        <div class="gear-options">
+            <button class="gear-btn selected" onclick="selectGear(this, '🎣 Fishing Rod')">🎣</button>
+            <button class="gear-btn" onclick="selectGear(this, '⛺ Camping Tent')">⛺</button>
+            <button class="gear-btn" onclick="selectGear(this, '📸 Camera')">📸</button>
+            <button class="gear-btn" onclick="selectGear(this, '☕ Camp Coffee')">☕</button>
+        </div>
 
-    &lt;!-- STAGE 3: CARD 2 (MESSAGE &amp; PHOTOS) --&gt;
-    &lt;div class=&quot;card card-2&quot; id=&quot;card2&quot;&gt;
-        &lt;h2&gt;HAPPY BIRTHDAY, LOVE!&lt;/h2&gt;
-        &lt;p&gt;Today is all about celebrating you — the person who brings so much light, peace, and joy into my life. I'm so grateful for every moment we've shared, from the quiet ones to the unforgettable ones. - ❤️&lt;/p&gt;
-        
-        &lt;div class=&quot;photo-grid&quot;&gt;
-            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo1.jpg&quot; alt=&quot;Photo 1&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+1'&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo2.jpg&quot; alt=&quot;Photo 2&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+2'&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo3.jpg&quot; alt=&quot;Photo 3&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+3'&quot;&gt;&lt;/div&gt;
-            &lt;div class=&quot;photo-frame&quot;&gt;&lt;img src=&quot;photo4.jpg&quot; alt=&quot;Photo 4&quot; onerror=&quot;this.src='https://via.placeholder.com/150?text=Photo+4'&quot;&gt;&lt;/div&gt;
-        &lt;/div&gt;
+        <div>
+            <button class="next-btn" onclick="showCard('card-q1')">Start Trail ➔</button>
+        </div>
+    </div>
 
-        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(3)&quot;&gt;➔ next page&lt;/button&gt;
-    &lt;/div&gt;
+    <!-- PAGE 2: CHECKPOINT 1 -->
+    <div class="card" id="card-q1">
+        <div class="left-panel">
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 20%;"></div></div>
+            <div class="progress-tag">Checkpoint 01 / 05</div>
+            <div class="question-box">What activity do we always look forward to together?</div>
+            <div style="width:100%;">
+                <button class="quiz-option" onclick="wrongAnswer('card-q1')">🍿 Movie Marathon</button>
+                <button class="quiz-option" onclick="correctAndNext('card-q2')">🎣 Reeling in Big Catches & Fishing</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q1')">🥾 Extreme Mountain Climbing</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="photo-single"><img src="photo1.jpg" alt="Photo 1"></div>
+        </div>
+    </div>
 
-    &lt;!-- STAGE 4: CARD 3 (THE BDAY PLAN) --&gt;
-    &lt;div class=&quot;card card-3&quot; id=&quot;card3&quot;&gt;
-        &lt;h2&gt;THE BDAY PLAN&lt;/h2&gt;
+    <!-- PAGE 3: CHECKPOINT 2 -->
+    <div class="card" id="card-q2">
+        <div class="left-panel">
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 40%;"></div></div>
+            <div class="progress-tag">Checkpoint 02 / 05</div>
+            <div class="question-box">Which month are we setting camp for something special?</div>
+            <div style="width:100%;">
+                <button class="quiz-option" onclick="wrongAnswer('card-q2')">🍂 November 🍁</button>
+                <button class="quiz-option" onclick="correctAndNext('card-q3')">🥳 August 🎈</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q2')">🌸 May 🌼</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="photo-single"><img src="photo2.jpg" alt="Photo 2"></div>
+        </div>
+    </div>
 
-        &lt;div class=&quot;plan-grid&quot;&gt;
-            &lt;!-- 1. Eat Good Food --&gt;
-            &lt;div class=&quot;plan-item&quot;&gt;
-                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
-                    &lt;path d=&quot;M18 8h1a4 4 0 0 1 0 8h-1&quot;&gt;&lt;/path&gt;
-                    &lt;path d=&quot;M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z&quot;&gt;&lt;/path&gt;
-                    &lt;line x1=&quot;6&quot; y1=&quot;1&quot; x2=&quot;6&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
-                    &lt;line x1=&quot;10&quot; y1=&quot;1&quot; x2=&quot;10&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
-                    &lt;line x1=&quot;14&quot; y1=&quot;1&quot; x2=&quot;14&quot; y2=&quot;4&quot;&gt;&lt;/line&gt;
-                &lt;/svg&gt;
-                EAT GOOD FOOD
-            &lt;/div&gt;
+    <!-- PAGE 4: CHECKPOINT 3 -->
+    <div class="card" id="card-q3">
+        <div class="left-panel">
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 60%;"></div></div>
+            <div class="progress-tag">Checkpoint 03 / 05</div>
+            <div class="question-box">What is our essential campsite fuel snack?</div>
+            <div style="width:100%;">
+                <button class="quiz-option" onclick="correctAndNext('card-q4')">🔥 Roasted Marshmallows & Snacks</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q3')">🥗 Plain Salad</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q3')">🍣 Fancy Sushi</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="photo-grid">
+                <div class="photo-frame"><img src="photo3.jpg" alt="Photo 3"></div>
+                <div class="photo-frame"><img src="photo4.jpg" alt="Photo 4"></div>
+            </div>
+        </div>
+    </div>
 
-            &lt;!-- 2. Fishing --&gt;
-            &lt;div class=&quot;plan-item&quot;&gt;
-                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
-                    &lt;path d=&quot;M6 18c6 0 9-4 9-10&quot;&gt;&lt;/path&gt;
-                    &lt;path d=&quot;M15 8l-3-3&quot;&gt;&lt;/path&gt;
-                    &lt;circle cx=&quot;18&quot; cy=&quot;18&quot; r=&quot;3&quot;&gt;&lt;/circle&gt;
-                    &lt;path d=&quot;M18 15v-5&quot;&gt;&lt;/path&gt;
-                &lt;/svg&gt;
-                FISHING
-            &lt;/div&gt;
+    <!-- PAGE 5: CHECKPOINT 4 -->
+    <div class="card" id="card-q4">
+        <div class="left-panel">
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 80%;"></div></div>
+            <div class="progress-tag">Checkpoint 04 / 05</div>
+            <div class="question-box">What is the #1 rule on our outdoor adventures?</div>
+            <div style="width:100%;">
+                <button class="quiz-option" onclick="wrongAnswer('card-q4')">⏰ Stick to a strict schedule</button>
+                <button class="quiz-option" onclick="correctAndNext('card-q5')">🌲 Have fun & make great memories</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q4')">📱 Stay on phone all day</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="photo-single"><img src="photo1.jpg" alt="Photo 4"></div>
+        </div>
+    </div>
 
-            &lt;!-- 3. Take Photos --&gt;
-            &lt;div class=&quot;plan-item&quot;&gt;
-                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
-                    &lt;path d=&quot;M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z&quot;&gt;&lt;/path&gt;
-                    &lt;circle cx=&quot;12&quot; cy=&quot;13&quot; r=&quot;4&quot;&gt;&lt;/circle&gt;
-                &lt;/svg&gt;
-                TAKE PHOTOS
-            &lt;/div&gt;
+    <!-- PAGE 6: CHECKPOINT 5 -->
+    <div class="card" id="card-q5">
+        <div class="left-panel">
+            <div class="progress-bar-container"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="progress-tag">Checkpoint 05 / 05</div>
+            <div class="question-box">How many birthday surprises are planned for you this month?</div>
+            <div style="width:100%;">
+                <button class="quiz-option" onclick="wrongAnswer('card-q5')">🎁 Just 1 small gift</button>
+                <button class="quiz-option" onclick="wrongAnswer('card-q5')">🗺️ 3 Stops</button>
+                <button class="quiz-option" onclick="correctAndNext('card-checklist')">🌌 Infinity & Beyond 🤪🔥</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="photo-grid">
+                <div class="photo-frame"><img src="photo2.jpg" alt="Photo 5"></div>
+                <div class="photo-frame"><img src="photo3.jpg" alt="Photo 6"></div>
+            </div>
+        </div>
+    </div>
 
-            &lt;!-- 4. Open Your Gift --&gt;
-            &lt;div class=&quot;plan-item&quot;&gt;
-                &lt;svg viewBox=&quot;0 0 24 24&quot;&gt;
-                    &lt;polyline points=&quot;20 12 20 22 4 22 4 12&quot;&gt;&lt;/polyline&gt;
-                    &lt;rect x=&quot;2&quot; y=&quot;7&quot; width=&quot;20&quot; height=&quot;5&quot;&gt;&lt;/rect&gt;
-                    &lt;line x1=&quot;12&quot; y1=&quot;22&quot; x2=&quot;12&quot; y2=&quot;7&quot;&gt;&lt;/line&gt;
-                    &lt;path d=&quot;M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z&quot;&gt;&lt;/path&gt;
-                    &lt;path d=&quot;M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z&quot;&gt;&lt;/path&gt;
-                &lt;/svg&gt;
-                OPEN YOUR GIFTS
-            &lt;/div&gt;
-        &lt;/div&gt;
+    <!-- PAGE 7: INTERACTIVE CAMPFIRE CHECKLIST -->
+    <div class="card single-col" id="card-checklist">
+        <div>
+            <div class="subtitle">Final Prep Before Camp</div>
+            <div class="adventure-title">Set Up Campfire Base</div>
+        </div>
 
-        &lt;button class=&quot;next-btn&quot; onclick=&quot;nextCard(4)&quot;&gt;➔ next page&lt;/button&gt;
-    &lt;/div&gt;
+        <p style="font-size:16px; color:#4a3829; margin-bottom: 15px;">
+            Tap all 3 camp supplies below to unlock your surprise coordinates!
+        </p>
 
-    &lt;!-- STAGE 5: CARD 4 (RSVP - LAST PAGE) --&gt;
-    &lt;div class=&quot;card card-4&quot; id=&quot;card4&quot;&gt;
-        &lt;h2&gt;SO, SEE YOU LATER?&lt;/h2&gt;
+        <div class="checklist-item" onclick="toggleCheck(this)">
+            <span>⛺ Pitch the Tent</span> <span>⭕</span>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+            <span>🪵 Gather Firewood</span> <span>⭕</span>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+            <span>🔥 Light the Campfire</span> <span>⭕</span>
+        </div>
 
-        &lt;!-- Cake Icon --&gt;
-        &lt;svg class=&quot;cake-icon&quot; viewBox=&quot;0 0 64 64&quot;&gt;
-            &lt;!-- Candles --&gt;
-            &lt;line x1=&quot;22&quot; y1=&quot;12&quot; x2=&quot;22&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
-            &lt;line x1=&quot;32&quot; y1=&quot;12&quot; x2=&quot;32&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
-            &lt;line x1=&quot;42&quot; y1=&quot;12&quot; x2=&quot;42&quot; y2=&quot;22&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot;/&gt;
-            &lt;!-- Flames --&gt;
-            &lt;circle cx=&quot;22&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
-            &lt;circle cx=&quot;32&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
-            &lt;circle cx=&quot;42&quot; cy=&quot;10&quot; r=&quot;2&quot; fill=&quot;#a33835&quot;/&gt;
-            &lt;!-- Cake Top Layer --&gt;
-            &lt;rect x=&quot;14&quot; y=&quot;22&quot; width=&quot;36&quot; height=&quot;14&quot; rx=&quot;2&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
-            &lt;!-- Cake Bottom Layer --&gt;
-            &lt;rect x=&quot;10&quot; y=&quot;36&quot; width=&quot;44&quot; height=&quot;18&quot; rx=&quot;2&quot; stroke=&quot;#a33835&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot;/&gt;
-        &lt;/svg&gt;
+        <div>
+            <button class="next-btn" id="checklist-next-btn" disabled onclick="showCard('card-closing')">Unlock Note ➔</button>
+        </div>
+    </div>
 
-        &lt;div class=&quot;rsvp-options&quot;&gt;
-            &lt;button class=&quot;rsvp-btn&quot; onclick=&quot;selectRsvp('yes')&quot;&gt;
-                &lt;div class=&quot;checkbox&quot; id=&quot;check-yes&quot;&gt;&lt;/div&gt;
-                yes!!
-            &lt;/button&gt;
+    <!-- PAGE 8: CLOSING PAGE -->
+    <div class="card single-col" id="card-closing">
+        <div>
+            <div class="subtitle">Expedition Completed! 🎉</div>
+            <div class="adventure-title">Surprise Note Unlocked</div>
+        </div>
 
-            &lt;button class=&quot;rsvp-btn&quot; onclick=&quot;selectRsvp('no')&quot;&gt;
-                &lt;div class=&quot;checkbox&quot; id=&quot;check-no&quot;&gt;&lt;/div&gt;
-                no &quot;please don't say no&quot; :(
-            &lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
+        <div style="font-size: 16px; color: #7c5230; font-weight: 700;">
+            Equipped with: <span id="display-gear" style="color:#1b3821;">🎣 Fishing Rod</span>
+        </div>
 
-&lt;/div&gt;
+        <div class="love-note-box">
+            🌲 <b>To My Favorite Adventure Partner & Husband:</b><br><br>
+            You cleared all 5 checkpoints and pitched camp! Something big is brewing for you this month... get ready for an amazing birthday journey ahead! ⛰️🎣🔥
+        </div>
 
-&lt;script&gt;
-    function openEnvelope() {
-        const flap = document.getElementById('flap');
-        flap.style.transform = 'rotateX(180deg)';
-        
-        setTimeout(() =&gt; {
-            document.getElementById('envelope').style.display = 'none';
-            document.getElementById('card1').classList.add('active');
-        }, 600);
+        <p style="font-size: 18px; color: #7c5230; font-weight: 700;">
+            The surprises have only just begun. See you in Week 2! 🎁😉
+        </p>
+    </div>
+
+</div>
+
+<!-- YOUTUBE IFRAME API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    let player;
+    let selectedGearName = "🎣 Fishing Rod";
+    let checkedCount = 0;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player-container', {
+            height: '0',
+            width: '0',
+            videoId: 'GeUIVkdSGu4',
+            playerVars: {
+                'playsinline': 1,
+                'loop': 1,
+                'playlist': 'GeUIVkdSGu4'
+            }
+        });
     }
 
-    function nextCard(cardNumber) {
-        // Hide all cards
-        document.querySelectorAll('.card').forEach(card =&gt; {
+    function playMusic() {
+        if (player && typeof player.playVideo === 'function') {
+            player.playVideo();
+        }
+    }
+
+    function stopMusic() {
+        if (player && typeof player.pauseVideo === 'function') {
+            player.pauseVideo();
+        }
+    }
+
+    function triggerEnvelopeOpen() {
+        playMusic();
+
+        const flap = document.getElementById('flap');
+        const env = document.getElementById('envelope');
+        const wax = document.getElementById('waxSeal');
+
+        createEmblems();
+
+        wax.style.transform = 'translate(-50%, -50%) scale(1.3)';
+        
+        setTimeout(() => {
+            flap.style.transform = 'rotateX(180deg)';
+            flap.style.zIndex = '1';
+        }, 300);
+
+        setTimeout(() => {
+            env.style.transform = 'translateY(150px) scale(0.8)';
+            env.style.opacity = '0';
+        }, 800);
+
+        setTimeout(() => {
+            env.style.display = 'none';
+            document.getElementById('card-welcome').classList.add('active');
+        }, 1200);
+    }
+
+    function selectGear(element, gearName) {
+        document.querySelectorAll('.gear-btn').forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedGearName = gearName;
+        document.getElementById('display-gear').innerText = gearName;
+    }
+
+    function showCard(cardId) {
+        document.querySelectorAll('.card').forEach(card => {
             card.classList.remove('active');
         });
+        document.getElementById(cardId).classList.add('active');
 
-        // Show requested card
-        document.getElementById('card' + cardNumber).classList.add('active');
-    }
-
-    function selectRsvp(option) {
-        const yesBox = document.getElementById('check-yes');
-        const noBox = document.getElementById('check-no');
-
-        if (option === 'yes') {
-            yesBox.classList.add('checked');
-            noBox.classList.remove('checked');
-            createConfetti();
-        } else {
-            noBox.classList.add('checked');
-            yesBox.classList.remove('checked');
+        if (cardId === 'card-closing') {
+            stopMusic();
         }
     }
 
-    function createConfetti() {
+    function correctAndNext(nextCardId) {
+        createEmblems();
+        showCard(nextCardId);
+    }
+
+    function wrongAnswer(currentCardId) {
+        const currentCard = document.getElementById(currentCardId);
+        currentCard.classList.add('shake');
+        setTimeout(() => {
+            currentCard.classList.remove('shake');
+        }, 400);
+    }
+
+    function toggleCheck(element) {
+        if (!element.classList.contains('checked')) {
+            element.classList.add('checked');
+            element.querySelector('span:last-child').innerText = '✅';
+            checkedCount++;
+            createEmblems();
+        }
+
+        if (checkedCount >= 3) {
+            document.getElementById('checklist-next-btn').disabled = false;
+        }
+    }
+
+    function createEmblems() {
         const container = document.getElementById('app');
-        for (let i = 0; i &lt; 30; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.animationDelay = Math.random() * 1.5 + 's';
-            confetti.style.backgroundColor = ['#a33835', '#d4af37', '#e28743', '#2565ae'][Math.floor(Math.random() * 4)];
-            container.appendChild(confetti);
+        const icons = ['🌲', '⛰️', '🎣', '🔥', '🎉', '⭐'];
+        for (let i = 0; i < 8; i++) {
+            const icon = document.createElement('div');
+            icon.classList.add('floating-icon');
+            icon.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            icon.style.left = (15 + Math.random() * 70) + '%';
+            icon.style.top = (40 + Math.random() * 30) + '%';
+            container.appendChild(icon);
 
-            setTimeout(() =&gt; confetti.remove(), 2500);
+            setTimeout(() => {
+                icon.remove();
+            }, 2000);
         }
     }
-&lt;/script&gt;
+</script>
 
-&lt;/body&gt;
-&lt;/html&gt;</pre>
 </body>
 </html>
