@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Midnight Birthday Expedition 🌙🔥</title>
+    <title>Level 1: The Mystery Begins 🌙🔥</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
             width: 92vw; 
             max-width: 1000px; 
             height: 88vh; 
-            max-height: 800px;
+            max-height: 820px;
             background: rgba(22, 34, 24, 0.92);
             backdrop-filter: blur(12px);
             border: 2px solid #4a5d4e;
@@ -85,7 +85,7 @@
         .title {
             font-family: 'Cinzel', serif;
             color: #f3c669;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -105,10 +105,34 @@
         .romantic-quote {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 17px;
+            font-size: 16px;
             color: #d1e3d3;
-            margin: 12px 0;
+            margin: 8px 0;
             line-height: 1.5;
+        }
+
+        /* MISSION LIST */
+        .mission-box {
+            background: rgba(30, 48, 32, 0.6);
+            border: 1px solid #48614b;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: left;
+            width: 100%;
+            max-width: 500px;
+            margin: 8px 0;
+            font-size: 13px;
+            color: #c0dbc3;
+            line-height: 1.6;
+        }
+
+        .mission-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .mission-box li {
+            margin-bottom: 4px;
         }
 
         /* BUTTONS */
@@ -292,23 +316,45 @@
 
 <div class="container" id="app">
 
-    <!-- PAGE 0: ENTRANCE GATE -->
+    <!-- PAGE 0: LEVEL 1 INTRO -->
     <div class="card active" id="card-gate">
         <div>
-            <div class="subtitle">VIP Access Required 🌲</div>
-            <div class="title">The Midnight Birthday Trail 🍷</div>
+            <div class="subtitle">🎮 LEVEL 1: THE MYSTERY BEGINS</div>
+            <div class="title">📡 Incoming Transmission...</div>
         </div>
 
         <p class="romantic-quote">
-            "Late night fires, star-filled skies, and secret coordinates waiting to be unlocked..."
+            "Hey Handsome! ❤️"
         </p>
 
-        <p style="font-size:14px; color:#c0dbc3; margin-bottom: 10px;">
-            Are you ready to embark on tonight's after-dark birthday expedition?
+        <p style="font-size:13px; color:#c0dbc3; line-height: 1.4;">
+            Congratulations! You have been selected for a Top Secret Birthday Adventure.<br>
+            Over the next 4 weeks, you'll take on a series of missions to unlock your birthday surprise. But it won't be that easy...
+        </p>
+
+        <div class="mission-box">
+            <div style="font-weight: 800; color: #f3c669; margin-bottom: 4px;">🎯 Your Quest</div>
+            <ul>
+                <li>🧩 Complete each mission.</li>
+                <li>🔓 Unlock hidden clues.</li>
+                <li>⭐ Earn your way to the Final Reveal.</li>
+            </ul>
+        </div>
+
+        <p style="font-size:12px; color:#d1e3d3; line-height: 1.4;">
+            Every correct answer gets you closer to discovering <strong>WHEN and WHERE</strong> your secret adventure will take place.
+        </p>
+
+        <p style="font-size:12px; color:#f3c669; font-weight:600; margin-top: 2px;">
+            🚫 WARNING: The mission date and coordinates are encrypted until Mission 4.
+        </p>
+
+        <p style="font-size:13px; color:#c0dbc3; margin-top: 4px; font-weight: 700;">
+            Ready to begin?
         </p>
 
         <div>
-            <button class="btn-primary" onclick="showCard('card-setup')">Equip Gear & Enter 🔥</button>
+            <button class="btn-primary" onclick="startGame()">▶ Press START 🚀</button>
         </div>
     </div>
 
@@ -459,14 +505,14 @@
         </div>
 
         <div>
-            <button class="btn-primary" id="checklist-next-btn" disabled onclick="showCard('card-finale')">Unlock Secret Dispatch 🎁</button>
+            <button class="btn-primary" id="checklist-next-btn" disabled onclick="finishGame()">Unlock Secret Dispatch 🎁</button>
         </div>
     </div>
 
     <!-- PAGE 8: GRAND FINALE & MYSTERY HINT -->
     <div class="card" id="card-finale">
         <div>
-            <div class="subtitle">Trail Completed! 🎉</div>
+            <div class="subtitle">Level 1 Completed! 🎉</div>
             <div class="title">Happy Birthday, My Love! ❤️</div>
         </div>
 
@@ -474,16 +520,16 @@
             Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥃 Aged Whiskey</span> • <span id="summary-snack" style="color:#fff;">🍡 Roasted S'mores</span>
         </div>
 
-        <!-- SUBTLE HINT BOX -->
+        <!-- HIDDEN DATE MYSTERY BOX -->
         <div class="mystery-box">
             <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                🔒 Encrypted Dispatch Received
+                🔒 Encrypted Transmission Received
             </div>
-            <div style="font-family: 'Cinzel', serif; font-size: 20px; font-weight: 900; color: #fff; margin: 6px 0;">
-                Target Dates: Aug 21st ➔ Aug 22nd
+            <div style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; margin: 6px 0;">
+                Target Event: Top Secret Birthday Getaway 🌲✨
             </div>
             <p style="font-size: 13px; color: #d1e3d3; line-height: 1.4;">
-                Pack a bag and keep your schedule clear... An off-grid birthday adventure has been locked into the itinerary. Details remain top secret until arrival! 🎒🌲✨
+                Level 1 Complete! The mission date & coordinates remain encrypted until Mission 4. Stay tuned for Mission 2 next week! 🎒🔥
             </p>
         </div>
 
@@ -502,6 +548,86 @@
     let selectedDrink = "🥃 Aged Whiskey";
     let selectedSnack = "🍡 Roasted S'mores";
     let checkedTasks = 0;
+    
+    // Ambient Music Synth (Web Audio API)
+    let audioCtx = null;
+    let isPlayingAudio = false;
+    let audioNodes = [];
+
+    function startBackgroundMusic() {
+        if (isPlayingAudio) return;
+        
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+
+        // 1. Warm Night Drone / Pad
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, audioCtx.currentTime); // A2 note
+        oscGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        osc.connect(oscGain);
+        oscGain.connect(audioCtx.destination);
+        osc.start();
+        audioNodes.push(osc);
+
+        // 2. Campfire Crackle Effect (Pink Noise Generator)
+        const bufferSize = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        
+        for (let i = 0; i < bufferSize; i++) {
+            let white = Math.random() * 2 - 1;
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.96900 * b2 + white * 0.1538520;
+            b3 = 0.86650 * b3 + white * 0.3104856;
+            b4 = 0.55000 * b4 + white * 0.5329522;
+            b5 = -0.7616 * b5 - white * 0.0168980;
+            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+            output[i] *= 0.03;
+            b6 = white * 0.115926;
+        }
+
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1200;
+
+        const crackleGain = audioCtx.createGain();
+        crackleGain.gain.value = 0.05;
+
+        whiteNoise.connect(filter);
+        filter.connect(crackleGain);
+        crackleGain.connect(audioCtx.destination);
+        whiteNoise.start();
+        audioNodes.push(whiteNoise);
+
+        isPlayingAudio = true;
+    }
+
+    function stopBackgroundMusic() {
+        if (audioCtx && isPlayingAudio) {
+            audioCtx.close();
+            isPlayingAudio = false;
+        }
+    }
+
+    function startGame() {
+        startBackgroundMusic();
+        showCard('card-setup');
+    }
+
+    function finishGame() {
+        stopBackgroundMusic();
+        showCard('card-finale');
+        spawnSparkles();
+    }
 
     function showCard(cardId) {
         document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
