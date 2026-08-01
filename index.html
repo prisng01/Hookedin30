@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 1: The Mystery Begins 🎣🌲</title>
+    <title>Birthday Quest Adventure 🗺️✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
@@ -111,30 +111,6 @@
             line-height: 1.5;
         }
 
-        /* MISSION LIST */
-        .mission-box {
-            background: rgba(30, 48, 32, 0.6);
-            border: 1px solid #48614b;
-            border-radius: 12px;
-            padding: 12px;
-            text-align: left;
-            width: 100%;
-            max-width: 500px;
-            margin: 8px 0;
-            font-size: 13px;
-            color: #c0dbc3;
-            line-height: 1.6;
-        }
-
-        .mission-box ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .mission-box li {
-            margin-bottom: 4px;
-        }
-
         /* BUTTONS */
         .btn-primary {
             font-size: 15px;
@@ -155,14 +131,6 @@
         .btn-primary:hover {
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 10px 25px rgba(243, 198, 105, 0.5);
-        }
-
-        .btn-primary:disabled {
-            background: #3e4a3f;
-            color: #798a7b;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
         }
 
         .option-btn {
@@ -189,42 +157,6 @@
             transform: translateX(6px);
         }
 
-        /* SELECTORS & ICONS */
-        .selector-grid {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 10px 0;
-        }
-
-        .select-card {
-            background: #1b2d1d;
-            border: 2px solid #435c45;
-            padding: 12px 18px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 26px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .select-card span {
-            font-size: 12px;
-            font-weight: 700;
-            color: #c0dbc3;
-        }
-
-        .select-card.selected {
-            border-color: #f3c669;
-            background: #2b452e;
-            box-shadow: 0 0 15px rgba(243, 198, 105, 0.4);
-            transform: scale(1.06);
-        }
-
         /* PROGRESS TRACKER */
         .meter-container {
             width: 100%;
@@ -240,44 +172,8 @@
         .meter-fill {
             height: 100%;
             background: linear-gradient(90deg, #388e3c 0%, #aeea00 50%, #f3c669 100%);
-            width: 20%;
+            width: 33%;
             transition: width 0.4s ease;
-        }
-
-        /* CHECKLIST ITEMS */
-        .checklist-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 100%;
-            max-width: 600px;
-            margin: 15px 0;
-        }
-
-        .checklist-card {
-            background: #1d2e1f;
-            border: 2px dashed #627d67;
-            padding: 18px 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            min-height: 110px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            color: #b2d6b5;
-        }
-
-        .checklist-card.checked {
-            background: #2d4530;
-            border-style: solid;
-            border-color: #f3c669;
-            color: #fff;
-            transform: scale(1.03);
         }
 
         /* MYSTERY DISPATCH CARD */
@@ -314,7 +210,6 @@
 
         @media (max-width: 650px) {
             .title { font-size: 20px; }
-            .checklist-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -325,241 +220,140 @@
     <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop playsinline preload="auto"></audio>
 
-    <!-- PAGE 0: LANDING PAGE -->
-    <div class="card active" id="card-gate">
+    <!-- LANDING PAGE (🎵 Cozy Adventure Music) -->
+    <div class="card active" id="card-landing">
         <div>
-            <div class="subtitle">🎮 LEVEL 1: THE MYSTERY BEGINS</div>
-            <div class="title">📡 Incoming Transmission...</div>
+            <div class="subtitle">🎮 WELCOME TO THE QUEST</div>
+            <div class="title">🗺️ Secret Birthday Adventure</div>
         </div>
 
-        <p class="romantic-quote">"Hey Handsome! ❤️"</p>
+        <p class="romantic-quote">"Ready to embark on a journey?"</p>
 
         <p style="font-size:13px; color:#c0dbc3; line-height: 1.4;">
-            Congratulations! You have been selected for a Top Secret Birthday Adventure.<br>
-            Over the next 4 weeks, you'll take on a series of missions to unlock your birthday surprise.
-        </p>
-
-        <div class="mission-box">
-            <div style="font-weight: 800; color: #f3c669; margin-bottom: 4px;">🎯 Your Quest</div>
-            <ul>
-                <li>🧩 Complete each mission.</li>
-                <li>🔓 Unlock hidden clues.</li>
-                <li>⭐ Earn your way to the Final Reveal.</li>
-            </ul>
-        </div>
-
-        <p style="font-size:12px; color:#f3c669; font-weight:600; margin-top: 2px;">
-            🚫 WARNING: The mission date and coordinates are encrypted until Mission 4.
+            Your quest awaits. Step through the portals over the coming weeks to reveal your surprise!
         </p>
 
         <div>
-            <button class="btn-primary" onclick="startGame()">🔊 Press START & Accept Mission 🚀</button>
-            <p class="note">📲 iPhone Users: Ensure your side Silent Switch is flipped ON (Ring Mode).</p>
+            <!-- Click Button -> 🔊 "Pop!" -->
+            <button class="btn-primary" onclick="clickPop('card-q1')">🚀 Start Quest</button>
+            <p class="note">📲 Ensure silent switch is OFF for sound effects.</p>
         </div>
     </div>
 
-    <!-- PAGE 1: EXPEDITION LOADOUT -->
-    <div class="card" id="card-setup">
-        <div>
-            <div class="subtitle">Step 00 / Expedition Loadout</div>
-            <div class="title">Choose Your Fishing & Camp Supplies</div>
-        </div>
-
-        <div class="subtitle" style="margin-top: 5px;">1. Select Your Drink</div>
-        <div class="selector-grid">
-            <div class="select-card selected" onclick="selectItem(this, 'drink', '🥤 Coke')">
-                🥤 <span>Coke</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍵 Green Tea')">
-                🍵 <span>Green Tea</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍺 Cold Beer')">
-                🍺 <span>Cold Beer</span>
-            </div>
-        </div>
-
-        <div class="subtitle" style="margin-top: 5px;">2. Select Trail & Fishing Snack</div>
-        <div class="selector-grid">
-            <div class="select-card selected" onclick="selectItem(this, 'snack', '🥩 Smoky Jerky')">
-                🥩 <span>Jerky</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'snack', '🍡 Campfire S\'mores')">
-                🍡 <span>S'mores</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'snack', '🍫 Dark Chocolate')">
-                🍫 <span>Chocolate</span>
-            </div>
-        </div>
-
-        <div>
-            <button class="btn-primary" onclick="startQuestions()">Begin Trail Checkpoints ➔</button>
-        </div>
-    </div>
-
-    <!-- PAGE 2: CHECKPOINT 1 -->
+    <!-- QUESTION APPEARS (🎵 Cozy Adventure Music continues) -->
     <div class="card" id="card-q1">
         <div>
-            <div class="subtitle">Checkpoint 01 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 20%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the golden rule of lakeside camping?</div>
+            <div class="subtitle">Question 01</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 33%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the primary key to a great adventure?</div>
         </div>
 
         <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q1')">😴 Going to bed early at 8:30 PM sharp</button>
-            <button class="option-btn" onclick="correctAndNext('card-q2')">🎣 Cast lines, stargaze & enjoy late-night drinks by the water</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q1')">📱 Checking work emails inside the tent</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q1')">😴 Staying inside all day</button>
+            <!-- Correct -> ✨ Treasure Chest SFX -->
+            <button class="option-btn" onclick="correctAndNext('card-mission-complete')">🌟 Good company, great food & open roads</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q1')">📱 Staring at spreadsheets</button>
         </div>
 
-        <div class="subtitle">Pick the right answer to build romance meter</div>
+        <div class="subtitle">Select the right answer!</div>
     </div>
 
-    <!-- PAGE 3: CHECKPOINT 2 -->
-    <div class="card" id="card-q2">
+    <!-- MISSION COMPLETE (🎉 Achievement Unlock SFX) -->
+    <div class="card" id="card-mission-complete">
         <div>
-            <div class="subtitle">Checkpoint 02 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 40%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">Who holds official authority over campfire roasting & fishing spots?</div>
+            <div class="subtitle">Mission Complete</div>
+            <div class="title">🎉 Achievement Unlocked!</div>
         </div>
 
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="correctAndNext('card-q3')">👑 The Master Angler & Fire Captain (You!)</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q2')">🐻 A hungry forest bear</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q2')">❌ Marshmallows and fishing rods are banned</button>
-        </div>
+        <p class="romantic-quote">"Level 1 cleared with flying colors!"</p>
 
-        <div class="subtitle">Choose wisely!</div>
-    </div>
-
-    <!-- PAGE 4: CHECKPOINT 3 -->
-    <div class="card" id="card-q3">
-        <div>
-            <div class="subtitle">Checkpoint 03 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 60%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the ultimate cure for cold campsite nights?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q3')">🥶 Shivering silently in a camping chair</button>
-            <button class="option-btn" onclick="correctAndNext('card-q4')">💖 Cuddling close with a warm drink by the campfire</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q3')">🏃 Doing 50 jumping jacks on the dock</button>
-        </div>
-
-        <div class="subtitle">Warmth awaits!</div>
-    </div>
-
-    <!-- PAGE 5: CHECKPOINT 4 -->
-    <div class="card" id="card-q4">
-        <div>
-            <div class="subtitle">Checkpoint 04 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 80%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is your top birthday priority this year?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="correctAndNext('card-q5')">🍾 VIP relaxation & zero chores</button>
-            <button class="option-btn" onclick="correctAndNext('card-q5')">🌄 Unplanned outdoors & mystery getaways</button>
-            <button class="option-btn" onclick="correctAndNext('card-q5')">✨ Both of the above!</button>
-        </div>
-
-        <div class="subtitle">All correct answers!</div>
-    </div>
-
-    <!-- PAGE 6: CHECKPOINT 5 -->
-    <div class="card" id="card-q5">
-        <div>
-            <div class="subtitle">Checkpoint 05 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 100%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">Quick Angler Riddle: What gets larger the more you tell it?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q5')">🔋 Phone battery indicator</button>
-            <button class="option-btn" onclick="correctAndGoToChecklist()">🐟 A classic fishing story & birthday adventure!</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q5')">🧦 A pair of woolen socks</button>
-        </div>
-
-        <div class="subtitle">Final checkpoint before basecamp setup!</div>
-    </div>
-
-    <!-- PAGE 7: BASECAMP CHECKLIST -->
-    <div class="card" id="card-checklist">
-        <div>
-            <div class="subtitle">Basecamp Setup</div>
-            <div class="title">Prepare Lakeside Campfire 🔥</div>
-            <p style="font-size: 13px; color: #b2d6b5; margin-top: 4px;">Tap all 3 setup tasks to ignite the campfire!</p>
-        </div>
-
-        <div class="checklist-grid">
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">⛺</span>
-                <span>Pitch the Tent</span>
-            </div>
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">🎣</span>
-                <span>Cast the First Line</span>
-            </div>
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">🥂</span>
-                <span>Pour Nightcaps</span>
-            </div>
+        <div class="mystery-box">
+            <p style="font-size: 14px; color: #d1e3d3; line-height: 1.4;">
+                You earned <strong>+100 EXP</strong> and unlocked the Week 2 Portal.
+            </p>
         </div>
 
         <div>
-            <button class="btn-primary" id="checklist-next-btn" disabled onclick="finishGame()">Unlock Secret Dispatch 🎁</button>
+            <button class="btn-primary" onclick="clickPop('card-week2')">Proceed to Week 2 ➔</button>
         </div>
     </div>
 
-    <!-- PAGE 8: FINALE -->
-    <div class="card" id="card-finale">
+    <!-- WEEK 2 (✨ Magic Portal SFX) -->
+    <div class="card" id="card-week2">
         <div>
-            <div class="subtitle">Level 1 Completed! 🎉</div>
-            <div class="title">Happy Birthday, My Love! ❤️</div>
+            <div class="subtitle">Week 2</div>
+            <div class="title">✨ Magic Portal Opened</div>
         </div>
 
-        <div style="font-size: 13px; color: #f3c669; font-weight: 700;">
-            Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥤 Coke</span> • <span id="summary-snack" style="color:#fff;">🥩 Smoky Jerky</span>
+        <p class="romantic-quote">"The path grows warmer..."</p>
+
+        <div class="mystery-box">
+            <p style="font-size: 13px; color: #c0dbc3;">
+                🌀 You stepped through the magical portal! A new horizon reveals itself.
+            </p>
+        </div>
+
+        <div>
+            <button class="btn-primary" onclick="clickPop('card-week3')">Enter Week 3 ➔</button>
+        </div>
+    </div>
+
+    <!-- WEEK 3 (✨ Quest Updated SFX) -->
+    <div class="card" id="card-week3">
+        <div>
+            <div class="subtitle">Week 3</div>
+            <div class="title">📜 Quest Updated</div>
+        </div>
+
+        <p class="romantic-quote">"Almost to the final destination..."</p>
+
+        <div class="mystery-box">
+            <p style="font-size: 13px; color: #c0dbc3;">
+                📍 Coordinates locked! Final preparations are under way.
+            </p>
+        </div>
+
+        <div>
+            <button class="btn-primary" onclick="startFinale()">Reach Week 4 ➔</button>
+        </div>
+    </div>
+
+    <!-- WEEK 4 (🌊 Ocean Sound + ✨ Sparkle SFX + 🎉 Epic Birthday Theme Music) -->
+    <div class="card" id="card-week4">
+        <div>
+            <div class="subtitle">Week 4 - Grand Finale</div>
+            <div class="title">🎉 Happy Birthday! ❤️</div>
         </div>
 
         <div class="mystery-box">
             <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                🔒 Encrypted Transmission Received
+                🌊 SECRET LOCATION REVEALED
             </div>
             <div style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; margin: 6px 0;">
-                Target Event: Top Secret Birthday Getaway 🌲✨
+                Coastal Escape Getaway 🏖️✨
             </div>
             <p style="font-size: 13px; color: #d1e3d3; line-height: 1.4;">
-                Level 1 Complete! The mission date & coordinates remain encrypted until Mission 4. Stay tuned for Mission 2 next week! 🎒🔥
+                Pack your bags! Your mystery birthday adventure is officially unlocked!
             </p>
         </div>
 
-        <p class="romantic-quote" style="font-size: 15px; margin: 4px 0;">
-            "Here's to another year of late-night laughs, wild adventures, and making unforgettable memories together!"
-        </p>
+        <p class="romantic-quote">"Here's to another year of amazing memories together!"</p>
 
         <div>
-            <button class="btn-primary" onclick="spawnSparkles()">Replay Sparkle ✨</button>
+            <button class="btn-primary" onclick="triggerSparkleEffect()">Celebrate ✨</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    let selectedDrink = "🥤 Coke";
-    let selectedSnack = "🥩 Smoky Jerky";
-    let checkedTasks = 0;
-    let audioUnlocked = false;
-
-    // DIRECT STABLE MP3 STREAM SOURCES
-    const TRACKS = {
-        spy: "https://actions.google.com/sounds/v1/ambiences/humming_drone.ogg",
-        zeldaExplorer: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        cozyCamping: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-        questComplete: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    // AUDIO STREAMS
+    const MUSIC = {
+        cozy: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+        epicBirthday: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     };
 
     const bgAudio = document.getElementById('bgMusic');
-
-    // WEB AUDIO SYNTHESIZER (Guaranteed sound effect delivery on mobile)
     let audioCtx = null;
 
     function initAudioContext() {
@@ -572,92 +366,156 @@
         }
     }
 
-    function changeBGM(url, volume = 0.5) {
+    function changeBGM(url, volume = 0.4) {
         try {
             bgAudio.src = url;
             bgAudio.volume = volume;
             let playPromise = bgAudio.play();
             if (playPromise !== undefined) {
-                playPromise.catch(e => console.log("BGM autoplay restricted:", e));
+                playPromise.catch(e => console.log("BGM playback:", e));
             }
         } catch (err) {
-            console.log("Audio change error:", err);
+            console.log(err);
         }
     }
 
-    // NATIVE SYNTHESIZED SOUND EFFECTS (Mobile Compatible)
-    function playZeldaChestSFX() {
+    // --- SYNTHESIZED SFX (WEB AUDIO API) --- //
+
+    // 🔊 Pop! SFX
+    function playPopSFX() {
+        initAudioContext();
+        if (!audioCtx) return;
+        let now = audioCtx.currentTime;
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+    }
+
+    // ✨ Treasure Chest SFX
+    function playTreasureChestSFX() {
         initAudioContext();
         if (!audioCtx) return;
 
-        const notes = [392.00, 493.88, 587.33, 783.99]; // G4, B4, D5, G5
+        const notes = [392.00, 493.88, 587.33, 783.99]; // Arpeggio
         notes.forEach((freq, idx) => {
             let osc = audioCtx.createOscillator();
             let gain = audioCtx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.12);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime + idx * 0.12);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.12 + 0.3);
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.1 + 0.25);
             
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime + idx * 0.12);
-            osc.stop(audioCtx.currentTime + idx * 0.12 + 0.3);
+            osc.start(audioCtx.currentTime + idx * 0.1);
+            osc.stop(audioCtx.currentTime + idx * 0.1 + 0.25);
         });
     }
 
-    function playRadioTransmissionSFX() {
+    // 🎉 Achievement Unlock SFX
+    function playAchievementSFX() {
+        initAudioContext();
+        if (!audioCtx) return;
+
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // Bright Fanfare
+        notes.forEach((freq, idx) => {
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.09);
+            gain.gain.setValueAtTime(0.25, audioCtx.currentTime + idx * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.09 + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + idx * 0.09);
+            osc.stop(audioCtx.currentTime + idx * 0.09 + 0.3);
+        });
+    }
+
+    // ✨ Magic Portal / Quest Updated SFX
+    function playMagicPortalSFX() {
         initAudioContext();
         if (!audioCtx) return;
 
         let now = audioCtx.currentTime;
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.setValueAtTime(1000, now + 0.1);
-        osc.frequency.setValueAtTime(800, now + 0.2);
 
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.4);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.35);
+        osc.stop(now + 0.4);
     }
 
-    // GAME FLOW FUNCTIONS
-    function startGame() {
-        // Essential mobile step: unlock audio upon explicit user gesture
+    // 🌊 Ocean + Sparkle FX
+    function playOceanSparkleSFX() {
         initAudioContext();
-        playRadioTransmissionSFX();
-        changeBGM(TRACKS.spy, 0.25);
-        showCard('card-setup');
+        if (!audioCtx) return;
+
+        // Sparkles
+        for (let i = 0; i < 6; i++) {
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1200 + (i * 200), audioCtx.currentTime + i * 0.08);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.08 + 0.2);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + i * 0.08);
+            osc.stop(audioCtx.currentTime + i * 0.08 + 0.2);
+        }
     }
 
-    function startQuestions() {
-        changeBGM(TRACKS.zeldaExplorer, 0.4);
-        showCard('card-q1');
-    }
+    // --- NAVIGATION LOGIC --- //
 
-    function correctAndNext(nextCardId) {
-        playZeldaChestSFX();
-        spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
+    // Website Opens -> Cozy Adventure Music starts
+    window.addEventListener('DOMContentLoaded', () => {
+        changeBGM(MUSIC.cozy, 0.4);
+    });
+
+    function clickPop(nextCardId) {
+        playPopSFX(); // 🔊 "Pop!"
+        if (nextCardId === 'card-week2' || nextCardId === 'card-week3') {
+            playMagicPortalSFX(); // ✨ Magic Portal / Quest Updated
+        }
         showCard(nextCardId);
     }
 
-    function correctAndGoToChecklist() {
-        playZeldaChestSFX();
-        spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
-        changeBGM(TRACKS.cozyCamping, 0.5);
-        showCard('card-checklist');
+    function correctAndNext(nextCardId) {
+        playTreasureChestSFX(); // ✨ Treasure Chest
+        spawnParticles(['✨', '💎', '⭐']);
+        setTimeout(() => {
+            playAchievementSFX(); // 🎉 Achievement Unlock
+            showCard(nextCardId);
+        }, 500);
     }
 
-    function finishGame() {
-        changeBGM(TRACKS.questComplete, 0.5);
-        showCard('card-finale');
-        spawnSparkles();
+    function startFinale() {
+        playOceanSparkleSFX(); // 🌊 Ocean + ✨ Sparkle
+        changeBGM(MUSIC.epicBirthday, 0.5); // 🎉 Epic Birthday Theme
+        showCard('card-week4');
+        triggerSparkleEffect();
     }
 
     function showCard(cardId) {
@@ -665,37 +523,10 @@
         document.getElementById(cardId).classList.add('active');
     }
 
-    function selectItem(element, category, value) {
-        const parent = element.parentElement;
-        parent.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
-        element.classList.add('selected');
-
-        if (category === 'drink') {
-            selectedDrink = value;
-            document.getElementById('summary-drink').innerText = value;
-        } else {
-            selectedSnack = value;
-            document.getElementById('summary-snack').innerText = value;
-        }
-    }
-
     function wrongAnswer(cardId) {
         const card = document.getElementById(cardId);
         card.classList.add('shake');
         setTimeout(() => card.classList.remove('shake'), 400);
-    }
-
-    function checkTask(cardElement) {
-        if (!cardElement.classList.contains('checked')) {
-            cardElement.classList.add('checked');
-            checkedTasks++;
-            playZeldaChestSFX();
-            spawnParticles(['🔥', '✨', '🌲', '🎣']);
-
-            if (checkedTasks >= 3) {
-                document.getElementById('checklist-next-btn').disabled = false;
-            }
-        }
     }
 
     function spawnParticles(icons) {
@@ -712,8 +543,8 @@
         }
     }
 
-    function spawnSparkles() {
-        spawnParticles(['🌲', '🔥', '👑', '🥂', '✨', '💖', '🎣', '🐟']);
+    function triggerSparkleEffect() {
+        spawnParticles(['🌊', '✨', '🎉', '💖', '⭐', '🏖️']);
     }
 </script>
 
