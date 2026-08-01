@@ -316,6 +316,9 @@
 
 <div class="container" id="app">
 
+    <!-- HIDDEN YOUTUBE MUSIC PLAYER CONTAINER -->
+    <div id="youtube-player" style="display: none;"></div>
+
     <!-- PAGE 0: LEVEL 1 INTRO -->
     <div class="card active" id="card-gate">
         <div>
@@ -544,87 +547,49 @@
 
 </div>
 
+<!-- YOUTUBE IFRAME PLAYER API SCRIPT -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
     let selectedDrink = "🥃 Aged Whiskey";
     let selectedSnack = "🥩 Smoky Jerky";
     let checkedTasks = 0;
-    
-    // Ambient Music Synth (Web Audio API)
-    let audioCtx = null;
-    let isPlayingAudio = false;
-    let audioNodes = [];
+    let ytPlayer = null;
+
+    // Called automatically when YouTube API JS code loads
+    function onYouTubeIframeAPIReady() {
+        ytPlayer = new YT.Player('youtube-player', {
+            height: '0',
+            width: '0',
+            videoId: 'svS2wQKWxmA',
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': 'svS2wQKWxmA'
+            }
+        });
+    }
 
     function startBackgroundMusic() {
-        if (isPlayingAudio) return;
-        
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        audioCtx = new AudioContext();
-
-        // 1. Warm Ambient Drone / Synth Pad
-        const osc = audioCtx.createOscillator();
-        const oscGain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(110, audioCtx.currentTime); // A2 tone
-        oscGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        osc.connect(oscGain);
-        oscGain.connect(audioCtx.destination);
-        osc.start();
-        audioNodes.push(osc);
-
-        // 2. Gentle Campfire & Water Stream Crackle Effect
-        const bufferSize = audioCtx.sampleRate * 2;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-        
-        for (let i = 0; i < bufferSize; i++) {
-            let white = Math.random() * 2 - 1;
-            b0 = 0.99886 * b0 + white * 0.0555179;
-            b1 = 0.99332 * b1 + white * 0.0750759;
-            b2 = 0.96900 * b2 + white * 0.1538520;
-            b3 = 0.86650 * b3 + white * 0.3104856;
-            b4 = 0.55000 * b4 + white * 0.5329522;
-            b5 = -0.7616 * b5 - white * 0.0168980;
-            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-            output[i] *= 0.03;
-            b6 = white * 0.115926;
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            ytPlayer.playVideo();
         }
-
-        const whiteNoise = audioCtx.createBufferSource();
-        whiteNoise.buffer = noiseBuffer;
-        whiteNoise.loop = true;
-
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.value = 1200;
-
-        const crackleGain = audioCtx.createGain();
-        crackleGain.gain.value = 0.05;
-
-        whiteNoise.connect(filter);
-        filter.connect(crackleGain);
-        crackleGain.connect(audioCtx.destination);
-        whiteNoise.start();
-        audioNodes.push(whiteNoise);
-
-        isPlayingAudio = true;
     }
 
     function stopBackgroundMusic() {
-        if (audioCtx && isPlayingAudio) {
-            audioCtx.close();
-            isPlayingAudio = false;
+        if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+            ytPlayer.pauseVideo();
         }
     }
 
     function startGame() {
-        startBackgroundMusic(); // Music starts on "Press START 🚀" click
+        startBackgroundMusic(); // Starts YouTube background music on Press START
         showCard('card-setup');
     }
 
     function finishGame() {
-        stopBackgroundMusic(); // Music stops when reaching final screen
+        stopBackgroundMusic(); // Pauses YouTube background music on Level 1 completion
         showCard('card-finale');
         spawnSparkles();
     }
