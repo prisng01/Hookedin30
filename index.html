@@ -322,24 +322,21 @@
 
 <div class="container" id="app">
 
-    <!-- AUDIO PLAYER STREAMS -->
-    <audio id="bgMusic" loop preload="auto"></audio>
-    <audio id="sfxPlayer" preload="auto"></audio>
+    <!-- AUDIO ELEMENT -->
+    <audio id="bgMusic" loop playsinline preload="auto"></audio>
 
-    <!-- PAGE 0: LEVEL 1 INTRO (Low-Volume Spy Ambience) -->
+    <!-- PAGE 0: LANDING PAGE -->
     <div class="card active" id="card-gate">
         <div>
             <div class="subtitle">🎮 LEVEL 1: THE MYSTERY BEGINS</div>
             <div class="title">📡 Incoming Transmission...</div>
         </div>
 
-        <p class="romantic-quote">
-            "Hey Handsome! ❤️"
-        </p>
+        <p class="romantic-quote">"Hey Handsome! ❤️"</p>
 
         <p style="font-size:13px; color:#c0dbc3; line-height: 1.4;">
             Congratulations! You have been selected for a Top Secret Birthday Adventure.<br>
-            Over the next 4 weeks, you'll take on a series of missions to unlock your birthday surprise. But it won't be that easy...
+            Over the next 4 weeks, you'll take on a series of missions to unlock your birthday surprise.
         </p>
 
         <div class="mission-box">
@@ -351,21 +348,13 @@
             </ul>
         </div>
 
-        <p style="font-size:12px; color:#d1e3d3; line-height: 1.4;">
-            Every correct answer gets you closer to discovering <strong>WHEN and WHERE</strong> your secret adventure will take place.
-        </p>
-
         <p style="font-size:12px; color:#f3c669; font-weight:600; margin-top: 2px;">
             🚫 WARNING: The mission date and coordinates are encrypted until Mission 4.
         </p>
 
-        <p style="font-size:13px; color:#c0dbc3; margin-top: 4px; font-weight: 700;">
-            Ready to begin?
-        </p>
-
         <div>
             <button class="btn-primary" onclick="startGame()">🔊 Press START & Accept Mission 🚀</button>
-            <p class="note">⚠️ iPhone Users: Ensure Silent Mode is turned OFF.</p>
+            <p class="note">📲 iPhone Users: Ensure your side Silent Switch is flipped ON (Ring Mode).</p>
         </div>
     </div>
 
@@ -407,7 +396,7 @@
         </div>
     </div>
 
-    <!-- PAGE 2: CHECKPOINT 1 (Zelda-style exploration) -->
+    <!-- PAGE 2: CHECKPOINT 1 -->
     <div class="card" id="card-q1">
         <div>
             <div class="subtitle">Checkpoint 01 / 05</div>
@@ -475,7 +464,7 @@
         <div class="subtitle">All correct answers!</div>
     </div>
 
-    <!-- PAGE 6: CHECKPOINT 5 (RIDDLE) -->
+    <!-- PAGE 6: CHECKPOINT 5 -->
     <div class="card" id="card-q5">
         <div>
             <div class="subtitle">Checkpoint 05 / 05</div>
@@ -492,7 +481,7 @@
         <div class="subtitle">Final checkpoint before basecamp setup!</div>
     </div>
 
-    <!-- PAGE 7: INTERACTIVE CAMPFIRE CHECKLIST (Ocean Waves Fade into Cozy Camping Music) -->
+    <!-- PAGE 7: BASECAMP CHECKLIST -->
     <div class="card" id="card-checklist">
         <div>
             <div class="subtitle">Basecamp Setup</div>
@@ -520,7 +509,7 @@
         </div>
     </div>
 
-    <!-- PAGE 8: GRAND FINALE (Emotional Orchestral “Quest Complete” Music) -->
+    <!-- PAGE 8: FINALE -->
     <div class="card" id="card-finale">
         <div>
             <div class="subtitle">Level 1 Completed! 🎉</div>
@@ -531,7 +520,6 @@
             Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥤 Coke</span> • <span id="summary-snack" style="color:#fff;">🥩 Smoky Jerky</span>
         </div>
 
-        <!-- HIDDEN DATE MYSTERY BOX -->
         <div class="mystery-box">
             <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
                 🔒 Encrypted Transmission Received
@@ -559,63 +547,50 @@
     let selectedDrink = "🥤 Coke";
     let selectedSnack = "🥩 Smoky Jerky";
     let checkedTasks = 0;
+    let audioUnlocked = false;
 
-    // AUDIO TRACK SOURCES
+    // DIRECT STABLE MP3 STREAM SOURCES
     const TRACKS = {
-        spy: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=spy-mystery-112188.mp3",
-        zeldaExplorer: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=fantasy-orchestral-11002.mp3",
-        cozyCamping: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a14b53.mp3?filename=campfire-crackling-with-gentle-acoustic-15822.mp3",
-        questComplete: "https://cdn.pixabay.com/download/audio/2021/09/06/audio_9ef81691a0.mp3?filename=cinematic-epic-orchestral-13237.mp3"
+        spy: "https://actions.google.com/sounds/v1/ambiences/humming_drone.ogg",
+        zeldaExplorer: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        cozyCamping: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+        questComplete: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     };
 
     const bgAudio = document.getElementById('bgMusic');
 
-    // WEB AUDIO SYNTHESIZER FOR IMMEDIATE ACCURATE SFX
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    // WEB AUDIO SYNTHESIZER (Guaranteed sound effect delivery on mobile)
     let audioCtx = null;
 
     function initAudioContext() {
         if (!audioCtx) {
-            audioCtx = new AudioCtx();
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
         }
         if (audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
     }
 
-    function changeBGM(url, volume = 0.5, fade = true) {
-        if (!fade) {
+    function changeBGM(url, volume = 0.5) {
+        try {
             bgAudio.src = url;
             bgAudio.volume = volume;
-            bgAudio.play().catch(e => console.log(e));
-            return;
-        }
-
-        let fadeOut = setInterval(() => {
-            if (bgAudio.volume > 0.05) {
-                bgAudio.volume -= 0.05;
-            } else {
-                clearInterval(fadeOut);
-                bgAudio.src = url;
-                bgAudio.play().catch(e => console.log(e));
-                let fadeIn = setInterval(() => {
-                    if (bgAudio.volume < volume) {
-                        bgAudio.volume = Math.min(volume, bgAudio.volume + 0.05);
-                    } else {
-                        clearInterval(fadeIn);
-                    }
-                }, 100);
+            let playPromise = bgAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => console.log("BGM autoplay restricted:", e));
             }
-        }, 100);
+        } catch (err) {
+            console.log("Audio change error:", err);
+        }
     }
 
-    // SFX SYNTHESIZERS
+    // NATIVE SYNTHESIZED SOUND EFFECTS (Mobile Compatible)
     function playZeldaChestSFX() {
         initAudioContext();
         if (!audioCtx) return;
 
-        // Zelda Chest Arpeggio (G4 -> B4 -> D5 -> G5)
-        const notes = [392.00, 493.88, 587.33, 783.99];
+        const notes = [392.00, 493.88, 587.33, 783.99]; // G4, B4, D5, G5
         notes.forEach((freq, idx) => {
             let osc = audioCtx.createOscillator();
             let gain = audioCtx.createGain();
@@ -635,45 +610,39 @@
         initAudioContext();
         if (!audioCtx) return;
 
-        // Morse code / Radio noise glitch
         let now = audioCtx.currentTime;
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(800, now);
-        osc.frequency.setValueAtTime(1200, now + 0.1);
-        osc.frequency.setValueAtTime(600, now + 0.2);
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.setValueAtTime(1000, now + 0.1);
+        osc.frequency.setValueAtTime(800, now + 0.2);
 
         gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.4);
+        osc.stop(now + 0.35);
     }
 
-    // GAME NAVIGATION & MUSIC MAPPINGS
-
-    // Landing Page: Starts Spy Ambience automatically on load or start
-    window.addEventListener('DOMContentLoaded', () => {
-        changeBGM(TRACKS.spy, 0.25, false);
-    });
-
+    // GAME FLOW FUNCTIONS
     function startGame() {
+        // Essential mobile step: unlock audio upon explicit user gesture
         initAudioContext();
-        playRadioTransmissionSFX(); // Radio Transmission + "Mission Accepted" sound
+        playRadioTransmissionSFX();
+        changeBGM(TRACKS.spy, 0.25);
         showCard('card-setup');
     }
 
     function startQuestions() {
-        // Switch to Zelda-style exploration music for questions
         changeBGM(TRACKS.zeldaExplorer, 0.4);
         showCard('card-q1');
     }
 
     function correctAndNext(nextCardId) {
-        playZeldaChestSFX(); // Zelda treasure chest sound ✨
+        playZeldaChestSFX();
         spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
         showCard(nextCardId);
     }
@@ -681,15 +650,12 @@
     function correctAndGoToChecklist() {
         playZeldaChestSFX();
         spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
-        
-        // Ocean waves fade into cozy camping music for Basecamp
         changeBGM(TRACKS.cozyCamping, 0.5);
         showCard('card-checklist');
     }
 
     function finishGame() {
-        // Switch to Emotional Orchestral “Quest Complete” music for Finale
-        changeBGM(TRACKS.questComplete, 0.6);
+        changeBGM(TRACKS.questComplete, 0.5);
         showCard('card-finale');
         spawnSparkles();
     }
