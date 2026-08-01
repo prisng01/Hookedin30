@@ -41,6 +41,38 @@
             overflow: hidden; 
         }
 
+        /* MUSIC TOGGLE BUTTON */
+        .music-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(30, 48, 32, 0.8);
+            border: 1px solid #f3c669;
+            color: #f3c669;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .music-toggle:hover {
+            background: #f3c669;
+            color: #0e170f;
+        }
+
+        /* HIDDEN PLAYER STYLES (DO NOT USE DISPLAY: NONE) */
+        #youtube-player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
+            pointer-events: none;
+            left: -9999px;
+        }
+
         /* CARD STYLES */
         .card {
             position: absolute;
@@ -316,8 +348,13 @@
 
 <div class="container" id="app">
 
-    <!-- HIDDEN YOUTUBE MUSIC PLAYER CONTAINER -->
-    <div id="youtube-player" style="display: none;"></div>
+    <!-- MANUAL AUDIO TOGGLE CONTROL -->
+    <button class="music-toggle" onclick="toggleAudio()" id="music-btn">🎵 Music: OFF</button>
+
+    <!-- INVISIBLE YOUTUBE PLAYER CONTAINER -->
+    <div id="youtube-player-container">
+        <div id="youtube-player"></div>
+    </div>
 
     <!-- PAGE 0: LEVEL 1 INTRO -->
     <div class="card active" id="card-gate">
@@ -555,41 +592,65 @@
     let selectedSnack = "🥩 Smoky Jerky";
     let checkedTasks = 0;
     let ytPlayer = null;
+    let isPlaying = false;
 
     // Called automatically when YouTube API JS code loads
     function onYouTubeIframeAPIReady() {
         ytPlayer = new YT.Player('youtube-player', {
-            height: '0',
-            width: '0',
+            height: '200',
+            width: '200',
             videoId: 'svS2wQKWxmA',
             playerVars: {
                 'autoplay': 0,
                 'controls': 0,
                 'loop': 1,
-                'playlist': 'svS2wQKWxmA'
+                'playlist': 'svS2wQKWxmA',
+                'playsinline': 1
+            },
+            events: {
+                'onReady': onPlayerReady
             }
         });
     }
 
+    function onPlayerReady(event) {
+        if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+            ytPlayer.setVolume(100);
+        }
+    }
+
     function startBackgroundMusic() {
         if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            ytPlayer.unMute();
             ytPlayer.playVideo();
+            isPlaying = true;
+            document.getElementById('music-btn').innerText = "🎵 Music: ON";
         }
     }
 
     function stopBackgroundMusic() {
         if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
             ytPlayer.pauseVideo();
+            isPlaying = false;
+            document.getElementById('music-btn').innerText = "🎵 Music: OFF";
+        }
+    }
+
+    function toggleAudio() {
+        if (isPlaying) {
+            stopBackgroundMusic();
+        } else {
+            startBackgroundMusic();
         }
     }
 
     function startGame() {
-        startBackgroundMusic(); // Starts YouTube background music on Press START
+        startBackgroundMusic();
         showCard('card-setup');
     }
 
     function finishGame() {
-        stopBackgroundMusic(); // Pauses YouTube background music on Level 1 completion
+        stopBackgroundMusic();
         showCard('card-finale');
         spawnSparkles();
     }
