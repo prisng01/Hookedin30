@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Great Birthday Expedition</title>
-    <!-- Rugged & Adventure Fonts -->
+    <title>The Midnight Birthday Expedition 🌙🔥</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,800;1,700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
-            background: linear-gradient(135deg, #1b261c 0%, #0d130e 100%);
+            background: radial-gradient(circle at center, #1b261c 0%, #0d130e 100%);
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -20,159 +19,48 @@
             width: 100vw;
             overflow: hidden; 
             font-family: 'Montserrat', sans-serif;
-            color: #e2e8f0;
+            color: #f1e4f3;
         }
 
         .container { 
-            width: 90vw; 
-            max-width: 1100px; 
+            width: 92vw; 
+            max-width: 1000px; 
             height: 88vh; 
-            max-height: 780px;
-            background: radial-gradient(circle at center, #233325 0%, #151f16 100%);
-            border: 3px solid #4a5d4e;
-            border-radius: 20px; 
+            max-height: 800px;
+            background: rgba(22, 34, 24, 0.92);
+            backdrop-filter: blur(12px);
+            border: 2px solid #4a5d4e;
+            border-radius: 24px; 
             position: relative; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 0 80px rgba(0,0,0,0.5); 
+            box-shadow: 0 0 50px rgba(74, 93, 78, 0.4), inset 0 0 60px rgba(0,0,0,0.8); 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
             padding: 25px; 
             overflow: hidden; 
-            perspective: 1200px;
         }
 
-        /* --- ENVELOPE --- */
-        .envelope-wrapper {
-            position: relative;
-            width: 420px;
-            height: 280px;
-            max-width: 90%;
-            cursor: pointer;
-            z-index: 10;
-            transition: transform 0.5s ease, opacity 0.6s ease;
-        }
-
-        .envelope {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #3b2c20;
-            border: 3px solid #5c4533;
-            border-radius: 8px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            transform-style: preserve-3d;
-        }
-
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 210px solid transparent;
-            border-right: 210px solid transparent;
-            border-top: 150px solid #4a3829;
-            z-index: 5;
-            transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .envelope-left {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-left: 210px solid #31251b;
-            border-top: 140px solid transparent;
-            border-bottom: 140px solid transparent;
-            z-index: 4;
-        }
-
-        .envelope-right {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            border-right: 210px solid #2a1f17;
-            border-top: 140px solid transparent;
-            border-bottom: 140px solid transparent;
-            z-index: 4;
-        }
-
-        .envelope-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-bottom: 150px solid #261b13;
-            border-left: 210px solid transparent;
-            border-right: 210px solid transparent;
-            z-index: 4;
-            border-radius: 0 0 8px 8px;
-        }
-
-        .wax-seal {
-            position: absolute;
-            top: 52%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #a13d2d 0%, #611f15 100%);
-            border-radius: 50%;
-            z-index: 6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d4af37;
-            font-size: 36px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
-            border: 2px dashed #611f15;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .envelope-wrapper:hover .wax-seal {
-            transform: translate(-50%, -50%) scale(1.1);
-            box-shadow: 0 8px 20px rgba(161, 61, 45, 0.6);
-        }
-
-        .arrow-indicator {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            color: #d4af37;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: bounce 1.2s infinite alternate;
-            white-space: nowrap;
-        }
-
-        @keyframes bounce {
-            from { transform: translate(-50%, 0); }
-            to { transform: translate(-50%, -10px); }
-        }
-
-        /* --- CARD LAYOUT --- */
+        /* CARD STYLES */
         .card {
             position: absolute;
-            width: 95%;
-            height: 92%;
-            background: #f4ede2;
-            border: 4px solid #3c2a1e;
-            border-radius: 14px;
-            padding: 30px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            width: 92%;
+            height: 90%;
+            background: #141f15;
+            border: 2px solid #627d67;
+            border-radius: 18px;
+            padding: 25px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             opacity: 0;
             visibility: hidden;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(80px) scale(0.95);
+            transform: translateY(50px) scale(0.95);
             z-index: 2;
-            color: #2c221e;
+            text-align: center;
             overflow-y: auto;
         }
 
@@ -183,279 +71,220 @@
             z-index: 20;
         }
 
-        .card.single-col {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-        }
-
         .card.shake {
             animation: shake 0.4s ease-in-out;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-12px); }
-            40%, 80% { transform: translateX(12px); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
         }
 
-        /* TYPOGRAPHY & HEADERS */
-        .adventure-title {
-            font-family: 'Special Elite', cursive, monospace;
-            color: #1b3821;
-            font-size: 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            color: #7c5230;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            text-align: left;
-        }
-
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        /* GEAR SELECTOR */
-        .gear-options {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .gear-btn {
-            background: #eae2d3;
-            border: 2px solid #8c6d53;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .gear-btn.selected {
-            background: #d4af37;
-            border-color: #3c2a1e;
-            transform: scale(1.1);
-        }
-
-        /* PHOTOS */
-        .photo-single {
-            background: #fff;
-            padding: 10px 10px 20px 10px;
-            border: 2px solid #8c6d53;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-            transform: rotate(-2deg);
-            width: 100%;
-            max-width: 380px;
-        }
-
-        .photo-single img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            display: block;
-            border-radius: 2px;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .photo-frame {
-            background: white;
-            padding: 8px 8px 16px 8px;
-            border: 2px solid #8c6d53;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-            transform: rotate(-3deg);
-        }
-
-        .photo-frame:nth-child(even) {
-            transform: rotate(3deg);
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* QUIZ & PROGRESS */
-        .progress-bar-container {
-            width: 100%;
-            background: #d0c4b2;
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #a3532d;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .progress-tag {
-            font-size: 13px;
-            color: #a3532d;
-            font-weight: 800;
+        /* TYPOGRAPHY */
+        .title {
+            font-family: 'Cinzel', serif;
+            color: #f3c669;
+            font-size: 26px;
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(243, 198, 105, 0.4);
             margin-bottom: 6px;
         }
 
-        .question-box {
-            font-size: 22px;
-            color: #1b261c;
+        .subtitle {
+            font-size: 12px;
+            color: #93b899;
             font-weight: 800;
-            margin-bottom: 15px;
-            line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
-        .quiz-option {
+        .romantic-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 17px;
+            color: #d1e3d3;
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        /* BUTTONS */
+        .btn-primary {
+            font-size: 15px;
+            color: #0e170f;
+            background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
+            border: none;
+            padding: 13px 30px;
+            border-radius: 30px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(243, 198, 105, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(243, 198, 105, 0.5);
+        }
+
+        .btn-primary:disabled {
+            background: #3e4a3f;
+            color: #798a7b;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .option-btn {
             display: block;
             width: 100%;
-            padding: 12px 18px;
-            margin: 8px 0;
-            background: #233325;
-            border: 2px solid #3c523f;
-            border-radius: 8px;
-            color: #e2e8f0;
-            font-size: 17px;
-            font-weight: 700;
+            max-width: 550px;
+            padding: 13px 18px;
+            margin: 7px auto;
+            background: rgba(30, 48, 32, 0.8);
+            border: 2px solid #48614b;
+            border-radius: 12px;
+            color: #f1e4f3;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             text-align: left;
             transition: all 0.2s ease;
             font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        .quiz-option:hover {
-            background: #3c523f;
-            border-color: #d4af37;
-            transform: translateX(5px);
+        .option-btn:hover {
+            background: #2d4530;
+            border-color: #f3c669;
+            transform: translateX(6px);
         }
 
-        .quiz-option:active {
-            transform: scale(0.98);
-        }
-
-        /* CHECKLIST PAGE */
-        .checklist-item {
-            background: #eae2d3;
-            border: 2px solid #8c6d53;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px auto;
-            max-width: 500px;
+        /* SELECTORS & ICONS */
+        .selector-grid {
             display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .select-card {
+            background: #1b2d1d;
+            border: 2px solid #435c45;
+            padding: 12px 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 26px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            font-size: 18px;
+            gap: 4px;
+        }
+
+        .select-card span {
+            font-size: 12px;
             font-weight: 700;
+            color: #c0dbc3;
+        }
+
+        .select-card.selected {
+            border-color: #f3c669;
+            background: #2b452e;
+            box-shadow: 0 0 15px rgba(243, 198, 105, 0.4);
+            transform: scale(1.06);
+        }
+
+        /* PROGRESS TRACKER */
+        .meter-container {
+            width: 100%;
+            max-width: 500px;
+            background: #182619;
+            height: 10px;
+            border-radius: 5px;
+            margin: 8px auto;
+            overflow: hidden;
+            border: 1px solid #48614b;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #388e3c 0%, #aeea00 50%, #f3c669 100%);
+            width: 20%;
+            transition: width 0.4s ease;
+        }
+
+        /* CHECKLIST ITEMS */
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+            margin: 15px 0;
+        }
+
+        .checklist-card {
+            background: #1d2e1f;
+            border: 2px dashed #627d67;
+            padding: 18px 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 700;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            color: #b2d6b5;
         }
 
-        .checklist-item.checked {
-            background: #c3d6c5;
-            border-color: #233325;
-            text-decoration: line-through;
-            color: #233325;
-        }
-
-        .next-btn {
-            font-size: 18px;
+        .checklist-card.checked {
+            background: #2d4530;
+            border-style: solid;
+            border-color: #f3c669;
             color: #fff;
-            cursor: pointer;
-            margin-top: 15px;
-            background: #a3532d;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-            box-shadow: 0 6px 15px rgba(163, 83, 45, 0.4);
+            transform: scale(1.03);
         }
 
-        .next-btn:hover {
-            background: #874121;
-            transform: translateY(-2px);
+        /* MYSTERY DISPATCH CARD */
+        .mystery-box {
+            background: rgba(243, 198, 105, 0.08);
+            border: 2px solid #f3c669;
+            border-radius: 14px;
+            padding: 16px;
+            margin: 12px 0;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
         }
 
-        .next-btn:disabled {
-            background: #aa8e82;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .love-note-box {
-            background: #eae2d3;
-            border: 2px dashed #7c5230;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px auto;
-            max-width: 700px;
-            font-size: 20px;
-            color: #2c221e;
-            line-height: 1.5;
-            font-weight: 600;
-        }
-
-        /* FLOATING EMBLEMS */
-        .floating-icon {
+        /* PARTICLE ANIMATION */
+        .particle {
             position: absolute;
-            font-size: 28px;
-            user-select: none;
             pointer-events: none;
             animation: floatUp 2s ease-out forwards;
-            z-index: 100;
+            font-size: 24px;
+            z-index: 99;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-140px) scale(1.3); opacity: 0; }
+            100% { transform: translateY(-130px) scale(1.3); opacity: 0; }
         }
 
-        /* MEDIA QUERIES FOR MOBILE */
-        @media (max-width: 768px) {
-            .card {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 18px;
-            }
-            .question-box { font-size: 18px; }
-            .adventure-title { font-size: 22px; }
-            .photo-single img { height: 160px; }
-            .photo-frame img { height: 110px; }
+        @media (max-width: 650px) {
+            .title { font-size: 20px; }
+            .checklist-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -463,302 +292,275 @@
 
 <div class="container" id="app">
 
-    <!-- HIDDEN YOUTUBE PLAYER CONTAINER -->
-    <div id="player-container" style="display:none;"></div>
-
-    <!-- STAGE 1: EXPEDITION ENVELOPE -->
-    <div class="envelope-wrapper" id="envelope" onclick="triggerEnvelopeOpen()">
-        <div class="envelope">
-            <div class="envelope-flap" id="flap"></div>
-            <div class="envelope-left"></div>
-            <div class="envelope-right"></div>
-            <div class="envelope-bottom"></div>
-            <div class="wax-seal" id="waxSeal">🐟</div>
-        </div>
-        <div class="arrow-indicator">🏔️ Break the seal to begin expedition 🎣</div>
-    </div>
-
-    <!-- PAGE 1: BASE CAMP & GEAR SELECTOR -->
-    <div class="card single-col" id="card-welcome">
+    <!-- PAGE 0: ENTRANCE GATE -->
+    <div class="card active" id="card-gate">
         <div>
-            <div class="subtitle">Expedition Base Camp</div>
-            <div class="adventure-title">Choose Your Expedition Gear</div>
+            <div class="subtitle">VIP Access Required 🌲</div>
+            <div class="title">The Midnight Birthday Trail 🍷</div>
         </div>
 
-        <p style="font-size:18px; color:#4a3829; margin: 10px auto; max-width: 650px;">
-            Select your essential gear before setting off on the 5-checkpoint memory trail! 🎒
+        <p class="romantic-quote">
+            "Late night fires, star-filled skies, and secret coordinates waiting to be unlocked..."
         </p>
 
-        <div class="gear-options">
-            <button class="gear-btn selected" onclick="selectGear(this, '🎣 Fishing Rod')">🎣</button>
-            <button class="gear-btn" onclick="selectGear(this, '⛺ Camping Tent')">⛺</button>
-            <button class="gear-btn" onclick="selectGear(this, '📸 Camera')">📸</button>
-            <button class="gear-btn" onclick="selectGear(this, '☕ Camp Coffee')">☕</button>
+        <p style="font-size:14px; color:#c0dbc3; margin-bottom: 10px;">
+            Are you ready to embark on tonight's after-dark birthday expedition?
+        </p>
+
+        <div>
+            <button class="btn-primary" onclick="showCard('card-setup')">Equip Gear & Enter 🔥</button>
+        </div>
+    </div>
+
+    <!-- PAGE 1: EXPEDITION LOADOUT (GEAR SELECTOR) -->
+    <div class="card" id="card-setup">
+        <div>
+            <div class="subtitle">Step 00 / Expedition Loadout</div>
+            <div class="title">Choose Your Night Supplies</div>
+        </div>
+
+        <div class="subtitle" style="margin-top: 5px;">1. Select Your Drink</div>
+        <div class="selector-grid">
+            <div class="select-card selected" onclick="selectItem(this, 'drink', '🥃 Aged Whiskey')">
+                🥃 <span>Whiskey</span>
+            </div>
+            <div class="select-card" onclick="selectItem(this, 'drink', '🍷 Red Wine')">
+                🍷 <span>Red Wine</span>
+            </div>
+            <div class="select-card" onclick="selectItem(this, 'drink', '🍺 Craft Beer')">
+                🍺 <span>Craft Beer</span>
+            </div>
+        </div>
+
+        <div class="subtitle" style="margin-top: 5px;">2. Select Trail Snack</div>
+        <div class="selector-grid">
+            <div class="select-card selected" onclick="selectItem(this, 'snack', '🍡 Roasted S\'mores')">
+                🍡 <span>S'mores</span>
+            </div>
+            <div class="select-card" onclick="selectItem(this, 'snack', '🥩 Smoky Jerky')">
+                🥩 <span>Jerky</span>
+            </div>
+            <div class="select-card" onclick="selectItem(this, 'snack', '🍫 Dark Chocolate')">
+                🍫 <span>Chocolate</span>
+            </div>
         </div>
 
         <div>
-            <button class="next-btn" onclick="showCard('card-q1')">Start Trail ➔</button>
+            <button class="btn-primary" onclick="showCard('card-q1')">Begin Trail Checkpoints ➔</button>
         </div>
     </div>
 
     <!-- PAGE 2: CHECKPOINT 1 -->
     <div class="card" id="card-q1">
-        <div class="left-panel">
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 20%;"></div></div>
-            <div class="progress-tag">Checkpoint 01 / 05</div>
-            <div class="question-box">What activity do we always look forward to together?</div>
-            <div style="width:100%;">
-                <button class="quiz-option" onclick="wrongAnswer('card-q1')">🍿 Movie Marathon</button>
-                <button class="quiz-option" onclick="correctAndNext('card-q2')">🎣 Reeling in Big Catches & Fishing</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q1')">🥾 Extreme Mountain Climbing</button>
-            </div>
+        <div>
+            <div class="subtitle">Checkpoint 01 / 05</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 20%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the golden rule of late-night camping?</div>
         </div>
-        <div class="right-panel">
-            <div class="photo-single"><img src="photo1.jpg" alt="Photo 1"></div>
+
+        <div style="width: 100%;">
+            <button class="option-btn" onclick="wrongAnswer('card-q1')">😴 Going to bed at 8:30 PM sharp</button>
+            <button class="option-btn" onclick="correctAndNext('card-q2')">🔥 Late-night drinks, stargazing & endless laughs</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q1')">📱 Answering work emails in the sleeping bag</button>
         </div>
+
+        <div class="subtitle">Pick the right answer to build romance meter</div>
     </div>
 
     <!-- PAGE 3: CHECKPOINT 2 -->
     <div class="card" id="card-q2">
-        <div class="left-panel">
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 40%;"></div></div>
-            <div class="progress-tag">Checkpoint 02 / 05</div>
-            <div class="question-box">Which month are we setting camp for something special?</div>
-            <div style="width:100%;">
-                <button class="quiz-option" onclick="wrongAnswer('card-q2')">🍂 November 🍁</button>
-                <button class="quiz-option" onclick="correctAndNext('card-q3')">🥳 August 🎈</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q2')">🌸 May 🌼</button>
-            </div>
+        <div>
+            <div class="subtitle">Checkpoint 02 / 05</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 40%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">Who holds official authority over campfire marshmallow roasting?</div>
         </div>
-        <div class="right-panel">
-            <div class="photo-single"><img src="photo2.jpg" alt="Photo 2"></div>
+
+        <div style="width: 100%;">
+            <button class="option-btn" onclick="correctAndNext('card-q3')">👑 The Birthday Legend (You!)</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q2')">🐻 A wandering forest bear</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q2')">❌ Marshmallows are strictly banned</button>
         </div>
+
+        <div class="subtitle">Choose wisely!</div>
     </div>
 
     <!-- PAGE 4: CHECKPOINT 3 -->
     <div class="card" id="card-q3">
-        <div class="left-panel">
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 60%;"></div></div>
-            <div class="progress-tag">Checkpoint 03 / 05</div>
-            <div class="question-box">What is our essential campsite fuel snack?</div>
-            <div style="width:100%;">
-                <button class="quiz-option" onclick="correctAndNext('card-q4')">🔥 Roasted Marshmallows & Snacks</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q3')">🥗 Plain Salad</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q3')">🍣 Fancy Sushi</button>
-            </div>
+        <div>
+            <div class="subtitle">Checkpoint 03 / 05</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 60%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the ultimate cure for campsite cold weather?</div>
         </div>
-        <div class="right-panel">
-            <div class="photo-grid">
-                <div class="photo-frame"><img src="photo3.jpg" alt="Photo 3"></div>
-                <div class="photo-frame"><img src="photo4.jpg" alt="Photo 4"></div>
-            </div>
+
+        <div style="width: 100%;">
+            <button class="option-btn" onclick="wrongAnswer('card-q3')">🥶 Shivering silently under 5 blankets</button>
+            <button class="option-btn" onclick="correctAndNext('card-q4')">💖 Cuddling close with a warm drink by the fire</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q3')">🏃 Doing 50 jumping jacks at midnight</button>
         </div>
+
+        <div class="subtitle">Warmth awaits!</div>
     </div>
 
     <!-- PAGE 5: CHECKPOINT 4 -->
     <div class="card" id="card-q4">
-        <div class="left-panel">
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 80%;"></div></div>
-            <div class="progress-tag">Checkpoint 04 / 05</div>
-            <div class="question-box">What is the #1 rule on our outdoor adventures?</div>
-            <div style="width:100%;">
-                <button class="quiz-option" onclick="wrongAnswer('card-q4')">⏰ Stick to a strict schedule</button>
-                <button class="quiz-option" onclick="correctAndNext('card-q5')">🌲 Have fun & make great memories</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q4')">📱 Stay on phone all day</button>
-            </div>
+        <div>
+            <div class="subtitle">Checkpoint 04 / 05</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 80%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">What is your top birthday priority this year?</div>
         </div>
-        <div class="right-panel">
-            <div class="photo-single"><img src="photo1.jpg" alt="Photo 4"></div>
+
+        <div style="width: 100%;">
+            <button class="option-btn" onclick="correctAndNext('card-q5')">🍾 VIP relaxation & zero chores</button>
+            <button class="option-btn" onclick="correctAndNext('card-q5')">🌄 Unplanned adventures & mystery getaways</button>
+            <button class="option-btn" onclick="correctAndNext('card-q5')">✨ Both of the above!</button>
         </div>
+
+        <div class="subtitle">All correct answers!</div>
     </div>
 
-    <!-- PAGE 6: CHECKPOINT 5 -->
+    <!-- PAGE 6: CHECKPOINT 5 (RIDDLE) -->
     <div class="card" id="card-q5">
-        <div class="left-panel">
-            <div class="progress-bar-container"><div class="progress-fill" style="width: 100%;"></div></div>
-            <div class="progress-tag">Checkpoint 05 / 05</div>
-            <div class="question-box">How many birthday surprises are planned for you this month?</div>
-            <div style="width:100%;">
-                <button class="quiz-option" onclick="wrongAnswer('card-q5')">🎁 Just 1 small gift</button>
-                <button class="quiz-option" onclick="wrongAnswer('card-q5')">🗺️ 3 Stops</button>
-                <button class="quiz-option" onclick="correctAndNext('card-checklist')">🌌 Infinity & Beyond 🤪🔥</button>
-            </div>
+        <div>
+            <div class="subtitle">Checkpoint 05 / 05</div>
+            <div class="meter-container"><div class="meter-fill" style="width: 100%;"></div></div>
+            <div class="title" style="font-size: 20px; margin-top: 8px;">Quick Trail Riddle: What grows brighter when shared?</div>
         </div>
-        <div class="right-panel">
-            <div class="photo-grid">
-                <div class="photo-frame"><img src="photo2.jpg" alt="Photo 5"></div>
-                <div class="photo-frame"><img src="photo3.jpg" alt="Photo 6"></div>
-            </div>
+
+        <div style="width: 100%;">
+            <button class="option-btn" onclick="wrongAnswer('card-q5')">🔋 Phone battery power</button>
+            <button class="option-btn" onclick="correctAndNext('card-checklist')">✨ A campfire flame & birthday memories together</button>
+            <button class="option-btn" onclick="wrongAnswer('card-q5')">🧦 A pair of fuzzy socks</button>
         </div>
+
+        <div class="subtitle">Final checkpoint before basecamp setup!</div>
     </div>
 
     <!-- PAGE 7: INTERACTIVE CAMPFIRE CHECKLIST -->
-    <div class="card single-col" id="card-checklist">
+    <div class="card" id="card-checklist">
         <div>
-            <div class="subtitle">Final Prep Before Camp</div>
-            <div class="adventure-title">Set Up Campfire Base</div>
+            <div class="subtitle">Basecamp Setup</div>
+            <div class="title">Prepare Midnight Campfire 🔥</div>
+            <p style="font-size: 13px; color: #b2d6b5; margin-top: 4px;">Tap all 3 setup tasks to ignite the campfire!</p>
         </div>
 
-        <p style="font-size:16px; color:#4a3829; margin-bottom: 15px;">
-            Tap all 3 camp supplies below to unlock your surprise coordinates!
-        </p>
-
-        <div class="checklist-item" onclick="toggleCheck(this)">
-            <span>⛺ Pitch the Tent</span> <span>⭕</span>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-            <span>🪵 Gather Firewood</span> <span>⭕</span>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-            <span>🔥 Light the Campfire</span> <span>⭕</span>
+        <div class="checklist-grid">
+            <div class="checklist-card" onclick="checkTask(this)">
+                <span style="font-size: 24px;">⛺</span>
+                <span>Pitch the Tent</span>
+            </div>
+            <div class="checklist-card" onclick="checkTask(this)">
+                <span style="font-size: 24px;">🪵</span>
+                <span>Gather Firewood</span>
+            </div>
+            <div class="checklist-card" onclick="checkTask(this)">
+                <span style="font-size: 24px;">🥂</span>
+                <span>Pour Nightcaps</span>
+            </div>
         </div>
 
         <div>
-            <button class="next-btn" id="checklist-next-btn" disabled onclick="showCard('card-closing')">Unlock Note ➔</button>
+            <button class="btn-primary" id="checklist-next-btn" disabled onclick="showCard('card-finale')">Unlock Secret Dispatch 🎁</button>
         </div>
     </div>
 
-    <!-- PAGE 8: CLOSING PAGE -->
-    <div class="card single-col" id="card-closing">
+    <!-- PAGE 8: GRAND FINALE & MYSTERY HINT -->
+    <div class="card" id="card-finale">
         <div>
-            <div class="subtitle">Expedition Completed! 🎉</div>
-            <div class="adventure-title">Surprise Note Unlocked</div>
+            <div class="subtitle">Trail Completed! 🎉</div>
+            <div class="title">Happy Birthday, My Love! ❤️</div>
         </div>
 
-        <div style="font-size: 16px; color: #7c5230; font-weight: 700;">
-            Equipped with: <span id="display-gear" style="color:#1b3821;">🎣 Fishing Rod</span>
+        <div style="font-size: 13px; color: #f3c669; font-weight: 700;">
+            Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥃 Aged Whiskey</span> • <span id="summary-snack" style="color:#fff;">🍡 Roasted S'mores</span>
         </div>
 
-        <div class="love-note-box">
-            🌲 <b>To My Favorite Adventure Partner & Husband:</b><br><br>
-            You cleared all 5 checkpoints and pitched camp! Something big is brewing for you this month... get ready for an amazing birthday journey ahead! ⛰️🎣🔥
+        <!-- SUBTLE HINT BOX -->
+        <div class="mystery-box">
+            <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
+                🔒 Encrypted Dispatch Received
+            </div>
+            <div style="font-family: 'Cinzel', serif; font-size: 20px; font-weight: 900; color: #fff; margin: 6px 0;">
+                Target Dates: Aug 21st ➔ Aug 22nd
+            </div>
+            <p style="font-size: 13px; color: #d1e3d3; line-height: 1.4;">
+                Pack a bag and keep your schedule clear... An off-grid birthday adventure has been locked into the itinerary. Details remain top secret until arrival! 🎒🌲✨
+            </p>
         </div>
 
-        <p style="font-size: 18px; color: #7c5230; font-weight: 700;">
-            The surprises have only just begun. See you in Week 2! 🎁😉
+        <p class="romantic-quote" style="font-size: 15px; margin: 4px 0;">
+            "Here's to another year of late-night laughs, wild adventures, and making unforgettable memories together!"
         </p>
+
+        <div>
+            <button class="btn-primary" onclick="spawnSparkles()">Replay Sparkle ✨</button>
+        </div>
     </div>
 
 </div>
 
-<!-- YOUTUBE IFRAME API -->
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    let player;
-    let selectedGearName = "🎣 Fishing Rod";
-    let checkedCount = 0;
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player-container', {
-            height: '0',
-            width: '0',
-            videoId: 'GeUIVkdSGu4',
-            playerVars: {
-                'playsinline': 1,
-                'loop': 1,
-                'playlist': 'GeUIVkdSGu4'
-            }
-        });
-    }
-
-    function playMusic() {
-        if (player && typeof player.playVideo === 'function') {
-            player.playVideo();
-        }
-    }
-
-    function stopMusic() {
-        if (player && typeof player.pauseVideo === 'function') {
-            player.pauseVideo();
-        }
-    }
-
-    function triggerEnvelopeOpen() {
-        playMusic();
-
-        const flap = document.getElementById('flap');
-        const env = document.getElementById('envelope');
-        const wax = document.getElementById('waxSeal');
-
-        createEmblems();
-
-        wax.style.transform = 'translate(-50%, -50%) scale(1.3)';
-        
-        setTimeout(() => {
-            flap.style.transform = 'rotateX(180deg)';
-            flap.style.zIndex = '1';
-        }, 300);
-
-        setTimeout(() => {
-            env.style.transform = 'translateY(150px) scale(0.8)';
-            env.style.opacity = '0';
-        }, 800);
-
-        setTimeout(() => {
-            env.style.display = 'none';
-            document.getElementById('card-welcome').classList.add('active');
-        }, 1200);
-    }
-
-    function selectGear(element, gearName) {
-        document.querySelectorAll('.gear-btn').forEach(btn => btn.classList.remove('selected'));
-        element.classList.add('selected');
-        selectedGearName = gearName;
-        document.getElementById('display-gear').innerText = gearName;
-    }
+    let selectedDrink = "🥃 Aged Whiskey";
+    let selectedSnack = "🍡 Roasted S'mores";
+    let checkedTasks = 0;
 
     function showCard(cardId) {
-        document.querySelectorAll('.card').forEach(card => {
-            card.classList.remove('active');
-        });
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
         document.getElementById(cardId).classList.add('active');
+    }
 
-        if (cardId === 'card-closing') {
-            stopMusic();
+    function selectItem(element, category, value) {
+        const parent = element.parentElement;
+        parent.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
+        element.classList.add('selected');
+
+        if (category === 'drink') {
+            selectedDrink = value;
+            document.getElementById('summary-drink').innerText = value;
+        } else {
+            selectedSnack = value;
+            document.getElementById('summary-snack').innerText = value;
         }
     }
 
     function correctAndNext(nextCardId) {
-        createEmblems();
+        spawnParticles(['🌲', '🔥', '✨', '🍷', '💖']);
         showCard(nextCardId);
     }
 
-    function wrongAnswer(currentCardId) {
-        const currentCard = document.getElementById(currentCardId);
-        currentCard.classList.add('shake');
-        setTimeout(() => {
-            currentCard.classList.remove('shake');
-        }, 400);
+    function wrongAnswer(cardId) {
+        const card = document.getElementById(cardId);
+        card.classList.add('shake');
+        setTimeout(() => card.classList.remove('shake'), 400);
     }
 
-    function toggleCheck(element) {
-        if (!element.classList.contains('checked')) {
-            element.classList.add('checked');
-            element.querySelector('span:last-child').innerText = '✅';
-            checkedCount++;
-            createEmblems();
-        }
+    function checkTask(cardElement) {
+        if (!cardElement.classList.contains('checked')) {
+            cardElement.classList.add('checked');
+            checkedTasks++;
+            spawnParticles(['🔥', '✨', '🌲']);
 
-        if (checkedCount >= 3) {
-            document.getElementById('checklist-next-btn').disabled = false;
+            if (checkedTasks >= 3) {
+                document.getElementById('checklist-next-btn').disabled = false;
+            }
         }
     }
 
-    function createEmblems() {
+    function spawnParticles(icons) {
         const container = document.getElementById('app');
-        const icons = ['🌲', '⛰️', '🎣', '🔥', '🎉', '⭐'];
         for (let i = 0; i < 8; i++) {
-            const icon = document.createElement('div');
-            icon.classList.add('floating-icon');
-            icon.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            icon.style.left = (15 + Math.random() * 70) + '%';
-            icon.style.top = (40 + Math.random() * 30) + '%';
-            container.appendChild(icon);
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.innerText = icons[Math.floor(Math.random() * icons.length)];
+            p.style.left = (20 + Math.random() * 60) + '%';
+            p.style.top = (40 + Math.random() * 30) + '%';
+            container.appendChild(p);
 
-            setTimeout(() => {
-                icon.remove();
-            }, 2000);
+            setTimeout(() => p.remove(), 2000);
         }
+    }
+
+    function spawnSparkles() {
+        spawnParticles(['🌲', '🔥', '👑', '🥂', '✨', '💖']);
     }
 </script>
 
