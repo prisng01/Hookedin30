@@ -379,13 +379,13 @@
 
         <div class="subtitle" style="margin-top: 5px;">1. Select Your Drink</div>
         <div class="selector-grid">
-            <div class="select-card selected" onclick="selectItem(this, 'drink', '🥃 Aged Whiskey')">
-                🥃 <span>Whiskey</span>
+            <div class="select-card selected" onclick="selectItem(this, 'drink', '🥤 Coke')">
+                🥤 <span>Coke</span>
             </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍷 Red Wine')">
-                🍷 <span>Red Wine</span>
+            <div class="select-card" onclick="selectItem(this, 'drink', '🍵 Green Tea')">
+                🍵 <span>Green Tea</span>
             </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍺 Ice Cold Beer')">
+            <div class="select-card" onclick="selectItem(this, 'drink', '🍺 Cold Beer')">
                 🍺 <span>Cold Beer</span>
             </div>
         </div>
@@ -529,7 +529,7 @@
         </div>
 
         <div style="font-size: 13px; color: #f3c669; font-weight: 700;">
-            Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥃 Aged Whiskey</span> • <span id="summary-snack" style="color:#fff;">🥩 Smoky Jerky</span>
+            Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥤 Coke</span> • <span id="summary-snack" style="color:#fff;">🥩 Smoky Jerky</span>
         </div>
 
         <!-- HIDDEN DATE MYSTERY BOX -->
@@ -557,7 +557,7 @@
 </div>
 
 <script>
-    let selectedDrink = "🥃 Aged Whiskey";
+    let selectedDrink = "🥤 Coke";
     let selectedSnack = "🥩 Smoky Jerky";
     let checkedTasks = 0;
     const bgAudio = document.getElementById('bgMusic');
@@ -577,12 +577,12 @@
     }
 
     function startGame() {
-        startBackgroundMusic(); // Synchronous audio trigger inside click listener required for iOS
+        startBackgroundMusic(); 
         showCard('card-setup');
     }
 
     function finishGame() {
-        stopBackgroundMusic(); // Pauses audio on Level 1 completion
+        stopBackgroundMusic(); 
         showCard('card-finale');
         spawnSparkles();
     }
