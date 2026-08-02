@@ -3,859 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 1: The Mystery Begins 🎣🌲</title>
+    <title>A Message For You ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            background: radial-gradient(circle at center, #1b261c 0%, #0d130e 100%);
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            width: 100vw;
-            overflow: hidden; 
-            font-family: 'Montserrat', sans-serif;
-            color: #f1e4f3;
+        :root {
+            --bg-color: #0f0a0d;
+            --envelope-color: #1a0f14;
+            --envelope-flap: #26121b;
+            --accent-red: #a81c31;
+            --bright-red: #e63946;
+            --text-dark: #2b1810;
+            --gold: #d4af37;
         }
 
-        .container { 
-            width: 92vw; 
-            max-width: 1000px; 
-            height: 88vh; 
-            max-height: 820px;
-            background: rgba(22, 34, 24, 0.92);
-            backdrop-filter: blur(12px);
-            border: 2px solid #4a5d4e;
-            border-radius: 24px; 
-            position: relative; 
-            box-shadow: 0 0 50px rgba(74, 93, 78, 0.4), inset 0 0 60px rgba(0,0,0,0.8); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 25px; 
-            overflow: hidden; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        /* CARD STYLES */
-        .card {
-            position: absolute;
-            width: 92%;
-            height: 90%;
-            background: #141f15;
-            border: 2px solid #627d67;
-            border-radius: 18px;
-            padding: 25px 30px;
+        body {
+            background: radial-gradient(circle at center, #240d15 0%, #080406 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(50px) scale(0.95);
-            z-index: 2;
-            text-align: center;
-            overflow-y: auto;
-        }
-
-        .card.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-            z-index: 20;
-        }
-
-        .card.shake {
-            animation: shake 0.4s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
-
-        /* TYPOGRAPHY */
-        .title {
-            font-family: 'Cinzel', serif;
-            color: #f3c669;
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 12px rgba(243, 198, 105, 0.4);
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            font-size: 12px;
-            color: #93b899;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 4px;
-        }
-
-        .romantic-quote {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 16px;
-            color: #d1e3d3;
-            margin: 8px 0;
-            line-height: 1.5;
-        }
-
-        /* MISSION LIST */
-        .mission-box {
-            background: rgba(30, 48, 32, 0.6);
-            border: 1px solid #48614b;
-            border-radius: 12px;
-            padding: 12px;
-            text-align: left;
-            width: 100%;
-            max-width: 500px;
-            margin: 8px 0;
-            font-size: 13px;
-            color: #c0dbc3;
-            line-height: 1.6;
-        }
-
-        .mission-box ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .mission-box li {
-            margin-bottom: 4px;
-        }
-
-        /* BUTTONS */
-        .btn-primary {
-            font-size: 15px;
-            color: #0e170f;
-            background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
-            border: none;
-            padding: 13px 30px;
-            border-radius: 30px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 20px rgba(243, 198, 105, 0.3);
-            margin-top: 10px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(243, 198, 105, 0.5);
-        }
-
-        .btn-primary:disabled {
-            background: #3e4a3f;
-            color: #798a7b;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .option-btn {
-            display: block;
-            width: 100%;
-            max-width: 550px;
-            padding: 13px 18px;
-            margin: 7px auto;
-            background: rgba(30, 48, 32, 0.8);
-            border: 2px solid #48614b;
-            border-radius: 12px;
-            color: #f1e4f3;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s ease;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .option-btn:hover {
-            background: #2d4530;
-            border-color: #f3c669;
-            transform: translateX(6px);
-        }
-
-        /* SELECTORS & ICONS */
-        .selector-grid {
-            display: flex;
-            gap: 12px;
             justify-content: center;
-            flex-wrap: wrap;
-            margin: 10px 0;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            padding: 20px;
         }
 
-        .select-card {
-            background: #1b2d1d;
-            border: 2px solid #435c45;
-            padding: 12px 18px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 26px;
+        /* CONTAINER */
+        .wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
         }
 
-        .select-card span {
-            font-size: 12px;
-            font-weight: 700;
-            color: #c0dbc3;
+        .instruction {
+            color: #d8b4bc;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+            text-align: center;
         }
 
-        .select-card.selected {
-            border-color: #f3c669;
-            background: #2b452e;
-            box-shadow: 0 0 15px rgba(243, 198, 105, 0.4);
-            transform: scale(1.06);
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
-        /* PROGRESS TRACKER */
-        .meter-container {
-            width: 100%;
-            max-width: 500px;
-            background: #182619;
-            height: 10px;
-            border-radius: 5px;
-            margin: 8px auto;
+        /* ENVELOPE BASE */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background-color: var(--envelope-color);
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(168, 28, 49, 0.2);
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        /* ENVELOPE FLAP */
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            z-index: 5;
+            border-top: 130px solid var(--envelope-flap);
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            transform-origin: top;
+            transition: transform 0.6s ease 0.6s, z-index 0.2s ease 0.6s;
+        }
+
+        /* ENVELOPE POCKETS */
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid #140b0f;
+            border-right: 160px solid #170c11;
+            border-bottom: 115px solid #200f17;
+            border-top: 105px solid transparent;
+            border-radius: 0 0 10px 10px;
+            z-index: 3;
+        }
+
+        /* WAX SEAL */
+        .wax-seal {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #c92a42 0%, var(--accent-red) 70%, #610d1a 100%);
+            border-radius: 50%;
+            z-index: 6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            color: #ffd700;
+            font-size: 20px;
+            transition: opacity 0.4s ease 0.4s;
+        }
+
+        /* LETTER CARD */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 290px;
+            height: 200px;
+            background: #fffdfa;
+            background-image: radial-gradient(#e8d3cb 0.5px, transparent 0.5px);
+            background-size: 12px 12px;
+            border-radius: 8px;
+            padding: 20px 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2;
+            transition: transform 0.8s ease, z-index 0.1s ease 0.8s, height 0.8s ease 0.8s;
             overflow: hidden;
-            border: 1px solid #48614b;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ebd5d5;
         }
 
-        .meter-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #388e3c 0%, #aeea00 50%, #f3c669 100%);
-            width: 20%;
-            transition: width 0.4s ease;
+        .letter-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            max-height: 100%;
+            padding-right: 5px;
         }
 
-        /* CHECKLIST ITEMS */
-        .checklist-grid {
+        /* Custom scrollbar for letter */
+        .letter-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-content::-webkit-scrollbar-thumb {
+            background: var(--accent-red);
+            border-radius: 4px;
+        }
+
+        .letter p {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        /* PHOTO GRID INSIDE LETTER & BELOW */
+        .photo-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 100%;
-            max-width: 600px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
             margin: 15px 0;
         }
 
-        .checklist-card {
-            background: #1d2e1f;
-            border: 2px dashed #627d67;
-            padding: 18px 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            min-height: 110px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            color: #b2d6b5;
-        }
-
-        .checklist-card.checked {
-            background: #2d4530;
-            border-style: solid;
-            border-color: #f3c669;
-            color: #fff;
-            transform: scale(1.03);
-        }
-
-        /* MYSTERY DISPATCH CARD */
-        .mystery-box {
-            background: rgba(243, 198, 105, 0.08);
-            border: 2px solid #f3c669;
-            border-radius: 14px;
-            padding: 16px;
-            margin: 12px 0;
-            width: 100%;
-            max-width: 550px;
+        .photo-card {
+            background: #ffffff;
+            padding: 6px 6px 14px 6px;
+            border-radius: 4px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0e0e0;
             text-align: center;
         }
 
-        /* PARTICLE ANIMATION */
-        .particle {
-            position: absolute;
+        .photo-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        /* OPEN STATE ANIMATIONS */
+        .envelope-wrapper.open::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+            transition: transform 0.6s ease, z-index 0.2s ease 0.4s;
+        }
+
+        .envelope-wrapper.open .wax-seal {
+            opacity: 0;
             pointer-events: none;
-            animation: floatUp 2s ease-out forwards;
-            font-size: 24px;
-            z-index: 99;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-130px) scale(1.3); opacity: 0; }
+        .envelope-wrapper.open .letter {
+            transform: translateY(-230px);
+            height: 480px;
+            z-index: 4;
+            transition: transform 0.8s ease 0.6s, height 0.6s ease 1.2s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .note {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #a8c3aa;
+        .envelope-wrapper.open .letter-content {
+            opacity: 1;
+            transition: opacity 0.8s ease 1.4s;
         }
 
-        @media (max-width: 650px) {
-            .title { font-size: 20px; }
-            .checklist-grid { grid-template-columns: 1fr; }
+        /* RED & BLACK FLORAL BOUQUET */
+        .bouquet-container {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease 1.6s;
+        }
+
+        .envelope-wrapper.open + .bouquet-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .flower-svg {
+            width: 140px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
+        }
+
+        @media (max-width: 400px) {
+            .envelope-wrapper {
+                transform: scale(0.85);
+            }
+            .envelope-wrapper.open .letter {
+                transform: translateY(-200px);
+                height: 440px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="app">
+    <div class="wrapper">
+        <div class="instruction" id="instruction-text">💌 Tap the envelope to open</div>
 
-    <!-- PAGE 0: LANDING PAGE -->
-    <div class="card active" id="card-gate">
-        <div>
-            <div class="subtitle">🎮 LEVEL 1: THE MYSTERY BEGINS</div>
-            <div class="title">📡 Incoming Transmission...</div>
-        </div>
-
-        <p class="romantic-quote">"Hey Handsome! ❤️"</p>
-
-        <p style="font-size:13px; color:#c0dbc3; line-height: 1.4;">
-            Congratulations! You have been selected for a Top Secret Birthday Adventure.<br>
-            Over the next 4 weeks, you'll take on a series of missions to unlock your birthday surprise.
-        </p>
-
-        <div class="mission-box">
-            <div style="font-weight: 800; color: #f3c669; margin-bottom: 4px;">🎯 Your Quest</div>
-            <ul>
-                <li>🧩 Complete each mission.</li>
-                <li>🔓 Unlock hidden clues.</li>
-                <li>⭐ Earn your way to the Final Reveal.</li>
-            </ul>
-        </div>
-
-        <p style="font-size:12px; color:#f3c669; font-weight:600; margin-top: 2px;">
-            🚫 WARNING: The mission date and coordinates are encrypted until Mission 4.
-        </p>
-
-        <div>
-            <button class="btn-primary" onclick="startGame()">🔊 Press START & Accept Mission 🚀</button>
-            <p class="note">📲 iPhone Users: Ensure your side Silent Switch is flipped ON (Ring Mode).</p>
-        </div>
-    </div>
-
-    <!-- PAGE 1: EXPEDITION LOADOUT -->
-    <div class="card" id="card-setup">
-        <div>
-            <div class="subtitle">Step 00 / Expedition Loadout</div>
-            <div class="title">Choose Your Fishing & Camp Supplies</div>
-        </div>
-
-        <div class="subtitle" style="margin-top: 5px;">1. Select Your Drink</div>
-        <div class="selector-grid">
-            <div class="select-card selected" onclick="selectItem(this, 'drink', '🥤 Coke')">
-                🥤 <span>Coke</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍵 Green Tea')">
-                🍵 <span>Green Tea</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'drink', '🍺 Cold Beer')">
-                🍺 <span>Cold Beer</span>
-            </div>
-        </div>
-
-        <div class="subtitle" style="margin-top: 5px;">2. Select Trail & Fishing Snack</div>
-        <div class="selector-grid">
-            <div class="select-card selected" onclick="selectItem(this, 'snack', '🥩 Smoky Jerky')">
-                🥩 <span>Jerky</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'snack', '🍡 Campfire S\'mores')">
-                🍡 <span>S'mores</span>
-            </div>
-            <div class="select-card" onclick="selectItem(this, 'snack', '🍫 Dark Chocolate')">
-                🍫 <span>Chocolate</span>
-            </div>
-        </div>
-
-        <div>
-            <button class="btn-primary" onclick="startQuestions()">Begin Trail Checkpoints ➔</button>
-        </div>
-    </div>
-
-    <!-- PAGE 2: CHECKPOINT 1 -->
-    <div class="card" id="card-q1">
-        <div>
-            <div class="subtitle">Checkpoint 01 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 20%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the golden rule of lakeside camping?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q1')">😴 Going to bed early at 8:30 PM sharp</button>
-            <button class="option-btn" onclick="correctAndNext('card-q2')">🎣 Cast lines, stargaze & enjoy late-night drinks by the water</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q1')">📱 Checking work emails inside the tent</button>
-        </div>
-
-        <div class="subtitle">Pick the right answer to build romance meter</div>
-    </div>
-
-    <!-- PAGE 3: CHECKPOINT 2 -->
-    <div class="card" id="card-q2">
-        <div>
-            <div class="subtitle">Checkpoint 02 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 40%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">Who holds official authority over campfire roasting & fishing spots?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="correctAndNext('card-q3')">👑 The Master Angler & Fire Captain (You!)</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q2')">🐻 A hungry forest bear</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q2')">❌ Marshmallows and fishing rods are banned</button>
-        </div>
-
-        <div class="subtitle">Choose wisely!</div>
-    </div>
-
-    <!-- PAGE 4: CHECKPOINT 3 -->
-    <div class="card" id="card-q3">
-        <div>
-            <div class="subtitle">Checkpoint 03 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 60%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is the ultimate cure for cold campsite nights?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q3')">🥶 Shivering silently in a camping chair</button>
-            <button class="option-btn" onclick="correctAndNext('card-q4')">💖 Cuddling close with a warm drink by the campfire</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q3')">🏃 Doing 50 jumping jacks on the dock</button>
-        </div>
-
-        <div class="subtitle">Warmth awaits!</div>
-    </div>
-
-    <!-- PAGE 5: CHECKPOINT 4 -->
-    <div class="card" id="card-q4">
-        <div>
-            <div class="subtitle">Checkpoint 04 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 80%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">What is your top birthday priority this year?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="correctAndNext('card-q5')">🍾 VIP relaxation & zero chores</button>
-            <button class="option-btn" onclick="correctAndNext('card-q5')">🌄 Unplanned outdoors & mystery getaways</button>
-            <button class="option-btn" onclick="correctAndNext('card-q5')">✨ Both of the above!</button>
-        </div>
-
-        <div class="subtitle">All correct answers!</div>
-    </div>
-
-    <!-- PAGE 6: CHECKPOINT 5 -->
-    <div class="card" id="card-q5">
-        <div>
-            <div class="subtitle">Checkpoint 05 / 05</div>
-            <div class="meter-container"><div class="meter-fill" style="width: 100%;"></div></div>
-            <div class="title" style="font-size: 20px; margin-top: 8px;">Quick Angler Riddle: What gets larger the more you tell it?</div>
-        </div>
-
-        <div style="width: 100%;">
-            <button class="option-btn" onclick="wrongAnswer('card-q5')">🔋 Phone battery indicator</button>
-            <button class="option-btn" onclick="correctAndGoToChecklist()">🐟 A classic fishing story & birthday adventure!</button>
-            <button class="option-btn" onclick="wrongAnswer('card-q5')">🧦 A pair of woolen socks</button>
-        </div>
-
-        <div class="subtitle">Final checkpoint before basecamp setup!</div>
-    </div>
-
-    <!-- PAGE 7: BASECAMP CHECKLIST -->
-    <div class="card" id="card-checklist">
-        <div>
-            <div class="subtitle">Basecamp Setup</div>
-            <div class="title">Prepare Lakeside Campfire 🔥</div>
-            <p style="font-size: 13px; color: #b2d6b5; margin-top: 4px;">Tap all 3 setup tasks to ignite the campfire!</p>
-        </div>
-
-        <div class="checklist-grid">
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">⛺</span>
-                <span>Pitch the Tent</span>
-            </div>
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">🎣</span>
-                <span>Cast the First Line</span>
-            </div>
-            <div class="checklist-card" onclick="checkTask(this)">
-                <span style="font-size: 24px;">🥂</span>
-                <span>Pour Nightcaps</span>
-            </div>
-        </div>
-
-        <div>
-            <button class="btn-primary" id="checklist-next-btn" disabled onclick="finishGame()">Unlock Secret Dispatch 🎁</button>
-        </div>
-    </div>
-
-    <!-- PAGE 8: FINALE -->
-    <div class="card" id="card-finale">
-        <div>
-            <div class="subtitle">Level 1 Completed! 🎉</div>
-            <div class="title">Happy Birthday, My Love! ❤️</div>
-        </div>
-
-        <div style="font-size: 13px; color: #f3c669; font-weight: 700;">
-            Equipped Loadout: <span id="summary-drink" style="color:#fff;">🥤 Coke</span> • <span id="summary-snack" style="color:#fff;">🥩 Smoky Jerky</span>
-        </div>
-
-        <div class="mystery-box">
-            <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                🔒 Encrypted Transmission Received
-            </div>
-            <div style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; margin: 6px 0;">
-                Target Event: Top Secret Birthday Getaway 🌲✨
-            </div>
-            <p style="font-size: 13px; color: #d1e3d3; line-height: 1.4;">
-                Level 1 Complete! The mission date & coordinates remain encrypted until Mission 4. Stay tuned for Mission 2 next week! 🎒🔥
-            </p>
-        </div>
-
-        <p class="romantic-quote" style="font-size: 15px; margin: 4px 0;">
-            "Here's to another year of late-night laughs, wild adventures, and making unforgettable memories together!"
-        </p>
-
-        <div>
-            <button class="btn-primary" onclick="spawnSparkles()">Replay Sparkle ✨</button>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    let selectedDrink = "🥤 Coke";
-    let selectedSnack = "🥩 Smoky Jerky";
-    let checkedTasks = 0;
-
-    // WEB AUDIO SYNTHESIZER (Generates all SFX and Background Melodies natively)
-    let audioCtx = null;
-    let bgLoopTimer = null;
-
-    function initAudioContext() {
-        if (!audioCtx) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }
-
-    // NATIVE SYNTHESIZED SOUND EFFECTS
-    function playRadioTransmissionSFX() {
-        initAudioContext();
-        if (!audioCtx) return;
-
-        let now = audioCtx.currentTime;
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.setValueAtTime(1000, now + 0.1);
-        osc.frequency.setValueAtTime(800, now + 0.2);
-
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.35);
-    }
-
-    function playZeldaChestSFX() {
-        initAudioContext();
-        if (!audioCtx) return;
-
-        const notes = [392.00, 493.88, 587.33, 783.99]; // G4, B4, D5, G5
-        notes.forEach((freq, idx) => {
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.12);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime + idx * 0.12);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.12 + 0.3);
+        <!-- ENVELOPE -->
+        <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+            <div class="wax-seal">❤️</div>
+            <div class="envelope-pocket"></div>
             
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime + idx * 0.12);
-            osc.stop(audioCtx.currentTime + idx * 0.12 + 0.3);
-        });
-    }
+            <!-- LETTER INSIDE -->
+            <div class="letter">
+                <div class="letter-content">
+                    <p>Babe, just wanted to say thank you. ❤️</p>
+                    <p>I see how hard you work every day, washing cars, doing all the manual work yourself and making sure every customer leaves happy.</p>
+                    
+                    <!-- PHOTOS 1 & 2 INSIDE LETTER -->
+                    <div class="photo-grid">
+                        <div class="photo-card">
+                            <img src="photo1.jpg" alt="Photo 1">
+                        </div>
+                        <div class="photo-card">
+                            <img src="photo2.jpg" alt="Photo 2">
+                        </div>
+                    </div>
 
-    function playErrorSFX() {
-        initAudioContext();
-        if (!audioCtx) return;
+                    <p>Thank you for always putting in so much effort to build our future together. I know it gets tiring, but you never give up. I really admire your determination and how dedicated you are to what you do.</p>
+                    
+                    <!-- PHOTOS 3 & 4 INSIDE LETTER -->
+                    <div class="photo-grid">
+                        <div class="photo-card">
+                            <img src="photo3.jpg" alt="Photo 3">
+                        </div>
+                        <div class="photo-card">
+                            <img src="photo4.jpg" alt="Photo 4">
+                        </div>
+                    </div>
 
-        let now = audioCtx.currentTime;
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.setValueAtTime(110, now + 0.15);
+                    <p>I don’t always say it, but I notice everything, and I’m really proud of you. Thank you for working so hard for us. I love you so much, and I’ll always be here supporting you through everything. 🤍</p>
+                </div>
+            </div>
+        </div>
 
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        <!-- RED & BLACK ROSES BOUQUET -->
+        <div class="bouquet-container">
+            <svg class="flower-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bouquet Wrapper (Black & Gold Ribbon) -->
+                <path d="M60,130 L100,220 L140,130 Z" fill="#120a0e" stroke="#2b141d" stroke-width="2"/>
+                <path d="M75,140 L100,220 L125,140 Z" fill="#1f1017"/>
+                <!-- Gold Ribbon -->
+                <path d="M85,150 Q100,158 115,150 Q100,165 85,150 Z" fill="#d4af37"/>
+                <circle cx="100" cy="154" r="4" fill="#a81c31"/>
 
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.3);
-    }
+                <!-- Dark Foliage / Black Leaves -->
+                <path d="M40,90 Q20,70 50,60 Q70,80 40,90 Z" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
+                <path d="M160,90 Q180,70 150,60 Q130,80 160,90 Z" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
+                <path d="M100,50 Q100,20 120,30 Q110,60 100,50 Z" fill="#141414"/>
 
-    // NATIVE SYNTHESIZED BACKGROUND MUSIC LOOPS
-    function stopBGM() {
-        if (bgLoopTimer) {
-            clearInterval(bgLoopTimer);
-            bgLoopTimer = null;
-        }
-    }
+                <!-- Red Rose 1 (Left) -->
+                <g transform="translate(50, 70)">
+                    <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
+                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
+                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.8"/>
+                    <circle cx="20" cy="20" r="6" fill="#4a0410"/>
+                </g>
 
-    function startSpyTheme() {
-        stopBGM();
-        initAudioContext();
-        
-        const playPulse = () => {
-            if (!audioCtx) return;
-            let now = audioCtx.currentTime;
+                <!-- Black Rose (Center-Back) -->
+                <g transform="translate(80, 45)">
+                    <circle cx="20" cy="20" r="24" fill="#121212"/>
+                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#2b2b2b"/>
+                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#1a1a1a"/>
+                    <circle cx="20" cy="20" r="7" fill="#000000"/>
+                </g>
+
+                <!-- Red Rose 2 (Right) -->
+                <g transform="translate(110, 70)">
+                    <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
+                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
+                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.8"/>
+                    <circle cx="20" cy="20" r="6" fill="#4a0410"/>
+                </g>
+
+                <!-- Center Main Crimson Rose -->
+                <g transform="translate(80, 80)">
+                    <circle cx="20" cy="20" r="26" fill="#610b18"/>
+                    <path d="M8,15 Q20,-2 32,15 Q20,32 8,15 Z" fill="#a81c31"/>
+                    <path d="M3,20 Q20,38 37,20 Q20,2 3,20 Z" fill="#d92540" opacity="0.85"/>
+                    <path d="M12,18 Q20,10 28,18 Q20,26 12,18 Z" fill="#ff4d6d"/>
+                    <circle cx="20" cy="20" r="5" fill="#38020a"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const instruction = document.getElementById('instruction-text');
             
-            // Low bass drone pulse
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(110, now); // A2
-            osc.frequency.exponentialRampToValueAtTime(55, now + 1.2); // A1
-
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.4);
-        };
-
-        playPulse();
-        bgLoopTimer = setInterval(playPulse, 1600);
-    }
-
-    function startExplorerTheme() {
-        stopBGM();
-        initAudioContext();
-
-        const melody = [
-            { note: 329.63, dur: 0.4 }, // E4
-            { note: 392.00, dur: 0.4 }, // G4
-            { note: 440.00, dur: 0.4 }, // A4
-            { note: 493.88, dur: 0.8 }, // B4
-            { note: 440.00, dur: 0.4 }, // A4
-            { note: 392.00, dur: 0.8 }  // G4
-        ];
-        
-        let noteIndex = 0;
-
-        const playMelodyNote = () => {
-            if (!audioCtx) return;
-            let item = melody[noteIndex % melody.length];
-            let now = audioCtx.currentTime;
-
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(item.note, now);
-
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + item.dur);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + item.dur);
-
-            noteIndex++;
-        };
-
-        playMelodyNote();
-        bgLoopTimer = setInterval(playMelodyNote, 550);
-    }
-
-    function startCozyTheme() {
-        stopBGM();
-        initAudioContext();
-
-        const chords = [
-            [261.63, 329.63, 392.00], // C major
-            [220.00, 261.63, 329.63], // A minor
-            [174.61, 220.00, 261.63], // F major
-            [196.00, 246.94, 293.66]  // G major
-        ];
-        let chordIndex = 0;
-
-        const playChord = () => {
-            if (!audioCtx) return;
-            let currentChord = chords[chordIndex % chords.length];
-            let now = audioCtx.currentTime;
-
-            currentChord.forEach(freq => {
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, now);
-
-                gain.gain.setValueAtTime(0.08, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 1.8);
-            });
-
-            chordIndex++;
-        };
-
-        playChord();
-        bgLoopTimer = setInterval(playChord, 2000);
-    }
-
-    function startFanfareTheme() {
-        stopBGM();
-        initAudioContext();
-
-        const arpeggio = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-        let idx = 0;
-
-        const playFanfare = () => {
-            if (!audioCtx) return;
-            let now = audioCtx.currentTime;
-
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(arpeggio[idx % arpeggio.length], now);
-
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.35);
-
-            idx++;
-        };
-
-        playFanfare();
-        bgLoopTimer = setInterval(playFanfare, 250);
-    }
-
-    // GAME FLOW FUNCTIONS
-    function startGame() {
-        initAudioContext();
-        playRadioTransmissionSFX();
-        startSpyTheme();
-        showCard('card-setup');
-    }
-
-    function startQuestions() {
-        startExplorerTheme();
-        showCard('card-q1');
-    }
-
-    function correctAndNext(nextCardId) {
-        playZeldaChestSFX();
-        spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
-        showCard(nextCardId);
-    }
-
-    function correctAndGoToChecklist() {
-        playZeldaChestSFX();
-        spawnParticles(['🌲', '🔥', '🎣', '🐟', '✨', '💖']);
-        startCozyTheme();
-        showCard('card-checklist');
-    }
-
-    function finishGame() {
-        startFanfareTheme();
-        showCard('card-finale');
-        spawnSparkles();
-    }
-
-    function showCard(cardId) {
-        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-        document.getElementById(cardId).classList.add('active');
-    }
-
-    function selectItem(element, category, value) {
-        const parent = element.parentElement;
-        parent.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
-        element.classList.add('selected');
-
-        if (category === 'drink') {
-            selectedDrink = value;
-            document.getElementById('summary-drink').innerText = value;
-        } else {
-            selectedSnack = value;
-            document.getElementById('summary-snack').innerText = value;
-        }
-    }
-
-    function wrongAnswer(cardId) {
-        playErrorSFX();
-        const card = document.getElementById(cardId);
-        card.classList.add('shake');
-        setTimeout(() => card.classList.remove('shake'), 400);
-    }
-
-    function checkTask(cardElement) {
-        if (!cardElement.classList.contains('checked')) {
-            cardElement.classList.add('checked');
-            checkedTasks++;
-            playZeldaChestSFX();
-            spawnParticles(['🔥', '✨', '🌲', '🎣']);
-
-            if (checkedTasks >= 3) {
-                document.getElementById('checklist-next-btn').disabled = false;
+            if (!envelope.classList.contains('open')) {
+                envelope.classList.add('open');
+                instruction.style.opacity = '0';
             }
         }
-    }
-
-    function spawnParticles(icons) {
-        const container = document.getElementById('app');
-        for (let i = 0; i < 8; i++) {
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            p.innerText = icons[Math.floor(Math.random() * icons.length)];
-            p.style.left = (20 + Math.random() * 60) + '%';
-            p.style.top = (40 + Math.random() * 30) + '%';
-            container.appendChild(p);
-
-            setTimeout(() => p.remove(), 2000);
-        }
-    }
-
-    function spawnSparkles() {
-        spawnParticles(['🌲', '🔥', '👑', '🥂', '✨', '💖', '🎣', '🐟']);
-    }
-</script>
-
+    </script>
 </body>
 </html>
