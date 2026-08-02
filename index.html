@@ -166,7 +166,7 @@
             margin-bottom: 12px;
         }
 
-        /* PHOTO GRID INSIDE LETTER & BELOW */
+        /* PHOTO GRID INSIDE LETTER */
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -250,6 +250,9 @@
 </head>
 <body>
 
+    <!-- AUDIO ELEMENT (Ed Sheeran - Perfect) -->
+    <audio id="bg-music" src="https://ia801503.us.archive.org/15/items/EdSheeranPerfect_201711/Ed%20Sheeran%20-%20Perfect.mp3" preload="auto"></audio>
+
     <div class="wrapper">
         <div class="instruction" id="instruction-text">💌 Tap the envelope to open</div>
 
@@ -260,7 +263,7 @@
             
             <!-- LETTER INSIDE -->
             <div class="letter">
-                <div class="letter-content">
+                <div class="letter-content" id="letter-scroll">
                     <p>Babe, just wanted to say thank you. ❤️</p>
                     <p>I see how hard you work every day, washing cars, doing all the manual work yourself and making sure every customer leaves happy.</p>
                     
@@ -343,6 +346,9 @@
     </div>
 
     <script>
+        const audio = document.getElementById('bg-music');
+        const letterScroll = document.getElementById('letter-scroll');
+
         function openEnvelope() {
             const envelope = document.getElementById('envelope');
             const instruction = document.getElementById('instruction-text');
@@ -350,7 +356,29 @@
             if (!envelope.classList.contains('open')) {
                 envelope.classList.add('open');
                 instruction.style.opacity = '0';
+                
+                // Play music upon opening
+                audio.play().catch(e => console.log('Audio play error:', e));
             }
+        }
+
+        // Fade out music smoothly when the user scrolls to the bottom of the letter
+        letterScroll.addEventListener('scroll', function() {
+            if (letterScroll.scrollTop + letterScroll.clientHeight >= letterScroll.scrollHeight - 10) {
+                fadeAudioOut();
+            }
+        });
+
+        function fadeAudioOut() {
+            let fade = setInterval(function() {
+                if (audio.volume > 0.05) {
+                    audio.volume -= 0.05;
+                } else {
+                    audio.pause();
+                    audio.volume = 1.0;
+                    clearInterval(fade);
+                }
+            }, 100);
         }
     </script>
 </body>
