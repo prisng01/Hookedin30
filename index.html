@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Message For You ❤️</title>
+    <title>To My Love ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f0a0d;
-            --envelope-color: #1a0f14;
-            --envelope-flap: #26121b;
-            --accent-red: #a81c31;
-            --bright-red: #e63946;
-            --text-dark: #2b1810;
-            --gold: #d4af37;
+            --bg-pink: #fbe3e5;
+            --envelope-main: #f08298;
+            --envelope-dark: #e06880;
+            --envelope-flap: #e87088;
+            --paper-bg: #fffdfa;
+            --heart-red: #d93856;
+            --text-dark: #3a2228;
         }
 
         * {
@@ -25,7 +25,7 @@
         }
 
         body {
-            background: radial-gradient(circle at center, #240d15 0%, #080406 100%);
+            background-color: var(--bg-pink);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -35,138 +35,140 @@
             padding: 20px;
         }
 
-        /* CONTAINER */
         .wrapper {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .instruction {
-            color: #d8b4bc;
+            color: #b0586c;
             font-size: 14px;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 25px;
-            animation: pulse 2s infinite;
+            margin-bottom: 30px;
+            animation: floatText 2s ease-in-out infinite;
             text-align: center;
+            font-weight: 600;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-5px); opacity: 1; }
         }
 
-        /* ENVELOPE BASE */
+        /* ENVELOPE DESIGN (BASED ON VIDEO) */
         .envelope-wrapper {
             position: relative;
             width: 320px;
-            height: 220px;
-            background-color: var(--envelope-color);
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(168, 28, 49, 0.2);
+            height: 210px;
+            background-color: var(--envelope-main);
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(180, 70, 95, 0.25);
             cursor: pointer;
             perspective: 1000px;
+            border: 2px solid #e07088;
         }
 
-        /* ENVELOPE FLAP */
+        /* FLAP TOP */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
             top: 0;
+            left: 0;
             z-index: 5;
-            border-top: 130px solid var(--envelope-flap);
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
+            border-top: 125px solid var(--envelope-flap);
+            border-left: 158px solid transparent;
+            border-right: 158px solid transparent;
             transform-origin: top;
-            transition: transform 0.6s ease 0.6s, z-index 0.2s ease 0.6s;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
         }
 
-        /* ENVELOPE POCKETS */
+        /* ENVELOPE FOLDS */
         .envelope-pocket {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid #140b0f;
-            border-right: 160px solid #170c11;
-            border-bottom: 115px solid #200f17;
-            border-top: 105px solid transparent;
+            border-left: 158px solid var(--envelope-dark);
+            border-right: 158px solid var(--envelope-dark);
+            border-bottom: 110px solid var(--envelope-main);
+            border-top: 100px solid transparent;
             border-radius: 0 0 10px 10px;
             z-index: 3;
         }
 
-        /* WAX SEAL */
-        .wax-seal {
+        /* HEART SEAL */
+        .heart-seal {
             position: absolute;
             top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 48px;
-            height: 48px;
-            background: radial-gradient(circle, #c92a42 0%, var(--accent-red) 70%, #610d1a 100%);
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            background-color: var(--heart-red);
             z-index: 6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            color: #ffd700;
-            font-size: 20px;
-            transition: opacity 0.4s ease 0.4s;
+            transition: opacity 0.3s ease 0.2s;
+            clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
         }
 
-        /* LETTER CARD */
+        /* LETTER INSIDE */
         .letter {
             position: absolute;
             bottom: 10px;
             left: 15px;
-            width: 290px;
-            height: 200px;
-            background: #fffdfa;
-            background-image: radial-gradient(#e8d3cb 0.5px, transparent 0.5px);
-            background-size: 12px 12px;
+            width: 286px;
+            height: 190px;
+            background: var(--paper-bg);
             border-radius: 8px;
-            padding: 20px 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 2;
-            transition: transform 0.8s ease, z-index 0.1s ease 0.8s, height 0.8s ease 0.8s;
+            transition: transform 0.8s ease 0.6s, z-index 0.1s ease 0.8s, height 0.6s ease 1.2s;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid #ebd5d5;
+            border: 1px solid #f0d5da;
+        }
+
+        .cover-title {
+            font-family: 'Caveat', cursive;
+            font-size: 28px;
+            color: var(--text-dark);
+            text-align: center;
+            margin-top: 60px;
+            transition: opacity 0.4s ease 0.6s;
         }
 
         .letter-content {
+            display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
             overflow-y: auto;
             max-height: 100%;
             padding-right: 5px;
         }
 
-        /* Custom scrollbar for letter */
         .letter-content::-webkit-scrollbar {
             width: 4px;
         }
         .letter-content::-webkit-scrollbar-thumb {
-            background: var(--accent-red);
+            background: var(--envelope-dark);
             border-radius: 4px;
         }
 
         .letter p {
             font-family: 'Caveat', cursive;
-            font-size: 20px;
-            line-height: 1.5;
+            font-size: 22px;
+            line-height: 1.4;
             color: var(--text-dark);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
-        /* PHOTO GRID INSIDE LETTER */
+        /* PHOTO GRID */
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -176,73 +178,68 @@
 
         .photo-card {
             background: #ffffff;
-            padding: 6px 6px 14px 6px;
+            padding: 5px 5px 12px 5px;
             border-radius: 4px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e0e0e0;
-            text-align: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
         }
 
         .photo-card img {
             width: 100%;
-            height: 100px;
+            height: 95px;
             object-fit: cover;
             border-radius: 2px;
             display: block;
         }
 
-        /* OPEN STATE ANIMATIONS */
+        /* OPEN ANIMATIONS */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
-            transition: transform 0.6s ease, z-index 0.2s ease 0.4s;
+            transition: transform 0.5s ease, z-index 0.2s ease 0.3s;
         }
 
-        .envelope-wrapper.open .wax-seal {
+        .envelope-wrapper.open .heart-seal {
             opacity: 0;
             pointer-events: none;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-230px);
+            transform: translateY(-200px);
             height: 480px;
             z-index: 4;
-            transition: transform 0.8s ease 0.6s, height 0.6s ease 1.2s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.8s ease 0.5s, height 0.6s ease 1.1s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .envelope-wrapper.open .cover-title {
+            opacity: 0;
+            display: none;
         }
 
         .envelope-wrapper.open .letter-content {
+            display: block;
             opacity: 1;
-            transition: opacity 0.8s ease 1.4s;
+            transition: opacity 0.8s ease 1.3s;
         }
 
-        /* RED & BLACK FLORAL BOUQUET */
-        .bouquet-container {
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease 1.6s;
+        /* ELEGANT BOUQUET */
+        .bouquet-section {
+            margin-top: 25px;
+            text-align: center;
         }
 
-        .envelope-wrapper.open + .bouquet-container {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .flower-svg {
-            width: 140px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
+        .bouquet-img {
+            width: 160px;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
         }
 
         @media (max-width: 400px) {
             .envelope-wrapper {
-                transform: scale(0.85);
+                transform: scale(0.88);
             }
             .envelope-wrapper.open .letter {
-                transform: translateY(-200px);
+                transform: translateY(-180px);
                 height: 440px;
             }
         }
@@ -250,24 +247,26 @@
 </head>
 <body>
 
-    <!-- AUDIO ELEMENT (Ed Sheeran - Perfect) -->
+    <!-- ED SHEERAN - PERFECT -->
     <audio id="bg-music" src="https://ia801503.us.archive.org/15/items/EdSheeranPerfect_201711/Ed%20Sheeran%20-%20Perfect.mp3" preload="auto"></audio>
 
     <div class="wrapper">
-        <div class="instruction" id="instruction-text">💌 Tap the envelope to open</div>
+        <div class="instruction" id="instruction-text">💌 Tap to open your letter</div>
 
         <!-- ENVELOPE -->
         <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
-            <div class="wax-seal">❤️</div>
+            <div class="heart-seal"></div>
             <div class="envelope-pocket"></div>
             
-            <!-- LETTER INSIDE -->
+            <!-- LETTER -->
             <div class="letter">
+                <div class="cover-title">To my love</div>
+                
                 <div class="letter-content" id="letter-scroll">
                     <p>Babe, just wanted to say thank you. ❤️</p>
                     <p>I see how hard you work every day, washing cars, doing all the manual work yourself and making sure every customer leaves happy.</p>
                     
-                    <!-- PHOTOS 1 & 2 INSIDE LETTER -->
+                    <!-- PHOTOS 1 & 2 -->
                     <div class="photo-grid">
                         <div class="photo-card">
                             <img src="photo1.jpg" alt="Photo 1">
@@ -279,7 +278,7 @@
 
                     <p>Thank you for always putting in so much effort to build our future together. I know it gets tiring, but you never give up. I really admire your determination and how dedicated you are to what you do.</p>
                     
-                    <!-- PHOTOS 3 & 4 INSIDE LETTER -->
+                    <!-- PHOTOS 3 & 4 -->
                     <div class="photo-grid">
                         <div class="photo-card">
                             <img src="photo3.jpg" alt="Photo 3">
@@ -290,58 +289,45 @@
                     </div>
 
                     <p>I don’t always say it, but I notice everything, and I’m really proud of you. Thank you for working so hard for us. I love you so much, and I’ll always be here supporting you through everything. 🤍</p>
+
+                    <!-- ELEGANT RED & BLACK ROSES BOUQUET -->
+                    <div class="bouquet-section">
+                        <svg class="bouquet-img" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Black Wrapping Paper with Gold Trim -->
+                            <path d="M50,110 L100,230 L150,110 Z" fill="#181818" stroke="#d4af37" stroke-width="1.5"/>
+                            <path d="M65,125 L100,230 L135,125 Z" fill="#222222"/>
+                            <!-- Ribbon -->
+                            <path d="M82,140 Q100,150 118,140 Q100,160 82,140 Z" fill="#d4af37"/>
+                            <circle cx="100" cy="146" r="4" fill="#a81c31"/>
+
+                            <!-- Black Rose (Left) -->
+                            <g transform="translate(45, 60)">
+                                <circle cx="20" cy="20" r="22" fill="#121212"/>
+                                <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#2a2a2a"/>
+                                <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#1f1f1f"/>
+                                <circle cx="20" cy="20" r="6" fill="#000000"/>
+                            </g>
+
+                            <!-- Rich Deep Red Rose (Right) -->
+                            <g transform="translate(115, 60)">
+                                <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
+                                <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
+                                <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.85"/>
+                                <circle cx="20" cy="20" r="6" fill="#4a0410"/>
+                            </g>
+
+                            <!-- Large Crimson Center Rose -->
+                            <g transform="translate(80, 75)">
+                                <circle cx="20" cy="20" r="26" fill="#610b18"/>
+                                <path d="M8,15 Q20,-2 32,15 Q20,32 8,15 Z" fill="#a81c31"/>
+                                <path d="M3,20 Q20,38 37,20 Q20,2 3,20 Z" fill="#d92540" opacity="0.9"/>
+                                <path d="M12,18 Q20,10 28,18 Q20,26 12,18 Z" fill="#ff4d6d"/>
+                                <circle cx="20" cy="20" r="5" fill="#38020a"/>
+                            </g>
+                        </svg>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- RED & BLACK ROSES BOUQUET -->
-        <div class="bouquet-container">
-            <svg class="flower-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
-                <!-- Bouquet Wrapper (Black & Gold Ribbon) -->
-                <path d="M60,130 L100,220 L140,130 Z" fill="#120a0e" stroke="#2b141d" stroke-width="2"/>
-                <path d="M75,140 L100,220 L125,140 Z" fill="#1f1017"/>
-                <!-- Gold Ribbon -->
-                <path d="M85,150 Q100,158 115,150 Q100,165 85,150 Z" fill="#d4af37"/>
-                <circle cx="100" cy="154" r="4" fill="#a81c31"/>
-
-                <!-- Dark Foliage / Black Leaves -->
-                <path d="M40,90 Q20,70 50,60 Q70,80 40,90 Z" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
-                <path d="M160,90 Q180,70 150,60 Q130,80 160,90 Z" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
-                <path d="M100,50 Q100,20 120,30 Q110,60 100,50 Z" fill="#141414"/>
-
-                <!-- Red Rose 1 (Left) -->
-                <g transform="translate(50, 70)">
-                    <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
-                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
-                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.8"/>
-                    <circle cx="20" cy="20" r="6" fill="#4a0410"/>
-                </g>
-
-                <!-- Black Rose (Center-Back) -->
-                <g transform="translate(80, 45)">
-                    <circle cx="20" cy="20" r="24" fill="#121212"/>
-                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#2b2b2b"/>
-                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#1a1a1a"/>
-                    <circle cx="20" cy="20" r="7" fill="#000000"/>
-                </g>
-
-                <!-- Red Rose 2 (Right) -->
-                <g transform="translate(110, 70)">
-                    <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
-                    <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
-                    <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.8"/>
-                    <circle cx="20" cy="20" r="6" fill="#4a0410"/>
-                </g>
-
-                <!-- Center Main Crimson Rose -->
-                <g transform="translate(80, 80)">
-                    <circle cx="20" cy="20" r="26" fill="#610b18"/>
-                    <path d="M8,15 Q20,-2 32,15 Q20,32 8,15 Z" fill="#a81c31"/>
-                    <path d="M3,20 Q20,38 37,20 Q20,2 3,20 Z" fill="#d92540" opacity="0.85"/>
-                    <path d="M12,18 Q20,10 28,18 Q20,26 12,18 Z" fill="#ff4d6d"/>
-                    <circle cx="20" cy="20" r="5" fill="#38020a"/>
-                </g>
-            </svg>
         </div>
     </div>
 
@@ -357,14 +343,14 @@
                 envelope.classList.add('open');
                 instruction.style.opacity = '0';
                 
-                // Play music upon opening
-                audio.play().catch(e => console.log('Audio play error:', e));
+                // Play Ed Sheeran - Perfect on opening
+                audio.play().catch(e => console.log('Playback error:', e));
             }
         }
 
-        // Fade out music smoothly when the user scrolls to the bottom of the letter
+        // Pause music when scrolled to the bottom of the letter
         letterScroll.addEventListener('scroll', function() {
-            if (letterScroll.scrollTop + letterScroll.clientHeight >= letterScroll.scrollHeight - 10) {
+            if (letterScroll.scrollTop + letterScroll.clientHeight >= letterScroll.scrollHeight - 15) {
                 fadeAudioOut();
             }
         });
