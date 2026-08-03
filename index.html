@@ -2,75 +2,111 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- iPhone Viewport & Notch / Dynamic Island optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>To My Love ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-pink: #fbe3e5;
-            --envelope-main: #f08298;
-            --envelope-dark: #e06880;
-            --envelope-flap: #e87088;
+            --bg-dark: #0d080a;
+            --envelope-black: #180d12;
+            --envelope-flap: #26111a;
+            --accent-red: #9e1b32;
+            --bright-red: #d92540;
             --paper-bg: #fffdfa;
-            --heart-red: #d93856;
-            --text-dark: #3a2228;
+            --text-dark: #2b1810;
+            --polaroid-shadow: rgba(0, 0, 0, 0.2);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Disable iOS blue highlight */
         }
 
         body {
-            background-color: var(--bg-pink);
+            background: radial-gradient(circle at center, #210a13 0%, #080406 100%);
             min-height: 100vh;
+            min-height: 100dvh; /* Updated for iOS Safari dynamic height */
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            padding: 20px;
+            /* iPhone Safe Area padding to avoid Dynamic Island & Home Bar */
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+            padding-left: max(15px, env(safe-area-inset-left));
+            padding-right: max(15px, env(safe-area-inset-right));
+            touch-action: manipulation;
+        }
+
+        /* MUSIC CONTROLLER BUTTON (Top Right) */
+        .music-btn {
+            position: fixed;
+            top: max(15px, env(safe-area-inset-top));
+            right: max(15px, env(safe-area-inset-right));
+            background: rgba(38, 17, 26, 0.8);
+            border: 1px solid var(--accent-red);
+            color: #fff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: transform 0.2s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(0.9);
         }
 
         .wrapper {
             position: relative;
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .instruction {
-            color: #b0586c;
-            font-size: 14px;
-            letter-spacing: 1.5px;
+            color: #d8a4b0;
+            font-size: 13px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 30px;
-            animation: floatText 2s ease-in-out infinite;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
             text-align: center;
             font-weight: 600;
         }
 
-        @keyframes floatText {
-            0%, 100% { transform: translateY(0); opacity: 0.8; }
-            50% { transform: translateY(-5px); opacity: 1; }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
-        /* ENVELOPE DESIGN */
+        /* WIDER ENVELOPE DESIGN */
         .envelope-wrapper {
             position: relative;
-            width: 320px;
-            height: 210px;
-            background-color: var(--envelope-main);
+            width: 360px; /* Wider envelope */
+            height: 220px;
+            background-color: var(--envelope-black);
             border-radius: 12px;
-            box-shadow: 0 15px 30px rgba(180, 70, 95, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(158, 27, 50, 0.3);
             cursor: pointer;
             perspective: 1000px;
-            border: 2px solid #e07088;
+            border: 1px solid #3d1421;
         }
 
         .envelope-wrapper::before {
@@ -79,9 +115,9 @@
             top: 0;
             left: 0;
             z-index: 5;
-            border-top: 125px solid var(--envelope-flap);
-            border-left: 158px solid transparent;
-            border-right: 158px solid transparent;
+            border-top: 130px solid var(--envelope-flap);
+            border-left: 180px solid transparent;
+            border-right: 180px solid transparent;
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
         }
@@ -92,104 +128,167 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 158px solid var(--envelope-dark);
-            border-right: 158px solid var(--envelope-dark);
-            border-bottom: 110px solid var(--envelope-main);
-            border-top: 100px solid transparent;
-            border-radius: 0 0 10px 10px;
+            border-left: 180px solid #12090d;
+            border-right: 180px solid #140a0e;
+            border-bottom: 115px solid #1c0d13;
+            border-top: 105px solid transparent;
+            border-radius: 0 0 12px 12px;
             z-index: 3;
         }
 
         .heart-seal {
             position: absolute;
-            top: 100px;
+            top: 105px;
             left: 50%;
             transform: translateX(-50%);
-            width: 32px;
-            height: 32px;
-            background-color: var(--heart-red);
+            width: 38px;
+            height: 38px;
+            background: radial-gradient(circle, #e63946 0%, var(--accent-red) 70%, #4a0812 100%);
+            border-radius: 50%;
             z-index: 6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 18px;
             transition: opacity 0.3s ease 0.2s;
-            clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
         }
 
-        /* LETTER INSIDE */
-        .letter {
+        /* MULTI-PAGE CARD / LETTER */
+        .card {
             position: absolute;
             bottom: 10px;
             left: 15px;
-            width: 286px;
-            height: 190px;
+            width: 330px;
+            height: 200px;
             background: var(--paper-bg);
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 2;
-            transition: transform 0.8s ease 0.6s, z-index 0.1s ease 0.8s, height 0.6s ease 1.2s;
+            transition: transform 0.8s ease 0.5s, z-index 0.1s ease 0.8s, height 0.6s ease 1.1s;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #f0d5da;
+            border: 1px solid #ebd5d5;
         }
 
-        .cover-title {
+        .cover-text {
             font-family: 'Caveat', cursive;
-            font-size: 28px;
+            font-size: 30px;
             color: var(--text-dark);
             text-align: center;
-            margin-top: 60px;
-            transition: opacity 0.4s ease 0.6s;
+            margin-top: 65px;
+            transition: opacity 0.4s ease 0.5s;
         }
 
-        .letter-content {
+        /* PAGE SYSTEM */
+        .page {
             display: none;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
             opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .page-content {
             overflow-y: auto;
-            max-height: 100%;
             padding-right: 5px;
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
         }
 
-        .letter-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter-content::-webkit-scrollbar-thumb {
-            background: var(--envelope-dark);
-            border-radius: 4px;
-        }
-
-        .letter p {
+        .page-content p {
             font-family: 'Caveat', cursive;
             font-size: 22px;
-            line-height: 1.4;
+            line-height: 1.5;
             color: var(--text-dark);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        /* PHOTO GRID */
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+        /* POLAROID STYLE PHOTOS */
+        .polaroid-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 12px;
             margin: 15px 0;
         }
 
-        .photo-card {
+        .polaroid {
             background: #ffffff;
-            padding: 5px 5px 12px 5px;
-            border-radius: 4px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            padding: 8px 8px 24px 8px;
+            box-shadow: 0 8px 18px var(--polaroid-shadow);
             border: 1px solid #eee;
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease;
+            width: 48%;
+            text-align: center;
+            position: relative;
         }
 
-        .photo-card img {
+        .polaroid:nth-child(even) {
+            transform: rotate(3deg);
+        }
+
+        .polaroid img {
             width: 100%;
-            height: 95px;
+            height: 130px;
             object-fit: cover;
-            border-radius: 2px;
             display: block;
+            border-radius: 2px;
         }
 
-        /* OPEN ANIMATIONS */
+        /* POLAROID TAPE EFFECT */
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 30%;
+            width: 35px;
+            height: 12px;
+            background: rgba(235, 215, 215, 0.6);
+            transform: rotate(-5deg);
+        }
+
+        /* NAVIGATION BUTTONS */
+        .nav-btn {
+            background: var(--accent-red);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            align-self: flex-end;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(158, 27, 50, 0.3);
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+        }
+
+        .nav-btn.secondary {
+            background: #4a2832;
+            align-self: flex-start;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* OPEN STATE ANIMATIONS */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
@@ -201,42 +300,41 @@
             pointer-events: none;
         }
 
-        .envelope-wrapper.open .letter {
-            transform: translateY(-200px);
+        .envelope-wrapper.open .card {
+            transform: translateY(-210px);
             height: 480px;
             z-index: 4;
             transition: transform 0.8s ease 0.5s, height 0.6s ease 1.1s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .envelope-wrapper.open .cover-title {
+        .envelope-wrapper.open .cover-text {
             opacity: 0;
             display: none;
         }
 
-        .envelope-wrapper.open .letter-content {
-            display: block;
-            opacity: 1;
-            transition: opacity 0.8s ease 1.3s;
-        }
-
-        /* ELEGANT BOUQUET */
-        .bouquet-section {
-            margin-top: 25px;
+        /* CUSTOM GLOWING FLOWER ILLUSTRATION */
+        .glowing-flower-container {
             text-align: center;
+            margin-top: 10px;
+            background: #080d0f;
+            border-radius: 8px;
+            padding: 15px 5px;
+            box-shadow: inset 0 0 15px rgba(0, 255, 200, 0.1);
         }
 
-        .bouquet-img {
-            width: 160px;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+        .glowing-flower-svg {
+            width: 140px;
+            filter: drop-shadow(0 0 8px rgba(80, 225, 210, 0.6));
         }
 
-        @media (max-width: 400px) {
+        /* RESPONSIVE BREAKPOINTS FOR ALL IPHONES (15, 15 Plus, 15 Pro, 15 Pro Max) */
+        @media (max-width: 390px) {
             .envelope-wrapper {
                 transform: scale(0.88);
             }
-            .envelope-wrapper.open .letter {
-                transform: translateY(-180px);
+            .envelope-wrapper.open .card {
+                transform: translateY(-190px);
                 height: 440px;
             }
         }
@@ -244,130 +342,193 @@
 </head>
 <body>
 
-    <!-- AUDIO SOURCE: Replace 'perfect.mp3' with your local song file or direct audio link -->
-    <audio id="bg-music" src="perfect.mp3" preload="auto"></audio>
+    <!-- BACKGROUND MUSIC (ED SHEERAN - PERFECT) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="perfect.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FLOATING MUSIC TOGGLE BUTTON -->
+    <button class="music-btn" id="music-toggle" onclick="toggleAudio(event)" title="Toggle Music">🎵</button>
 
     <div class="wrapper">
-        <div class="instruction" id="instruction-text">💌 Tap to open your letter</div>
+        <div class="instruction" id="instruction-text">💌 Tap to open envelope</div>
 
-        <!-- ENVELOPE -->
+        <!-- WIDER ENVELOPE -->
         <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
-            <div class="heart-seal"></div>
+            <div class="heart-seal">❤️</div>
             <div class="envelope-pocket"></div>
             
-            <!-- LETTER -->
-            <div class="letter">
-                <div class="cover-title">To my love</div>
-                
-                <div class="letter-content" id="letter-scroll">
-                    <p>Babe, just wanted to say thank you. ❤️</p>
-                    <p>I see how hard you work every day, washing cars, doing all the manual work yourself and making sure every customer leaves happy.</p>
-                    
-                    <!-- PHOTOS 1 & 2 (Replace src with photo1.jpg / photo2.jpg or image URLs) -->
-                    <div class="photo-grid">
-                        <div class="photo-card">
-                            <img src="photo1.jpg" onerror="this.src='https://picsum.photos/200/200?random=1'" alt="Photo 1">
-                        </div>
-                        <div class="photo-card">
-                            <img src="photo2.jpg" onerror="this.src='https://picsum.photos/200/200?random=2'" alt="Photo 2">
-                        </div>
-                    </div>
+            <!-- CARD / LETTER WITH PAGES -->
+            <div class="card">
+                <div class="cover-text">To my love</div>
 
-                    <p>Thank you for always putting in so much effort to build our future together. I know it gets tiring, but you never give up. I really admire your determination and how dedicated you are to what you do.</p>
-                    
-                    <!-- PHOTOS 3 & 4 (Replace src with photo3.jpg / photo4.jpg or image URLs) -->
-                    <div class="photo-grid">
-                        <div class="photo-card">
-                            <img src="photo3.jpg" onerror="this.src='https://picsum.photos/200/200?random=3'" alt="Photo 3">
-                        </div>
-                        <div class="photo-card">
-                            <img src="photo4.jpg" onerror="this.src='https://picsum.photos/200/200?random=4'" alt="Photo 4">
+                <!-- PAGE 1: PHOTO 1 & 2 (RIGHT AFTER OPENING) -->
+                <div class="page" id="page-1">
+                    <div class="page-content">
+                        <p style="text-align: center; font-size: 24px;">For My Husband ❤️</p>
+                        <div class="polaroid-grid">
+                            <div class="polaroid">
+                                <img src="photo1.jpg" onerror="this.src='https://picsum.photos/300/300?random=11'" alt="Photo 1">
+                            </div>
+                            <div class="polaroid">
+                                <img src="photo2.jpg" onerror="this.src='https://picsum.photos/300/300?random=12'" alt="Photo 2">
+                            </div>
                         </div>
                     </div>
+                    <button class="nav-btn" onclick="nextPage(2, event)">Read Letter ➔</button>
+                </div>
 
-                    <p>I don’t always say it, but I notice everything, and I’m really proud of you. Thank you for working so hard for us. I love you so much, and I’ll always be here supporting you through everything. 🤍</p>
-
-                    <!-- ELEGANT RED & BLACK ROSES BOUQUET -->
-                    <div class="bouquet-section">
-                        <svg class="bouquet-img" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M50,110 L100,230 L150,110 Z" fill="#181818" stroke="#d4af37" stroke-width="1.5"/>
-                            <path d="M65,125 L100,230 L135,125 Z" fill="#222222"/>
-                            <path d="M82,140 Q100,150 118,140 Q100,160 82,140 Z" fill="#d4af37"/>
-                            <circle cx="100" cy="146" r="4" fill="#a81c31"/>
-
-                            <!-- Black Rose -->
-                            <g transform="translate(45, 60)">
-                                <circle cx="20" cy="20" r="22" fill="#121212"/>
-                                <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#2a2a2a"/>
-                                <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#1f1f1f"/>
-                                <circle cx="20" cy="20" r="6" fill="#000000"/>
-                            </g>
-
-                            <!-- Red Rose -->
-                            <g transform="translate(115, 60)">
-                                <circle cx="20" cy="20" r="22" fill="#7a0c1e"/>
-                                <path d="M10,15 Q20,0 30,15 Q20,30 10,15 Z" fill="#b81d36"/>
-                                <path d="M5,20 Q20,35 35,20 Q20,5 5,20 Z" fill="#e63946" opacity="0.85"/>
-                                <circle cx="20" cy="20" r="6" fill="#4a0410"/>
-                            </g>
-
-                            <!-- Large Crimson Rose -->
-                            <g transform="translate(80, 75)">
-                                <circle cx="20" cy="20" r="26" fill="#610b18"/>
-                                <path d="M8,15 Q20,-2 32,15 Q20,32 8,15 Z" fill="#a81c31"/>
-                                <path d="M3,20 Q20,38 37,20 Q20,2 3,20 Z" fill="#d92540" opacity="0.9"/>
-                                <path d="M12,18 Q20,10 28,18 Q20,26 12,18 Z" fill="#ff4d6d"/>
-                                <circle cx="20" cy="20" r="5" fill="#38020a"/>
-                            </g>
-                        </svg>
+                <!-- PAGE 2: THE LETTER MESSAGE -->
+                <div class="page" id="page-2">
+                    <div class="page-content">
+                        <p>Babe, just wanted to say thank you. ❤️</p>
+                        <p>I see how hard you work every day, washing cars, doing all the manual work yourself and making sure every customer leaves happy.</p>
+                        <p>Thank you for always putting in so much effort to build our future together. I know it gets tiring, but you never give up. I really admire your determination and how dedicated you are to what you do.</p>
+                        <p>I don’t always say it, but I notice everything, and I’m really proud of you. Thank you for working so hard for us. I love you so much, and I’ll always be here supporting you through everything. 🤍</p>
+                    </div>
+                    <div class="btn-row">
+                        <button class="nav-btn secondary" onclick="nextPage(1, event)">📑 Back</button>
+                        <button class="nav-btn" onclick="nextPage(3, event)">Next ➔</button>
                     </div>
                 </div>
+
+                <!-- PAGE 3: PHOTO 3 & 4 + GLOWING FLOWERS -->
+                <div class="page" id="page-3">
+                    <div class="page-content">
+                        <div class="polaroid-grid">
+                            <div class="polaroid">
+                                <img src="photo3.jpg" onerror="this.src='https://picsum.photos/300/300?random=13'" alt="Photo 3">
+                            </div>
+                            <div class="polaroid">
+                                <img src="photo4.jpg" onerror="this.src='https://picsum.photos/300/300?random=14'" alt="Photo 4">
+                            </div>
+                        </div>
+
+                        <!-- GLOWING GREEN/BLUE FLOWERS -->
+                        <div class="glowing-flower-container">
+                            <svg class="glowing-flower-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="100" cy="100" r="70" fill="#38f0d0" opacity="0.15" filter="blur(10px)"/>
+                                
+                                <path d="M100,200 Q95,120 100,50" fill="none" stroke="#22d6b3" stroke-width="3"/>
+                                <path d="M100,200 Q70,140 60,80" fill="none" stroke="#1fb89a" stroke-width="2.5"/>
+                                <path d="M100,200 Q130,140 140,80" fill="none" stroke="#1fb89a" stroke-width="2.5"/>
+
+                                <path d="M100,160 Q70,150 60,170 Q85,180 100,160 Z" fill="#18a88c"/>
+                                <path d="M100,160 Q130,150 140,170 Q115,180 100,160 Z" fill="#18a88c"/>
+                                <path d="M100,120 Q65,100 55,125 Q80,135 100,120 Z" fill="#20c9a7"/>
+                                <path d="M100,120 Q135,100 145,125 Q120,135 100,120 Z" fill="#20c9a7"/>
+
+                                <g transform="translate(100,45)">
+                                    <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#6effe8" opacity="0.9"/>
+                                    <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#6effe8" opacity="0.9"/>
+                                    <circle cx="0" cy="-2" r="5" fill="#ffd055"/>
+                                </g>
+
+                                <g transform="translate(60,75)">
+                                    <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
+                                    <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
+                                    <circle cx="0" cy="-2" r="4.5" fill="#ffd055"/>
+                                </g>
+
+                                <g transform="translate(140,75)">
+                                    <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
+                                    <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
+                                    <circle cx="0" cy="-2" r="4.5" fill="#ffd055"/>
+                                </g>
+
+                                <circle cx="100" cy="25" r="2.5" fill="#7dffeb"/>
+                                <circle cx="50" cy="50" r="2" fill="#7dffeb"/>
+                                <circle cx="150" cy="45" r="2" fill="#7dffeb"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="nav-btn secondary" onclick="nextPage(2, event)">📑 Back</button>
+                        <button class="nav-btn" onclick="closeEnvelope(event)">Close Envelope ✉️</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
         const audio = document.getElementById('bg-music');
-        const letterScroll = document.getElementById('letter-scroll');
-        let musicPlaying = false;
+        const musicToggle = document.getElementById('music-toggle');
+        let isOpened = false;
+
+        function playSong() {
+            if (audio) {
+                audio.play().then(() => {
+                    musicToggle.textContent = '🎵';
+                }).catch(e => {
+                    console.log('Autoplay restriction triggered on iOS:', e);
+                    musicToggle.textContent = '🔇';
+                });
+            }
+        }
+
+        function toggleAudio(event) {
+            if (event) event.stopPropagation();
+            if (!audio) return;
+
+            if (audio.paused) {
+                audio.play();
+                musicToggle.textContent = '🎵';
+            } else {
+                audio.pause();
+                musicToggle.textContent = '🔇';
+            }
+        }
 
         function openEnvelope() {
             const envelope = document.getElementById('envelope');
             const instruction = document.getElementById('instruction-text');
             
-            if (!envelope.classList.contains('open')) {
+            if (!isOpened) {
                 envelope.classList.add('open');
                 instruction.style.opacity = '0';
-                
-                // Play music on tap
-                if (audio) {
-                    audio.play().then(() => {
-                        musicPlaying = true;
-                    }).catch(err => {
-                        console.log('Audio error:', err);
-                    });
-                }
+                isOpened = true;
+
+                // Show Page 1 after envelope opens
+                setTimeout(() => {
+                    document.getElementById('page-1').classList.add('active');
+                }, 1300);
+
+                // Play music on tap (satisfies iOS user-gesture audio autoplay policy)
+                playSong();
             }
         }
 
-        // Pause music smoothly when scrolled to the end
-        letterScroll.addEventListener('scroll', function() {
-            if (musicPlaying && (letterScroll.scrollTop + letterScroll.clientHeight >= letterScroll.scrollHeight - 15)) {
-                fadeAudioOut();
-            }
-        });
+        function nextPage(pageNum, event) {
+            if (event) event.stopPropagation();
 
-        function fadeAudioOut() {
-            let fade = setInterval(function() {
-                if (audio.volume > 0.05) {
-                    audio.volume -= 0.05;
-                } else {
-                    audio.pause();
-                    audio.volume = 1.0;
-                    musicPlaying = false;
-                    clearInterval(fade);
-                }
-            }, 100);
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            document.getElementById(`page-${pageNum}`).classList.add('active');
+        }
+
+        function closeEnvelope(event) {
+            if (event) event.stopPropagation();
+
+            const envelope = document.getElementById('envelope');
+            const instruction = document.getElementById('instruction-text');
+
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            envelope.classList.remove('open');
+            instruction.style.opacity = '1';
+            isOpened = false;
+
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                musicToggle.textContent = '🔇';
+            }
         }
     </script>
 </body>
