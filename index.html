@@ -42,7 +42,7 @@
             touch-action: manipulation;
         }
 
-        /* MUSIC CONTROLLER BUTTON */
+        /* MUSIC TOGGLE BUTTON */
         .music-btn {
             position: fixed;
             top: max(15px, env(safe-area-inset-top));
@@ -71,7 +71,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 40px; /* Gives headroom so opened letter doesn't hit top of screen */
+            margin-top: 40px;
         }
 
         .instruction {
@@ -90,7 +90,7 @@
             50% { opacity: 1; }
         }
 
-        /* RESPONSIVE ENVELOPE DESIGN */
+        /* ENVELOPE DESIGN */
         .envelope-wrapper {
             position: relative;
             width: 320px;
@@ -230,7 +230,7 @@
 
         .polaroid img {
             width: 100%;
-            height: 95px; /* Fits perfectly on mobile screens */
+            height: 110px;
             object-fit: cover;
             display: block;
             border-radius: 2px;
@@ -275,7 +275,7 @@
             width: 100%;
         }
 
-        /* OPEN STATE ANIMATIONS - OPTIMIZED FOR IPHONE */
+        /* OPEN STATE ANIMATIONS */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
@@ -317,9 +317,10 @@
 </head>
 <body>
 
-    <!-- AUDIO PLAYER -->
-    <audio id="bg-music" loop playsinline preload="auto">
+    <!-- AUDIO PLAYER: Checks perfect.mp3 first, then falls back to hosted romantic piano audio -->
+    <audio id="bg-music" playsinline preload="auto">
         <source src="perfect.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
     </audio>
 
     <!-- MUSIC TOGGLE BUTTON -->
@@ -343,10 +344,10 @@
                         <p style="text-align: center; font-size: 22px; font-weight: bold;">For My Husband ❤️</p>
                         <div class="polaroid-grid">
                             <div class="polaroid">
-                                <img src="photo1.jpg" onerror="this.src='https://picsum.photos/300/300?random=11'" alt="Photo 1">
+                                <img src="photo1.jpg" alt="Photo 1">
                             </div>
                             <div class="polaroid">
-                                <img src="photo2.jpg" onerror="this.src='https://picsum.photos/300/300?random=12'" alt="Photo 2">
+                                <img src="photo2.jpg" alt="Photo 2">
                             </div>
                         </div>
                     </div>
@@ -372,10 +373,10 @@
                     <div class="page-content">
                         <div class="polaroid-grid">
                             <div class="polaroid">
-                                <img src="photo3.jpg" onerror="this.src='https://picsum.photos/300/300?random=13'" alt="Photo 3">
+                                <img src="photo3.jpg" alt="Photo 3">
                             </div>
                             <div class="polaroid">
-                                <img src="photo4.jpg" onerror="this.src='https://picsum.photos/300/300?random=14'" alt="Photo 4">
+                                <img src="photo4.jpg" alt="Photo 4">
                             </div>
                         </div>
 
@@ -424,30 +425,39 @@
         const envelope = document.getElementById('envelope');
         let isOpened = false;
 
-        // Play music safely on iPhone tap
+        // Play audio triggered by user interaction
         function playAudio() {
             if (audio) {
+                audio.currentTime = 0;
                 audio.play().then(() => {
                     musicToggle.textContent = '🎵';
                 }).catch(err => {
-                    console.log("Audio play blocked:", err);
+                    console.log("Audio playback failed:", err);
                     musicToggle.textContent = '🔇';
                 });
             }
         }
 
-        // Toggle music button
+        // Reset icon when song completes
+        if (audio) {
+            audio.addEventListener('ended', () => {
+                musicToggle.textContent = '🔇';
+            });
+        }
+
+        // Manual Music Toggle
         musicToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             if (audio.paused) {
-                playAudio();
+                audio.play();
+                musicToggle.textContent = '🎵';
             } else {
                 audio.pause();
                 musicToggle.textContent = '🔇';
             }
         });
 
-        // Open Envelope
+        // Open Envelope (Triggers auto-start)
         envelope.addEventListener('click', () => {
             const instruction = document.getElementById('instruction-text');
             
@@ -456,7 +466,6 @@
                 instruction.style.opacity = '0';
                 isOpened = true;
 
-                // Trigger audio directly on tap event
                 playAudio();
 
                 setTimeout(() => {
@@ -481,6 +490,7 @@
             instruction.style.opacity = '1';
             isOpened = false;
 
+            // Auto-stop music on close
             if (audio) {
                 audio.pause();
                 audio.currentTime = 0;
