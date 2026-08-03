@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- iPhone Viewport & Notch / Dynamic Island optimization -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>To My Love ❤️</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,68 +23,63 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent; /* Disable iOS blue highlight */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: radial-gradient(circle at center, #210a13 0%, #080406 100%);
             min-height: 100vh;
-            min-height: 100dvh; /* Updated for iOS Safari dynamic height */
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            /* iPhone Safe Area padding to avoid Dynamic Island & Home Bar */
-            padding-top: max(20px, env(safe-area-inset-top));
-            padding-bottom: max(20px, env(safe-area-inset-bottom));
-            padding-left: max(15px, env(safe-area-inset-left));
-            padding-right: max(15px, env(safe-area-inset-right));
+            padding-top: max(10px, env(safe-area-inset-top));
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            padding-left: max(10px, env(safe-area-inset-left));
+            padding-right: max(10px, env(safe-area-inset-right));
             touch-action: manipulation;
         }
 
-        /* MUSIC CONTROLLER BUTTON (Top Right) */
+        /* MUSIC CONTROLLER BUTTON */
         .music-btn {
             position: fixed;
             top: max(15px, env(safe-area-inset-top));
             right: max(15px, env(safe-area-inset-right));
-            background: rgba(38, 17, 26, 0.8);
+            background: rgba(38, 17, 26, 0.85);
             border: 1px solid var(--accent-red);
             color: #fff;
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             z-index: 100;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            transition: transform 0.2s ease;
-        }
-
-        .music-btn:active {
-            transform: scale(0.9);
         }
 
         .wrapper {
             position: relative;
             width: 100%;
-            max-width: 480px;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 40px; /* Gives headroom so opened letter doesn't hit top of screen */
         }
 
         .instruction {
             color: #d8a4b0;
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             animation: pulse 2s infinite;
             text-align: center;
             font-weight: 600;
@@ -96,11 +90,11 @@
             50% { opacity: 1; }
         }
 
-        /* WIDER ENVELOPE DESIGN */
+        /* RESPONSIVE ENVELOPE DESIGN */
         .envelope-wrapper {
             position: relative;
-            width: 360px; /* Wider envelope */
-            height: 220px;
+            width: 320px;
+            height: 200px;
             background-color: var(--envelope-black);
             border-radius: 12px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(158, 27, 50, 0.3);
@@ -115,9 +109,9 @@
             top: 0;
             left: 0;
             z-index: 5;
-            border-top: 130px solid var(--envelope-flap);
-            border-left: 180px solid transparent;
-            border-right: 180px solid transparent;
+            border-top: 115px solid var(--envelope-flap);
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
         }
@@ -128,21 +122,21 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 180px solid #12090d;
-            border-right: 180px solid #140a0e;
-            border-bottom: 115px solid #1c0d13;
-            border-top: 105px solid transparent;
+            border-left: 160px solid #12090d;
+            border-right: 160px solid #140a0e;
+            border-bottom: 105px solid #1c0d13;
+            border-top: 95px solid transparent;
             border-radius: 0 0 12px 12px;
             z-index: 3;
         }
 
         .heart-seal {
             position: absolute;
-            top: 105px;
+            top: 95px;
             left: 50%;
             transform: translateX(-50%);
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             background: radial-gradient(circle, #e63946 0%, var(--accent-red) 70%, #4a0812 100%);
             border-radius: 50%;
             z-index: 6;
@@ -151,20 +145,20 @@
             align-items: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             transition: opacity 0.3s ease 0.2s;
         }
 
-        /* MULTI-PAGE CARD / LETTER */
+        /* CARD / LETTER DESIGN */
         .card {
             position: absolute;
             bottom: 10px;
-            left: 15px;
-            width: 330px;
-            height: 200px;
+            left: 10px;
+            width: 300px;
+            height: 180px;
             background: var(--paper-bg);
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 2;
             transition: transform 0.8s ease 0.5s, z-index 0.1s ease 0.8s, height 0.6s ease 1.1s;
@@ -174,10 +168,10 @@
 
         .cover-text {
             font-family: 'Caveat', cursive;
-            font-size: 30px;
+            font-size: 28px;
             color: var(--text-dark);
             text-align: center;
-            margin-top: 65px;
+            margin-top: 55px;
             transition: opacity 0.4s ease 0.5s;
         }
 
@@ -198,16 +192,16 @@
 
         .page-content {
             overflow-y: auto;
-            padding-right: 5px;
-            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+            padding-right: 2px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .page-content p {
             font-family: 'Caveat', cursive;
-            font-size: 22px;
-            line-height: 1.5;
+            font-size: 20px;
+            line-height: 1.4;
             color: var(--text-dark);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         /* POLAROID STYLE PHOTOS */
@@ -215,17 +209,16 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            gap: 12px;
-            margin: 15px 0;
+            gap: 10px;
+            margin: 10px 0;
         }
 
         .polaroid {
             background: #ffffff;
-            padding: 8px 8px 24px 8px;
-            box-shadow: 0 8px 18px var(--polaroid-shadow);
+            padding: 6px 6px 18px 6px;
+            box-shadow: 0 6px 14px var(--polaroid-shadow);
             border: 1px solid #eee;
             transform: rotate(-3deg);
-            transition: transform 0.3s ease;
             width: 48%;
             text-align: center;
             position: relative;
@@ -237,44 +230,38 @@
 
         .polaroid img {
             width: 100%;
-            height: 130px;
+            height: 95px; /* Fits perfectly on mobile screens */
             object-fit: cover;
             display: block;
             border-radius: 2px;
         }
 
-        /* POLAROID TAPE EFFECT */
         .polaroid::before {
             content: '';
             position: absolute;
-            top: -8px;
+            top: -6px;
             left: 30%;
-            width: 35px;
-            height: 12px;
+            width: 30px;
+            height: 10px;
             background: rgba(235, 215, 215, 0.6);
             transform: rotate(-5deg);
         }
 
-        /* NAVIGATION BUTTONS */
+        /* BUTTONS */
         .nav-btn {
             background: var(--accent-red);
             color: #ffffff;
             border: none;
-            padding: 10px 18px;
+            padding: 8px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             letter-spacing: 1px;
             text-transform: uppercase;
             align-self: flex-end;
-            margin-top: 10px;
+            margin-top: 5px;
             box-shadow: 0 4px 10px rgba(158, 27, 50, 0.3);
-            transition: background 0.3s ease, transform 0.1s ease;
-        }
-
-        .nav-btn:active {
-            transform: scale(0.96);
         }
 
         .nav-btn.secondary {
@@ -288,7 +275,7 @@
             width: 100%;
         }
 
-        /* OPEN STATE ANIMATIONS */
+        /* OPEN STATE ANIMATIONS - OPTIMIZED FOR IPHONE */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 1;
@@ -301,8 +288,8 @@
         }
 
         .envelope-wrapper.open .card {
-            transform: translateY(-210px);
-            height: 480px;
+            transform: translateY(-130px);
+            height: 390px;
             z-index: 4;
             transition: transform 0.8s ease 0.5s, height 0.6s ease 1.1s;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -313,59 +300,47 @@
             display: none;
         }
 
-        /* CUSTOM GLOWING FLOWER ILLUSTRATION */
+        /* GLOWING FLOWER ILLUSTRATION */
         .glowing-flower-container {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px;
             background: #080d0f;
             border-radius: 8px;
-            padding: 15px 5px;
-            box-shadow: inset 0 0 15px rgba(0, 255, 200, 0.1);
+            padding: 10px 5px;
         }
 
         .glowing-flower-svg {
-            width: 140px;
-            filter: drop-shadow(0 0 8px rgba(80, 225, 210, 0.6));
-        }
-
-        /* RESPONSIVE BREAKPOINTS FOR ALL IPHONES (15, 15 Plus, 15 Pro, 15 Pro Max) */
-        @media (max-width: 390px) {
-            .envelope-wrapper {
-                transform: scale(0.88);
-            }
-            .envelope-wrapper.open .card {
-                transform: translateY(-190px);
-                height: 440px;
-            }
+            width: 120px;
+            filter: drop-shadow(0 0 6px rgba(80, 225, 210, 0.6));
         }
     </style>
 </head>
 <body>
 
-    <!-- BACKGROUND MUSIC (ED SHEERAN - PERFECT) -->
-    <audio id="bg-music" loop preload="auto">
+    <!-- AUDIO PLAYER -->
+    <audio id="bg-music" loop playsinline preload="auto">
         <source src="perfect.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- FLOATING MUSIC TOGGLE BUTTON -->
-    <button class="music-btn" id="music-toggle" onclick="toggleAudio(event)" title="Toggle Music">🎵</button>
+    <!-- MUSIC TOGGLE BUTTON -->
+    <button class="music-btn" id="music-toggle" title="Toggle Music">🎵</button>
 
     <div class="wrapper">
         <div class="instruction" id="instruction-text">💌 Tap to open envelope</div>
 
-        <!-- WIDER ENVELOPE -->
-        <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <!-- ENVELOPE -->
+        <div class="envelope-wrapper" id="envelope">
             <div class="heart-seal">❤️</div>
             <div class="envelope-pocket"></div>
             
-            <!-- CARD / LETTER WITH PAGES -->
+            <!-- CARD / LETTER -->
             <div class="card">
                 <div class="cover-text">To my love</div>
 
-                <!-- PAGE 1: PHOTO 1 & 2 (RIGHT AFTER OPENING) -->
+                <!-- PAGE 1: PHOTOS 1 & 2 -->
                 <div class="page" id="page-1">
                     <div class="page-content">
-                        <p style="text-align: center; font-size: 24px;">For My Husband ❤️</p>
+                        <p style="text-align: center; font-size: 22px; font-weight: bold;">For My Husband ❤️</p>
                         <div class="polaroid-grid">
                             <div class="polaroid">
                                 <img src="photo1.jpg" onerror="this.src='https://picsum.photos/300/300?random=11'" alt="Photo 1">
@@ -378,7 +353,7 @@
                     <button class="nav-btn" onclick="nextPage(2, event)">Read Letter ➔</button>
                 </div>
 
-                <!-- PAGE 2: THE LETTER MESSAGE -->
+                <!-- PAGE 2: LETTER MESSAGE -->
                 <div class="page" id="page-2">
                     <div class="page-content">
                         <p>Babe, just wanted to say thank you. ❤️</p>
@@ -392,7 +367,7 @@
                     </div>
                 </div>
 
-                <!-- PAGE 3: PHOTO 3 & 4 + GLOWING FLOWERS -->
+                <!-- PAGE 3: PHOTOS 3 & 4 + FLOWERS -->
                 <div class="page" id="page-3">
                     <div class="page-content">
                         <div class="polaroid-grid">
@@ -404,41 +379,32 @@
                             </div>
                         </div>
 
-                        <!-- GLOWING GREEN/BLUE FLOWERS -->
+                        <!-- GLOWING FLOWERS -->
                         <div class="glowing-flower-container">
                             <svg class="glowing-flower-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="100" cy="100" r="70" fill="#38f0d0" opacity="0.15" filter="blur(10px)"/>
-                                
                                 <path d="M100,200 Q95,120 100,50" fill="none" stroke="#22d6b3" stroke-width="3"/>
                                 <path d="M100,200 Q70,140 60,80" fill="none" stroke="#1fb89a" stroke-width="2.5"/>
                                 <path d="M100,200 Q130,140 140,80" fill="none" stroke="#1fb89a" stroke-width="2.5"/>
-
                                 <path d="M100,160 Q70,150 60,170 Q85,180 100,160 Z" fill="#18a88c"/>
                                 <path d="M100,160 Q130,150 140,170 Q115,180 100,160 Z" fill="#18a88c"/>
                                 <path d="M100,120 Q65,100 55,125 Q80,135 100,120 Z" fill="#20c9a7"/>
                                 <path d="M100,120 Q135,100 145,125 Q120,135 100,120 Z" fill="#20c9a7"/>
-
                                 <g transform="translate(100,45)">
                                     <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#6effe8" opacity="0.9"/>
                                     <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#6effe8" opacity="0.9"/>
                                     <circle cx="0" cy="-2" r="5" fill="#ffd055"/>
                                 </g>
-
                                 <g transform="translate(60,75)">
                                     <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
                                     <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
                                     <circle cx="0" cy="-2" r="4.5" fill="#ffd055"/>
                                 </g>
-
                                 <g transform="translate(140,75)">
                                     <path d="M0,0 C-15,-20 -25,0 -10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
                                     <path d="M0,0 C15,-20 25,0 10,15 C0,25 0,25 0,0 Z" fill="#42f5d4" opacity="0.9"/>
                                     <circle cx="0" cy="-2" r="4.5" fill="#ffd055"/>
                                 </g>
-
-                                <circle cx="100" cy="25" r="2.5" fill="#7dffeb"/>
-                                <circle cx="50" cy="50" r="2" fill="#7dffeb"/>
-                                <circle cx="150" cy="45" r="2" fill="#7dffeb"/>
                             </svg>
                         </div>
                     </div>
@@ -455,34 +421,34 @@
     <script>
         const audio = document.getElementById('bg-music');
         const musicToggle = document.getElementById('music-toggle');
+        const envelope = document.getElementById('envelope');
         let isOpened = false;
 
-        function playSong() {
+        // Play music safely on iPhone tap
+        function playAudio() {
             if (audio) {
                 audio.play().then(() => {
                     musicToggle.textContent = '🎵';
-                }).catch(e => {
-                    console.log('Autoplay restriction triggered on iOS:', e);
+                }).catch(err => {
+                    console.log("Audio play blocked:", err);
                     musicToggle.textContent = '🔇';
                 });
             }
         }
 
-        function toggleAudio(event) {
-            if (event) event.stopPropagation();
-            if (!audio) return;
-
+        // Toggle music button
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (audio.paused) {
-                audio.play();
-                musicToggle.textContent = '🎵';
+                playAudio();
             } else {
                 audio.pause();
                 musicToggle.textContent = '🔇';
             }
-        }
+        });
 
-        function openEnvelope() {
-            const envelope = document.getElementById('envelope');
+        // Open Envelope
+        envelope.addEventListener('click', () => {
             const instruction = document.getElementById('instruction-text');
             
             if (!isOpened) {
@@ -490,35 +456,26 @@
                 instruction.style.opacity = '0';
                 isOpened = true;
 
-                // Show Page 1 after envelope opens
+                // Trigger audio directly on tap event
+                playAudio();
+
                 setTimeout(() => {
                     document.getElementById('page-1').classList.add('active');
-                }, 1300);
-
-                // Play music on tap (satisfies iOS user-gesture audio autoplay policy)
-                playSong();
+                }, 1000);
             }
-        }
+        });
 
         function nextPage(pageNum, event) {
             if (event) event.stopPropagation();
-
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${pageNum}`).classList.add('active');
         }
 
         function closeEnvelope(event) {
             if (event) event.stopPropagation();
 
-            const envelope = document.getElementById('envelope');
             const instruction = document.getElementById('instruction-text');
-
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
             envelope.classList.remove('open');
             instruction.style.opacity = '1';
