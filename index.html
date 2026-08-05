@@ -43,13 +43,13 @@
         /* MUSIC TOGGLE BUTTON */
         .music-btn {
             position: fixed;
-            top: max(12px, env(safe-area-inset-top));
-            right: max(12px, env(safe-area-inset-right));
+            top: max(16px, env(safe-area-inset-top));
+            right: max(16px, env(safe-area-inset-right));
             background: rgba(38, 17, 26, 0.9);
             border: 1px solid var(--accent-red);
             color: #fff;
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -64,20 +64,20 @@
 
         .wrapper {
             position: relative;
-            width: 90vw;
-            max-width: 340px;
+            width: 92vw;
+            max-width: 380px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 100px;
+            margin-top: 140px; /* Space for letter to slide upwards */
         }
 
         .instruction {
             color: #d8a4b0;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             animation: pulse 2s infinite;
             text-align: center;
             font-weight: 600;
@@ -88,14 +88,14 @@
             50% { opacity: 1; }
         }
 
-        /* ENVELOPE DESIGN */
+        /* ENVELOPE DESIGN (INCREASED SIZE) */
         .envelope-wrapper {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 220px;
             background-color: var(--envelope-black);
-            border-radius: 10px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 12px rgba(158, 27, 50, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(158, 27, 50, 0.35);
             cursor: pointer;
             perspective: 1000px;
             border: 1px solid #3d1421;
@@ -107,9 +107,9 @@
             top: 0;
             left: 0;
             z-index: 5;
-            border-top: 100px solid var(--envelope-flap);
-            border-left: 170px solid transparent;
-            border-right: 170px solid transparent;
+            border-top: 125px solid var(--envelope-flap);
+            border-left: 190px solid transparent;
+            border-right: 190px solid transparent;
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
         }
@@ -120,44 +120,44 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 170px solid #12090d;
-            border-right: 170px solid #140a0e;
-            border-bottom: 95px solid #1c0d13;
-            border-top: 85px solid transparent;
-            border-radius: 0 0 10px 10px;
+            border-left: 190px solid #12090d;
+            border-right: 190px solid #140a0e;
+            border-bottom: 115px solid #1c0d13;
+            border-top: 105px solid transparent;
+            border-radius: 0 0 12px 12px;
             z-index: 3;
         }
 
         .heart-seal {
             position: absolute;
-            top: 85px;
+            top: 105px;
             left: 50%;
             transform: translateX(-50%);
-            width: 34px;
-            height: 34px;
+            width: 40px;
+            height: 40px;
             background: radial-gradient(circle, #e63946 0%, var(--accent-red) 70%, #4a0812 100%);
             border-radius: 50%;
             z-index: 6;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
             color: #fff;
-            font-size: 14px;
+            font-size: 16px;
             transition: opacity 0.3s ease 0.2s;
         }
 
-        /* CARD / LETTER DESIGN */
+        /* CARD / LETTER DESIGN (INCREASED SIZE) */
         .card {
             position: absolute;
-            bottom: 8px;
-            left: 8px;
-            right: 8px;
-            height: 164px;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            height: 200px;
             background: var(--paper-bg);
-            border-radius: 8px;
-            padding: 14px 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 18px 16px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
             z-index: 2;
             transition: transform 0.8s ease 0.4s, z-index 0.1s ease 0.7s, height 0.6s ease 1s;
             overflow: hidden;
@@ -169,7 +169,7 @@
 
         .cover-text {
             font-family: 'Caveat', cursive;
-            font-size: 26px;
+            font-size: 30px;
             color: var(--text-dark);
             text-align: center;
             transition: opacity 0.3s ease 0.3s;
@@ -198,34 +198,34 @@
             justify-content: center;
             align-items: center;
             overflow-y: auto;
-            padding-right: 2px;
+            padding-right: 4px;
             -webkit-overflow-scrolling: touch;
-            max-height: calc(100% - 38px);
+            max-height: calc(100% - 44px);
         }
 
         .page-content p {
             font-family: 'Caveat', cursive;
-            font-size: 18.5px;
-            line-height: 1.35;
+            font-size: 21px;
+            line-height: 1.4;
             color: var(--text-dark);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             width: 100%;
         }
 
-        /* POLAROID STYLE PHOTOS */
+        /* POLAROID STYLE PHOTOS (LARGER DISPLAY) */
         .polaroid-grid {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            margin: 8px 0;
+            gap: 12px;
+            margin: 10px 0;
             width: 100%;
         }
 
         .polaroid {
             background: #ffffff;
-            padding: 5px 5px 14px 5px;
-            box-shadow: 0 4px 10px var(--polaroid-shadow);
+            padding: 6px 6px 16px 6px;
+            box-shadow: 0 4px 12px var(--polaroid-shadow);
             border: 1px solid #eee;
             transform: rotate(-2deg);
             width: 48%;
@@ -239,33 +239,10 @@
 
         .polaroid img {
             width: 100%;
-            height: 110px;
+            height: 140px;
             object-fit: cover;
             display: block;
             border-radius: 2px;
-        }
-
-        /* REAL FLOWER PHOTO CARD */
-        .flower-display {
-            width: 100%;
-            margin-top: 6px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border: 1px solid #ddd;
-            animation: softPulse 4s ease-in-out infinite alternate;
-        }
-
-        .flower-display img {
-            width: 100%;
-            height: 115px;
-            object-fit: cover;
-            display: block;
-        }
-
-        @keyframes softPulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(1.02); filter: brightness(1.05); }
         }
 
         /* BUTTONS */
@@ -273,15 +250,15 @@
             background: var(--accent-red);
             color: #ffffff;
             border: none;
-            padding: 8px 14px;
-            border-radius: 16px;
-            font-size: 10px;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             align-self: flex-end;
-            box-shadow: 0 3px 8px rgba(158, 27, 50, 0.3);
+            box-shadow: 0 4px 10px rgba(158, 27, 50, 0.35);
             flex-shrink: 0;
         }
 
@@ -294,7 +271,7 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 4px;
+            margin-top: 6px;
             flex-shrink: 0;
         }
 
@@ -311,11 +288,11 @@
         }
 
         .envelope-wrapper.open .card {
-            transform: translateY(-165px);
-            height: 330px;
+            transform: translateY(-210px);
+            height: 420px;
             z-index: 4;
             transition: transform 0.8s ease 0.4s, height 0.6s ease 1s;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
         }
 
         .envelope-wrapper.open .cover-text {
@@ -349,7 +326,7 @@
                 <!-- PAGE 1: PHOTOS 1 & 2 -->
                 <div class="page" id="page-1">
                     <div class="page-content">
-                        <p style="text-align: center; font-size: 21px; font-weight: bold; margin-bottom: 2px;">For My Husband ❤️</p>
+                        <p style="text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 6px;">For My Husband ❤️</p>
                         <div class="polaroid-grid">
                             <div class="polaroid">
                                 <img src="photo1.jpg" alt="Photo 1">
@@ -376,21 +353,16 @@
                     </div>
                 </div>
 
-                <!-- PAGE 3: PHOTOS 3 & 4 + PHOTOREALISTIC BLUE ROSES & COTTON BOUQUET -->
+                <!-- PAGE 3: PHOTOS 3 & 4 -->
                 <div class="page" id="page-3">
                     <div class="page-content">
-                        <div class="polaroid-grid">
+                        <div class="polaroid-grid" style="margin-top: 15px;">
                             <div class="polaroid">
                                 <img src="photo3.jpg" alt="Photo 3">
                             </div>
                             <div class="polaroid">
                                 <img src="photo4.jpg" alt="Photo 4">
                             </div>
-                        </div>
-
-                        <!-- REALISTIC FLOWER BOUQUET DISPLAY -->
-                        <div class="flower-display">
-                            <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80" alt="Beautiful Blue Roses Bouquet">
                         </div>
                     </div>
                     <div class="btn-row">
