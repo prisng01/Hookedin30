@@ -245,6 +245,29 @@
             border-radius: 2px;
         }
 
+        /* REAL FLOWER PHOTO CARD */
+        .flower-display {
+            width: 100%;
+            margin-top: 6px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+            animation: softPulse 4s ease-in-out infinite alternate;
+        }
+
+        .flower-display img {
+            width: 100%;
+            height: 115px;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes softPulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.02); filter: brightness(1.05); }
+        }
+
         /* BUTTONS */
         .nav-btn {
             background: var(--accent-red);
@@ -299,39 +322,14 @@
             opacity: 0;
             display: none;
         }
-
-        /* ANIMATED BOUQUET */
-        .glowing-flower-container {
-            text-align: center;
-            margin-top: 4px;
-            background: #080c14;
-            border-radius: 8px;
-            padding: 6px 4px;
-            border: 1px solid #1a2942;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .animated-bouquet-svg {
-            width: 140px;
-            height: 110px;
-            animation: bouquetFloat 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes bouquetFloat {
-            0% {
-                transform: translateY(0px) scale(1);
-                filter: drop-shadow(0 0 4px rgba(15, 82, 186, 0.4));
-            }
-            100% {
-                transform: translateY(-4px) scale(1.02);
-                filter: drop-shadow(0 0 10px rgba(65, 105, 225, 0.7));
-            }
-        }
     </style>
 </head>
 <body>
+
+    <!-- REAL HIGH-QUALITY ROMANTIC MUSIC AUDIO SOURCE -->
+    <audio id="bg-music" playsinline preload="auto" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a7350f.mp3?filename=romantic-piano-10881.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- MUSIC TOGGLE BUTTON -->
     <button class="music-btn" id="music-toggle" title="Toggle Music">🎵</button>
@@ -378,7 +376,7 @@
                     </div>
                 </div>
 
-                <!-- PAGE 3: PHOTOS 3 & 4 + CUSTOM BLUE/COTTON BOUQUET -->
+                <!-- PAGE 3: PHOTOS 3 & 4 + PHOTOREALISTIC BLUE ROSES & COTTON BOUQUET -->
                 <div class="page" id="page-3">
                     <div class="page-content">
                         <div class="polaroid-grid">
@@ -390,54 +388,9 @@
                             </div>
                         </div>
 
-                        <!-- ANIMATED BOUQUET -->
-                        <div class="glowing-flower-container">
-                            <svg class="animated-bouquet-svg" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M60,150 L140,150 L165,70 L35,70 Z" fill="#111111" stroke="#333" stroke-width="1"/>
-                                <path d="M70,150 L130,150 L150,75 L50,75 Z" fill="#f8f9fa"/>
-                                <path d="M80,150 L120,150 L135,80 L65,80 Z" fill="#181818"/>
-                                <path d="M75,135 Q100,142 125,135 L120,150 Q100,145 80,150 Z" fill="#0038a8"/>
-                                <path d="M85,140 L70,160 M115,140 L130,160" stroke="#0038a8" stroke-width="3"/>
-                                <g stroke="#ffffff" stroke-width="1.2" opacity="0.85">
-                                    <path d="M40,65 L20,30 M20,30 L15,20 M20,30 L28,22"/>
-                                    <path d="M160,65 L180,30 M180,30 L185,20 M180,30 L172,22"/>
-                                    <path d="M100,60 L100,15 M100,15 L92,5 M100,15 L108,5"/>
-                                </g>
-                                <g transform="translate(62,55)">
-                                    <circle cx="0" cy="0" r="14" fill="#151515"/>
-                                    <path d="M-8,-2 C-4,-8 4,-8 8,-2 C10,2 5,8 0,9 C-5,8 -10,2 -8,-2 Z" fill="#2d2d2d"/>
-                                </g>
-                                <g transform="translate(138,50)">
-                                    <path d="M-15,0 L15,0 M0,-15 L0,15 M-10,-10 L10,10 M-10,10 L10,-10" stroke="#e0c38c" stroke-width="3"/>
-                                    <circle cx="0" cy="0" r="11" fill="#ded2b8"/>
-                                    <circle cx="0" cy="0" r="6" fill="#4a2c11"/>
-                                </g>
-                                <g transform="translate(130,75)">
-                                    <path d="M-12,0 L12,0 M0,-12 L0,12 M-8,-8 L8,8 M-8,8 L8,-8" stroke="#e0c38c" stroke-width="2.5"/>
-                                    <circle cx="0" cy="0" r="9" fill="#ded2b8"/>
-                                    <circle cx="0" cy="0" r="5" fill="#4a2c11"/>
-                                </g>
-                                <g transform="translate(100,50)">
-                                    <circle cx="-10" cy="-6" r="10" fill="#ffffff"/>
-                                    <circle cx="10" cy="-6" r="10" fill="#ffffff"/>
-                                    <circle cx="-6" cy="8" r="10" fill="#ffffff"/>
-                                    <circle cx="6" cy="8" r="10" fill="#ffffff"/>
-                                    <circle cx="0" cy="0" r="11" fill="#f4f4f4"/>
-                                    <path d="M0,0 L-4,-6 M0,0 L4,-6 M0,0 L0,6" stroke="#5c4033" stroke-width="1.5"/>
-                                </g>
-                                <g transform="translate(70,82)">
-                                    <circle cx="0" cy="0" r="15" fill="#051c48"/>
-                                    <path d="M-10,-3 C-5,-11 5,-11 10,-3 C13,3 6,11 0,13 C-6,11 -13,3 -10,-3 Z" fill="#0d47a1"/>
-                                    <path d="M-5,-1 C-2,-6 2,-6 5,-1 C7,1 3,6 0,7 C-3,6 -7,1 -5,-1 Z" fill="#1e88e5"/>
-                                    <circle cx="0" cy="0" r="2.5" fill="#bbdefb"/>
-                                </g>
-                                <g transform="translate(105,85)">
-                                    <circle cx="0" cy="0" r="16" fill="#051c48"/>
-                                    <path d="M-11,-3 C-5,-12 5,-12 11,-3 C14,3 7,12 0,14 C-7,12 -14,3 -11,-3 Z" fill="#0d47a1"/>
-                                    <path d="M-6,-1 C-2,-7 2,-7 6,-1 C8,1 4,7 0,8 C-4,7 -8,1 -6,-1 Z" fill="#1e88e5"/>
-                                    <circle cx="0" cy="0" r="2.5" fill="#bbdefb"/>
-                                </g>
-                            </svg>
+                        <!-- REALISTIC FLOWER BOUQUET DISPLAY -->
+                        <div class="flower-display">
+                            <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80" alt="Beautiful Blue Roses Bouquet">
                         </div>
                     </div>
                     <div class="btn-row">
@@ -451,99 +404,33 @@
     </div>
 
     <script>
-        // WEB AUDIO SYNTHESIZER FOR GUARANTEED RELIABLE ROMANTIC PIANO MUSIC
-        let audioCtx = null;
-        let isPlaying = false;
-        let currentTimeout = null;
-
-        const musicNotes = [
-            { note: 261.63, duration: 0.6 }, // C4
-            { note: 329.63, duration: 0.6 }, // E4
-            { note: 392.00, duration: 0.6 }, // G4
-            { note: 493.88, duration: 1.2 }, // B4
-            { note: 440.00, duration: 0.6 }, // A4
-            { note: 349.23, duration: 0.6 }, // F4
-            { note: 329.63, duration: 1.2 }, // E4
-            { note: 293.66, duration: 0.6 }, // D4
-            { note: 349.23, duration: 0.6 }, // F4
-            { note: 440.00, duration: 0.6 }, // A4
-            { note: 523.25, duration: 1.2 }, // C5
-            { note: 493.88, duration: 0.6 }, // B4
-            { note: 392.00, duration: 1.2 }  // G4
-        ];
-
-        let noteIndex = 0;
-
-        function initAudioContext() {
-            if (!audioCtx) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function playPianoTone(freq, duration) {
-            if (!audioCtx || !isPlaying) return;
-
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-            // Envelope for romantic soft piano effect
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration + 0.5);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration + 0.6);
-        }
-
-        function playMelodyLoop() {
-            if (!isPlaying) return;
-
-            const current = musicNotes[noteIndex];
-            playPianoTone(current.note, current.duration);
-
-            noteIndex = (noteIndex + 1) % musicNotes.length;
-            currentTimeout = setTimeout(playMelodyLoop, current.duration * 900);
-        }
-
-        function startMusic() {
-            initAudioContext();
-            isPlaying = true;
-            document.getElementById('music-toggle').textContent = '🎵';
-            noteIndex = 0;
-            if (currentTimeout) clearTimeout(currentTimeout);
-            playMelodyLoop();
-        }
-
-        function stopMusic() {
-            isPlaying = false;
-            document.getElementById('music-toggle').textContent = '🔇';
-            if (currentTimeout) clearTimeout(currentTimeout);
-        }
-
-        // Toggle Music Button
+        const audio = document.getElementById('bg-music');
         const musicToggle = document.getElementById('music-toggle');
-        musicToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (isPlaying) {
-                stopMusic();
-            } else {
-                startMusic();
-            }
-        });
-
-        // Envelope Interaction
         const envelope = document.getElementById('envelope');
         let isOpened = false;
+
+        function playAudio() {
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().then(() => {
+                    musicToggle.textContent = '🎵';
+                }).catch(err => {
+                    console.log("Audio play blocked by browser:", err);
+                    musicToggle.textContent = '🔇';
+                });
+            }
+        }
+
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play();
+                musicToggle.textContent = '🎵';
+            } else {
+                audio.pause();
+                musicToggle.textContent = '🔇';
+            }
+        });
 
         envelope.addEventListener('click', () => {
             const instruction = document.getElementById('instruction-text');
@@ -553,7 +440,7 @@
                 instruction.style.opacity = '0';
                 isOpened = true;
 
-                startMusic();
+                playAudio();
 
                 setTimeout(() => {
                     document.getElementById('page-1').classList.add('active');
@@ -563,8 +450,6 @@
 
         function nextPage(pageNum, event) {
             if (event) event.stopPropagation();
-            if (audioCtx) initAudioContext();
-            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${pageNum}`).classList.add('active');
         }
@@ -579,7 +464,11 @@
             instruction.style.opacity = '1';
             isOpened = false;
 
-            stopMusic();
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                musicToggle.textContent = '🔇';
+            }
         }
     </script>
 </body>
