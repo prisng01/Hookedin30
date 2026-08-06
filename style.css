@@ -719,8 +719,8 @@ canvas{
 
 .fish{
     position:absolute;
-    width:70px;
-    height:40px;
+    width:90px;
+    height:55px;
     background-size:contain;
     background-repeat:no-repeat;
     pointer-events:auto;
@@ -1066,17 +1066,13 @@ body.danger{
     button{ width:100%; }
 }
 
-/*======================================================
- HOOK
-======================================================*/
-
 #hook{
     position:absolute;
     left:50%;
     bottom:90px;
-    width:40px;
-    height:40px;
-    background:url("assets/ui/hook.png") center/contain no-repeat;
+    width:60px;
+    height:60px;
+    background:url("assets/ui/hook.png") center center/contain no-repeat;
     transform:translateX(-50%);
     z-index:100;
     pointer-events:none;
