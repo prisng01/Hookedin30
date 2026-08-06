@@ -910,6 +910,18 @@ function startFishing() {
     fishing.specialFish = 0;
     fishing.fishCaught = 0;
     fishing.casts = 0;
+    fishing.casting = false;
+    fishing.reeling = false;
+
+    // Reset UI
+    const bite = document.getElementById("bite");
+    if (bite) bite.classList.add("hidden");
+
+    const powerFill = document.getElementById("powerFill");
+    if (powerFill) powerFill.style.width = "0%";
+
+    const reelFill = document.getElementById("reelFill");
+    if (reelFill) reelFill.style.width = "0%";
 
     updateFishingHUD();
     startFishingTimer();
