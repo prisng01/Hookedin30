@@ -51,8 +51,8 @@
             border: 1px solid #3e4a3f;
             border-radius: 12px;
             margin-bottom: 15px;
-            font-size: 12px;
             z-index: 30;
+            font-size: 12px;
         }
 
         .level-badge {
@@ -81,7 +81,7 @@
 
         .xp-bar-fill {
             height: 100%;
-            width: 62.5%; /* 250 / 400 */
+            width: 62.5%;
             background: linear-gradient(90deg, #388e3c, #f3c669);
             transition: width 0.5s ease;
         }
@@ -146,15 +146,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 4px;
-        }
-
-        .romantic-quote {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 15px;
-            color: #d1e3d3;
-            margin: 6px 0;
-            line-height: 1.4;
         }
 
         /* TERMINAL STYLE */
@@ -246,6 +237,68 @@
             box-shadow: 0 0 10px rgba(243, 198, 105, 0.4);
         }
 
+        /* BEACH SCENE INTERACTIVE CANVAS */
+        .beach-scene {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            height: 320px;
+            background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 40%, #20b2aa 45%, #18817b 60%, #f4e0a5 60%, #e6c875 100%);
+            border: 3px solid #f3c669;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 8px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .beach-item {
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, filter 0.2s;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .beach-item:hover {
+            transform: scale(1.25);
+            filter: drop-shadow(0 0 8px #f3c669);
+        }
+
+        .beach-item.found {
+            opacity: 0.25;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        .target-list {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 6px 0;
+            max-width: 650px;
+        }
+
+        .target-card {
+            background: rgba(13, 19, 14, 0.85);
+            border: 1px solid #48614b;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .target-card.found {
+            border-color: #4af626;
+            color: #4af626;
+            text-decoration: line-through;
+        }
+
         /* CODE DISPLAY */
         .code-display {
             display: flex;
@@ -319,7 +372,7 @@
             box-shadow: 0 0 8px rgba(243, 198, 105, 0.2);
         }
 
-        /* EASTER EGG & POPUPS */
+        /* POPUPS & PARTICLES */
         .achievement-banner {
             position: fixed;
             top: 20px;
@@ -356,7 +409,6 @@
 
         .easter-egg-btn:hover { color: #f3c669; }
 
-        /* PARTICLES */
         .particle {
             position: absolute;
             pointer-events: none;
@@ -374,6 +426,7 @@
             .campsite-grid { grid-template-columns: repeat(3, 1fr); }
             .badges-grid { grid-template-columns: repeat(2, 1fr); }
             .title { font-size: 18px; }
+            .beach-scene { height: 250px; }
         }
     </style>
 </head>
@@ -469,12 +522,12 @@
         </div>
     </div>
 
-    <!-- CARD 3: CAMPSITE CLUE HUNT (12-15 OBJECTS) -->
+    <!-- CARD 3: CAMPSITE CLUE HUNT -->
     <div class="card" id="card-hunt">
         <div>
             <div class="subtitle">Phase 03 / Field Recon</div>
             <div class="title">Search Basecamp</div>
-            <p style="font-size:11px; color:#c0dbc3;">Find all 4 hidden code digits hidden across campsite items!</p>
+            <p style="font-size:11px; color:#c0dbc3;">Find all 4 code digits hidden across campsite items!</p>
         </div>
 
         <!-- CODE PROGRESS PREVIEW -->
@@ -492,11 +545,36 @@
         </div>
 
         <div>
+            <button class="btn-primary" id="btn-to-beach" disabled onclick="goToBeachGame()">🏖️ Beach Recon Mini-Game ➔</button>
+        </div>
+    </div>
+
+    <!-- CARD 3.5: BEACH HIDDEN OBJECT MINI-GAME -->
+    <div class="card" id="card-beach">
+        <div>
+            <div class="subtitle">Phase 03.5 / Coastline Recon</div>
+            <div class="title">Find 9 Hidden Beach Items 🏖️</div>
+            <p style="font-size:11px; color:#c0dbc3;">Locate all supply items scattered along the shoreline!</p>
+        </div>
+
+        <div class="target-list" id="target-list-ui">
+            <!-- Dynamically populated 9 target items -->
+        </div>
+
+        <div class="beach-scene" id="beach-canvas">
+            <!-- Interactive Hidden Objects -->
+        </div>
+
+        <div id="beach-feedback" style="font-size:12px; color:#f3c669; font-weight:700; min-height:20px;">
+            Click on items in the picture to collect them!
+        </div>
+
+        <div>
             <button class="btn-primary" id="btn-to-vault" disabled onclick="goToVault()">🔓 Access Vault Lockbox ➔</button>
         </div>
     </div>
 
-    <!-- CARD 4: VAULT KEYPAD & FAKE HACKER DECRYPTION -->
+    <!-- CARD 4: VAULT KEYPAD & DECRYPTION -->
     <div class="card" id="card-vault">
         <div>
             <div class="subtitle">Phase 04 / Access Control</div>
@@ -539,7 +617,7 @@
         </div>
     </div>
 
-    <!-- CARD 5: FINAL MISSION REPORT & BUILD-UP -->
+    <!-- CARD 5: FINAL MISSION REPORT -->
     <div class="card" id="card-finish">
         <div>
             <div class="subtitle">═════════════════════════════</div>
@@ -572,10 +650,10 @@
                     <strong>Explorer</strong>
                     <span style="color:#4af626;">Unlocked</span>
                 </div>
-                <div class="badge-card">
-                    <span style="font-size:20px;">🎣</span>
-                    <strong>Master Angler</strong>
-                    <span style="color:#778c79;">Locked (M3)</span>
+                <div class="badge-card unlocked">
+                    <span style="font-size:20px;">🏖️</span>
+                    <strong>Beach Searcher</strong>
+                    <span style="color:#4af626;">Unlocked</span>
                 </div>
                 <div class="badge-card">
                     <span style="font-size:20px;">👑</span>
@@ -624,22 +702,45 @@
         "You're smarter than expected 😏"
     ];
 
-    // 14 CAMPSITE ITEMS (4 Clues, 10 Funny Wrongs)
+    // CAMPSITE ITEMS
     const campItemsData = [
-        { id: 1, icon: '🪵', name: 'Log', clue: '2', isClue: true, clueIdx: 0, text: 'Digit #1 Uncovered: [ 2 ]' },
-        { id: 2, icon: '🎣', name: 'Rod', clue: '', isClue: false, text: 'Nice try. Fish aren\'t giving away classified information.' },
-        { id: 3, icon: '🪣', name: 'Bucket', clue: '2', isClue: true, clueIdx: 1, text: 'Digit #2 Uncovered: [ 2 ]' },
+        { id: 1, icon: '🪵', name: 'Wood', clue: '', isClue: false, text: 'Just a bundle of dry firewood.' },
+        { id: 2, icon: '🎣', name: 'Rods', clue: '0', isClue: true, clueIdx: 2, text: 'Digit #3 Uncovered: [ 0 ]' },
+        { id: 3, icon: '🌊', name: 'Waves', clue: '', isClue: false, text: 'Calm water splashing against the shore.' },
         { id: 4, icon: '🥾', name: 'Boots', clue: '', isClue: false, text: 'An old boot. Smells like defeat.' },
-        { id: 5, icon: '🧭', name: 'Compass', clue: '0', isClue: true, clueIdx: 2, text: 'Digit #3 Uncovered: [ 0 ]' },
+        { id: 5, icon: '🧭', name: 'Compass', clue: '', isClue: false, text: 'Pointing North. No codes written on it.' },
         { id: 6, icon: '🥤', name: 'Coke', clue: '', isClue: false, text: 'Just a lukewarm soda. Refreshing, but unhelpful.' },
-        { id: 7, icon: '🔥', name: 'Fire', clue: '', isClue: false, text: 'Too hot. Come back later.' },
-        { id: 8, icon: '🐟', name: 'Fish', clue: '', isClue: false, text: 'Glub glub. No code here!' },
+        { id: 7, icon: '🔥', name: 'Fire', clue: '8', isClue: true, clueIdx: 3, text: 'Digit #4 Uncovered: [ 8 ]' },
+        { id: 8, icon: '🐟', name: 'Fish', clue: '2', isClue: true, clueIdx: 0, text: 'Digit #1 Uncovered: [ 2 ]' },
         { id: 9, icon: '🧤', name: 'Gloves', clue: '', isClue: false, text: 'Just a pair of muddy gloves.' },
-        { id: 10, icon: '🎒', name: 'Backpack', clue: '8', isClue: true, clueIdx: 3, text: 'Digit #4 Uncovered: [ 8 ]' },
+        { id: 10, icon: '🎒', name: 'Backpack', clue: '2', isClue: true, clueIdx: 1, text: 'Digit #2 Uncovered: [ 2 ]' },
         { id: 11, icon: '⛺', name: 'Tent', clue: '', isClue: false, text: 'Just a cozy sleeping bag inside.' },
         { id: 12, icon: '🍄', name: 'Mushroom', clue: '', isClue: false, text: 'You found... A very judgemental mushroom. No clue. 😂' },
         { id: 13, icon: '🦉', name: 'Owl', clue: '', isClue: false, text: 'The owl stares at you in silence. Hoot.' },
         { id: 14, icon: '🔦', name: 'Flashlight', clue: '', isClue: false, text: 'Flickers twice and dies. Unlucky!' }
+    ];
+
+    // BEACH GAME TARGET ITEMS (9 Total: 4 Original + 5 Added)
+    const beachTargets = [
+        { id: 'rod', name: 'Fishing Rod', icon: '🎣', top: '15%', left: '72%', found: false },
+        { id: 'tent', name: 'Tent', icon: '⛺', top: '65%', left: '12%', found: false },
+        { id: 'ball', name: 'Beach ball', icon: '⚽', top: '35%', left: '48%', found: false },
+        { id: 'castle', name: 'Sand castle', icon: '🏰', top: '70%', left: '78%', found: false },
+        // 5 New Items:
+        { id: 'glasses', name: 'Sunglasses', icon: '🕶️', top: '68%', left: '40%', found: false },
+        { id: 'starfish', name: 'Starfish', icon: '⭐️', top: '80%', left: '26%', found: false },
+        { id: 'lotion', name: 'Sunscreen', icon: '🧴', top: '48%', left: '22%', found: false },
+        { id: 'surfboard', name: 'Surfboard', icon: '🏄‍♂️', top: '22%', left: '85%', found: false },
+        { id: 'coconut', name: 'Coconut', icon: '🥥', top: '12%', left: '18%', found: false }
+    ];
+
+    // Distractor items on the beach
+    const beachDistractors = [
+        { icon: '🦀', top: '82%', left: '58%' },
+        { icon: '🐚', top: '78%', left: '68%' },
+        { icon: '🌴', top: '10%', left: '5%' },
+        { icon: '🦩', top: '38%', left: '88%' },
+        { icon: '⛵', top: '20%', left: '38%' }
     ];
 
     let itemsSearched = new Set();
@@ -716,7 +817,7 @@
         document.getElementById('xp-text').innerText = `${currentXP} / ${maxXP}`;
     }
 
-    // AMENDMENT 2: FAKE GPS SCANNER (5 Secs)
+    // FAKE GPS SCANNER
     function triggerGpsScanner() {
         playSound('click');
         showCard('card-scanner');
@@ -752,7 +853,7 @@
         });
     }
 
-    // AMENDMENT 3: ANIMATED TERMINAL SETUP
+    // ANIMATED TERMINAL SETUP
     function startTerminalStory() {
         playSound('click');
         showCard('card-terminal');
@@ -778,7 +879,7 @@
         });
     }
 
-    // AMENDMENT 4 & 5: SCATTER 14 CAMPSITE ITEMS + FUNNY WRONGS
+    // CAMPSITE RECON
     function goToHunt() {
         playSound('found');
         showCard('card-hunt');
@@ -817,16 +918,14 @@
             codeSlotsFound[item.clueIdx] = item.clue;
             cluesFoundCount++;
             
-            // Random success quote
             const quote = successQuotes[Math.floor(Math.random() * successQuotes.length)];
             feedback.innerText = `${item.text} — "${quote}"`;
             spawnParticles(['🔍', '⭐', '✨']);
 
-            // Update clue preview
             document.getElementById('code-revealed-display').innerText = codeSlotsFound.join(" ");
 
             if (cluesFoundCount >= 4) {
-                document.getElementById('btn-to-vault').disabled = false;
+                document.getElementById('btn-to-beach').disabled = false;
             }
         } else {
             playSound('click');
@@ -834,11 +933,76 @@
             feedback.innerText = item.text;
         }
 
-        // AMENDMENT 6: SECRET ACHIEVEMENT (Professional Snooper)
         if (itemsSearched.size === campItemsData.length && !snooperAchievementUnlocked) {
             snooperAchievementUnlocked = true;
             addXP(50);
             showAchievementBanner("Professional Snooper (+50 XP)");
+        }
+    }
+
+    // HIDDEN OBJECTS ON BEACH
+    function goToBeachGame() {
+        playSound('found');
+        showCard('card-beach');
+
+        const canvas = document.getElementById('beach-canvas');
+        const targetList = document.getElementById('target-list-ui');
+        canvas.innerHTML = '';
+        targetList.innerHTML = '';
+
+        // Render target requirement cards
+        beachTargets.forEach(t => {
+            const card = document.createElement('div');
+            card.className = `target-card ${t.found ? 'found' : ''}`;
+            card.id = `target-card-${t.id}`;
+            card.innerHTML = `<span>${t.icon}</span> <span>${t.name}</span>`;
+            targetList.appendChild(card);
+        });
+
+        // Spawn distractors
+        beachDistractors.forEach(d => {
+            const el = document.createElement('div');
+            el.className = 'beach-item';
+            el.style.top = d.top;
+            el.style.left = d.left;
+            el.innerText = d.icon;
+            el.onclick = () => {
+                playSound('click');
+                document.getElementById('beach-feedback').innerText = "That's not one of the target items!";
+            };
+            canvas.appendChild(el);
+        });
+
+        // Spawn actual targets
+        beachTargets.forEach(t => {
+            const el = document.createElement('div');
+            el.className = `beach-item ${t.found ? 'found' : ''}`;
+            el.id = `beach-obj-${t.id}`;
+            el.style.top = t.top;
+            el.style.left = t.left;
+            el.innerText = t.icon;
+            el.onclick = () => collectBeachItem(t);
+            canvas.appendChild(el);
+        });
+    }
+
+    function collectBeachItem(target) {
+        if (target.found) return;
+        
+        playSound('found');
+        target.found = true;
+
+        document.getElementById(`beach-obj-${target.id}`).classList.add('found');
+        document.getElementById(`target-card-${target.id}`).classList.add('found');
+
+        document.getElementById('beach-feedback').innerText = `Found the ${target.name}! 🎉`;
+        spawnParticles(['🏖️', '✨', '🌊']);
+
+        const allFound = beachTargets.every(t => t.found);
+        if (allFound) {
+            playSound('success');
+            document.getElementById('beach-feedback').innerText = "Awesome! All 9 beach supplies recovered!";
+            document.getElementById('btn-to-vault').disabled = false;
         }
     }
 
@@ -877,7 +1041,6 @@
         }
     }
 
-    // AMENDMENT 8: FAKE HACKER SCREEN ON UNLOCK
     function submitVaultCode() {
         const entered = userVaultInput.join("");
         const status = document.getElementById('vault-status');
@@ -930,14 +1093,12 @@
         }
     }
 
-    // AMENDMENT 14: HIDDEN PASSWORD EASTER EGG
     function triggerLovePassword() {
         playSound('click');
         const status = document.getElementById('vault-status');
         status.innerHTML = `<span style="color:#f3c669;">❤️ Access Granted. Just kidding. Wrong password. But I love you too.</span>`;
     }
 
-    // AMENDMENT 10: EASTER EGG ON NAME
     function showLoveEgg() {
         playSound('success');
         alert("❤️ Bonus Fact:\n\nYour wife loves you more than all the stars combined.");
@@ -976,7 +1137,7 @@
 
     function spawnSparkles() {
         playSound('success');
-        spawnParticles(['🏆', '✨', '💖', '🌲', '⭐', '🔑']);
+        spawnParticles(['🏆', '✨', '💖', '🌲', '⭐', '🔑', '🏖️']);
     }
 </script>
 
