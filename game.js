@@ -238,7 +238,7 @@ let bearInterval = null;
 const hiddenItems = [
     { id: "tent", x: 710, y: 320, width: 160, height: 130, found: false },
     { id: "backpack", x: 560, y: 455, width: 75, height: 85, found: false },
-    { id: "flashlight", x: 815, y: 495, width: 55, height: 25, found: false },
+    { id: "torchlight", x: 815, y: 495, width: 55, height: 25, found: false },
     { id: "compass", x: 625, y: 390, width: 35, height: 35, found: false },
     { id: "boots", x: 940, y: 515, width: 75, height: 55, found: false },
     { id: "bottle", x: 470, y: 470, width: 35, height: 65, found: false },
