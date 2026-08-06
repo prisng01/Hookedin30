@@ -3,666 +3,911 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survival & Treasure Hunt 🌲🌊</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Forest Survival & Fishing Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            background: #050a06;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            width: 100vw;
-            overflow: hidden; 
-            font-family: 'Montserrat', sans-serif;
-            color: #f1e4f3;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             user-select: none;
         }
 
-        /* SCREEN SHAKE EFFECT */
-        body.shake {
-            animation: screenShake 0.4s ease-in-out infinite;
-        }
-        @keyframes screenShake {
-            0%, 100% { transform: translate(0, 0); }
-            20% { transform: translate(-8px, 6px); }
-            40% { transform: translate(8px, -6px); }
-            60% { transform: translate(-6px, -8px); }
-            80% { transform: translate(6px, 8px); }
-        }
-
-        /* MAIN CONTAINER */
-        .game-card {
-            width: 96vw;
-            max-width: 1000px;
-            height: 94vh;
-            max-height: 850px;
-            background: rgba(12, 18, 14, 0.96);
-            border: 2px solid #2d4231;
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,0,0,0.8);
+        body {
+            background-color: #0d1117;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
             display: flex;
-            flex-direction: column;
-            padding: 16px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow: hidden;
         }
 
-        /* HUD & HEADER */
-        .top-hud {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 16px;
-            background: rgba(8, 12, 9, 0.9);
-            border: 1px solid #283a2a;
-            border-radius: 12px;
-            z-index: 30;
-            gap: 10px;
-        }
-
-        .hud-stat {
-            display: flex;
-            flex-direction: column;
-            font-size: 11px;
-            color: #a4c4a6;
-        }
-        .hud-val { font-size: 14px; font-weight: 800; color: #f3c669; }
-
-        /* BEAR TRACKER BAR */
-        .bear-tracker-container {
-            flex-grow: 1;
-            max-width: 320px;
-            background: #080d08;
-            border: 1px solid #3d543f;
-            border-radius: 20px;
-            padding: 4px 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .bear-track-line {
-            width: 100%;
-            height: 22px;
+        /* MAIN APP CONTAINER */
+        #game-container {
+            width: 100vw;
+            max-width: 1200px;
+            height: 100vh;
+            max-height: 900px;
             position: relative;
+            background: #000;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        /* PHASE SCENES */
+        .game-phase {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .game-phase.active {
+            display: block;
+        }
+
+        /* BACKGROUNDS WITH SVG PHOTOREALISTIC GRADIENTS */
+        #phase-1 {
+            background-image: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%),
+                              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232b4131'/%3E%3Cstop offset='100%25' stop-color='%23112217'/%3E%3C/linearGradient%3E%3ClinearGradient id='water' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231d3b38'/%3E%3Cstop offset='100%25' stop-color='%230b1b1a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='500' fill='url(%23sky)'/%3E%3Cpath d='M0 380 Q 300 350, 600 390 T 1200 360 L 1200 550 L 0 550 Z' fill='url(%23water)'/%3E%3Crect y='500' width='1200' height='400' fill='%23191512'/%3E%3C/svg%3E");
+        }
+
+        #phase-2 {
+            background-image: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.5) 100%),
+                              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3ClinearGradient id='lake' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23224b5e'/%3E%3Cstop offset='100%25' stop-color='%230f232d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='400' fill='%231c3327'/%3E%3Crect y='380' width='1200' height='520' fill='url(%23lake)'/%3E%3C/svg%3E");
+        }
+
+        /* PHOTOREALISTIC CANVAS OVERLAY */
+        canvas.render-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* HUD ELEMENTS */
+        .hud-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .badge {
+            background: #23a059;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .badge.phase-2-badge {
+            background: #1e88e5;
+        }
+
+        .hud-title {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .hud-subtitle {
+            font-size: 13px;
+            color: #d1d5db;
+            font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+
+        /* SCORE & PAUSE */
+        .top-right-hud {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
-            font-size: 14px;
+            gap: 15px;
+            z-index: 10;
         }
+
+        .score-box {
+            text-align: right;
+        }
+
+        .score-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #9ca3af;
+            letter-spacing: 1px;
+        }
+
+        .score-val {
+            font-size: 24px;
+            font-weight: 900;
+            color: #f3c669;
+        }
+
+        .pause-btn {
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        /* BEAR TIMELINE TRACKER */
+        .bear-tracker {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+
+        .bear-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .track-bar {
+            flex: 1;
+            height: 8px;
+            background: #1f2937;
+            border-radius: 4px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .track-fill {
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, #22c55e, #ef4444);
+            border-radius: 4px;
+            transition: width 0.2s linear;
+        }
+
         .bear-icon {
             position: absolute;
-            left: 0%;
-            transition: left 1s linear;
-            font-size: 18px;
-            filter: drop-shadow(0 0 5px #ff4444);
+            top: -12px;
+            left: 30%;
+            font-size: 16px;
+            transform: translateX(-50%);
+            transition: left 0.2s linear;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
-        .camp-target { position: absolute; right: 0; font-size: 16px; }
 
-        /* CARD PHASES */
-        .phase-view {
+        .timer-digits {
+            font-size: 20px;
+            font-weight: 900;
+            color: #ef4444;
+            letter-spacing: -0.5px;
+            width: 55px;
+            text-align: right;
+        }
+
+        /* LEFT SIDEBAR PANELS */
+        .side-panel {
             position: absolute;
-            top: 75px; left: 16px; right: 16px; bottom: 16px;
-            border-radius: 14px;
+            left: 20px;
+            top: 110px;
+            width: 190px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #d1d5db;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .item-list {
+            list-style: none;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease;
-            z-index: 2;
-        }
-        .phase-view.active { opacity: 1; visibility: visible; z-index: 10; }
-
-        /* REALISTIC FOREST SCENE */
-        .scene-forest {
-            width: 100%;
-            height: 100%;
-            border-radius: 14px;
-            border: 1px solid #3d543f;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #09130c 0%, #152b1b 50%, #0d1a10 100%);
+            gap: 6px;
         }
 
-        .realistic-fog {
-            position: absolute;
-            width: 200%; height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-            animation: fogMove 20s linear infinite alternate;
-            pointer-events: none;
-        }
-        @keyframes fogMove { 0% { transform: translateX(-25%); } 100% { transform: translateX(0%); } }
-
-        /* REALISTIC BEACH SCENE */
-        .scene-beach {
-            width: 100%;
-            height: 100%;
-            border-radius: 14px;
-            border: 1px solid #4a6350;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #0d2836 0%, #1a4d66 40%, #c29f4e 40%, #e6cb85 100%);
-            cursor: crosshair;
-        }
-
-        .ocean-waves {
-            position: absolute;
-            top: 36%; width: 100%; height: 25px;
-            background: rgba(255, 255, 255, 0.25);
-            filter: blur(4px);
-            animation: waveSurge 3s ease-in-out infinite alternate;
-        }
-        @keyframes waveSurge { 0% { transform: translateY(0); } 100% { transform: translateY(12px); } }
-
-        /* ITEM SCATTER & ANIMATIONS */
-        .interactive-item {
-            position: absolute;
-            font-size: 32px;
-            cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
-            animation: gentleWiggle 3s infinite ease-in-out;
-            z-index: 12;
-        }
-        .interactive-item:hover {
-            transform: scale(1.3);
-            filter: drop-shadow(0 0 12px #f3c669);
-        }
-
-        @keyframes gentleWiggle {
-            0%, 100% { transform: rotate(0deg) translateY(0); }
-            25% { transform: rotate(-4deg) translateY(-2px); }
-            75% { transform: rotate(4deg) translateY(2px); }
-        }
-
-        /* INVENTORY TRAY */
-        .inventory-panel {
-            position: absolute;
-            bottom: 12px;
-            background: rgba(10, 15, 11, 0.92);
-            border: 1px solid #3d543f;
-            border-radius: 12px;
-            padding: 8px 16px;
+        .item-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            z-index: 20;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-        }
-        .inv-grid { display: flex; gap: 6px; }
-        .inv-slot {
-            width: 36px; height: 36px; background: #080d08; border: 1px solid #243526;
-            border-radius: 6px; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: all 0.3s ease;
-        }
-        .inv-slot.filled { border-color: #f3c669; box-shadow: 0 0 8px rgba(243, 198, 105, 0.4); }
-
-        /* NOTIFICATIONS & DIALOGUE */
-        .game-dialogue {
-            position: absolute;
-            top: 14px; left: 50%; transform: translateX(-50%);
-            background: rgba(8, 12, 8, 0.9);
-            border: 1px solid #4af626;
-            color: #4af626;
-            font-family: 'Courier Prime', monospace;
+            gap: 8px;
             font-size: 12px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            z-index: 25;
-            pointer-events: none;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .item-row.found {
+            color: #22c55e;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .item-row .icon {
+            font-size: 14px;
+            width: 20px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(74, 246, 38, 0.2);
         }
 
-        /* FLYING ITEM ANIMATION */
-        .flying-item {
-            position: fixed;
-            font-size: 30px;
-            pointer-events: none;
-            z-index: 100;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* POWER METER FOR FISHING */
-        .power-meter-box {
+        /* INSTRUCTIONS PANEL */
+        .instructions-panel {
             position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(10, 15, 11, 0.95);
-            border: 2px solid #f3c669;
-            border-radius: 12px;
-            padding: 16px;
+            left: 20px;
+            bottom: 20px;
+            width: 190px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .instruction-step {
+            font-size: 11px;
+            color: #d1d5db;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            line-height: 1.3;
+        }
+
+        /* FISH SLOTS DISPLAY */
+        .fish-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .fish-slot {
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .fish-slot.caught {
+            background: rgba(30, 136, 229, 0.2);
+            border: 1px solid #1e88e5;
+            color: #90caf9;
+        }
+
+        /* TIP BOXES */
+        .tip-box {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 10px 14px;
+            backdrop-filter: blur(10px);
+            max-width: 200px;
+            z-index: 10;
+        }
+
+        .tip-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #f3c669;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 2px;
+        }
+
+        .tip-desc {
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.2;
+        }
+
+        /* INTERACTIVE OBJECTS IN PHASE 1 */
+        .clickable-object {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.15s ease, filter 0.15s ease;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+            z-index: 5;
+        }
+
+        .clickable-object:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 10px rgba(243, 198, 105, 0.8));
+        }
+
+        /* FISHING CAST BUTTON */
+        .cast-btn-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            z-index: 50;
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
-        }
-        .meter-bar-bg {
-            width: 220px; height: 24px; background: #121a13; border-radius: 12px;
-            border: 1px solid #3d543f; position: relative; overflow: hidden;
-        }
-        .meter-target-zone {
-            position: absolute; left: 60%; width: 25%; height: 100%;
-            background: rgba(74, 246, 38, 0.4); border-left: 1px solid #4af626; border-right: 1px solid #4af626;
-        }
-        .meter-indicator {
-            position: absolute; left: 0%; width: 8px; height: 100%;
-            background: #ff4444; box-shadow: 0 0 8px #ff4444;
+            gap: 6px;
+            z-index: 10;
         }
 
-        /* TREASURE CHESTS */
-        .chest-container {
-            position: absolute; top: 60%; width: 100%;
-            display: flex; justify-content: center; gap: 40px; z-index: 20;
+        .cast-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #2b3542 0%, #111827 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .chest-item { font-size: 45px; cursor: pointer; transition: transform 0.2s; }
-        .chest-item:hover { transform: scale(1.2); filter: drop-shadow(0 0 10px #f3c669); }
 
-        /* BUTTONS */
-        .btn-primary {
-            font-size: 13px; color: #0b140c; background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
-            border: none; padding: 12px 28px; border-radius: 24px; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: transform 0.2s;
-            box-shadow: 0 4px 15px rgba(243, 198, 105, 0.3);
+        .cast-btn:active {
+            transform: scale(0.92);
         }
-        .btn-primary:hover { transform: translateY(-2px) scale(1.03); }
 
-        /* HIDDEN HEARTS */
-        .secret-heart {
-            position: absolute; font-size: 16px; opacity: 0.25; cursor: pointer;
-            transition: all 0.2s; z-index: 15;
+        .cast-btn.reeling {
+            animation: pulse-ring 1s infinite;
+            border-color: #f3c669;
         }
-        .secret-heart:hover { opacity: 1; transform: scale(1.5); filter: drop-shadow(0 0 6px #ff4444); }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(243, 198, 105, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(243, 198, 105, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 198, 105, 0); }
+        }
+
+        .cast-label {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* MODAL DIALOGS */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-card h2 {
+            font-size: 24px;
+            color: #f3c669;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .modal-card p {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
 
-<div class="game-card">
+<div id="game-container">
+    
+    <!-- ==================== PHASE 1: CAMP SEARCH ==================== -->
+    <div id="phase-1" class="game-phase active">
+        <canvas id="canvas-phase1" class="render-canvas"></canvas>
 
-    <!-- TOP HUD -->
-    <div class="top-hud">
-        <div class="hud-stat">
-            <span>MISSION STATUS</span>
-            <span class="hud-val" id="phase-title">PHASE 1: EVACUATION</span>
+        <!-- HEADER -->
+        <div class="hud-header">
+            <span class="badge">PHASE 1</span>
+            <h1 class="hud-title">CAMP SEARCH</h1>
+            <p class="hud-subtitle">Find all 10 items before the bear arrives!</p>
         </div>
 
-        <!-- ANIMATED BEAR TRACKER -->
-        <div class="bear-tracker-container" id="bear-tracker">
-            <div style="display:flex; justify-content:space-between; width:100%; font-size:9px; color:#888; font-weight:700;">
-                <span>BEAR DISTANCE</span>
-                <span id="timer-text" style="color:#ff4444;">00:60</span>
+        <!-- BEAR TIMELINE -->
+        <div class="bear-tracker">
+            <span class="bear-label">BEAR ARRIVAL</span>
+            <div class="track-bar">
+                <div class="track-fill" id="p1-bear-fill"></div>
+                <div class="bear-icon" id="p1-bear-icon">🐻</div>
             </div>
-            <div class="bear-track-line">
-                <div class="bear-icon" id="bear-progress">🐻</div>
-                <div class="camp-target">🏕️</div>
+            <span class="timer-digits" id="p1-timer">00:52</span>
+        </div>
+
+        <!-- TOP RIGHT SCORE -->
+        <div class="top-right-hud">
+            <div class="score-box">
+                <div class="score-label">SCORE</div>
+                <div class="score-val" id="p1-score">0</div>
+            </div>
+            <div class="pause-btn">❚❚</div>
+        </div>
+
+        <!-- LEFT SIDEBAR: ITEMS TO FIND -->
+        <div class="side-panel">
+            <div class="panel-title" id="p1-counter-title">ITEMS TO FIND (0/10)</div>
+            <ul class="item-list" id="p1-item-list">
+                <li class="item-row" data-item="Tent"><span class="icon">⛺</span> Tent</li>
+                <li class="item-row" data-item="Backpack"><span class="icon">🎒</span> Backpack</li>
+                <li class="item-row" data-item="Flashlight"><span class="icon">🔦</span> Flashlight</li>
+                <li class="item-row" data-item="Compass"><span class="icon">🧭</span> Compass</li>
+                <li class="item-row" data-item="Boots"><span class="icon">🥾</span> Boots</li>
+                <li class="item-row" data-item="Water Bottle"><span class="icon">🥤</span> Water Bottle</li>
+                <li class="item-row" data-item="Fishing Rod"><span class="icon">🎣</span> Fishing Rod</li>
+                <li class="item-row" data-item="Map"><span class="icon">🗺️</span> Map</li>
+                <li class="item-row" data-item="Camera"><span class="icon">📷</span> Camera</li>
+                <li class="item-row" data-item="Vault Key"><span class="icon">🔑</span> Vault Key</li>
+            </ul>
+        </div>
+
+        <!-- TIP BOX -->
+        <div class="tip-box">
+            <div class="tip-title">💡 TIP</div>
+            <div class="tip-desc">Look everywhere carefully!</div>
+        </div>
+
+        <!-- HIDDEN CLICKABLE ITEMS -->
+        <div class="clickable-object" style="top: 220px; right: 80px; font-size: 110px;" onclick="claimItem('Tent', this)">⛺</div>
+        <div class="clickable-object" style="top: 310px; right: 230px; font-size: 55px;" onclick="claimItem('Backpack', this)">🎒</div>
+        <div class="clickable-object" style="top: 420px; left: 450px; font-size: 32px;" onclick="claimItem('Flashlight', this)">🔦</div>
+        <div class="clickable-object" style="top: 410px; left: 360px; font-size: 26px;" onclick="claimItem('Compass', this)">🧭</div>
+        <div class="clickable-object" style="top: 360px; right: 310px; font-size: 40px;" onclick="claimItem('Boots', this)">🥾</div>
+        <div class="clickable-object" style="top: 330px; right: 380px; font-size: 30px;" onclick="claimItem('Water Bottle', this)">🥤</div>
+        <div class="clickable-object" style="top: 150px; left: 240px; font-size: 70px; transform: rotate(-25deg);" onclick="claimItem('Fishing Rod', this)">🎣</div>
+        <div class="clickable-object" style="top: 320px; left: 350px; font-size: 35px;" onclick="claimItem('Map', this)">🗺️</div>
+        <div class="clickable-object" style="top: 310px; left: 230px; font-size: 30px;" onclick="claimItem('Camera', this)">📷</div>
+        <div class="clickable-object" style="top: 430px; left: 560px; font-size: 24px;" onclick="claimItem('Vault Key', this)">🔑</div>
+    </div>
+
+    <!-- ==================== PHASE 2: FISHING CHALLENGE ==================== -->
+    <div id="phase-2" class="game-phase">
+        <canvas id="canvas-phase2" class="render-canvas"></canvas>
+
+        <!-- HEADER -->
+        <div class="hud-header">
+            <span class="badge phase-2-badge">PHASE 2</span>
+            <h1 class="hud-title">FISHING CHALLENGE</h1>
+            <p class="hud-subtitle">Catch at least 6 special fish!</p>
+        </div>
+
+        <!-- TIMER HUD -->
+        <div class="bear-tracker" style="width: auto; padding: 6px 20px;">
+            <div style="text-align: center;">
+                <div style="font-size: 9px; font-weight: 800; color: #9ca3af;">TIME LEFT</div>
+                <div style="font-size: 22px; font-weight: 900; color: #fff;" id="p2-timer">01:00</div>
             </div>
         </div>
 
-        <div class="hud-stat" style="text-align:right;">
-            <span>TOTAL SCORE</span>
-            <span class="hud-val" id="score-val">0 XP</span>
+        <!-- TOP RIGHT SCORE -->
+        <div class="top-right-hud">
+            <div class="score-box">
+                <div class="score-label">SCORE</div>
+                <div class="score-val" id="p2-score">0</div>
+            </div>
+            <div class="pause-btn">❚❚</div>
+        </div>
+
+        <!-- LEFT SIDEBAR: SPECIAL FISH CATCHES -->
+        <div class="side-panel">
+            <div class="panel-title" id="p2-fish-counter">SPECIAL FISH (0/6)</div>
+            <div class="fish-grid" id="fish-slots-grid">
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+                <div class="fish-slot">🐟</div>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS PANEL -->
+        <div class="instructions-panel">
+            <div class="panel-title">INSTRUCTIONS</div>
+            <div class="instruction-step"><span>🎣</span> 1. Tap to cast your line</div>
+            <div class="instruction-step"><span>⏱️</span> 2. Wait for a fish to bite</div>
+            <div class="instruction-step"><span>🎣</span> 3. Tap again to reel in</div>
+            <div class="instruction-step"><span>⭐</span> 4. Catch 6 special fish!</div>
+        </div>
+
+        <!-- TIP BOX -->
+        <div class="tip-box">
+            <div class="tip-title">⭐ TIP</div>
+            <div class="tip-desc">Special fish are rare! Catch them all!</div>
+        </div>
+
+        <!-- CAST ACTION BUTTON -->
+        <div class="cast-btn-container">
+            <div class="cast-btn" id="cast-trigger" onclick="handleCastAction()">🎣</div>
+            <div class="cast-label" id="cast-label">TAP TO CAST</div>
         </div>
     </div>
 
-    <!-- DIALOGUE / NOTIFICATION BANNER -->
-    <div class="game-dialogue" id="game-dialogue">> Emergency! Collect all items before the bear arrives!</div>
-
-    <!-- ================= PHASE 0: INTRO BRIEFING ================= -->
-    <div class="phase-view active" id="view-intro" style="justify-content:center; gap:20px; text-align:center;">
-        <h1 style="font-family:'Cinzel', serif; color:#f3c669; font-size:28px;">⚠️ EMERGENCY FOREST ALERT</h1>
-        <div style="max-width:500px; font-size:13px; line-height:1.6; color:#a4c4a6; background:rgba(8,12,8,0.8); padding:20px; border-radius:12px; border:1px solid #283a2a;">
-            Mission Control to Chief Adventurer...<br><br>
-            A hungry bear has entered the forest sector! Estimated arrival: <strong>60 seconds</strong>.<br>
-            Recover all <strong>10 camping items</strong> immediately before camp is overrun!
+    <!-- MODAL OVERLAY -->
+    <div class="modal-overlay" id="game-modal">
+        <div class="modal-card">
+            <h2 id="modal-title">PHASE CLEAR!</h2>
+            <p id="modal-desc">You successfully secured all items before the bear arrived.</p>
+            <button class="btn-action" id="modal-btn" onclick="nextPhase()">CONTINUE</button>
         </div>
-        <button class="btn-primary" onclick="startPhase1()">🚀 START MISSION</button>
-    </div>
-
-    <!-- ================= PHASE 1: CAMPSITE EVACUATION ================= -->
-    <div class="phase-view" id="view-phase1">
-        <div class="scene-forest" id="forest-scene">
-            <div class="realistic-fog"></div>
-
-            <!-- Dynamic Scavenger Items -->
-            <div class="interactive-item" style="top:18%; left:12%;" onclick="collectItem(this, '⛺', 'Tent')">⛺</div>
-            <div class="interactive-item" style="top:25%; left:78%;" onclick="collectItem(this, '🎒', 'Backpack')">🎒</div>
-            <div class="interactive-item" style="top:65%; left:15%;" onclick="collectItem(this, '🔦', 'Flashlight')">🔦</div>
-            <div class="interactive-item" style="top:70%; left:80%;" onclick="collectItem(this, '🧭', 'Compass')">🧭</div>
-            <div class="interactive-item" style="top:80%; left:45%;" onclick="collectItem(this, '🥾', 'Boots')">🥾</div>
-            <div class="interactive-item" style="top:40%; left:25%;" onclick="collectItem(this, '🥤', 'Water Bottle')">🥤</div>
-            <div class="interactive-item" style="top:20%; left:50%;" onclick="collectItem(this, '🎣', 'Fishing Rod')">🎣</div>
-            <div class="interactive-item" style="top:50%; left:70%;" onclick="collectItem(this, '🗺️', 'Map')">🗺️</div>
-            <div class="interactive-item" style="top:75%; left:30%;" onclick="collectItem(this, '📷', 'Camera')">📷</div>
-            <div class="interactive-item" style="top:35%; left:85%;" onclick="collectItem(this, '🔑', 'Vault Key')">🔑</div>
-
-            <!-- RANDOM FUN EVENTS -->
-            <div id="squirrel-event" style="position:absolute; font-size:24px; display:none; cursor:pointer; z-index:20;" onclick="tapSquirrel(this)">🐿️</div>
-            <div id="owl-event" style="position:absolute; top:10%; left:45%; font-size:28px; cursor:pointer; z-index:20;" onclick="tapOwl()">🦉</div>
-        </div>
-
-        <!-- Inventory Panel -->
-        <div class="inventory-panel">
-            <span style="font-size:11px; font-weight:800; color:#f3c669;">🎒 INVENTORY</span>
-            <div class="inv-grid" id="p1-inventory">
-                <div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div>
-                <div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div>
-                <div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div>
-                <div class="inv-slot"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= PHASE 1 COMPLETE SUMMARY ================= -->
-    <div class="phase-view" id="view-p1-complete" style="justify-content:center; gap:16px; text-align:center;">
-        <div style="font-size:50px;">🏕️</div>
-        <h2 style="font-family:'Cinzel', serif; color:#4af626; font-size:26px;">CAMP SAVED!</h2>
-        <p style="font-size:13px; color:#a4c4a6;">All supplies recovered before the bear arrived.<br><strong>+250 XP & Camp Survivor Badge Earned!</strong></p>
-        <button class="btn-primary" onclick="startPhase2()">Proceed to Phase 2 ➔</button>
-    </div>
-
-    <!-- ================= PHASE 2: PIRATE TREASURE HUNT ================= -->
-    <div class="phase-view" id="view-phase2">
-        <div class="scene-beach" id="beach-scene" onmousemove="handleMetalDetector(event)">
-            <div class="ocean-waves"></div>
-
-            <!-- Detector Ping Overlay -->
-            <div id="detector-ping" style="position:absolute; width:40px; height:40px; border:2px solid #4af626; border-radius:50%; pointer-events:none; display:none; transform:translate(-50%, -50%);"></div>
-
-            <!-- Secret Hearts -->
-            <div class="secret-heart" style="top:15%; left:10%;" onclick="collectHeart(this)">❤️</div>
-            <div class="secret-heart" style="top:80%; left:12%;" onclick="collectHeart(this)">❤️</div>
-            <div class="secret-heart" style="top:20%; left:85%;" onclick="collectHeart(this)">❤️</div>
-            <div class="secret-heart" style="top:75%; left:88%;" onclick="collectHeart(this)">❤️</div>
-            <div class="secret-heart" style="top:50%; left:50%;" onclick="collectHeart(this)">❤️</div>
-
-            <!-- Mini Game 2: Fishing Trigger -->
-            <div id="fishing-spot" style="position:absolute; top:20%; left:45%; font-size:32px; cursor:pointer;" onclick="openFishingGame()">🎣</div>
-
-            <!-- Mini Game 3: Chests Container -->
-            <div class="chest-container" id="chest-zone" style="display:none;">
-                <div class="chest-item" onclick="openChest(1, this)">📦</div>
-                <div class="chest-item" onclick="openChest(2, this)">📦</div>
-                <div class="chest-item" onclick="openChest(3, this)">📦</div>
-            </div>
-        </div>
-
-        <!-- Fishing Power Meter Overlay -->
-        <div class="power-meter-box" id="fishing-modal" style="display:none;">
-            <div style="font-size:12px; font-weight:800; color:#f3c669;">MINI-GAME: TIMING FISHING</div>
-            <div class="meter-bar-bg">
-                <div class="meter-target-zone"></div>
-                <div class="meter-indicator" id="meter-indicator"></div>
-            </div>
-            <button class="btn-primary" onclick="stopFishingMeter()">STOP & CATCH</button>
-        </div>
-
-        <!-- Inventory Panel -->
-        <div class="inventory-panel">
-            <span style="font-size:11px; font-weight:800; color:#f3c669;">🔍 TREASURES (<span id="treasure-count">0</span>/5)</span>
-            <div class="inv-grid" id="p2-inventory">
-                <div class="inv-slot"></div><div class="inv-slot"></div><div class="inv-slot"></div>
-                <div class="inv-slot"></div><div class="inv-slot"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= FINAL MISSION REPORT ================= -->
-    <div class="phase-view" id="view-final" style="justify-content:center; gap:16px; text-align:center;">
-        <div style="font-size:50px;">🏆</div>
-        <h1 style="font-family:'Cinzel', serif; color:#f3c669; font-size:26px;">MISSION ACCOMPLISHED</h1>
-        <div style="background:rgba(8,12,8,0.9); border:1px solid #3d543f; padding:16px; border-radius:12px; font-size:12px; line-height:1.6;">
-            ✔️ Beach Cleared<br>
-            ✔️ Treasure Hunter Badge Unlocked<br>
-            ✔️ Secret Clue Digit Recovered: <strong>0</strong><br>
-            <div id="heart-unlock-msg" style="display:none; color:#ff6699; margin-top:8px; font-weight:800;">
-                💖 SPECIAL MESSAGE: "You'll always be my favourite adventure."
-            </div>
-        </div>
-        <button class="btn-primary" onclick="alert('Proceeding to Vault Phase...')">Proceed to Vault ➔</button>
     </div>
 
 </div>
 
 <script>
-    // GAME STATE
-    let xpScore = 0;
-    let timerSeconds = 60;
-    let timerInterval = null;
-    let itemsCollectedP1 = 0;
-    let treasuresFoundP2 = 0;
-    let heartsFound = 0;
+    /* ==================== GAME STATE & LOGIC ==================== */
+    let totalScore = 0;
     
-    // SOUND SYNTHESIZER
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playSound(type) {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        let now = audioCtx.currentTime;
+    // Phase 1 State
+    let p1ItemsFound = 0;
+    let p1TimeLeft = 52;
+    let p1TimerInterval = null;
+    const totalP1Items = 10;
 
-        if (type === 'pop') {
-            osc.frequency.setValueAtTime(400, now);
-            osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-        } else if (type === 'beep') {
-            osc.frequency.setValueAtTime(600, now);
-            gain.gain.setValueAtTime(0.05, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-        } else if (type === 'roar') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(120, now);
-            osc.frequency.linearRampToValueAtTime(60, now + 0.4);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-        }
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(now); osc.stop(now + 0.5);
-    }
+    // Phase 2 State
+    let p2FishCaught = 0;
+    let p2TimeLeft = 60;
+    let p2TimerInterval = null;
+    let fishingState = 'idle'; // 'idle', 'waiting', 'hooked'
+    let hookTimeout = null;
 
-    function addXP(amount) {
-        xpScore += amount;
-        document.getElementById('score-val').innerText = xpScore + ' XP';
-    }
+    /* ==================== INITIALIZATION ==================== */
+    window.onload = function() {
+        startPhase1Timer();
+        initPhase1Canvas();
+        initPhase2Canvas();
+    };
 
-    function setDialogue(text) {
-        document.getElementById('game-dialogue').innerText = '> ' + text;
-    }
+    /* ==================== PHASE 1 MECHANICS ==================== */
+    function startPhase1Timer() {
+        p1TimerInterval = setInterval(() => {
+            p1TimeLeft--;
+            let mins = Math.floor(p1TimeLeft / 60);
+            let secs = p1TimeLeft % 60;
+            document.getElementById('p1-timer').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
-    // ================= PHASE 1 LOGIC =================
-    function startPhase1() {
-        document.querySelectorAll('.phase-view').forEach(v => v.classList.remove('active'));
-        document.getElementById('view-phase1').classList.add('active');
-        
-        // Start Bear Timer
-        timerInterval = setInterval(() => {
-            timerSeconds--;
-            document.getElementById('timer-text').innerText = `00:${timerSeconds < 10 ? '0' : ''}${timerSeconds}`;
-            
-            // Move Bear across screen
-            let progress = ((60 - timerSeconds) / 60) * 85;
-            document.getElementById('bear-progress').style.left = progress + '%';
+            // Update Bear Progress Bar
+            let progress = ((60 - p1TimeLeft) / 60) * 100;
+            document.getElementById('p1-bear-fill').style.width = progress + '%';
+            document.getElementById('p1-bear-icon').style.left = progress + '%';
 
-            // Timed Events
-            if (timerSeconds % 10 === 0 && timerSeconds > 0) triggerSquirrel();
-            if (timerSeconds === 15) {
-                playSound('roar');
-                document.body.classList.add('shake');
-                setDialogue('🐻 ROAAARRRR!!! The bear is right outside!');
-                setTimeout(() => document.body.classList.remove('shake'), 1200);
-            }
-
-            if (timerSeconds <= 0) {
-                clearInterval(timerInterval);
-                alert('🐻 The bear reached camp! Try again!');
-                location.reload();
+            if (p1TimeLeft <= 0) {
+                clearInterval(p1TimerInterval);
+                showModal("GAME OVER", "The bear reached the campsite before you gathered all items!", "RETRY", () => location.reload());
             }
         }, 1000);
     }
 
-    function collectItem(el, icon, name) {
-        playSound('pop');
-        el.style.display = 'none';
-        
-        // Populate Inventory
-        const slots = document.querySelectorAll('#p1-inventory .inv-slot');
-        slots[itemsCollectedP1].innerText = icon;
-        slots[itemsCollectedP1].classList.add('filled');
-        
-        itemsCollectedP1++;
-        addXP(20);
-        setDialogue(`Collected ${name}! (+20 XP)`);
+    function claimItem(itemName, element) {
+        element.style.pointerEvents = 'none';
+        element.style.transform = 'scale(0)';
+        element.style.opacity = '0';
 
-        if (itemsCollectedP1 >= 10) {
-            clearInterval(timerInterval);
+        p1ItemsFound++;
+        totalScore += 100;
+        document.getElementById('p1-score').innerText = totalScore;
+        document.getElementById('p1-counter-title').innerText = `ITEMS TO FIND (${p1ItemsFound}/${totalP1Items})`;
+
+        // Strike through in sidebar
+        const rows = document.querySelectorAll('#p1-item-list .item-row');
+        rows.forEach(row => {
+            if (row.getAttribute('data-item') === itemName) {
+                row.classList.add('found');
+            }
+        });
+
+        if (p1ItemsFound >= totalP1Items) {
+            clearInterval(p1TimerInterval);
             setTimeout(() => {
-                addXP(250);
-                document.querySelectorAll('.phase-view').forEach(v => v.classList.remove('active'));
-                document.getElementById('view-p1-complete').classList.add('active');
-            }, 600);
+                showMission2Intro();
+            }, 500);
         }
     }
 
-    function triggerSquirrel() {
-        const sq = document.getElementById('squirrel-event');
-        sq.style.top = Math.random() * 70 + 10 + '%';
-        sq.style.left = '-10%';
-        sq.style.display = 'block';
-        sq.style.transition = 'left 4s linear';
-        setTimeout(() => sq.style.left = '110%', 50);
+    /* ==================== MISSION 2 INTRO ==================== */
+    function showMission2Intro() {
+        showModal(
+            "MISSION 2: THE LAKE CATCH", 
+            "Great work securing the campsite equipment!\n\nNow head down to the shoreline. You must use your recovered fishing rod to catch at least 6 Special Fish before nightfall.", 
+            "START MISSION 2", 
+            startPhase2
+        );
     }
 
-    function tapSquirrel(el) {
-        playSound('pop');
-        addXP(50);
-        setDialogue('Quick reflexes! Squirrel spotted! (+50 XP)');
-        el.style.display = 'none';
-    }
-
-    function tapOwl() {
-        setDialogue('🦉 "Hoot! The vault key isn\'t near the fire..."');
-    }
-
-    // ================= PHASE 2 LOGIC =================
+    /* ==================== PHASE 2 MECHANICS ==================== */
     function startPhase2() {
-        document.querySelectorAll('.phase-view').forEach(v => v.classList.remove('active'));
-        document.getElementById('view-phase2').classList.add('active');
-        document.getElementById('phase-title').innerText = 'PHASE 2: TREASURE HUNT';
-        document.getElementById('bear-tracker').style.display = 'none';
-        setDialogue('Use your metal detector to sweep the beach for hidden treasures!');
+        document.getElementById('phase-1').classList.remove('active');
+        document.getElementById('phase-2').classList.add('active');
+        document.getElementById('p2-score').innerText = totalScore;
 
-        // Spawn Buried Treasure Hotspots
-        spawnDigSpots();
+        p2TimerInterval = setInterval(() => {
+            p2TimeLeft--;
+            let mins = Math.floor(p2TimeLeft / 60);
+            let secs = p2TimeLeft % 60;
+            document.getElementById('p2-timer').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if (p2TimeLeft <= 0) {
+                clearInterval(p2TimerInterval);
+                if (p2FishCaught >= 6) {
+                    showModal("VICTORY!", `Challenge Completed!\nFinal Score: ${totalScore}`, "PLAY AGAIN", () => location.reload());
+                } else {
+                    showModal("TIME EXPIRED", "You couldn't catch enough special fish in time!", "RETRY", () => location.reload());
+                }
+            }
+        }, 1000);
     }
 
-    let digSpots = [];
-    function spawnDigSpots() {
-        for(let i = 0; i < 5; i++) {
-            digSpots.push({
-                x: Math.random() * 80 + 10,
-                y: Math.random() * 50 + 40,
-                found: false,
-                item: ['🪙 Coin', '🐚 Shell', '💎 Gem', '🥥 Coconut', '⭐ Starfish'][i]
+    function handleCastAction() {
+        const btn = document.getElementById('cast-trigger');
+        const label = document.getElementById('cast-label');
+
+        if (fishingState === 'idle') {
+            fishingState = 'waiting';
+            label.innerText = 'WAITING...';
+            btn.classList.add('reeling');
+
+            // Random bite time between 1.5s and 3.5s
+            let biteDelay = Math.random() * 2000 + 1500;
+            hookTimeout = setTimeout(() => {
+                fishingState = 'hooked';
+                label.innerText = 'REEL IN!';
+                btn.innerText = '⚡';
+                triggerBiteSplash();
+            }, biteDelay);
+
+        } else if (fishingState === 'waiting') {
+            // Player clicked too early
+            clearTimeout(hookTimeout);
+            fishingState = 'idle';
+            label.innerText = 'TOO EARLY! CAST AGAIN';
+            btn.classList.remove('reeling');
+            setTimeout(() => { label.innerText = 'TAP TO CAST'; }, 1500);
+
+        } else if (fishingState === 'hooked') {
+            // Successful catch
+            fishingState = 'idle';
+            btn.classList.remove('reeling');
+            btn.innerText = '🎣';
+            label.innerText = 'TAP TO CAST';
+
+            p2FishCaught++;
+            totalScore += 250;
+            document.getElementById('p2-score').innerText = totalScore;
+            document.getElementById('p2-fish-counter').innerText = `SPECIAL FISH (${p2FishCaught}/6)`;
+
+            // Fill fish slot icon
+            const slots = document.querySelectorAll('#fish-slots-grid .fish-slot');
+            if (slots[p2FishCaught - 1]) {
+                slots[p2FishCaught - 1].classList.add('caught');
+            }
+
+            if (p2FishCaught >= 6) {
+                clearInterval(p2TimerInterval);
+                setTimeout(() => {
+                    showModal("MISSION COMPLETE!", `You caught 6 special fish and saved the camp!\n\nFinal Score: ${totalScore}`, "PLAY AGAIN", () => location.reload());
+                }, 500);
+            }
+        }
+    }
+
+    /* ==================== CANVAS RENDERING (RIPPLES & LIGHTING) ==================== */
+    let p1Canvas, p1Ctx, p2Canvas, p2Ctx;
+    let ripples = [];
+    let ripplesP2 = [];
+
+    function initPhase1Canvas() {
+        p1Canvas = document.getElementById('canvas-phase1');
+        p1Canvas.width = p1Canvas.offsetWidth;
+        p1Canvas.height = p1Canvas.offsetHeight;
+        p1Ctx = p1Canvas.getContext('2d');
+
+        function renderP1() {
+            p1Ctx.clearRect(0, 0, p1Canvas.width, p1Canvas.height);
+            // Ambient campfire warmth flickering effect
+            let time = Date.now() * 0.003;
+            let glowX = p1Canvas.width * 0.5;
+            let glowY = p1Canvas.height * 0.65;
+            let radius = 180 + Math.sin(time) * 15;
+
+            let grad = p1Ctx.createRadialGradient(glowX, glowY, 10, glowX, glowY, radius);
+            grad.addColorStop(0, 'rgba(255, 120, 30, 0.25)');
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+            p1Ctx.fillStyle = grad;
+            p1Ctx.beginPath();
+            p1Ctx.arc(glowX, glowY, radius, 0, Math.PI * 2);
+            p1Ctx.fill();
+
+            requestAnimationFrame(renderP1);
+        }
+        renderP1();
+    }
+
+    function initPhase2Canvas() {
+        p2Canvas = document.getElementById('canvas-phase2');
+        p2Canvas.width = p2Canvas.offsetWidth;
+        p2Canvas.height = p2Canvas.offsetHeight;
+        p2Ctx = p2Canvas.getContext('2d');
+
+        // Spawn ambient water ripples
+        setInterval(() => {
+            ripplesP2.push({
+                x: Math.random() * p2Canvas.width,
+                y: p2Canvas.height * 0.45 + Math.random() * (p2Canvas.height * 0.4),
+                r: 2,
+                alpha: 0.8
+            });
+        }, 800);
+
+        function renderP2() {
+            p2Ctx.clearRect(0, 0, p2Canvas.width, p2Canvas.height);
+
+            // Draw ambient question mark targets floating in water
+            let time = Date.now() * 0.002;
+            let targets = [
+                {x: p2Canvas.width * 0.38, y: p2Canvas.height * 0.72},
+                {x: p2Canvas.width * 0.76, y: p2Canvas.height * 0.65},
+                {x: p2Canvas.width * 0.84, y: p2Canvas.height * 0.74}
+            ];
+
+            targets.forEach(t => {
+                let floatY = t.y + Math.sin(time + t.x) * 4;
+                p2Ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                p2Ctx.beginPath();
+                p2Ctx.arc(t.x, floatY, 16, 0, Math.PI * 2);
+                p2Ctx.fill();
+                p2Ctx.fillStyle = '#ffffff';
+                p2Ctx.font = 'bold 14px Inter';
+                p2Ctx.textAlign = 'center';
+                p2Ctx.fillText('?', t.x, floatY + 5);
+            });
+
+            // Animate water ripples
+            for (let i = ripplesP2.length - 1; i >= 0; i--) {
+                let rip = ripplesP2[i];
+                rip.r += 0.4;
+                rip.alpha -= 0.008;
+
+                if (rip.alpha <= 0) {
+                    ripplesP2.splice(i, 1);
+                    continue;
+                }
+
+                p2Ctx.strokeStyle = `rgba(255, 255, 255, ${rip.alpha})`;
+                p2Ctx.lineWidth = 1.5;
+                p2Ctx.beginPath();
+                p2Ctx.ellipse(rip.x, rip.y, rip.r * 2, rip.r, 0, 0, Math.PI * 2);
+                p2Ctx.stroke();
+            }
+
+            requestAnimationFrame(renderP2);
+        }
+        renderP2();
+    }
+
+    function triggerBiteSplash() {
+        for (let i = 0; i < 5; i++) {
+            ripplesP2.push({
+                x: p2Canvas.width * 0.5 + (Math.random() - 0.5) * 40,
+                y: p2Canvas.height * 0.6 + (Math.random() - 0.5) * 20,
+                r: 5,
+                alpha: 1.0
             });
         }
     }
 
-    function handleMetalDetector(e) {
-        const rect = document.getElementById('beach-scene').getBoundingClientRect();
-        const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
-        const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+    /* ==================== MODAL HELPER ==================== */
+    let modalCallback = null;
 
-        digSpots.forEach(spot => {
-            if (spot.found) return;
-            let dist = Math.hypot(spot.x - mouseX, spot.y - mouseY);
-            if (dist < 8) {
-                playSound('beep');
-                const ping = document.getElementById('detector-ping');
-                ping.style.left = mouseX + '%';
-                ping.style.top = mouseY + '%';
-                ping.style.display = 'block';
-
-                if (dist < 3) {
-                    spot.found = true;
-                    digTreasure(spot);
-                }
-            }
-        });
+    function showModal(title, desc, btnText, callback) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-desc').innerText = desc;
+        document.getElementById('modal-btn').innerText = btnText;
+        document.getElementById('game-modal').classList.add('active');
+        modalCallback = callback;
     }
 
-    function digTreasure(spot) {
-        playSound('pop');
-        const slots = document.querySelectorAll('#p2-inventory .inv-slot');
-        slots[treasuresFoundP2].innerText = spot.item.split(' ')[0];
-        slots[treasuresFoundP2].classList.add('filled');
-        
-        treasuresFoundP2++;
-        document.getElementById('treasure-count').innerText = treasuresFoundP2;
-        setDialogue(`Dug up a ${spot.item}!`);
-
-        if (treasuresFoundP2 >= 5) {
-            setDialogue('All treasures recovered! Now try fishing for clues!');
-        }
-    }
-
-    // FISHING POWER METER MINI GAME
-    let meterAnim = null;
-    let meterPos = 0;
-    let meterDir = 2;
-
-    function openFishingGame() {
-        document.getElementById('fishing-modal').style.display = 'flex';
-        meterAnim = setInterval(() => {
-            meterPos += meterDir;
-            if (meterPos >= 92 || meterPos <= 0) meterDir *= -1;
-            document.getElementById('meter-indicator').style.left = meterPos + '%';
-        }, 15);
-    }
-
-    function stopFishingMeter() {
-        clearInterval(meterAnim);
-        document.getElementById('fishing-modal').style.display = 'none';
-
-        if (meterPos >= 60 && meterPos <= 85) {
-            playSound('pop');
-            setDialogue('🐟 Caught a fish! Glub... "The next digit is 0!"');
-            document.getElementById('chest-zone').style.display = 'flex';
-        } else {
-            setDialogue('Fish escaped! Try timing again.');
-        }
-    }
-
-    function openChest(num, el) {
-        if (num === 2) {
-            playSound('pop');
-            el.innerText = '🔑';
-            addXP(300);
-            setDialogue('Vault Key Unlocked! (+300 XP)');
-            setTimeout(() => {
-                document.querySelectorAll('.phase-view').forEach(v => v.classList.remove('active'));
-                document.getElementById('view-final').classList.add('active');
-            }, 1000);
-        } else {
-            playSound('roar');
-            el.innerText = '🦀';
-            setDialogue('Crab Attack! Wrong chest!');
-        }
-    }
-
-    function collectHeart(el) {
-        playSound('pop');
-        el.style.display = 'none';
-        heartsFound++;
-        setDialogue(`Secret Heart Found (${heartsFound}/5)! ❤️`);
-        if (heartsFound >= 5) {
-            document.getElementById('heart-unlock-msg').style.display = 'block';
-        }
+    function nextPhase() {
+        document.getElementById('game-modal').classList.remove('active');
+        if (modalCallback) modalCallback();
     }
 </script>
 </body>
