@@ -527,7 +527,7 @@ function startPhase1(){
 
     createHiddenObjects();
 
-    startBear();
+    startBearAI();
 
 }
 
@@ -702,7 +702,7 @@ s.remove();
  BEAR
 ======================================================*/
 
-function startBear(){
+function startBearAI();
 
     const bar =
     document.getElementById("bearProgress");
@@ -767,26 +767,26 @@ function bearRoar(){
 
 function missionSuccess(){
 
-    clearInterval(bearInterval);
+clearInterval(bearInterval);
 
-    saveGame();
+saveGame();
 
-    document.getElementById("phase1")
-    .classList.add("fadeOut");
+document.getElementById("successSound").play();
 
-    setTimeout(()=>{
+document.getElementById("phase1")
+.classList.add("fadeOut");
 
-        document.getElementById("phase1")
-        .style.display="none";
+setTimeout(()=>{
 
-        document.getElementById("phase1Complete")
-        .classList.remove("hidden");
+document.getElementById("phase1").style.display="none";
 
-        document
-        .getElementById("successSound")
-        ?.play();
+document.getElementById("phase1Complete")
+.classList.remove("hidden");
 
-    },700);
+document.getElementById("phase1Complete")
+.classList.add("fadeIn");
+
+},800);
 
 }
 
@@ -900,3 +900,206 @@ function flyToInventory(itemElement, itemId){
     },900);
 
 }
+/*======================================================
+ SECTION 3C
+ BEAR AI SYSTEM
+======================================================*/
+
+const bear = document.createElement("img");
+
+bear.src = "assets/bear/bear_walk.png";
+
+bear.id = "bearSprite";
+
+bear.style.position = "absolute";
+
+bear.style.left = "-220px";
+
+bear.style.bottom = "70px";
+
+bear.style.width = "180px";
+
+bear.style.zIndex = "200";
+
+bear.style.pointerEvents = "none";
+
+document.getElementById("campScene").appendChild(bear);
+
+let bearPosition = -220;
+let bearSpeed = 1.6;
+
+function startBearAI(){
+
+    const progressBar = document.getElementById("bearProgress");
+
+    bearInterval = setInterval(()=>{
+
+        bearPosition += bearSpeed;
+
+        bear.style.left = bearPosition + "px";
+
+        bearDistance -= 1.6;
+
+        if(bearDistance < 0)
+            bearDistance = 0;
+
+        progressBar.style.width = bearDistance + "%";
+
+        /* Bear speeds up */
+
+        if(bearDistance < 40){
+
+            bearSpeed = 2.6;
+
+            document.body.classList.add("danger");
+
+        }
+
+        if(bearDistance < 20){
+
+            bearSpeed = 4.5;
+
+            bearRoar();
+
+        }
+
+        /* Bear reaches camp */
+
+        if(bearDistance <= 0){
+
+            clearInterval(bearInterval);
+
+            gameOver();
+
+        }
+
+    },100);
+
+}
+/*======================================================
+ GAME OVER
+======================================================*/
+
+function gameOver(){
+
+const roar=document.getElementById("bearSound");
+
+if(roar){
+
+roar.play();
+
+}
+
+const warning=document.createElement("div");
+
+warning.className="bearWarning";
+
+warning.innerHTML="🐻 The Bear Reached Camp!";
+
+document.body.appendChild(warning);
+
+setTimeout(()=>{
+
+location.reload();
+
+},3500);
+
+}
+/*======================================================
+ CAMPFIRE EFFECT
+======================================================*/
+
+function createCampfire(){
+
+const fire=document.createElement("div");
+
+fire.id="campFire";
+
+document.getElementById("campScene").appendChild(fire);
+
+}
+
+createCampfire();
+/*======================================================
+ LEAVES
+======================================================*/
+
+function createLeaves(){
+
+const scene=document.getElementById("campScene");
+
+setInterval(()=>{
+
+const leaf=document.createElement("div");
+
+leaf.className="leaf";
+
+leaf.style.left=Math.random()*100+"%";
+
+leaf.style.animationDuration=
+
+8+Math.random()*5+"s";
+
+scene.appendChild(leaf);
+
+setTimeout(()=>{
+
+leaf.remove();
+
+},14000);
+
+},1200);
+
+}
+
+createLeaves();
+/*======================================================
+ CLOUDS
+======================================================*/
+
+function createCloud(){
+
+const scene=document.getElementById("campScene");
+
+const cloud=document.createElement("div");
+
+cloud.className="cloud";
+
+cloud.style.top=
+
+20+Math.random()*100+"px";
+
+scene.appendChild(cloud);
+
+setTimeout(()=>{
+
+cloud.remove();
+
+},90000);
+
+}
+
+setInterval(createCloud,15000);
+/*======================================================
+ BIRDS
+======================================================*/
+
+function createBird(){
+
+const scene=document.getElementById("campScene");
+
+const bird=document.createElement("div");
+
+bird.className="bird";
+
+scene.appendChild(bird);
+
+setTimeout(()=>{
+
+bird.remove();
+
+},22000);
+
+}
+
+setInterval(createBird,18000);
