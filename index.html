@@ -3,1141 +3,826 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 2: The Hunt for Clues 🔍🌲</title>
+    <title>Operation: Birthday 30 - Mission 2 🌲</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
-            background: radial-gradient(circle at center, #1b261c 0%, #0d130e 100%);
+            background: #080d09;
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             width: 100vw;
-            overflow-x: hidden; 
+            overflow: hidden; 
             font-family: 'Montserrat', sans-serif;
             color: #f1e4f3;
+            user-select: none;
         }
 
+        /* 14. CINEMATIC INTRO OVERLAY */
+        #cinematic-intro {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .studio-text {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 6px;
+            color: #888;
+            opacity: 0;
+            animation: fadeInOut 3s ease forwards;
+        }
+
+        .op-title {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            letter-spacing: 4px;
+            color: #f3c669;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeIn 2s ease 2.5s forwards;
+            text-shadow: 0 0 15px rgba(243, 198, 105, 0.5);
+        }
+
+        .loading-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 12px;
+            color: #4af626;
+            margin-top: 25px;
+            opacity: 0;
+            animation: fadeIn 1s ease 4s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            40% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* MAIN GAME CONTAINER */
         .container { 
             width: 95vw; 
             max-width: 1050px; 
-            min-height: 90vh;
+            height: 92vh;
             max-height: 880px;
-            background: rgba(22, 34, 24, 0.94);
+            background: rgba(18, 28, 20, 0.95);
             backdrop-filter: blur(12px);
-            border: 2px solid #4a5d4e;
-            border-radius: 24px; 
+            border: 2px solid #3a4d3c;
+            border-radius: 20px; 
             position: relative; 
-            box-shadow: 0 0 50px rgba(74, 93, 78, 0.4), inset 0 0 60px rgba(0,0,0,0.8); 
+            box-shadow: 0 0 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(0,0,0,0.8); 
             display: flex; 
             flex-direction: column; 
-            align-items: center; 
-            padding: 20px; 
+            padding: 15px; 
             overflow: hidden; 
         }
 
-        /* HEADER & XP BAR */
-        .top-bar {
-            width: 100%;
+        /* TOP HUD & 9. REAL MISSION PROGRESS */
+        .top-hud {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 16px;
-            background: rgba(13, 19, 14, 0.8);
-            border: 1px solid #3e4a3f;
+            padding: 8px 14px;
+            background: rgba(10, 15, 11, 0.85);
+            border: 1px solid #2d3e2f;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             z-index: 30;
-            font-size: 12px;
+            font-size: 11px;
         }
 
-        .level-badge {
-            font-weight: 800;
-            color: #f3c669;
-            letter-spacing: 1px;
+        .hud-left { display: flex; gap: 15px; align-items: center; }
+        .mission-tag { font-weight: 800; color: #f3c669; letter-spacing: 1px; }
+
+        .progress-bar-bg {
+            width: 130px; height: 10px; background: #121a13; border-radius: 5px;
+            border: 1px solid #3a4d3c; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #388e3c, #f3c669);
+            transition: width 0.4s ease;
+        }
+
+        /* 3. INVENTORY HUD */
+        .inventory-box {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .xp-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .xp-bar-bg {
-            width: 120px;
-            height: 10px;
-            background: #182619;
-            border-radius: 5px;
-            overflow: hidden;
+            gap: 8px;
+            background: rgba(20, 31, 21, 0.9);
             border: 1px solid #48614b;
+            padding: 4px 10px;
+            border-radius: 8px;
         }
 
-        .xp-bar-fill {
-            height: 100%;
-            width: 62.5%;
-            background: linear-gradient(90deg, #388e3c, #f3c669);
-            transition: width 0.5s ease;
+        .inventory-slots { display: flex; gap: 6px; font-size: 16px; min-width: 100px; }
+        .inv-slot {
+            width: 24px; height: 24px; background: #0c120d; border: 1px solid #2d3e2f;
+            border-radius: 4px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .inv-slot.pop { transform: scale(1.3); border-color: #f3c669; }
 
-        /* CARD STYLES */
+        /* CARDS */
         .card {
             position: absolute;
-            top: 75px;
-            width: 94%;
-            height: calc(100% - 95px);
-            background: #141f15;
-            border: 2px solid #627d67;
-            border-radius: 18px;
-            padding: 20px;
+            top: 60px; left: 15px; right: 15px; bottom: 15px;
+            background: #121a13;
+            border: 1px solid #2d3e2f;
+            border-radius: 14px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(40px) scale(0.96);
+            transition: all 0.4s ease;
+            transform: translateY(20px);
             z-index: 2;
-            text-align: center;
             overflow-y: auto;
         }
 
-        .card.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-            z-index: 20;
+        .card.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 20; }
+
+        .title { font-family: 'Cinzel', serif; color: #f3c669; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { font-size: 10px; color: #82a384; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* 1. OBJECTIVES LIST */
+        .objectives-card {
+            background: rgba(8, 13, 9, 0.8);
+            border: 1px solid #2b3d2c;
+            border-radius: 10px;
+            padding: 10px;
+            width: 100%;
+            max-width: 480px;
+            text-align: left;
+            font-size: 12px;
+            margin: 8px 0;
         }
 
-        .card.shake {
-            animation: shake 0.4s ease-in-out;
+        .obj-item { display: flex; align-items: center; gap: 8px; margin: 5px 0; color: #a4c4a6; }
+        .obj-item.done { color: #4af626; text-decoration: line-through; }
+
+        /* 2. REAL SCENE MAP & 5/13. ANIMATIONS */
+        .scene-map {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 330px;
+            border: 2px solid #48614b;
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 6px 0;
+            background: linear-gradient(to bottom, #09131a 0%, #162b20 40%, #1e3a2b 100%);
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
+        /* AMBIENT ANIMATED ELEMENTS (5 & 13) */
+        .moon { position: absolute; top: 15px; right: 25px; font-size: 24px; animation: moonGlow 3s infinite alternate; }
+        @keyframes moonGlow { 0% { filter: drop-shadow(0 0 2px #fff); } 100% { filter: drop-shadow(0 0 12px #f3c669); } }
 
-        /* TYPOGRAPHY */
-        .title {
-            font-family: 'Cinzel', serif;
-            color: #f3c669;
-            font-size: 22px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 12px rgba(243, 198, 105, 0.4);
-            margin-bottom: 4px;
-        }
+        .cloud { position: absolute; color: rgba(255,255,255,0.25); font-size: 22px; animation: cloudMove 25s linear infinite; }
+        @keyframes cloudMove { 0% { left: -10%; } 100% { left: 110%; } }
 
-        .subtitle {
-            font-size: 11px;
-            color: #93b899;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
+        .star { position: absolute; color: #fff; font-size: 8px; animation: twinkle 1.5s infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 1; } }
 
-        /* TERMINAL STYLE */
+        .fire-anim { position: absolute; font-size: 32px; animation: flicker 0.3s infinite alternate; cursor: pointer; }
+        @keyframes flicker { 0% { transform: scale(1); filter: drop-shadow(0 0 5px #f4511e); } 100% { transform: scale(1.12); filter: drop-shadow(0 0 15px #ffb300); } }
+
+        .wave-anim { position: absolute; bottom: 0; width: 100%; height: 35px; background: rgba(32, 178, 170, 0.3); animation: waveMove 3s ease-in-out infinite alternate; }
+        @keyframes waveMove { 0% { transform: translateY(0); } 100% { transform: translateY(6px); } }
+
+        .fish-anim { position: absolute; font-size: 20px; animation: fishSwim 12s linear infinite; cursor: pointer; }
+        @keyframes fishSwim { 0% { left: -10%; } 100% { left: 110%; } }
+
+        .crab-anim { position: absolute; font-size: 18px; animation: crabWalk 4s ease-in-out infinite alternate; cursor: pointer; }
+        @keyframes crabWalk { 0% { transform: translateX(0); } 100% { transform: translateX(25px); } }
+
+        /* MAP TAP OBJECTS */
+        .map-obj {
+            position: absolute;
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            z-index: 10;
+        }
+        .map-obj:hover { transform: scale(1.3); filter: drop-shadow(0 0 8px #f3c669); }
+
+        /* 6. FOOTPRINTS */
+        .footprint {
+            position: absolute;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: fadeOut 1.2s forwards;
+            z-index: 5;
+        }
+        @keyframes fadeOut { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(0.6); } }
+
+        /* TERMINAL & DIALOGUE */
         .terminal-box {
             background: #080d09;
             border: 1px solid #2d4530;
-            border-radius: 10px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 10px;
             font-family: 'Courier Prime', monospace;
             color: #4af626;
             text-align: left;
             width: 100%;
             max-width: 550px;
-            font-size: 13px;
-            line-height: 1.5;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
-            margin: 8px 0;
-            min-height: 110px;
+            font-size: 12px;
+            line-height: 1.4;
+            min-height: 55px;
         }
+
+        /* 7. SECURITY SCANNER */
+        .scanner-line {
+            width: 100%; height: 2px; background: #4af626;
+            box-shadow: 0 0 10px #4af626;
+            animation: scan 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(80px); } }
+
+        /* KEYPAD */
+        .code-display { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
+        .code-slot {
+            width: 36px; height: 44px; background: #080d09; border: 2px solid #f3c669;
+            border-radius: 6px; font-size: 20px; font-weight: 800; color: #f3c669;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; max-width: 200px; margin: 0 auto; }
+        .keypad-btn {
+            background: #1a291c; border: 1px solid #3d543f; color: #fff;
+            padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer;
+        }
+        .keypad-btn:hover { background: #2b422e; }
+
+        /* 8. ACHIEVEMENTS & 12. HIDDEN HEARTS */
+        .badges-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 5px 0; }
+        .badge-card {
+            background: #0d140e; border: 1px solid #2b3d2c; border-radius: 6px;
+            padding: 4px 8px; font-size: 10px; display: flex; align-items: center; gap: 4px; opacity: 0.4;
+        }
+        .badge-card.unlocked { opacity: 1; border-color: #f3c669; color: #f3c669; }
+
+        .hidden-heart {
+            position: absolute; font-size: 14px; cursor: pointer; opacity: 0.3;
+            transition: opacity 0.2s, transform 0.2s; z-index: 15;
+        }
+        .hidden-heart:hover { opacity: 1; transform: scale(1.4); }
 
         /* BUTTONS */
         .btn-primary {
-            font-size: 14px;
-            color: #0e170f;
-            background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
-            border: none;
-            padding: 12px 26px;
-            border-radius: 30px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 20px rgba(243, 198, 105, 0.3);
-            margin: 8px 0;
+            font-size: 12px; color: #0e170f; background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
+            border: none; padding: 10px 22px; border-radius: 20px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: transform 0.2s;
         }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-primary:disabled { background: #2d3e2f; color: #5f7561; cursor: not-allowed; transform: none; }
 
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(243, 198, 105, 0.5);
-        }
-
-        .btn-primary:disabled {
-            background: #3e4a3f;
-            color: #798a7b;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* CAMPSITE GRID */
-        .campsite-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            width: 100%;
-            max-width: 600px;
-            margin: 8px 0;
-        }
-
-        .camp-item {
-            background: rgba(30, 48, 32, 0.8);
-            border: 1px solid #48614b;
-            border-radius: 10px;
-            padding: 10px 4px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .camp-item:hover {
-            border-color: #f3c669;
-            background: #253827;
-            transform: translateY(-2px);
-        }
-
-        .camp-item.searched {
-            opacity: 0.6;
-            border-color: #2b3d2c;
-        }
-
-        .camp-item.found-clue {
-            border-color: #f3c669;
-            background: #38523a;
-            opacity: 1;
-            box-shadow: 0 0 10px rgba(243, 198, 105, 0.4);
-        }
-
-        /* BEACH SCENE INTERACTIVE CANVAS */
-        .beach-scene {
-            position: relative;
-            width: 100%;
-            max-width: 650px;
-            height: 320px;
-            background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 40%, #20b2aa 45%, #18817b 60%, #f4e0a5 60%, #e6c875 100%);
-            border: 3px solid #f3c669;
-            border-radius: 16px;
-            overflow: hidden;
-            margin: 8px 0;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        .beach-item {
-            position: absolute;
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.2s, filter 0.2s;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .beach-item:hover {
-            transform: scale(1.25);
-            filter: drop-shadow(0 0 8px #f3c669);
-        }
-
-        .beach-item.found {
-            opacity: 0.25;
-            pointer-events: none;
-            filter: grayscale(100%);
-        }
-
-        .target-list {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 6px 0;
-            max-width: 650px;
-        }
-
-        .target-card {
-            background: rgba(13, 19, 14, 0.85);
-            border: 1px solid #48614b;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .target-card.found {
-            border-color: #4af626;
-            color: #4af626;
-            text-decoration: line-through;
-        }
-
-        /* CODE DISPLAY */
-        .code-display {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 10px 0;
-        }
-
-        .code-slot {
-            width: 42px;
-            height: 50px;
-            background: #0d130e;
-            border: 2px solid #f3c669;
-            border-radius: 8px;
-            font-size: 22px;
-            font-weight: 800;
-            color: #f3c669;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
-        }
-
-        .keypad-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            max-width: 240px;
-            margin: 0 auto;
-        }
-
-        .keypad-btn {
-            background: #1e3020;
-            border: 1px solid #48614b;
-            color: #f1e4f3;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .keypad-btn:hover { background: #2d4530; }
-
-        /* BADGES DISPLAY */
-        .badges-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            width: 100%;
-            max-width: 480px;
-            margin: 10px 0;
-        }
-
-        .badge-card {
-            background: rgba(20, 31, 21, 0.9);
-            border: 1px solid #3a4d3c;
-            border-radius: 8px;
-            padding: 8px 4px;
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .badge-card.unlocked {
-            border-color: #f3c669;
-            background: rgba(45, 69, 48, 0.8);
-            box-shadow: 0 0 8px rgba(243, 198, 105, 0.2);
-        }
-
-        /* POPUPS & PARTICLES */
-        .achievement-banner {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: linear-gradient(135deg, #1e361f, #0f1d10);
-            border: 2px solid #f3c669;
-            border-radius: 30px;
-            padding: 10px 24px;
-            color: #f3c669;
-            font-weight: 800;
-            font-size: 13px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 100;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .achievement-banner.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .easter-egg-btn {
-            background: none;
-            border: none;
-            color: #839d86;
-            font-size: 11px;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 5px;
-        }
-
-        .easter-egg-btn:hover { color: #f3c669; }
-
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            animation: floatUp 2s ease-out forwards;
-            font-size: 22px;
-            z-index: 99;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
-        }
-
-        @media (max-width: 600px) {
-            .campsite-grid { grid-template-columns: repeat(3, 1fr); }
-            .badges-grid { grid-template-columns: repeat(2, 1fr); }
-            .title { font-size: 18px; }
-            .beach-scene { height: 250px; }
+        /* SCREEN FLASH (15) */
+        #flash-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; opacity: 0; pointer-events: none; z-index: 999;
+            transition: opacity 0.1s ease-out;
         }
     </style>
 </head>
 <body>
 
-<!-- SECRET ACHIEVEMENT POPUP -->
-<div class="achievement-banner" id="achievement-pop">
-    🏆 Achievement Unlocked: <span>Professional Snooper (+50 XP)</span>
+<!-- 14. CINEMATIC INTRO -->
+<div id="cinematic-intro">
+    <div class="studio-text">OPENAI STUDIOS PRESENTS</div>
+    <div class="op-title">OPERATION: BIRTHDAY 30</div>
+    <div class="loading-text" id="intro-loading">> Initializing Mission 2 Sequence...</div>
 </div>
 
-<div class="container" id="app">
+<div id="flash-overlay"></div>
 
-    <!-- TOP HEADER WITH XP BAR -->
-    <div class="top-bar">
-        <div class="level-badge">
-            <span>🌲</span> LEVEL 2
-        </div>
-        <div class="xp-container">
-            <span style="color:#a8c3aa; font-weight:700;">XP</span>
-            <div class="xp-bar-bg">
-                <div class="xp-bar-fill" id="xp-fill"></div>
-            </div>
-            <span id="xp-text" style="color:#f3c669; font-weight:800;">250 / 400</span>
-        </div>
-    </div>
+<div class="container">
 
-    <!-- CARD 0: MISSION REPORT / RANK -->
-    <div class="card active" id="card-rank">
-        <div>
-            <div class="subtitle">═════════════════════════════</div>
-            <div class="title">MISSION REPORT</div>
-            <div class="subtitle">═════════════════════════════</div>
-        </div>
-
-        <div style="background: rgba(10,16,11,0.8); border: 1px solid #324734; border-radius: 12px; padding: 12px; width: 100%; max-width: 480px; text-align: left; font-size: 13px;">
-            <p><strong style="color:#f3c669;">Operative:</strong> Chief Adventurer</p>
-            <p><strong style="color:#f3c669;">Status:</strong> <span style="color:#4af626; font-weight:700;">ACTIVE</span></p>
-            <p style="margin-top:6px;"><strong style="color:#f3c669;">Mission Success Rate:</strong></p>
-            <p style="color:#4af626; letter-spacing: 2px; font-weight:700;">██████████ 100%</p>
-            <hr style="border-color:#2a3b2c; margin: 8px 0;">
-            <p><strong style="color:#f3c669;">Rank Earned:</strong></p>
-            <p style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px;">🥇 ELITE EXPLORER</p>
-        </div>
-
-        <div class="terminal-box" id="term-intro">
-            > Initializing encrypted comms...<br>
-            > Ready for Level 2 dispatch sequence.
-        </div>
-
-        <div>
-            <button class="btn-primary" onclick="triggerGpsScanner()">🛰️ Initiate GPS Sweep ➔</button>
+    <!-- TOP HUD & PROGRESS -->
+    <div class="top-hud">
+        <div class="hud-left">
+            <span class="mission-tag">MISSION 2</span>
             <div>
-                <button class="easter-egg-btn" onclick="showLoveEgg()">Created with ❤️ by your Wife</button>
+                <span style="color:#82a384; font-size:9px;">PROGRESS</span>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="main-progress"></div>
+                </div>
+            </div>
+            <span id="progress-pct" style="color:#4af626; font-weight:700;">0%</span>
+        </div>
+
+        <!-- 3. INVENTORY -->
+        <div class="inventory-box">
+            <span style="color:#f3c669; font-weight:800;">🔑 <span id="key-count">0</span>/4</span>
+            <div class="inventory-slots" id="inv-slots-ui">
+                <div class="inv-slot" id="slot-0"></div>
+                <div class="inv-slot" id="slot-1"></div>
+                <div class="inv-slot" id="slot-2"></div>
+                <div class="inv-slot" id="slot-3"></div>
             </div>
         </div>
     </div>
 
-    <!-- CARD 1: FAKE GPS SCANNER -->
-    <div class="card" id="card-scanner">
+    <!-- CARD 0: BRIEFING & 1. OBJECTIVES -->
+    <div class="card active" id="card-intro">
         <div>
-            <div class="subtitle">Phase 01 / Satellite Triangulation</div>
-            <div class="title">GPS Target Lock</div>
+            <div class="subtitle">Briefing Phase</div>
+            <div class="title">Operation Briefing</div>
         </div>
 
-        <div class="terminal-box" id="term-gps" style="min-height: 160px;">
-            > Initializing satellite link...
+        <div class="objectives-card">
+            <div style="font-weight:800; color:#f3c669; margin-bottom:6px;">MISSION OBJECTIVES</div>
+            <div class="obj-item" id="obj-1"><span>□</span> Arrive at Basecamp</div>
+            <div class="obj-item" id="obj-2"><span>□</span> Search Campsite</div>
+            <div class="obj-item" id="obj-3"><span>□</span> Gather Supplies (Beach)</div>
+            <div class="obj-item" id="obj-4"><span>□</span> Unlock Vault</div>
+            <div class="obj-item" id="obj-5"><span>□</span> Recover Secret Intel</div>
         </div>
 
-        <div id="gps-progress-container" style="width:100%; max-width:400px; display:none;">
-            <div style="font-size:12px; color:#f3c669; margin-bottom:4px;" id="gps-status-text">Scanning area...</div>
-            <div style="background:#0d130e; border:1px solid #48614b; height:12px; border-radius:6px; overflow:hidden;">
-                <div id="gps-bar" style="background:#4af626; height:100%; width:0%; transition: width 0.4s ease;"></div>
+        <div class="terminal-box">
+            > Satellite link established.<br>
+            > Tap 'Start Recon' to deploy to campsite coordinates.
+        </div>
+
+        <button class="btn-primary" onclick="startMission()">Start Recon ➔</button>
+    </div>
+
+    <!-- CARD 1: CAMPSITE MAP SEARCH (2, 5, 6, 10, 12) -->
+    <div class="card" id="card-campsite">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <div>
+                <div class="subtitle">Phase 01 / Basecamp Recon</div>
+                <div class="title">Campsite Map</div>
             </div>
+            <div style="font-size:10px; color:#f3c669;">Hearts: <span id="heart-count">0</span>/5 ❤️</div>
         </div>
 
-        <div>
-            <button class="btn-primary" id="btn-gps-continue" disabled onclick="startTerminalStory()">Continue ➔</button>
+        <!-- 2 & 5. ANIMATED SCENE MAP -->
+        <div class="scene-map" id="camp-map" onclick="spawnFootprint(event)">
+            <!-- Ambient Animations -->
+            <div class="star" style="top:10%; left:20%;">★</div>
+            <div class="star" style="top:25%; left:60%;">★</div>
+            <div class="star" style="top:15%; left:80%;">★</div>
+            <div class="moon">🌙</div>
+            <div class="cloud" style="top:15%;">☁️</div>
+
+            <!-- Tap Objects on Map -->
+            <div class="map-obj" style="top:20px; left:40px;" onclick="tapMapItem('tent', '⛺')">⛺</div>
+            <div class="fire-anim" style="top:110px; left:280px;" onclick="tapMapItem('fire', '🔥')">🔥</div>
+            <div class="map-obj" style="top:180px; left:80px;" onclick="tapMapItem('wood', '🪵')">🪵</div>
+            <div class="map-obj" style="top:190px; left:200px;" onclick="tapMapItem('rod', '🎣')">🎣</div>
+            <div class="map-obj" style="top:80px; left:520px;" onclick="tapMapItem('backpack', '🎒')">🎒</div>
+            <div class="map-obj" style="top:200px; left:440px;" onclick="tapMapItem('coke', '🥤')">🥤</div>
+            <div class="map-obj" style="top:230px; left:580px;" onclick="tapMapItem('owl', '🦉')">🦉</div>
+
+            <!-- 12. HIDDEN HEARTS -->
+            <div class="hidden-heart" style="top:10px; left:300px;" onclick="collectHeart(this, event)">❤️</div>
+            <div class="hidden-heart" style="top:260px; left:30px;" onclick="collectHeart(this, event)">❤️</div>
+            <div class="hidden-heart" style="top:140px; left:620px;" onclick="collectHeart(this, event)">❤️</div>
         </div>
+
+        <div class="terminal-box" id="camp-term">
+            > Tap objects on the campsite scene to investigate...
+        </div>
+
+        <button class="btn-primary" id="btn-to-beach" disabled onclick="goToBeach()">Head to Beach ➔</button>
     </div>
 
-    <!-- CARD 2: ANIMATED TERMINAL SETUP -->
-    <div class="card" id="card-terminal">
-        <div>
-            <div class="subtitle">Phase 02 / Secure Briefing</div>
-            <div class="title">Encrypted Transmission</div>
-        </div>
-
-        <div class="terminal-box" id="term-story" style="min-height: 180px;">
-        </div>
-
-        <div>
-            <button class="btn-primary" id="btn-start-hunt" disabled onclick="goToHunt()">🔍 Enter Campsite ➔</button>
-        </div>
-    </div>
-
-    <!-- CARD 3: CAMPSITE CLUE HUNT -->
-    <div class="card" id="card-hunt">
-        <div>
-            <div class="subtitle">Phase 03 / Field Recon</div>
-            <div class="title">Search Basecamp</div>
-            <p style="font-size:11px; color:#c0dbc3;">Find all 4 code digits hidden across campsite items!</p>
-        </div>
-
-        <!-- CODE PROGRESS PREVIEW -->
-        <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#f3c669; font-weight:700;">
-            <span>Vault Code Progress:</span>
-            <span id="code-revealed-display" style="font-family:'Courier Prime', monospace; font-size:16px; letter-spacing:3px; background:#0d130e; padding:3px 10px; border-radius:6px; border:1px solid #48614b;">_ _ _ _</span>
-        </div>
-
-        <div class="campsite-grid" id="camp-grid">
-            <!-- 14 Items dynamically generated in JS -->
-        </div>
-
-        <div id="search-feedback" style="font-size:12px; color:#f3c669; font-weight:700; min-height:24px; padding:0 10px;">
-            Tap campsite items to investigate...
-        </div>
-
-        <div>
-            <button class="btn-primary" id="btn-to-beach" disabled onclick="goToBeachGame()">🏖️ Beach Recon Mini-Game ➔</button>
-        </div>
-    </div>
-
-    <!-- CARD 3.5: BEACH HIDDEN OBJECT MINI-GAME -->
+    <!-- CARD 2: ALIVE BEACH MINI-GAME (13) -->
     <div class="card" id="card-beach">
-        <div>
-            <div class="subtitle">Phase 03.5 / Coastline Recon</div>
-            <div class="title">Find 9 Hidden Beach Items 🏖️</div>
-            <p style="font-size:11px; color:#c0dbc3;">Locate all supply items scattered along the shoreline!</p>
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <div>
+                <div class="subtitle">Phase 02 / Coastline Recon</div>
+                <div class="title">Living Beach</div>
+            </div>
+            <div style="font-size:10px; color:#4af626;">Recover all beach gear!</div>
         </div>
 
-        <div class="target-list" id="target-list-ui">
-            <!-- Dynamically populated 9 target items -->
+        <div class="scene-map" id="beach-map" style="background: linear-gradient(to bottom, #0d233a 0%, #1f5066 45%, #d9b868 45%, #c29f4e 100%);" onclick="spawnFootprint(event)">
+            <!-- 13. ALIVE BEACH ANIMATIONS -->
+            <div class="cloud" style="top:10%;">☁️</div>
+            <div class="star" style="top:8%; left:30%;">★</div>
+            <div class="wave-anim"></div>
+            <div class="fish-anim" style="top:125px;" onclick="tapBeachItem('fish', '🐟')">🐟</div>
+            <div class="crab-anim" style="top:220px; left:180px;" onclick="tapBeachItem('crab', '🦀')">🦀</div>
+
+            <!-- Beach Items -->
+            <div class="map-obj" style="top:180px; left:80px;" onclick="tapBeachItem('glasses', '🕶️')">🕶️</div>
+            <div class="map-obj" style="top:240px; left:350px;" onclick="tapBeachItem('starfish', '⭐️')">⭐️</div>
+            <div class="map-obj" style="top:170px; left:520px;" onclick="tapBeachItem('lotion', '🧴')">🧴</div>
+
+            <!-- 12. HIDDEN HEARTS -->
+            <div class="hidden-heart" style="top:260px; left:480px;" onclick="collectHeart(this, event)">❤️</div>
+            <div class="hidden-heart" style="top:20px; left:500px;" onclick="collectHeart(this, event)">❤️</div>
         </div>
 
-        <div class="beach-scene" id="beach-canvas">
-            <!-- Interactive Hidden Objects -->
+        <div class="terminal-box" id="beach-term">
+            > Tap living beach items to collect shoreline supplies...
         </div>
 
-        <div id="beach-feedback" style="font-size:12px; color:#f3c669; font-weight:700; min-height:20px;">
-            Click on items in the picture to collect them!
-        </div>
-
-        <div>
-            <button class="btn-primary" id="btn-to-vault" disabled onclick="goToVault()">🔓 Access Vault Lockbox ➔</button>
-        </div>
+        <button class="btn-primary" id="btn-to-vault" disabled onclick="goToVaultSecurity()">Proceed to Vault ➔</button>
     </div>
 
-    <!-- CARD 4: VAULT KEYPAD & DECRYPTION -->
+    <!-- CARD 3: 7. SECURITY SCANNER & KEYPAD -->
     <div class="card" id="card-vault">
         <div>
-            <div class="subtitle">Phase 04 / Access Control</div>
-            <div class="title">Vault Security Gate</div>
-            <p style="font-size:11px; color:#c0dbc3;">Enter the 4-digit code uncovered from basecamp!</p>
+            <div class="subtitle">Phase 03 / Vault Access</div>
+            <div class="title">Security Gate</div>
         </div>
 
-        <div class="code-display">
-            <div class="code-slot" id="vslot-0">-</div>
-            <div class="code-slot" id="vslot-1">-</div>
-            <div class="code-slot" id="vslot-2">-</div>
-            <div class="code-slot" id="vslot-3">-</div>
+        <!-- 7. BETTER VAULT SCANNER -->
+        <div id="security-scan-box" style="background:#080d09; border:1px solid #3d543f; border-radius:10px; padding:15px; width:100%; max-width:380px; text-align:center;">
+            <div style="font-size:11px; color:#f3c669; font-weight:800; margin-bottom:8px;">SECURITY LEVEL: MAXIMUM</div>
+            <div style="position:relative; height:80px; background:#0e170f; border:1px dashed #2b3d2c; border-radius:6px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <div class="scanner-line"></div>
+                <div id="scan-status-text" style="font-family:'Courier Prime', monospace; font-size:11px; color:#4af626;">Running Biometric Scan...</div>
+            </div>
         </div>
 
-        <div id="hacker-screen" class="terminal-box" style="display:none; min-height:110px; font-size:12px;">
-            > Initializing Decryption Routine...
+        <!-- KEYPAD (HIDDEN INITIALLY) -->
+        <div id="vault-keypad-section" style="display:none; width:100%;">
+            <div class="code-display">
+                <div class="code-slot" id="vslot-0">-</div>
+                <div class="code-slot" id="vslot-1">-</div>
+                <div class="code-slot" id="vslot-2">-</div>
+                <div class="code-slot" id="vslot-3">-</div>
+            </div>
+
+            <div class="keypad-grid">
+                <button class="keypad-btn" onclick="pressVault('1')">1</button>
+                <button class="keypad-btn" onclick="pressVault('2')">2</button>
+                <button class="keypad-btn" onclick="pressVault('3')">3</button>
+                <button class="keypad-btn" onclick="pressVault('4')">4</button>
+                <button class="keypad-btn" onclick="pressVault('5')">5</button>
+                <button class="keypad-btn" onclick="pressVault('6')">6</button>
+                <button class="keypad-btn" onclick="pressVault('7')">7</button>
+                <button class="keypad-btn" onclick="pressVault('8')">8</button>
+                <button class="keypad-btn" onclick="pressVault('9')">9</button>
+                <button class="keypad-btn" style="background:#522;" onclick="clearVault()">C</button>
+                <button class="keypad-btn" onclick="pressVault('0')">0</button>
+                <button class="keypad-btn" style="background:#252;" onclick="submitVault()">🔓</button>
+            </div>
         </div>
 
-        <div class="keypad-grid" id="keypad-controls">
-            <button class="keypad-btn" onclick="pressVaultKey('1')">1</button>
-            <button class="keypad-btn" onclick="pressVaultKey('2')">2</button>
-            <button class="keypad-btn" onclick="pressVaultKey('3')">3</button>
-            <button class="keypad-btn" onclick="pressVaultKey('4')">4</button>
-            <button class="keypad-btn" onclick="pressVaultKey('5')">5</button>
-            <button class="keypad-btn" onclick="pressVaultKey('6')">6</button>
-            <button class="keypad-btn" onclick="pressVaultKey('7')">7</button>
-            <button class="keypad-btn" onclick="pressVaultKey('8')">8</button>
-            <button class="keypad-btn" onclick="pressVaultKey('9')">9</button>
-            <button class="keypad-btn" style="background:#5a2323;" onclick="clearVaultKey()">C</button>
-            <button class="keypad-btn" onclick="pressVaultKey('0')">0</button>
-            <button class="keypad-btn" style="background:#2b5a2d;" onclick="submitVaultCode()">🔓</button>
-        </div>
-
-        <div style="margin-top:6px;">
-            <button class="easter-egg-btn" onclick="triggerLovePassword()">Type Secret Password</button>
-        </div>
-
-        <div id="vault-status" style="font-size:12px; color:#c0dbc3; margin-top:4px;">
-            Awaiting 4-digit security code...
+        <div class="terminal-box" id="vault-term">
+            > Awaiting security verification...
         </div>
     </div>
 
-    <!-- CARD 5: FINAL MISSION REPORT -->
+    <!-- CARD 4: 11 & 15. ENDING & UNLOCK ANIMATION -->
     <div class="card" id="card-finish">
         <div>
             <div class="subtitle">═════════════════════════════</div>
-            <div class="title">MISSION REPORT</div>
+            <div class="title" style="color:#4af626;">MISSION COMPLETE</div>
             <div class="subtitle">═════════════════════════════</div>
         </div>
 
-        <div style="background: rgba(10,16,11,0.85); border: 1px solid #48614b; border-radius: 12px; padding: 12px; width: 100%; max-width: 500px; text-align: left; font-size: 12px; line-height: 1.5;">
-            <div style="display:flex; justify-content:space-between; margin-bottom: 6px;">
-                <span><strong style="color:#f3c669;">Status:</strong> <span style="color:#4af626; font-weight:800;">COMPLETE</span></span>
-                <span><strong style="color:#f3c669;">Time Taken:</strong> <span id="final-time">03:27</span></span>
-                <span><strong style="color:#f3c669;">Accuracy:</strong> <span style="color:#4af626; font-weight:800;">100%</span></span>
-            </div>
-            <hr style="border-color:#2a3b2c; margin: 6px 0;">
-            <p><strong style="color:#f3c669;">Rewards:</strong> 🏆 Explorer Badge | 🔑 Secret Clue | +250 XP</p>
-            <p><strong style="color:#f3c669;">New Mission:</strong> Unlocked in 7 Days</p>
+        <!-- 11. REWARDS DISPLAY -->
+        <div style="background: rgba(8,13,9,0.9); border: 1px solid #48614b; border-radius: 10px; padding: 12px; width: 100%; max-width: 480px; text-align: left; font-size: 11px;">
+            <div style="color:#f3c669; font-weight:800; margin-bottom:4px;">REWARDS EARNED</div>
+            <p>✔️ +250 XP</p>
+            <p>✔️ Explorer Badge</p>
+            <p>✔️ Code Fragment #2</p>
+            <p>✔️ Encrypted Photo File</p>
         </div>
 
-        <!-- BADGES SECTION -->
-        <div style="width:100%; max-width:500px;">
-            <div style="font-size:11px; font-weight:800; color:#f3c669; text-transform:uppercase; margin-bottom:4px;">Collected Badges</div>
-            <div class="badges-grid">
-                <div class="badge-card unlocked">
-                    <span style="font-size:20px;">🏕️</span>
-                    <strong>Campfire</strong>
-                    <span style="color:#4af626;">Unlocked</span>
-                </div>
-                <div class="badge-card unlocked">
-                    <span style="font-size:20px;">🧭</span>
-                    <strong>Explorer</strong>
-                    <span style="color:#4af626;">Unlocked</span>
-                </div>
-                <div class="badge-card unlocked">
-                    <span style="font-size:20px;">🏖️</span>
-                    <strong>Beach Searcher</strong>
-                    <span style="color:#4af626;">Unlocked</span>
-                </div>
-                <div class="badge-card">
-                    <span style="font-size:20px;">👑</span>
-                    <strong>Birthday Legend</strong>
-                    <span style="color:#778c79;">Locked (M4)</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- CLASSIFIED WEEK 4 BUILD UP -->
-        <div style="background: rgba(243, 198, 105, 0.06); border: 2px dashed #f3c669; border-radius: 12px; padding: 10px; width: 100%; max-width: 500px; text-align: left; font-size: 11px;">
-            <div style="color:#f3c669; font-weight:800; letter-spacing: 1.5px; margin-bottom:4px;">📂 CLASSIFIED FILE</div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-                <div><strong>Progress:</strong><br>Mission 1 ✅<br>Mission 2 ✅<br>Mission 3 🔒<br>Mission 4 🔒</div>
-                <div>
-                    <strong>Destination:</strong> <span style="background:#f3c669; color:#f3c669;">TOP SECRET DATA</span><br>
-                    <strong>Date:</strong> <span style="background:#f3c669; color:#f3c669;">██ / ██</span><br>
-                    <strong>Coordinates:</strong> <span style="background:#f3c669; color:#f3c669;">██°██'██"</span>
-                </div>
-            </div>
-        </div>
-
+        <!-- 8. ACHIEVEMENTS COLLECTION -->
         <div>
-            <button class="btn-primary" onclick="spawnSparkles()">Celebrate Victory ✨</button>
+            <div style="font-size:10px; font-weight:800; color:#f3c669; margin-bottom:4px;">ACHIEVEMENTS COLLECTED</div>
+            <div class="badges-row">
+                <div class="badge-card unlocked">🏆 Explorer</div>
+                <div class="badge-card unlocked">🏕️ Camp Master</div>
+                <div class="badge-card unlocked">🔍 Eagle Eye</div>
+                <div class="badge-card unlocked">💖 Favourite Husband</div>
+            </div>
         </div>
+
+        <!-- 12. SECRET HEART MESSAGE (UNLOCKED IF 5 HEARTS FOUND) -->
+        <div id="secret-heart-msg" style="display:none; background:rgba(243, 198, 105, 0.1); border:1px dashed #f3c669; border-radius:8px; padding:8px; width:100%; max-width:480px; font-size:11px; color:#f3c669;">
+            ❤️ <strong>SPECIAL MESSAGE UNLOCKED:</strong><br>"You'll always be my favourite adventure."
+        </div>
+
+        <!-- TEASER -->
+        <div class="terminal-box">
+            > MISSION 3 INCOMING...<br>
+            > TRANSMISSION LOST...
+        </div>
+
+        <button class="btn-primary" onclick="alert('Mission 2 Cleared! Get ready for Mission 3 next week! ❤️')">Finish Mission 2 ✨</button>
     </div>
 
 </div>
 
 <script>
-    // GAME STATE & CONFIGURATION
-    let currentXP = 250;
-    const maxXP = 400;
-    let timerSeconds = 0;
-    let timerInterval = null;
-
-    // Code: 2208
-    const correctVaultCode = "2208";
-    let codeSlotsFound = ['_', '_', '_', '_'];
+    // GAME STATE & SEQUENCING
+    let progress = 0;
+    let keysFound = 0;
+    let heartsCollected = 0;
     let userVaultInput = [];
 
-    const successQuotes = [
-        "Nice work, Chief!",
-        "Mission Control is impressed.",
-        "That's one step closer.",
-        "You're smarter than expected 😏"
+    // RANDOMIZED DIGIT ASSIGNMENTS (4)
+    // Code sequence: 2 - 2 - 0 - 8
+    const codeDigits = ['2', '2', '0', '8'];
+    
+    // 4. RANDOM ESCAPE-ROOM CLUES POOL
+    const clueTemplates = [
+        (d) => `You found a soggy note: "The digit is ${d}."`,
+        (d) => `The item whispers... "Remember the number ${d}."`,
+        (d) => `Carved into the wood: [ Digit = ${d} ]`,
+        (d) => `An ancient scrap reveals digit ${d}!`
     ];
 
-    // CAMPSITE ITEMS
-    const campItemsData = [
-        { id: 1, icon: '🪵', name: 'Wood', clue: '', isClue: false, text: 'Just a bundle of dry firewood.' },
-        { id: 2, icon: '🎣', name: 'Rods', clue: '0', isClue: true, clueIdx: 2, text: 'Digit #3 Uncovered: [ 0 ]' },
-        { id: 3, icon: '🌊', name: 'Waves', clue: '', isClue: false, text: 'Calm water splashing against the shore.' },
-        { id: 4, icon: '🥾', name: 'Boots', clue: '', isClue: false, text: 'An old boot. Smells like defeat.' },
-        { id: 5, icon: '🧭', name: 'Compass', clue: '', isClue: false, text: 'Pointing North. No codes written on it.' },
-        { id: 6, icon: '🥤', name: 'Coke', clue: '', isClue: false, text: 'Just a lukewarm soda. Refreshing, but unhelpful.' },
-        { id: 7, icon: '🔥', name: 'Fire', clue: '8', isClue: true, clueIdx: 3, text: 'Digit #4 Uncovered: [ 8 ]' },
-        { id: 8, icon: '🐟', name: 'Fish', clue: '2', isClue: true, clueIdx: 0, text: 'Digit #1 Uncovered: [ 2 ]' },
-        { id: 9, icon: '🧤', name: 'Gloves', clue: '', isClue: false, text: 'Just a pair of muddy gloves.' },
-        { id: 10, icon: '🎒', name: 'Backpack', clue: '2', isClue: true, clueIdx: 1, text: 'Digit #2 Uncovered: [ 2 ]' },
-        { id: 11, icon: '⛺', name: 'Tent', clue: '', isClue: false, text: 'Just a cozy sleeping bag inside.' },
-        { id: 12, icon: '🍄', name: 'Mushroom', clue: '', isClue: false, text: 'You found... A very judgemental mushroom. No clue. 😂' },
-        { id: 13, icon: '🦉', name: 'Owl', clue: '', isClue: false, text: 'The owl stares at you in silence. Hoot.' },
-        { id: 14, icon: '🔦', name: 'Flashlight', clue: '', isClue: false, text: 'Flickers twice and dies. Unlucky!' }
-    ];
-
-    // BEACH GAME TARGET ITEMS (9 Total: 4 Original + 5 Added)
-    const beachTargets = [
-        { id: 'rod', name: 'Fishing Rod', icon: '🎣', top: '15%', left: '72%', found: false },
-        { id: 'tent', name: 'Tent', icon: '⛺', top: '65%', left: '12%', found: false },
-        { id: 'ball', name: 'Beach ball', icon: '⚽', top: '35%', left: '48%', found: false },
-        { id: 'castle', name: 'Sand castle', icon: '🏰', top: '70%', left: '78%', found: false },
-        // 5 New Items:
-        { id: 'glasses', name: 'Sunglasses', icon: '🕶️', top: '68%', left: '40%', found: false },
-        { id: 'starfish', name: 'Starfish', icon: '⭐️', top: '80%', left: '26%', found: false },
-        { id: 'lotion', name: 'Sunscreen', icon: '🧴', top: '48%', left: '22%', found: false },
-        { id: 'surfboard', name: 'Surfboard', icon: '🏄‍♂️', top: '22%', left: '85%', found: false },
-        { id: 'coconut', name: 'Coconut', icon: '🥥', top: '12%', left: '18%', found: false }
-    ];
-
-    // Distractor items on the beach
-    const beachDistractors = [
-        { icon: '🦀', top: '82%', left: '58%' },
-        { icon: '🐚', top: '78%', left: '68%' },
-        { icon: '🌴', top: '10%', left: '5%' },
-        { icon: '🦩', top: '38%', left: '88%' },
-        { icon: '⛵', top: '20%', left: '38%' }
-    ];
-
-    let itemsSearched = new Set();
-    let cluesFoundCount = 0;
-    let snooperAchievementUnlocked = false;
+    let invItems = [];
+    let campsiteFoundCount = 0;
+    let beachFoundCount = 0;
 
     // AUDIO SYNTHESIZER
     let audioCtx = null;
-    function initAudioContext() {
-        if (!audioCtx) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-        }
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function playSound(type) {
-        initAudioContext();
+        initAudio();
         if (!audioCtx) return;
         let now = audioCtx.currentTime;
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
 
         if (type === 'click') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(420, now);
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(400, now);
+            gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
         } else if (type === 'found') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.setValueAtTime(659.25, now + 0.08);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-        } else if (type === 'error') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, now);
-            osc.frequency.setValueAtTime(100, now + 0.1);
-            gain.gain.setValueAtTime(0.18, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        } else if (type === 'success') {
-            const notes = [523.25, 659.25, 783.99, 1046.50];
-            notes.forEach((f, i) => {
-                let o = audioCtx.createOscillator();
-                let g = audioCtx.createGain();
-                o.type = 'triangle';
-                o.frequency.setValueAtTime(f, now + i * 0.09);
-                g.gain.setValueAtTime(0.15, now + i * 0.09);
-                g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.25);
-                o.connect(g);
-                g.connect(audioCtx.destination);
-                o.start(now + i * 0.09);
-                o.stop(now + i * 0.09 + 0.25);
-            });
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(523, now); osc.frequency.setValueAtTime(659, now + 0.08);
+            gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        } else if (type === 'heart') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(880, now);
+            gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        }
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(now); osc.stop(now + 0.25);
+    }
+
+    // 14. CINEMATIC INTRO TIMING
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const intro = document.getElementById('cinematic-intro');
+            intro.style.opacity = '0';
+            setTimeout(() => intro.style.display = 'none', 1500);
+        }, 5000);
+    });
+
+    // 9. UPDATE MISSION PROGRESS
+    function updateProgress(add) {
+        progress = Math.min(100, progress + add);
+        document.getElementById('main-progress').style.width = progress + '%';
+        document.getElementById('progress-pct').innerText = progress + '%';
+    }
+
+    function setObjectiveDone(id) {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('done')) {
+            el.classList.add('done');
+            el.querySelector('span').innerText = '✔';
+        }
+    }
+
+    // CARD NAVIGATION
+    function showCard(id) {
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startMission() {
+        playSound('click');
+        setObjectiveDone('obj-1');
+        updateProgress(20);
+        showCard('card-campsite');
+    }
+
+    // 6. WALKING FOOTPRINTS
+    function spawnFootprint(e) {
+        playSound('click');
+        const map = e.currentTarget;
+        const rect = map.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const foot = document.createElement('div');
+        foot.className = 'footprint';
+        foot.innerText = '👣';
+        foot.style.left = (x - 7) + 'px';
+        foot.style.top = (y - 7) + 'px';
+        map.appendChild(foot);
+
+        setTimeout(() => foot.remove(), 1200);
+    }
+
+    // 3. INVENTORY ANIMATION
+    function addToInventory(icon) {
+        if (invItems.length < 4) {
+            invItems.push(icon);
+            const slot = document.getElementById(`slot-${invItems.length - 1}`);
+            slot.innerText = icon;
+            slot.classList.add('pop');
+            setTimeout(() => slot.classList.remove('pop'), 300);
+
+            keysFound++;
+            document.getElementById('key-count').innerText = keysFound;
+        }
+    }
+
+    // 2 & 4 & 10. CAMPSITE INTERACTION (FUNNY MESSAGES & RANDOM CLUES)
+    const campState = {};
+    function tapMapItem(type, icon) {
+        const term = document.getElementById('camp-term');
+        
+        if (campState[type]) {
+            term.innerHTML = `> You already checked the ${type}.`;
             return;
         }
 
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.25);
+        campState[type] = true;
+
+        // 10. FUNNY MESSAGES VS KEY CLUES
+        if (type === 'fire') {
+            playSound('found');
+            const clueText = clueTemplates[0](codeDigits[0]);
+            term.innerHTML = `> 🔥 ${clueText}`;
+            addToInventory('🔑');
+            campsiteFoundCount++;
+        } else if (type === 'rod') {
+            playSound('found');
+            const clueText = clueTemplates[1](codeDigits[1]);
+            term.innerHTML = `> 🎣 ${clueText}`;
+            addToInventory('🔑');
+            campsiteFoundCount++;
+        } else if (type === 'backpack') {
+            playSound('found');
+            const clueText = clueTemplates[2](codeDigits[2]);
+            term.innerHTML = `> 🎒 ${clueText}`;
+            addToInventory('🔑');
+            campsiteFoundCount++;
+        } else if (type === 'coke') {
+            term.innerHTML = `> 🥤 Hydrated. Still clueless.`;
+        } else if (type === 'tent') {
+            term.innerHTML = `> ⛺ Just a cozy sleeping bag inside. No clues here!`;
+        } else if (type === 'wood') {
+            term.innerHTML = `> 🪵 Just dry firewood.`;
+        } else if (type === 'owl') {
+            term.innerHTML = `> 🦉 The owl stares at you silently. Hoot.`;
+        }
+
+        if (campsiteFoundCount >= 3) {
+            setObjectiveDone('obj-2');
+            updateProgress(25);
+            document.getElementById('btn-to-beach').disabled = false;
+        }
     }
 
-    // CARD SWITCHER
-    function showCard(cardId) {
-        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-        document.getElementById(cardId).classList.add('active');
-    }
-
-    // UPDATE XP
-    function addXP(amount) {
-        currentXP = Math.min(maxXP, currentXP + amount);
-        document.getElementById('xp-fill').style.width = (currentXP / maxXP * 100) + '%';
-        document.getElementById('xp-text').innerText = `${currentXP} / ${maxXP}`;
-    }
-
-    // FAKE GPS SCANNER
-    function triggerGpsScanner() {
+    function goToBeach() {
         playSound('click');
-        showCard('card-scanner');
-        const term = document.getElementById('term-gps');
-        const pContainer = document.getElementById('gps-progress-container');
-        const pBar = document.getElementById('gps-bar');
-        const status = document.getElementById('gps-status-text');
-        
-        pContainer.style.display = 'block';
-        
-        let steps = [
-            { text: "> Scanning nearby grid...", bar: 20, status: "Scanning..." },
-            { text: "> Searching nearby frequencies...", bar: 45, status: "Searching..." },
-            { text: "> Warning: No signal detected...", bar: 60, status: "No signal..." },
-            { text: "> Re-routing orbital satellites...", bar: 85, status: "Re-routing satellites..." },
-            { text: "> TARGET DETECTED! Lock established.", bar: 100, status: "Target detected." }
-        ];
+        showCard('card-beach');
+    }
 
-        term.innerHTML = "> Initiating satellite link...<br>";
+    // 13. ALIVE BEACH INTERACTIONS
+    function tapBeachItem(type, icon) {
+        const term = document.getElementById('beach-term');
+
+        if (type === 'fish') {
+            playSound('found');
+            const clueText = clueTemplates[3](codeDigits[3]);
+            term.innerHTML = `> 🐟 The fish whispers... "${clueText}"`;
+            addToInventory('🔑');
+            beachFoundCount++;
+        } else if (type === 'crab') {
+            term.innerHTML = `> 🦀 The crab stole your shoe! No clue here though.`;
+        } else if (type === 'glasses') {
+            term.innerHTML = `> 🕶️ Stylish, but no secret numbers written on them.`;
+        } else if (type === 'starfish') {
+            term.innerHTML = `> ⭐️ Starfish is resting peacefully.`;
+        } else if (type === 'lotion') {
+            term.innerHTML = `> 🧴 SPF 50. Sun protection is key!`;
+        }
+
+        if (beachFoundCount >= 1) {
+            setObjectiveDone('obj-3');
+            updateProgress(25);
+            document.getElementById('btn-to-vault').disabled = false;
+        }
+    }
+
+    // 12. HIDDEN HEARTS
+    function collectHeart(el, e) {
+        e.stopPropagation();
+        playSound('heart');
+        el.style.display = 'none';
+        heartsCollected++;
+        document.getElementById('heart-count').innerText = heartsCollected;
+
+        if (heartsCollected >= 5) {
+            document.getElementById('secret-heart-msg').style.display = 'block';
+        }
+    }
+
+    // 7. VAULT SECURITY SCAN SEQUENCE
+    function goToVaultSecurity() {
+        playSound('click');
+        showCard('card-vault');
+
+        const scanText = document.getElementById('scan-status-text');
+        const steps = [
+            "Fingerprint Analysis...",
+            "Voice Frequency Check...",
+            "Face Scan Verified ✔",
+            "PIN REQUIRED"
+        ];
 
         steps.forEach((step, idx) => {
             setTimeout(() => {
-                term.innerHTML += step.text + "<br>";
-                pBar.style.width = step.bar + "%";
-                status.innerText = step.status;
+                scanText.innerText = step;
                 playSound('click');
-
                 if (idx === steps.length - 1) {
-                    playSound('found');
-                    document.getElementById('btn-gps-continue').disabled = false;
+                    document.getElementById('security-scan-box').style.display = 'none';
+                    document.getElementById('vault-keypad-section').style.display = 'block';
+                    document.getElementById('vault-term').innerText = "> Enter 4-digit code gathered from clues.";
                 }
             }, (idx + 1) * 1000);
         });
     }
 
-    // ANIMATED TERMINAL SETUP
-    function startTerminalStory() {
-        playSound('click');
-        showCard('card-terminal');
-        const term = document.getElementById('term-story');
-        term.innerHTML = "";
-
-        const lines = [
-            "> Connecting to secure operative channel...",
-            "> Retrieving encrypted mission file...",
-            "> Clearance Verified.",
-            "> Access Granted...",
-            "> Loading Mission 2: Basecamp Search Protocol..."
-        ];
-
-        lines.forEach((line, idx) => {
-            setTimeout(() => {
-                term.innerHTML += line + "<br>";
-                playSound('click');
-                if (idx === lines.length - 1) {
-                    document.getElementById('btn-start-hunt').disabled = false;
-                }
-            }, (idx + 1) * 800);
-        });
-    }
-
-    // CAMPSITE RECON
-    function goToHunt() {
-        playSound('found');
-        showCard('card-hunt');
-        startTimer();
-
-        const grid = document.getElementById('camp-grid');
-        grid.innerHTML = '';
-
-        campItemsData.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'camp-item';
-            div.id = `item-${item.id}`;
-            div.onclick = () => tapCampItem(item);
-            div.innerHTML = `
-                <span style="font-size:24px;">${item.icon}</span>
-                <span style="font-size:11px; font-weight:700;">${item.name}</span>
-            `;
-            grid.appendChild(div);
-        });
-    }
-
-    function tapCampItem(item) {
-        const itemEl = document.getElementById(`item-${item.id}`);
-        const feedback = document.getElementById('search-feedback');
-
-        if (itemsSearched.has(item.id)) {
-            feedback.innerText = `You already inspected the ${item.name}.`;
-            return;
-        }
-
-        itemsSearched.add(item.id);
-
-        if (item.isClue) {
-            playSound('found');
-            itemEl.classList.add('found-clue');
-            codeSlotsFound[item.clueIdx] = item.clue;
-            cluesFoundCount++;
-            
-            const quote = successQuotes[Math.floor(Math.random() * successQuotes.length)];
-            feedback.innerText = `${item.text} — "${quote}"`;
-            spawnParticles(['🔍', '⭐', '✨']);
-
-            document.getElementById('code-revealed-display').innerText = codeSlotsFound.join(" ");
-
-            if (cluesFoundCount >= 4) {
-                document.getElementById('btn-to-beach').disabled = false;
-            }
-        } else {
-            playSound('click');
-            itemEl.classList.add('searched');
-            feedback.innerText = item.text;
-        }
-
-        if (itemsSearched.size === campItemsData.length && !snooperAchievementUnlocked) {
-            snooperAchievementUnlocked = true;
-            addXP(50);
-            showAchievementBanner("Professional Snooper (+50 XP)");
-        }
-    }
-
-    // HIDDEN OBJECTS ON BEACH
-    function goToBeachGame() {
-        playSound('found');
-        showCard('card-beach');
-
-        const canvas = document.getElementById('beach-canvas');
-        const targetList = document.getElementById('target-list-ui');
-        canvas.innerHTML = '';
-        targetList.innerHTML = '';
-
-        // Render target requirement cards
-        beachTargets.forEach(t => {
-            const card = document.createElement('div');
-            card.className = `target-card ${t.found ? 'found' : ''}`;
-            card.id = `target-card-${t.id}`;
-            card.innerHTML = `<span>${t.icon}</span> <span>${t.name}</span>`;
-            targetList.appendChild(card);
-        });
-
-        // Spawn distractors
-        beachDistractors.forEach(d => {
-            const el = document.createElement('div');
-            el.className = 'beach-item';
-            el.style.top = d.top;
-            el.style.left = d.left;
-            el.innerText = d.icon;
-            el.onclick = () => {
-                playSound('click');
-                document.getElementById('beach-feedback').innerText = "That's not one of the target items!";
-            };
-            canvas.appendChild(el);
-        });
-
-        // Spawn actual targets
-        beachTargets.forEach(t => {
-            const el = document.createElement('div');
-            el.className = `beach-item ${t.found ? 'found' : ''}`;
-            el.id = `beach-obj-${t.id}`;
-            el.style.top = t.top;
-            el.style.left = t.left;
-            el.innerText = t.icon;
-            el.onclick = () => collectBeachItem(t);
-            canvas.appendChild(el);
-        });
-    }
-
-    function collectBeachItem(target) {
-        if (target.found) return;
-        
-        playSound('found');
-        target.found = true;
-
-        document.getElementById(`beach-obj-${target.id}`).classList.add('found');
-        document.getElementById(`target-card-${target.id}`).classList.add('found');
-
-        document.getElementById('beach-feedback').innerText = `Found the ${target.name}! 🎉`;
-        spawnParticles(['🏖️', '✨', '🌊']);
-
-        const allFound = beachTargets.every(t => t.found);
-        if (allFound) {
-            playSound('success');
-            document.getElementById('beach-feedback').innerText = "Awesome! All 9 beach supplies recovered!";
-            document.getElementById('btn-to-vault').disabled = false;
-        }
-    }
-
-    function showAchievementBanner(text) {
-        playSound('success');
-        const pop = document.getElementById('achievement-pop');
-        pop.querySelector('span').innerText = text;
-        pop.classList.add('show');
-        setTimeout(() => pop.classList.remove('show'), 3500);
-    }
-
-    // VAULT KEYPAD LOGIC
-    function goToVault() {
-        playSound('found');
-        showCard('card-vault');
-    }
-
-    function pressVaultKey(num) {
+    // KEYPAD LOGIC
+    function pressVault(n) {
         if (userVaultInput.length < 4) {
             playSound('click');
-            userVaultInput.push(num);
-            updateVaultSlots();
+            userVaultInput.push(n);
+            updateVaultDisplay();
         }
     }
 
-    function clearVaultKey() {
+    function clearVault() {
         playSound('click');
         userVaultInput = [];
-        updateVaultSlots();
-        document.getElementById('vault-status').innerText = "Keypad cleared.";
+        updateVaultDisplay();
     }
 
-    function updateVaultSlots() {
+    function updateVaultDisplay() {
         for (let i = 0; i < 4; i++) {
             document.getElementById(`vslot-${i}`).innerText = userVaultInput[i] || "-";
         }
     }
 
-    function submitVaultCode() {
-        const entered = userVaultInput.join("");
-        const status = document.getElementById('vault-status');
-        const hacker = document.getElementById('hacker-screen');
-        const keypad = document.getElementById('keypad-controls');
+    // 15. FINAL UNLOCK ANIMATION & DECRYPTION
+    function submitVault() {
+        const code = userVaultInput.join("");
+        const term = document.getElementById('vault-term');
 
-        if (entered.length < 4) {
-            playSound('error');
-            status.innerText = "⚠️ Enter full 4-digit code!";
-            return;
-        }
+        if (code === codeDigits.join("")) {
+            term.innerText = "> Decrypting Vault Files...";
 
-        if (entered === correctVaultCode) {
-            keypad.style.display = 'none';
-            hacker.style.display = 'block';
-            status.innerText = "Processing clearance...";
+            // Flash overlay animation
+            const flash = document.getElementById('flash-overlay');
+            
+            setTimeout(() => {
+                flash.style.opacity = '1';
+                playSound('found');
+                setTimeout(() => flash.style.opacity = '0', 200);
+            }, 800);
 
-            let hackSteps = [
-                "> Decrypting security payload...",
-                "> [██████░░░░] 60%",
-                "> Checking operative database...",
-                "> Verifying clearance level...",
-                "> Connecting to server...",
-                "> ACCESS GRANTED!"
-            ];
+            setTimeout(() => {
+                setObjectiveDone('obj-4');
+                setObjectiveDone('obj-5');
+                updateProgress(30);
+                showCard('card-finish');
+            }, 1800);
 
-            hackSteps.forEach((step, i) => {
-                setTimeout(() => {
-                    hacker.innerHTML += "<br>" + step;
-                    playSound('click');
-
-                    if (i === hackSteps.length - 1) {
-                        playSound('success');
-                        stopTimer();
-                        addXP(100);
-                        setTimeout(() => {
-                            showCard('card-finish');
-                            spawnParticles(['🏆', '✨', '💖', '🔑']);
-                        }, 1200);
-                    }
-                }, (i + 1) * 600);
-            });
         } else {
-            playSound('error');
-            const card = document.getElementById('card-vault');
-            card.classList.add('shake');
-            setTimeout(() => card.classList.remove('shake'), 400);
-            status.innerText = "❌ Access Denied: Incorrect Security Pin!";
-            clearVaultKey();
+            term.innerText = "❌ ACCESS DENIED: Invalid Code!";
+            clearVault();
         }
-    }
-
-    function triggerLovePassword() {
-        playSound('click');
-        const status = document.getElementById('vault-status');
-        status.innerHTML = `<span style="color:#f3c669;">❤️ Access Granted. Just kidding. Wrong password. But I love you too.</span>`;
-    }
-
-    function showLoveEgg() {
-        playSound('success');
-        alert("❤️ Bonus Fact:\n\nYour wife loves you more than all the stars combined.");
-    }
-
-    // TIMER
-    function startTimer() {
-        timerSeconds = 0;
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            timerSeconds++;
-        }, 1000);
-    }
-
-    function stopTimer() {
-        clearInterval(timerInterval);
-        let mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
-        let secs = (timerSeconds % 60).toString().padStart(2, '0');
-        document.getElementById('final-time').innerText = `${mins}:${secs}`;
-    }
-
-    // PARTICLES & CELEBRATION
-    function spawnParticles(icons) {
-        const container = document.getElementById('app');
-        for (let i = 0; i < 10; i++) {
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            p.innerText = icons[Math.floor(Math.random() * icons.length)];
-            p.style.left = (15 + Math.random() * 70) + '%';
-            p.style.top = (35 + Math.random() * 40) + '%';
-            container.appendChild(p);
-
-            setTimeout(() => p.remove(), 2000);
-        }
-    }
-
-    function spawnSparkles() {
-        playSound('success');
-        spawnParticles(['🏆', '✨', '💖', '🌲', '⭐', '🔑', '🏖️']);
     }
 </script>
 
