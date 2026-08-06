@@ -527,10 +527,13 @@ function startPhase1(){
 
     createHiddenObjects();
 
+    startEnvironment();
+
+    startHintSystem();
+
     startBearAI();
 
 }
-
 /*======================================================
  CREATE HIDDEN OBJECTS
 ======================================================*/
@@ -596,13 +599,11 @@ missionSuccess();
  INVENTORY
 ======================================================*/
 
-function collectItem(item,img){
+item.found = true;
 
-    if(item.found) return;
+resetHintTimer();
 
-    item.found = true;
-
-    img.classList.add("found");
+img.classList.add("found");
 
     sparkle(img);
 const sound=document.getElementById("collectSound");
@@ -614,13 +615,20 @@ sound.currentTime=0;
 sound.play();
 
 }
-    flyToInventory(img,item.id);
+   flyToInventory(img,item.id);
 
-    addXP(50,img);
+addXP(50,img);
 
-    game.itemsFound++;
+// ===== SECTION 4C =====
+addScore(50);
 
-    updateInventory(item.id);
+updateCombo();
+
+giveTimeBonus();
+
+game.itemsFound++;
+
+updateInventory(item.id);
 
    setTimeout(()=>{
     img.remove();
@@ -715,26 +723,22 @@ function bearRoar(){
 
 function missionSuccess(){
 
-clearInterval(bearInterval);
+    clearInterval(bearInterval);
 
-saveGame();
+    perfectBonus();
 
-document.getElementById("successSound").play();
+    saveGame();
 
-document.getElementById("phase1")
-.classList.add("fadeOut");
+    document.getElementById("successSound").play();
 
-setTimeout(()=>{
+    document.getElementById("phase1")
+        .classList.add("fadeOut");
 
-document.getElementById("phase1").style.display="none";
+    setTimeout(()=>{
 
-document.getElementById("phase1Complete")
-.classList.remove("hidden");
+        startMissionTransition();
 
-document.getElementById("phase1Complete")
-.classList.add("fadeIn");
-
-},800);
+    },1200);
 
 }
 
@@ -1051,3 +1055,1332 @@ bird.remove();
 }
 
 setInterval(createBird,18000);
+/*======================================================
+SECTION 4A
+ANIMATED CAMPSITE
+======================================================*/
+
+/*------------------------------------------------------
+CREATE CAMPFIRE
+------------------------------------------------------*/
+
+function createCampfire(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    const fire = document.createElement("div");
+
+    fire.id = "campFire";
+
+    scene.appendChild(fire);
+
+}
+
+/*------------------------------------------------------
+SMOKE PARTICLES
+------------------------------------------------------*/
+
+function createSmoke(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    setInterval(()=>{
+
+        const smoke = document.createElement("div");
+
+        smoke.className = "smoke";
+
+        smoke.style.left = (520 + Math.random()*60) + "px";
+
+        smoke.style.bottom = (210 + Math.random()*20) + "px";
+
+        scene.appendChild(smoke);
+
+        setTimeout(()=>{
+
+            smoke.remove();
+
+        },5000);
+
+    },500);
+
+}
+
+/*------------------------------------------------------
+FLOATING LEAVES
+------------------------------------------------------*/
+
+function createLeaves(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    setInterval(()=>{
+
+        const leaf = document.createElement("div");
+
+        leaf.className = "leaf";
+
+        leaf.style.left = Math.random()*window.innerWidth + "px";
+
+        leaf.style.top = "-30px";
+
+        leaf.style.animationDuration =
+            (6 + Math.random()*4) + "s";
+
+        scene.appendChild(leaf);
+
+        setTimeout(()=>{
+
+            leaf.remove();
+
+        },9000);
+
+    },1500);
+
+}
+
+/*------------------------------------------------------
+MOVING CLOUDS
+------------------------------------------------------*/
+
+function createClouds(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    setInterval(()=>{
+
+        const cloud = document.createElement("div");
+
+        cloud.className = "cloud";
+
+        cloud.style.top =
+            (30 + Math.random()*120) + "px";
+
+        scene.appendChild(cloud);
+
+        setTimeout(()=>{
+
+            cloud.remove();
+
+        },35000);
+
+    },9000);
+
+}
+
+/*------------------------------------------------------
+FLYING BIRDS
+------------------------------------------------------*/
+
+function createBirds(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    setInterval(()=>{
+
+        const bird = document.createElement("div");
+
+        bird.className = "bird";
+
+        bird.style.top =
+            (50 + Math.random()*150) + "px";
+
+        scene.appendChild(bird);
+
+        setTimeout(()=>{
+
+            bird.remove();
+
+        },12000);
+
+    },14000);
+
+}
+
+/*------------------------------------------------------
+SUNLIGHT EFFECT
+------------------------------------------------------*/
+
+function createSunlight(){
+
+    const scene = document.getElementById("campScene");
+
+    if(!scene) return;
+
+    const sun = document.createElement("div");
+
+    sun.id = "sunGlow";
+
+    scene.appendChild(sun);
+
+}
+
+/*------------------------------------------------------
+START ENVIRONMENT
+------------------------------------------------------*/
+
+function startEnvironment(){
+
+    createCampfire();
+
+    createSmoke();
+
+    createLeaves();
+
+    createClouds();
+
+    createBirds();
+
+    createSunlight();
+
+}
+/*======================================================
+SECTION 4B
+SMART HINT SYSTEM
+======================================================*/
+
+let hintTimer = null;
+let lastFoundTime = Date.now();
+
+/*------------------------------------------------------
+RESET HINT TIMER
+------------------------------------------------------*/
+
+function resetHintTimer(){
+
+    lastFoundTime = Date.now();
+
+}
+
+/*------------------------------------------------------
+START HINT SYSTEM
+------------------------------------------------------*/
+
+function startHintSystem(){
+
+    if(hintTimer){
+        clearInterval(hintTimer);
+    }
+
+    hintTimer = setInterval(()=>{
+
+        const secondsIdle =
+            (Date.now() - lastFoundTime) / 1000;
+
+        if(secondsIdle >= 10){
+
+            showHint();
+
+            lastFoundTime = Date.now();
+
+        }
+
+    },1000);
+
+}
+
+/*------------------------------------------------------
+SHOW HINT
+------------------------------------------------------*/
+
+function showHint(){
+
+    const remaining =
+        hiddenItems.filter(item => !item.found);
+
+    if(remaining.length === 0) return;
+
+    const randomItem =
+        remaining[Math.floor(Math.random()*remaining.length)];
+
+    const scene =
+        document.getElementById("campScene");
+
+    if(!scene) return;
+
+    const objects =
+        scene.querySelectorAll(".collectible");
+
+    objects.forEach(obj=>{
+
+        if(obj.dataset.item === randomItem.id){
+
+            obj.classList.add("hintGlow");
+
+            setTimeout(()=>{
+
+                obj.classList.remove("hintGlow");
+
+            },2000);
+
+        }
+
+    });
+
+}
+/*======================================================
+SECTION 4C
+SCORE & COMBO SYSTEM
+======================================================*/
+
+let score = 0;
+let combo = 0;
+let lastCollectTime = 0;
+
+/*------------------------------------------------------
+ADD SCORE
+------------------------------------------------------*/
+
+function addScore(points){
+
+    score += points;
+
+    const scoreText = document.getElementById("score");
+
+    if(scoreText){
+
+        scoreText.innerHTML = score;
+
+    }
+
+}
+
+/*------------------------------------------------------
+COMBO SYSTEM
+------------------------------------------------------*/
+
+function updateCombo(){
+
+    const now = Date.now();
+
+    if(now - lastCollectTime <= 3000){
+
+        combo++;
+
+    }else{
+
+        combo = 1;
+
+    }
+
+    lastCollectTime = now;
+
+    if(combo >= 2){
+
+        showCombo(combo);
+
+        addScore(combo * 25);
+
+    }
+
+}
+
+/*------------------------------------------------------
+SHOW COMBO
+------------------------------------------------------*/
+
+function showCombo(comboCount){
+
+    const comboText = document.createElement("div");
+
+    comboText.className = "combo";
+
+    comboText.innerHTML =
+        "🔥 COMBO x" + comboCount;
+
+    comboText.style.left =
+        (window.innerWidth/2 - 100) + "px";
+
+    comboText.style.top = "180px";
+
+    document.body.appendChild(comboText);
+
+    setTimeout(()=>{
+
+        comboText.remove();
+
+    },1000);
+
+}
+
+/*------------------------------------------------------
+TIME BONUS
+------------------------------------------------------*/
+
+function giveTimeBonus(){
+
+    if(game.timer >= 40){
+
+        addScore(100);
+
+        showBonus("⚡ Speed Bonus +100");
+
+    }
+
+}
+
+/*------------------------------------------------------
+PERFECT BONUS
+------------------------------------------------------*/
+
+function perfectBonus(){
+
+    if(game.itemsFound === hiddenItems.length){
+
+        addScore(500);
+
+        showBonus("🏆 Perfect Search +500");
+
+    }
+
+}
+
+/*------------------------------------------------------
+SHOW BONUS
+------------------------------------------------------*/
+
+function showBonus(text){
+
+    const bonus = document.createElement("div");
+
+    bonus.className = "floatingXP";
+
+    bonus.innerHTML = text;
+
+    bonus.style.left = "50%";
+
+    bonus.style.top = "140px";
+
+    bonus.style.transform = "translateX(-50%)";
+
+    document.body.appendChild(bonus);
+
+    setTimeout(()=>{
+
+        bonus.remove();
+
+    },1800);
+
+}
+/*======================================================
+SECTION 4D
+MISSION TRANSITION
+======================================================*/
+
+function startMissionTransition(){
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "missionOverlay";
+
+    document.body.appendChild(overlay);
+
+    overlay.innerHTML = `
+
+        <div class="missionWindow">
+
+            <h1>MISSION COMPLETE</h1>
+
+            <h2>All Equipment Recovered</h2>
+
+            <br>
+
+            <p>Mission Control has received your report.</p>
+
+            <p>A nearby lake has been detected.</p>
+
+            <br>
+
+            <h3>NEW OBJECTIVE</h3>
+
+            <p>Catch 6 Special Fish.</p>
+
+            <br>
+
+            <button id="continueFishing">
+
+                Continue →
+
+            </button>
+
+        </div>
+
+    `;
+
+    document
+        .getElementById("continueFishing")
+        .addEventListener("click",startFishingIntro);
+
+}
+/*======================================================
+FISHING INTRO
+======================================================*/
+
+function startFishingIntro(){
+
+    const overlay =
+        document.getElementById("missionOverlay");
+
+    overlay.classList.add("fadeOut");
+
+    setTimeout(()=>{
+
+        overlay.remove();
+
+        launchFishingMission();
+
+    },1000);
+
+}
+/*======================================================
+START PHASE 2
+======================================================*/
+
+function launchFishingMission(){
+
+    const phase1 =
+        document.getElementById("phase1");
+
+    const phase2 =
+        document.getElementById("phase2");
+
+    if(phase1){
+
+        phase1.style.display="none";
+
+    }
+
+    if(phase2){
+
+        phase2.classList.remove("hidden");
+
+        phase2.classList.add("fadeIn");
+
+    }
+
+    if(typeof startFishing==="function"){
+
+        startFishing();
+
+    }
+
+}
+/*======================================================
+SECTION 5A
+FISHING ENGINE
+======================================================*/
+
+const fishing = {
+
+    score:0,
+
+    specialFish:0,
+
+    casts:0,
+
+    fishCaught:0,
+
+    timer:60,
+
+    casting:false,
+
+    reeling:false,
+
+    power:0,
+
+    direction:1
+
+};
+
+let fishingInterval;
+let powerInterval;
+
+/*======================================================
+START FISHING
+======================================================*/
+
+function startFishing(){
+
+    fishing.timer = 60;
+
+    fishing.score = 0;
+
+    fishing.specialFish = 0;
+
+    fishing.fishCaught = 0;
+
+    fishing.casts = 0;
+
+    updateFishingHUD();
+
+    startFishingTimer();
+
+}
+
+/*======================================================
+FISHING TIMER
+======================================================*/
+
+function startFishingTimer(){
+
+    clearInterval(fishingInterval);
+
+    fishingInterval = setInterval(()=>{
+
+        fishing.timer--;
+
+        updateFishingHUD();
+
+        if(fishing.timer<=0){
+
+            clearInterval(fishingInterval);
+
+            finishFishingMission();
+
+        }
+
+    },1000);
+
+}
+
+/*======================================================
+HUD
+======================================================*/
+
+function updateFishingHUD(){
+
+    const timer =
+    document.getElementById("fishingTimer");
+
+    if(timer){
+
+        timer.innerHTML =
+        "00:" +
+        String(fishing.timer).padStart(2,"0");
+
+    }
+
+    const score =
+    document.getElementById("fishScore");
+
+    if(score){
+
+        score.innerHTML =
+        fishing.score;
+
+    }
+
+    const caught =
+    document.getElementById("fishCaught");
+
+    if(caught){
+
+        caught.innerHTML =
+        fishing.specialFish +
+        "/6";
+
+    }
+
+}
+
+/*======================================================
+POWER METER
+======================================================*/
+
+function startCasting(){
+
+    if(fishing.casting)
+        return;
+
+    fishing.casting = true;
+
+    fishing.power = 0;
+
+    fishing.direction = 1;
+
+    const meter =
+    document.getElementById("powerFill");
+
+    powerInterval =
+    setInterval(()=>{
+
+        fishing.power +=
+        fishing.direction*2;
+
+        if(fishing.power>=100){
+
+            fishing.direction=-1;
+
+        }
+
+        if(fishing.power<=0){
+
+            fishing.direction=1;
+
+        }
+
+        if(meter){
+
+            meter.style.width=
+            fishing.power+"%";
+
+        }
+
+    },15);
+
+}
+
+/*======================================================
+CAST
+======================================================*/
+
+function castLine(){
+
+    if(!fishing.casting)
+        return;
+
+    fishing.casting=false;
+
+    clearInterval(powerInterval);
+
+    fishing.casts++;
+
+    animateCast(fishing.power);
+
+}
+/*======================================================
+CAST ANIMATION
+======================================================*/
+
+function animateCast(power){
+
+    const hook =
+    document.getElementById("hook");
+
+    if(!hook)
+        return;
+
+    hook.style.transition="none";
+
+    hook.style.left="50%";
+
+    hook.style.top="80%";
+
+    requestAnimationFrame(()=>{
+
+        hook.style.transition=
+
+        "all 1s ease";
+
+        hook.style.left=
+
+        (20+power*0.5)+"%";
+
+        hook.style.top=
+
+        "45%";
+
+    });
+
+    setTimeout(()=>{
+
+        waitForFish();
+
+    },1200);
+
+}
+
+/*======================================================
+WAIT FOR BITE
+======================================================*/
+
+function waitForFish(){
+
+    const delay=
+
+    1000+
+
+    Math.random()*2500;
+
+    setTimeout(()=>{
+
+        fishBite();
+
+    },delay);
+
+}
+/*======================================================
+FISH BITE
+======================================================*/
+
+function fishBite(){
+
+    fishing.reeling=true;
+
+    const bite=
+
+    document.getElementById("bite");
+
+    if(bite){
+
+        bite.classList.remove("hidden");
+
+    }
+
+    const splash=
+
+    document.getElementById("splashSound");
+
+    if(splash){
+
+        splash.currentTime=0;
+
+        splash.play();
+
+    }
+
+}
+/*======================================================
+CONTROLS
+======================================================*/
+
+document.addEventListener("mousedown",()=>{
+
+    if(document.getElementById("phase2")
+    ?.classList.contains("hidden"))
+        return;
+
+    startCasting();
+
+});
+
+document.addEventListener("mouseup",()=>{
+
+    if(document.getElementById("phase2")
+    ?.classList.contains("hidden"))
+        return;
+
+    castLine();
+
+});
+/*======================================================
+SECTION 5B
+FISH AI
+======================================================*/
+
+const fishTypes=[
+
+{
+
+id:"blue",
+
+points:100,
+
+speed:2,
+
+chance:55
+
+},
+
+{
+
+id:"gold",
+
+points:300,
+
+speed:3,
+
+chance:25
+
+},
+
+{
+
+id:"rainbow",
+
+points:500,
+
+speed:4,
+
+chance:15
+
+},
+
+{
+
+id:"heart",
+
+points:1000,
+
+speed:5,
+
+chance:5
+
+}
+
+];
+
+let currentFish=null;
+
+/*======================================================
+SPAWN FISH
+======================================================*/
+
+function spawnFish(){
+
+const lake=document.getElementById("lake");
+
+if(!lake)return;
+
+if(currentFish){
+
+currentFish.remove();
+
+}
+
+const fish=document.createElement("img");
+
+const type=randomFish();
+
+fish.dataset.type=type.id;
+
+fish.dataset.points=type.points;
+
+fish.src="assets/fish/"+type.id+"Fish.png";
+
+fish.className="fish";
+
+fish.style.top=(120+Math.random()*220)+"px";
+
+lake.appendChild(fish);
+
+currentFish=fish;
+
+swimFish(fish,type.speed);
+
+}
+/*======================================================
+RANDOM FISH
+======================================================*/
+
+function randomFish(){
+
+const roll=Math.random()*100;
+
+let total=0;
+
+for(const fish of fishTypes){
+
+total+=fish.chance;
+
+if(roll<=total){
+
+return fish;
+
+}
+
+}
+
+return fishTypes[0];
+
+}
+/*======================================================
+SWIM
+======================================================*/
+
+function swimFish(fish,speed){
+
+let x=-120;
+
+const y=parseFloat(fish.style.top);
+
+fish.style.left=x+"px";
+
+const swim=setInterval(()=>{
+
+x+=speed;
+
+fish.style.left=x+"px";
+
+if(x>window.innerWidth+150){
+
+clearInterval(swim);
+
+fish.remove();
+
+currentFish=null;
+
+setTimeout(spawnFish,1000);
+
+}
+
+},16);
+
+}
+/*======================================================
+HOOK HIT
+======================================================*/
+
+function fishBite(){
+
+fishing.reeling=true;
+
+const bite=document.getElementById("bite");
+
+if(bite){
+
+bite.classList.remove("hidden");
+
+}
+
+const splash=document.getElementById("splashSound");
+
+if(splash){
+
+splash.currentTime=0;
+
+splash.play();
+
+}
+
+setTimeout(()=>{
+
+startReeling();
+
+},700);
+
+}
+/*======================================================
+ENABLE CATCH
+======================================================*/
+
+function enableCatch(){
+
+const fish=currentFish;
+
+if(!fish)return;
+
+fish.onclick=()=>{
+
+catchFish(fish);
+
+};
+
+}
+/*======================================================
+CATCH
+======================================================*/
+
+function catchFish(fish){
+
+const points=parseInt(fish.dataset.points);
+
+fishing.score+=points;
+
+fishing.fishCaught++;
+
+if(fish.dataset.type==="heart"){
+
+fishing.specialFish++;
+
+}
+
+updateFishingHUD();
+
+showBonus("+"+points);
+
+fish.classList.add("caught");
+
+setTimeout(()=>{
+
+fish.remove();
+
+currentFish=null;
+
+spawnFish();
+
+},500);
+
+}
+if(fishing.specialFish >= 6){
+
+    finishFishingMission();
+
+}
+/*======================================================
+START FISH
+======================================================*/
+
+setTimeout(()=>{
+
+if(document.getElementById("lake")){
+
+spawnFish();
+
+}
+
+},1000);
+/*======================================================
+SECTION 5C
+REEL MINI GAME
+======================================================*/
+
+let reelProgress = 0;
+let reelInterval = null;
+let fishFightInterval = null;
+
+/*------------------------------------------------------
+START REEL
+------------------------------------------------------*/
+
+function startReeling(){
+
+    if(!fishing.reeling) return;
+
+    reelProgress = 0;
+
+    const bar = document.getElementById("reelFill");
+
+    if(bar) bar.style.width = "0%";
+
+    clearInterval(fishFightInterval);
+
+    fishFightInterval = setInterval(()=>{
+
+        reelProgress -= 2;
+
+        if(reelProgress < 0)
+            reelProgress = 0;
+
+        if(bar)
+            bar.style.width = reelProgress + "%";
+
+        if(reelProgress <= 0){
+
+            fishEscaped();
+
+        }
+
+    },120);
+
+}
+/*------------------------------------------------------
+SPACE TO REEL
+------------------------------------------------------*/
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.code !== "Space") return;
+
+    if(!fishing.reeling) return;
+
+    reelProgress += 8;
+
+    if(reelProgress > 100)
+        reelProgress = 100;
+
+    const bar = document.getElementById("reelFill");
+
+    if(bar){
+
+        bar.style.width = reelProgress + "%";
+
+    }
+
+    if(reelProgress >= 100){
+
+        successfulCatch();
+
+    }
+
+});
+/*------------------------------------------------------
+SUCCESS
+------------------------------------------------------*/
+
+function successfulCatch(){
+
+    clearInterval(fishFightInterval);
+
+    fishing.reeling = false;
+
+    if(currentFish){
+
+        catchFish(currentFish);
+
+    }
+
+    showBonus("🎣 Perfect Catch!");
+
+}
+/*------------------------------------------------------
+ESCAPED
+------------------------------------------------------*/
+
+function fishEscaped(){
+
+    clearInterval(fishFightInterval);
+
+    fishing.reeling = false;
+
+    showBonus("💨 Fish Escaped!");
+
+    if(currentFish){
+
+        currentFish.remove();
+
+        currentFish = null;
+
+    }
+
+    setTimeout(()=>{
+
+        spawnFish();
+
+    },1000);
+
+}
+/*======================================================
+SECTION 6
+MISSION COMPLETE
+======================================================*/
+
+function finishFishingMission(){
+
+    clearInterval(fishingInterval);
+
+    clearInterval(fishFightInterval);
+
+    const phase2 =
+    document.getElementById("phase2");
+
+    if(phase2){
+
+        phase2.classList.add("fadeOut");
+
+    }
+
+    setTimeout(()=>{
+
+        showMissionSummary();
+
+    },1000);
+
+}
+/*======================================================
+CALCULATE RANK
+======================================================*/
+
+function calculateRank(){
+
+    const total=score+fishing.score;
+
+    if(total>=4500) return "🏆 Rank S";
+
+    if(total>=3500) return "🥇 Rank A";
+
+    if(total>=2500) return "🥈 Rank B";
+
+    return "🥉 Rank C";
+
+}
+/*======================================================
+BIRTHDAY ENDING
+======================================================*/
+
+function showBirthdayEnding(){
+
+    document
+    .getElementById("summaryOverlay")
+    .remove();
+
+    const ending=document.createElement("div");
+
+    ending.id="birthdayEnding";
+
+    document.body.appendChild(ending);
+
+    ending.innerHTML=`
+
+<div class="endingWindow">
+
+<h1>🎉 Congratulations Chief!</h1>
+
+<br>
+
+<h2>Mission 2 Completed Successfully</h2>
+
+<br>
+
+<p>
+
+Your determination,
+
+patience,
+
+and adventurous spirit
+
+have once again saved the day.
+
+</p>
+
+<br>
+
+<h2>❤️ Happy 30th Birthday ❤️</h2>
+
+<br>
+
+<p>
+
+Another mission awaits...
+
+but not today.
+
+</p>
+
+<br>
+
+<h1>🔒 Mission 3</h1>
+
+<h2>LOCKED</h2>
+
+<p>
+
+Transmission will resume
+
+next week...
+
+</p>
+
+<br>
+
+<button onclick="location.reload()">
+
+Return to HQ
+
+</button>
+
+</div>
+
+`;
+
+}
+/*======================================================
+GAME READY
+======================================================*/
+
+window.onload=()=>{
+
+console.log("Mission 2 Ready");
+
+};
