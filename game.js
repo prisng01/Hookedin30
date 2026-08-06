@@ -923,6 +923,14 @@ function startFishing() {
     const reelFill = document.getElementById("reelFill");
     if (reelFill) reelFill.style.width = "0%";
 
+    // Reset hook position
+    const hook = document.getElementById("hook");
+    if (hook) {
+        hook.style.left = "50%";
+        hook.style.top = "80%";
+        hook.style.transition = "none";
+    }
+
     updateFishingHUD();
     startFishingTimer();
     spawnFish();
@@ -963,7 +971,7 @@ function updateFishingHUD() {
 
     const caught = document.getElementById("fishCaught");
     if (caught) {
-        caught.innerHTML = fishing.specialFish + "/6";
+        caught.innerHTML = fishing.specialFish;
     }
 }
 
