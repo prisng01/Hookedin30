@@ -132,6 +132,13 @@ startMissionBtn.addEventListener("click", () => {
     game.missionStarted = true;
     introScreen.classList.add("fadeOut");
 
+    // ▶ Play background music
+    const bg = document.getElementById("bgMusic");
+    if (bg) {
+        bg.volume = 0.4;
+        bg.play().catch(() => {});
+    }
+
     setTimeout(() => {
         introScreen.style.display = "none";
         gameHUD.classList.remove("hidden");
@@ -143,12 +150,13 @@ startMissionBtn.addEventListener("click", () => {
 
         /* Start Phase 1 */
         startCountdown();
+
         if (typeof startPhase1 === "function") {
             startPhase1();
         }
+
     }, 700);
 });
-
 /*======================================================
  XP SYSTEM
 ======================================================*/
@@ -1001,6 +1009,27 @@ function castLine() {
 }
 
 /*======================================================
+CAST BUTTON
+======================================================*/
+
+const castBtn = document.getElementById("castRod");
+
+if (castBtn) {
+    castBtn.addEventListener("mousedown", startCasting);
+    castBtn.addEventListener("mouseup", castLine);
+
+    // Mobile support
+    castBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        startCasting();
+    });
+
+    castBtn.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        castLine();
+    });
+}
+/*======================================================
 CAST ANIMATION
 ======================================================*/
 
@@ -1160,9 +1189,8 @@ function catchFish(fish) {
     fishing.score += points;
     fishing.fishCaught++;
 
-    if (fish.dataset.type === "heart") {
-        fishing.specialFish++;
-    }
+    // Count every fish caught
+    fishing.specialFish++;
 
     updateFishingHUD();
     showBonus("+" + points);
@@ -1179,7 +1207,6 @@ function catchFish(fish) {
         finishFishingMission();
     }
 }
-
 /*======================================================
 SECTION 5C
 REEL MINI GAME
