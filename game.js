@@ -1181,6 +1181,16 @@ function catchFish(fish) {
 }
 
 /*======================================================
+START FISH
+======================================================*/
+
+setTimeout(() => {
+    if (document.getElementById("lake")) {
+        spawnFish();
+    }
+}, 1000);
+
+/*======================================================
 SECTION 5C
 REEL MINI GAME
 ======================================================*/
@@ -1246,12 +1256,12 @@ function successfulCatch() {
         catchFish(currentFish);
     }
 
+    showBonus("🎣 Perfect Catch!");
+
     const bite = document.getElementById("bite");
     if (bite) {
         bite.classList.add("hidden");
     }
-
-    showBonus("🎣 Perfect Catch!");
 }
 
 /*------------------------------------------------------
@@ -1261,11 +1271,6 @@ ESCAPED
 function fishEscaped() {
     clearInterval(fishFightInterval);
     fishing.reeling = false;
-
-    const bite = document.getElementById("bite");
-    if (bite) {
-        bite.classList.add("hidden");
-    }
 
     showBonus("💨 Fish Escaped!");
 
@@ -1277,6 +1282,11 @@ function fishEscaped() {
     setTimeout(() => {
         spawnFish();
     }, 1000);
+
+    const bite = document.getElementById("bite");
+    if (bite) {
+        bite.classList.add("hidden");
+    }
 }
 
 /*======================================================
