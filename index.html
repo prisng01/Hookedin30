@@ -6,7 +6,7 @@
     <title>Level 2: The Hunt for Clues 🔍🌲</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
@@ -17,17 +17,17 @@
             align-items: center; 
             min-height: 100vh; 
             width: 100vw;
-            overflow: hidden; 
+            overflow-x: hidden; 
             font-family: 'Montserrat', sans-serif;
             color: #f1e4f3;
         }
 
         .container { 
-            width: 92vw; 
-            max-width: 1000px; 
-            height: 88vh; 
-            max-height: 820px;
-            background: rgba(22, 34, 24, 0.92);
+            width: 95vw; 
+            max-width: 1050px; 
+            min-height: 90vh;
+            max-height: 880px;
+            background: rgba(22, 34, 24, 0.94);
             backdrop-filter: blur(12px);
             border: 2px solid #4a5d4e;
             border-radius: 24px; 
@@ -36,20 +36,66 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
-            padding: 25px; 
+            padding: 20px; 
             overflow: hidden; 
+        }
+
+        /* HEADER & XP BAR */
+        .top-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(13, 19, 14, 0.8);
+            border: 1px solid #3e4a3f;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            z-index: 30;
+        }
+
+        .level-badge {
+            font-weight: 800;
+            color: #f3c669;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .xp-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .xp-bar-bg {
+            width: 120px;
+            height: 10px;
+            background: #182619;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #48614b;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            width: 62.5%; /* 250 / 400 */
+            background: linear-gradient(90deg, #388e3c, #f3c669);
+            transition: width 0.5s ease;
         }
 
         /* CARD STYLES */
         .card {
             position: absolute;
-            width: 92%;
-            height: 90%;
+            top: 75px;
+            width: 94%;
+            height: calc(100% - 95px);
             background: #141f15;
             border: 2px solid #627d67;
             border-radius: 18px;
-            padding: 25px 30px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -58,7 +104,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(50px) scale(0.95);
+            transform: translateY(40px) scale(0.96);
             z-index: 2;
             text-align: center;
             overflow-y: auto;
@@ -85,63 +131,57 @@
         .title {
             font-family: 'Cinzel', serif;
             color: #f3c669;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 12px rgba(243, 198, 105, 0.4);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .subtitle {
-            font-size: 12px;
+            font-size: 11px;
             color: #93b899;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin-bottom: 4px;
         }
 
         .romantic-quote {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 16px;
+            font-size: 15px;
             color: #d1e3d3;
-            margin: 8px 0;
-            line-height: 1.5;
+            margin: 6px 0;
+            line-height: 1.4;
         }
 
-        /* MISSION LIST */
-        .mission-box {
-            background: rgba(30, 48, 32, 0.6);
-            border: 1px solid #48614b;
-            border-radius: 12px;
+        /* TERMINAL STYLE */
+        .terminal-box {
+            background: #080d09;
+            border: 1px solid #2d4530;
+            border-radius: 10px;
             padding: 12px;
+            font-family: 'Courier Prime', monospace;
+            color: #4af626;
             text-align: left;
             width: 100%;
-            max-width: 500px;
-            margin: 8px 0;
+            max-width: 550px;
             font-size: 13px;
-            color: #c0dbc3;
-            line-height: 1.6;
-        }
-
-        .mission-box ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .mission-box li {
-            margin-bottom: 4px;
+            line-height: 1.5;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+            margin: 8px 0;
+            min-height: 110px;
         }
 
         /* BUTTONS */
         .btn-primary {
-            font-size: 15px;
+            font-size: 14px;
             color: #0e170f;
             background: linear-gradient(135deg, #f3c669 0%, #d49a2a 100%);
             border: none;
-            padding: 13px 30px;
+            padding: 12px 26px;
             border-radius: 30px;
             font-weight: 800;
             text-transform: uppercase;
@@ -149,11 +189,11 @@
             cursor: pointer;
             transition: all 0.25s ease;
             box-shadow: 0 6px 20px rgba(243, 198, 105, 0.3);
-            margin-top: 10px;
+            margin: 8px 0;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 10px 25px rgba(243, 198, 105, 0.5);
         }
 
@@ -165,54 +205,62 @@
             transform: none;
         }
 
-        /* PUZZLE & MAP ELEMENTS */
-        .map-grid {
+        /* CAMPSITE GRID */
+        .campsite-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
             width: 100%;
-            max-width: 500px;
-            margin: 10px 0;
+            max-width: 600px;
+            margin: 8px 0;
         }
 
-        .map-card {
+        .camp-item {
             background: rgba(30, 48, 32, 0.8);
-            border: 2px solid #48614b;
-            border-radius: 12px;
-            padding: 15px;
+            border: 1px solid #48614b;
+            border-radius: 10px;
+            padding: 10px 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
-        .map-card:hover {
+        .camp-item:hover {
             border-color: #f3c669;
+            background: #253827;
             transform: translateY(-2px);
         }
 
-        .map-card.found {
-            border-color: #f3c669;
-            background: #2d4530;
-            box-shadow: 0 0 12px rgba(243, 198, 105, 0.3);
+        .camp-item.searched {
+            opacity: 0.6;
+            border-color: #2b3d2c;
         }
 
+        .camp-item.found-clue {
+            border-color: #f3c669;
+            background: #38523a;
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(243, 198, 105, 0.4);
+        }
+
+        /* CODE DISPLAY */
         .code-display {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .code-slot {
-            width: 45px;
-            height: 55px;
+            width: 42px;
+            height: 50px;
             background: #0d130e;
             border: 2px solid #f3c669;
             border-radius: 8px;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: #f3c669;
             display: flex;
@@ -224,8 +272,8 @@
         .keypad-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            max-width: 260px;
+            gap: 6px;
+            max-width: 240px;
             margin: 0 auto;
         }
 
@@ -233,205 +281,322 @@
             background: #1e3020;
             border: 1px solid #48614b;
             color: #f1e4f3;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.2s;
         }
 
-        .keypad-btn:hover {
-            background: #2d4530;
-        }
+        .keypad-btn:hover { background: #2d4530; }
 
-        /* PROGRESS TRACKER */
-        .meter-container {
+        /* BADGES DISPLAY */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
             width: 100%;
-            max-width: 500px;
-            background: #182619;
-            height: 10px;
-            border-radius: 5px;
-            margin: 8px auto;
-            overflow: hidden;
-            border: 1px solid #48614b;
+            max-width: 480px;
+            margin: 10px 0;
         }
 
-        .meter-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #388e3c 0%, #aeea00 50%, #f3c669 100%);
-            width: 0%;
-            transition: width 0.4s ease;
+        .badge-card {
+            background: rgba(20, 31, 21, 0.9);
+            border: 1px solid #3a4d3c;
+            border-radius: 8px;
+            padding: 8px 4px;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
         }
 
-        /* MYSTERY DISPATCH CARD */
-        .mystery-box {
-            background: rgba(243, 198, 105, 0.08);
+        .badge-card.unlocked {
+            border-color: #f3c669;
+            background: rgba(45, 69, 48, 0.8);
+            box-shadow: 0 0 8px rgba(243, 198, 105, 0.2);
+        }
+
+        /* EASTER EGG & POPUPS */
+        .achievement-banner {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #1e361f, #0f1d10);
             border: 2px solid #f3c669;
-            border-radius: 14px;
-            padding: 16px;
-            margin: 12px 0;
-            width: 100%;
-            max-width: 550px;
-            text-align: center;
+            border-radius: 30px;
+            padding: 10px 24px;
+            color: #f3c669;
+            font-weight: 800;
+            font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 100;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* PARTICLE ANIMATION */
+        .achievement-banner.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .easter-egg-btn {
+            background: none;
+            border: none;
+            color: #839d86;
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 5px;
+        }
+
+        .easter-egg-btn:hover { color: #f3c669; }
+
+        /* PARTICLES */
         .particle {
             position: absolute;
             pointer-events: none;
             animation: floatUp 2s ease-out forwards;
-            font-size: 24px;
+            font-size: 22px;
             z-index: 99;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-130px) scale(1.3); opacity: 0; }
+            100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
         }
 
-        .note {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #a8c3aa;
-        }
-
-        @media (max-width: 650px) {
-            .title { font-size: 20px; }
-            .map-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .campsite-grid { grid-template-columns: repeat(3, 1fr); }
+            .badges-grid { grid-template-columns: repeat(2, 1fr); }
+            .title { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
+<!-- SECRET ACHIEVEMENT POPUP -->
+<div class="achievement-banner" id="achievement-pop">
+    🏆 Achievement Unlocked: <span>Professional Snooper (+50 XP)</span>
+</div>
+
 <div class="container" id="app">
 
-    <!-- PAGE 0: MISSION BRIEF -->
-    <div class="card active" id="card-gate">
-        <div>
-            <div class="subtitle">🎮 LEVEL 2: THE HUNT FOR CLUES</div>
-            <div class="title">📡 MISSION BRIEF</div>
+    <!-- TOP HEADER WITH XP BAR -->
+    <div class="top-bar">
+        <div class="level-badge">
+            <span>🌲</span> LEVEL 2
         </div>
-
-        <p class="romantic-quote">"🎉 Mission 1 Complete! Well done, my love. ❤️"</p>
-
-        <p style="font-size:13px; color:#c0dbc3; line-height: 1.4;">
-            You've successfully cleared your first challenge. But don't get too comfortable...<br>
-            The journey has only just begun. The next clue is hidden somewhere closer than you think!
-        </p>
-
-        <div class="mission-box">
-            <div style="font-weight: 800; color: #f3c669; margin-bottom: 4px;">🎯 YOUR OBJECTIVE</div>
-            <ul>
-                <li>🔍 Search carefully — clues are hiding in plain sight.</li>
-                <li>🧩 Solve every challenge along the way.</li>
-                <li>🔓 Unlock the hidden encrypted code.</li>
-                <li>⭐ Advance to Mission 3.</li>
-            </ul>
-        </div>
-
-        <p style="font-size:12px; color:#f3c669; font-weight:600; margin-top: 2px;">
-            Stay sharp, trust your instincts, and keep your eyes open.
-        </p>
-
-        <div>
-            <button class="btn-primary" onclick="startMission()">🔍 Begin The Clue Hunt 🚀</button>
-            <p class="note">📲 Sound Mode: Flip Silent Switch OFF for audio feedback.</p>
+        <div class="xp-container">
+            <span style="color:#a8c3aa; font-weight:700;">XP</span>
+            <div class="xp-bar-bg">
+                <div class="xp-bar-fill" id="xp-fill"></div>
+            </div>
+            <span id="xp-text" style="color:#f3c669; font-weight:800;">250 / 400</span>
         </div>
     </div>
 
-    <!-- PAGE 1: INTERACTIVE MAP SEARCH -->
-    <div class="card" id="card-search">
+    <!-- CARD 0: MISSION REPORT / RANK -->
+    <div class="card active" id="card-rank">
         <div>
-            <div class="subtitle">Phase 01 / Area Sweep</div>
-            <div class="title">Inspect Basecamp Locations</div>
-            <p style="font-size:12px; color:#c0dbc3;">Search the area to gather 3 hidden clue numbers!</p>
+            <div class="subtitle">═════════════════════════════</div>
+            <div class="title">MISSION REPORT</div>
+            <div class="subtitle">═════════════════════════════</div>
         </div>
 
-        <div class="map-grid">
-            <div class="map-card" id="node-1" onclick="searchNode('node-1', 'Digit #1 Found: [ 7 ]', '7')">
-                <span style="font-size:28px;">🧰</span>
-                <span style="font-size:12px; font-weight:700;">Tackle Box</span>
-            </div>
-            <div class="map-card" id="node-2" onclick="searchNode('node-2', 'Digit #2 Found: [ 3 ]', '3')">
-                <span style="font-size:28px;">🗺️</span>
-                <span style="font-size:12px; font-weight:700;">Trail Map</span>
-            </div>
-            <div class="map-card" id="node-3" onclick="searchNode('node-3', 'Empty! Check other items.', '')">
-                <span style="font-size:28px;">🪵</span>
-                <span style="font-size:12px; font-weight:700;">Camp Log</span>
-            </div>
-            <div class="map-card" id="node-4" onclick="searchNode('node-4', 'Digit #3 Found: [ 9 ]', '9')">
-                <span style="font-size:28px;">🔦</span>
-                <span style="font-size:12px; font-weight:700;">Lantern</span>
-            </div>
+        <div style="background: rgba(10,16,11,0.8); border: 1px solid #324734; border-radius: 12px; padding: 12px; width: 100%; max-width: 480px; text-align: left; font-size: 13px;">
+            <p><strong style="color:#f3c669;">Operative:</strong> Chief Adventurer</p>
+            <p><strong style="color:#f3c669;">Status:</strong> <span style="color:#4af626; font-weight:700;">ACTIVE</span></p>
+            <p style="margin-top:6px;"><strong style="color:#f3c669;">Mission Success Rate:</strong></p>
+            <p style="color:#4af626; letter-spacing: 2px; font-weight:700;">██████████ 100%</p>
+            <hr style="border-color:#2a3b2c; margin: 8px 0;">
+            <p><strong style="color:#f3c669;">Rank Earned:</strong></p>
+            <p style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px;">🥇 ELITE EXPLORER</p>
         </div>
 
-        <div id="search-log" style="font-size:13px; color:#f3c669; font-weight:700; min-height:20px;">
-            Tap items to search...
+        <div class="terminal-box" id="term-intro">
+            > Initializing encrypted comms...<br>
+            > Ready for Level 2 dispatch sequence.
         </div>
 
         <div>
-            <button class="btn-primary" id="btn-to-puzzle" disabled onclick="goToDecryption()">Proceed to Lockbox ➔</button>
+            <button class="btn-primary" onclick="triggerGpsScanner()">🛰️ Initiate GPS Sweep ➔</button>
+            <div>
+                <button class="easter-egg-btn" onclick="showLoveEgg()">Created with ❤️ by your Wife</button>
+            </div>
         </div>
     </div>
 
-    <!-- PAGE 2: DECRYPTION LOCKBOX -->
-    <div class="card" id="card-decryption">
+    <!-- CARD 1: FAKE GPS SCANNER -->
+    <div class="card" id="card-scanner">
         <div>
-            <div class="subtitle">Phase 02 / Security Gate</div>
-            <div class="title">Enter Encrypted Vault Code</div>
-            <p style="font-size:12px; color:#c0dbc3;">Input the 3 digits discovered during your area sweep!</p>
+            <div class="subtitle">Phase 01 / Satellite Triangulation</div>
+            <div class="title">GPS Target Lock</div>
+        </div>
+
+        <div class="terminal-box" id="term-gps" style="min-height: 160px;">
+            > Initializing satellite link...
+        </div>
+
+        <div id="gps-progress-container" style="width:100%; max-width:400px; display:none;">
+            <div style="font-size:12px; color:#f3c669; margin-bottom:4px;" id="gps-status-text">Scanning area...</div>
+            <div style="background:#0d130e; border:1px solid #48614b; height:12px; border-radius:6px; overflow:hidden;">
+                <div id="gps-bar" style="background:#4af626; height:100%; width:0%; transition: width 0.4s ease;"></div>
+            </div>
+        </div>
+
+        <div>
+            <button class="btn-primary" id="btn-gps-continue" disabled onclick="startTerminalStory()">Continue ➔</button>
+        </div>
+    </div>
+
+    <!-- CARD 2: ANIMATED TERMINAL SETUP -->
+    <div class="card" id="card-terminal">
+        <div>
+            <div class="subtitle">Phase 02 / Secure Briefing</div>
+            <div class="title">Encrypted Transmission</div>
+        </div>
+
+        <div class="terminal-box" id="term-story" style="min-height: 180px;">
+        </div>
+
+        <div>
+            <button class="btn-primary" id="btn-start-hunt" disabled onclick="goToHunt()">🔍 Enter Campsite ➔</button>
+        </div>
+    </div>
+
+    <!-- CARD 3: CAMPSITE CLUE HUNT (12-15 OBJECTS) -->
+    <div class="card" id="card-hunt">
+        <div>
+            <div class="subtitle">Phase 03 / Field Recon</div>
+            <div class="title">Search Basecamp</div>
+            <p style="font-size:11px; color:#c0dbc3;">Find all 4 hidden code digits hidden across campsite items!</p>
+        </div>
+
+        <!-- CODE PROGRESS PREVIEW -->
+        <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#f3c669; font-weight:700;">
+            <span>Vault Code Progress:</span>
+            <span id="code-revealed-display" style="font-family:'Courier Prime', monospace; font-size:16px; letter-spacing:3px; background:#0d130e; padding:3px 10px; border-radius:6px; border:1px solid #48614b;">_ _ _ _</span>
+        </div>
+
+        <div class="campsite-grid" id="camp-grid">
+            <!-- 14 Items dynamically generated in JS -->
+        </div>
+
+        <div id="search-feedback" style="font-size:12px; color:#f3c669; font-weight:700; min-height:24px; padding:0 10px;">
+            Tap campsite items to investigate...
+        </div>
+
+        <div>
+            <button class="btn-primary" id="btn-to-vault" disabled onclick="goToVault()">🔓 Access Vault Lockbox ➔</button>
+        </div>
+    </div>
+
+    <!-- CARD 4: VAULT KEYPAD & FAKE HACKER DECRYPTION -->
+    <div class="card" id="card-vault">
+        <div>
+            <div class="subtitle">Phase 04 / Access Control</div>
+            <div class="title">Vault Security Gate</div>
+            <p style="font-size:11px; color:#c0dbc3;">Enter the 4-digit code uncovered from basecamp!</p>
         </div>
 
         <div class="code-display">
-            <div class="code-slot" id="slot-0">-</div>
-            <div class="code-slot" id="slot-1">-</div>
-            <div class="code-slot" id="slot-2">-</div>
+            <div class="code-slot" id="vslot-0">-</div>
+            <div class="code-slot" id="vslot-1">-</div>
+            <div class="code-slot" id="vslot-2">-</div>
+            <div class="code-slot" id="vslot-3">-</div>
         </div>
 
-        <div class="keypad-grid">
-            <button class="keypad-btn" onclick="pressKey('1')">1</button>
-            <button class="keypad-btn" onclick="pressKey('2')">2</button>
-            <button class="keypad-btn" onclick="pressKey('3')">3</button>
-            <button class="keypad-btn" onclick="pressKey('4')">4</button>
-            <button class="keypad-btn" onclick="pressKey('5')">5</button>
-            <button class="keypad-btn" onclick="pressKey('6')">6</button>
-            <button class="keypad-btn" onclick="pressKey('7')">7</button>
-            <button class="keypad-btn" onclick="pressKey('8')">8</button>
-            <button class="keypad-btn" onclick="pressKey('9')">9</button>
-            <button class="keypad-btn" style="background:#5a2323;" onclick="clearKeypad()">C</button>
-            <button class="keypad-btn" onclick="pressKey('0')">0</button>
-            <button class="keypad-btn" style="background:#2b5a2d;" onclick="submitCode()">🔓</button>
+        <div id="hacker-screen" class="terminal-box" style="display:none; min-height:110px; font-size:12px;">
+            > Initializing Decryption Routine...
         </div>
 
-        <div id="lock-status" style="font-size:12px; color:#c0dbc3; margin-top:8px;">
-            Awaiting 3-digit key sequence...
+        <div class="keypad-grid" id="keypad-controls">
+            <button class="keypad-btn" onclick="pressVaultKey('1')">1</button>
+            <button class="keypad-btn" onclick="pressVaultKey('2')">2</button>
+            <button class="keypad-btn" onclick="pressVaultKey('3')">3</button>
+            <button class="keypad-btn" onclick="pressVaultKey('4')">4</button>
+            <button class="keypad-btn" onclick="pressVaultKey('5')">5</button>
+            <button class="keypad-btn" onclick="pressVaultKey('6')">6</button>
+            <button class="keypad-btn" onclick="pressVaultKey('7')">7</button>
+            <button class="keypad-btn" onclick="pressVaultKey('8')">8</button>
+            <button class="keypad-btn" onclick="pressVaultKey('9')">9</button>
+            <button class="keypad-btn" style="background:#5a2323;" onclick="clearVaultKey()">C</button>
+            <button class="keypad-btn" onclick="pressVaultKey('0')">0</button>
+            <button class="keypad-btn" style="background:#2b5a2d;" onclick="submitVaultCode()">🔓</button>
+        </div>
+
+        <div style="margin-top:6px;">
+            <button class="easter-egg-btn" onclick="triggerLovePassword()">Type Secret Password</button>
+        </div>
+
+        <div id="vault-status" style="font-size:12px; color:#c0dbc3; margin-top:4px;">
+            Awaiting 4-digit security code...
         </div>
     </div>
 
-    <!-- PAGE 3: FINALE TRANSMISSION -->
-    <div class="card" id="card-finale">
+    <!-- CARD 5: FINAL MISSION REPORT & BUILD-UP -->
+    <div class="card" id="card-finish">
         <div>
-            <div class="subtitle">Mission 2 Completed! 🎉</div>
-            <div class="title">Clues Unlocked! 🔓</div>
+            <div class="subtitle">═════════════════════════════</div>
+            <div class="title">MISSION REPORT</div>
+            <div class="subtitle">═════════════════════════════</div>
         </div>
 
-        <div class="mystery-box">
-            <div style="font-size: 11px; color: #f3c669; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">
-                📡 Decrypted Dispatch #02
+        <div style="background: rgba(10,16,11,0.85); border: 1px solid #48614b; border-radius: 12px; padding: 12px; width: 100%; max-width: 500px; text-align: left; font-size: 12px; line-height: 1.5;">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 6px;">
+                <span><strong style="color:#f3c669;">Status:</strong> <span style="color:#4af626; font-weight:800;">COMPLETE</span></span>
+                <span><strong style="color:#f3c669;">Time Taken:</strong> <span id="final-time">03:27</span></span>
+                <span><strong style="color:#f3c669;">Accuracy:</strong> <span style="color:#4af626; font-weight:800;">100%</span></span>
             </div>
-            <div style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; margin: 6px 0;">
-                Clue Acquired: "Near Whispering Waters" 🌊✨
-            </div>
-            <p style="font-size: 13px; color: #d1e3d3; line-height: 1.4;">
-                Every puzzle solved brings us one step closer to unlocking our secret adventure. You're doing amazing, my love! ❤️
-            </p>
+            <hr style="border-color:#2a3b2c; margin: 6px 0;">
+            <p><strong style="color:#f3c669;">Rewards:</strong> 🏆 Explorer Badge | 🔑 Secret Clue | +250 XP</p>
+            <p><strong style="color:#f3c669;">New Mission:</strong> Unlocked in 7 Days</p>
         </div>
 
-        <p class="romantic-quote" style="font-size: 14px;">
-            "Mission 2 Cleared! Gear up... Mission 3 drops next week! 🎒🌲"
-        </p>
+        <!-- BADGES SECTION -->
+        <div style="width:100%; max-width:500px;">
+            <div style="font-size:11px; font-weight:800; color:#f3c669; text-transform:uppercase; margin-bottom:4px;">Collected Badges</div>
+            <div class="badges-grid">
+                <div class="badge-card unlocked">
+                    <span style="font-size:20px;">🏕️</span>
+                    <strong>Campfire</strong>
+                    <span style="color:#4af626;">Unlocked</span>
+                </div>
+                <div class="badge-card unlocked">
+                    <span style="font-size:20px;">🧭</span>
+                    <strong>Explorer</strong>
+                    <span style="color:#4af626;">Unlocked</span>
+                </div>
+                <div class="badge-card">
+                    <span style="font-size:20px;">🎣</span>
+                    <strong>Master Angler</strong>
+                    <span style="color:#778c79;">Locked (M3)</span>
+                </div>
+                <div class="badge-card">
+                    <span style="font-size:20px;">👑</span>
+                    <strong>Birthday Legend</strong>
+                    <span style="color:#778c79;">Locked (M4)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLASSIFIED WEEK 4 BUILD UP -->
+        <div style="background: rgba(243, 198, 105, 0.06); border: 2px dashed #f3c669; border-radius: 12px; padding: 10px; width: 100%; max-width: 500px; text-align: left; font-size: 11px;">
+            <div style="color:#f3c669; font-weight:800; letter-spacing: 1.5px; margin-bottom:4px;">📂 CLASSIFIED FILE</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+                <div><strong>Progress:</strong><br>Mission 1 ✅<br>Mission 2 ✅<br>Mission 3 🔒<br>Mission 4 🔒</div>
+                <div>
+                    <strong>Destination:</strong> <span style="background:#f3c669; color:#f3c669;">TOP SECRET DATA</span><br>
+                    <strong>Date:</strong> <span style="background:#f3c669; color:#f3c669;">██ / ██</span><br>
+                    <strong>Coordinates:</strong> <span style="background:#f3c669; color:#f3c669;">██°██'██"</span>
+                </div>
+            </div>
+        </div>
 
         <div>
             <button class="btn-primary" onclick="spawnSparkles()">Celebrate Victory ✨</button>
@@ -441,22 +606,54 @@
 </div>
 
 <script>
-    let collectedDigits = [];
-    let currentInput = [];
-    const correctCode = "739";
+    // GAME STATE & CONFIGURATION
+    let currentXP = 250;
+    const maxXP = 400;
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    // Code: 2208
+    const correctVaultCode = "2208";
+    let codeSlotsFound = ['_', '_', '_', '_'];
+    let userVaultInput = [];
+
+    const successQuotes = [
+        "Nice work, Chief!",
+        "Mission Control is impressed.",
+        "That's one step closer.",
+        "You're smarter than expected 😏"
+    ];
+
+    // 14 CAMPSITE ITEMS (4 Clues, 10 Funny Wrongs)
+    const campItemsData = [
+        { id: 1, icon: '🪵', name: 'Log', clue: '2', isClue: true, clueIdx: 0, text: 'Digit #1 Uncovered: [ 2 ]' },
+        { id: 2, icon: '🎣', name: 'Rod', clue: '', isClue: false, text: 'Nice try. Fish aren\'t giving away classified information.' },
+        { id: 3, icon: '🪣', name: 'Bucket', clue: '2', isClue: true, clueIdx: 1, text: 'Digit #2 Uncovered: [ 2 ]' },
+        { id: 4, icon: '🥾', name: 'Boots', clue: '', isClue: false, text: 'An old boot. Smells like defeat.' },
+        { id: 5, icon: '🧭', name: 'Compass', clue: '0', isClue: true, clueIdx: 2, text: 'Digit #3 Uncovered: [ 0 ]' },
+        { id: 6, icon: '🥤', name: 'Coke', clue: '', isClue: false, text: 'Just a lukewarm soda. Refreshing, but unhelpful.' },
+        { id: 7, icon: '🔥', name: 'Fire', clue: '', isClue: false, text: 'Too hot. Come back later.' },
+        { id: 8, icon: '🐟', name: 'Fish', clue: '', isClue: false, text: 'Glub glub. No code here!' },
+        { id: 9, icon: '🧤', name: 'Gloves', clue: '', isClue: false, text: 'Just a pair of muddy gloves.' },
+        { id: 10, icon: '🎒', name: 'Backpack', clue: '8', isClue: true, clueIdx: 3, text: 'Digit #4 Uncovered: [ 8 ]' },
+        { id: 11, icon: '⛺', name: 'Tent', clue: '', isClue: false, text: 'Just a cozy sleeping bag inside.' },
+        { id: 12, icon: '🍄', name: 'Mushroom', clue: '', isClue: false, text: 'You found... A very judgemental mushroom. No clue. 😂' },
+        { id: 13, icon: '🦉', name: 'Owl', clue: '', isClue: false, text: 'The owl stares at you in silence. Hoot.' },
+        { id: 14, icon: '🔦', name: 'Flashlight', clue: '', isClue: false, text: 'Flickers twice and dies. Unlucky!' }
+    ];
+
+    let itemsSearched = new Set();
+    let cluesFoundCount = 0;
+    let snooperAchievementUnlocked = false;
 
     // AUDIO SYNTHESIZER
     let audioCtx = null;
-    let bgLoopTimer = null;
-
     function initAudioContext() {
         if (!audioCtx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
         }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function playSound(type) {
@@ -468,34 +665,34 @@
 
         if (type === 'click') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, now);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            osc.frequency.setValueAtTime(420, now);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
         } else if (type === 'found') {
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.setValueAtTime(659.25, now + 0.1);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.frequency.setValueAtTime(659.25, now + 0.08);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
         } else if (type === 'error') {
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.setValueAtTime(110, now + 0.15);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.setValueAtTime(100, now + 0.1);
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
         } else if (type === 'success') {
             const notes = [523.25, 659.25, 783.99, 1046.50];
             notes.forEach((f, i) => {
                 let o = audioCtx.createOscillator();
                 let g = audioCtx.createGain();
                 o.type = 'triangle';
-                o.frequency.setValueAtTime(f, now + i * 0.1);
-                g.gain.setValueAtTime(0.2, now + i * 0.1);
-                g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+                o.frequency.setValueAtTime(f, now + i * 0.09);
+                g.gain.setValueAtTime(0.15, now + i * 0.09);
+                g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.25);
                 o.connect(g);
                 g.connect(audioCtx.destination);
-                o.start(now + i * 0.1);
-                o.stop(now + i * 0.1 + 0.3);
+                o.start(now + i * 0.09);
+                o.stop(now + i * 0.09 + 0.25);
             });
             return;
         }
@@ -503,90 +700,274 @@
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.3);
+        osc.stop(now + 0.25);
     }
 
-    // GAME NAVIGATION
+    // CARD SWITCHER
     function showCard(cardId) {
         document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
         document.getElementById(cardId).classList.add('active');
     }
 
-    function startMission() {
-        playSound('found');
-        showCard('card-search');
+    // UPDATE XP
+    function addXP(amount) {
+        currentXP = Math.min(maxXP, currentXP + amount);
+        document.getElementById('xp-fill').style.width = (currentXP / maxXP * 100) + '%';
+        document.getElementById('xp-text').innerText = `${currentXP} / ${maxXP}`;
     }
 
-    function searchNode(id, msg, digit) {
-        const card = document.getElementById(id);
-        const log = document.getElementById('search-log');
-        log.innerText = msg;
-
-        if (digit && !collectedDigits.includes(digit)) {
-            collectedDigits.push(digit);
-            card.classList.add('found');
-            playSound('found');
-            spawnParticles(['🔍', '⭐', '✨']);
-        } else if (!digit) {
-            playSound('click');
-        }
-
-        if (collectedDigits.length >= 3) {
-            document.getElementById('btn-to-puzzle').disabled = false;
-            log.innerText = "All 3 clue digits located! Code sequence ready.";
-        }
-    }
-
-    function goToDecryption() {
-        playSound('found');
-        showCard('card-decryption');
-    }
-
-    function pressKey(num) {
-        if (currentInput.length < 3) {
-            playSound('click');
-            currentInput.push(num);
-            updateSlots();
-        }
-    }
-
-    function clearKeypad() {
+    // AMENDMENT 2: FAKE GPS SCANNER (5 Secs)
+    function triggerGpsScanner() {
         playSound('click');
-        currentInput = [];
-        updateSlots();
-        document.getElementById('lock-status').innerText = "Input cleared.";
+        showCard('card-scanner');
+        const term = document.getElementById('term-gps');
+        const pContainer = document.getElementById('gps-progress-container');
+        const pBar = document.getElementById('gps-bar');
+        const status = document.getElementById('gps-status-text');
+        
+        pContainer.style.display = 'block';
+        
+        let steps = [
+            { text: "> Scanning nearby grid...", bar: 20, status: "Scanning..." },
+            { text: "> Searching nearby frequencies...", bar: 45, status: "Searching..." },
+            { text: "> Warning: No signal detected...", bar: 60, status: "No signal..." },
+            { text: "> Re-routing orbital satellites...", bar: 85, status: "Re-routing satellites..." },
+            { text: "> TARGET DETECTED! Lock established.", bar: 100, status: "Target detected." }
+        ];
+
+        term.innerHTML = "> Initiating satellite link...<br>";
+
+        steps.forEach((step, idx) => {
+            setTimeout(() => {
+                term.innerHTML += step.text + "<br>";
+                pBar.style.width = step.bar + "%";
+                status.innerText = step.status;
+                playSound('click');
+
+                if (idx === steps.length - 1) {
+                    playSound('found');
+                    document.getElementById('btn-gps-continue').disabled = false;
+                }
+            }, (idx + 1) * 1000);
+        });
     }
 
-    function updateSlots() {
-        for (let i = 0; i < 3; i++) {
-            document.getElementById(`slot-${i}`).innerText = currentInput[i] || "-";
+    // AMENDMENT 3: ANIMATED TERMINAL SETUP
+    function startTerminalStory() {
+        playSound('click');
+        showCard('card-terminal');
+        const term = document.getElementById('term-story');
+        term.innerHTML = "";
+
+        const lines = [
+            "> Connecting to secure operative channel...",
+            "> Retrieving encrypted mission file...",
+            "> Clearance Verified.",
+            "> Access Granted...",
+            "> Loading Mission 2: Basecamp Search Protocol..."
+        ];
+
+        lines.forEach((line, idx) => {
+            setTimeout(() => {
+                term.innerHTML += line + "<br>";
+                playSound('click');
+                if (idx === lines.length - 1) {
+                    document.getElementById('btn-start-hunt').disabled = false;
+                }
+            }, (idx + 1) * 800);
+        });
+    }
+
+    // AMENDMENT 4 & 5: SCATTER 14 CAMPSITE ITEMS + FUNNY WRONGS
+    function goToHunt() {
+        playSound('found');
+        showCard('card-hunt');
+        startTimer();
+
+        const grid = document.getElementById('camp-grid');
+        grid.innerHTML = '';
+
+        campItemsData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'camp-item';
+            div.id = `item-${item.id}`;
+            div.onclick = () => tapCampItem(item);
+            div.innerHTML = `
+                <span style="font-size:24px;">${item.icon}</span>
+                <span style="font-size:11px; font-weight:700;">${item.name}</span>
+            `;
+            grid.appendChild(div);
+        });
+    }
+
+    function tapCampItem(item) {
+        const itemEl = document.getElementById(`item-${item.id}`);
+        const feedback = document.getElementById('search-feedback');
+
+        if (itemsSearched.has(item.id)) {
+            feedback.innerText = `You already inspected the ${item.name}.`;
+            return;
+        }
+
+        itemsSearched.add(item.id);
+
+        if (item.isClue) {
+            playSound('found');
+            itemEl.classList.add('found-clue');
+            codeSlotsFound[item.clueIdx] = item.clue;
+            cluesFoundCount++;
+            
+            // Random success quote
+            const quote = successQuotes[Math.floor(Math.random() * successQuotes.length)];
+            feedback.innerText = `${item.text} — "${quote}"`;
+            spawnParticles(['🔍', '⭐', '✨']);
+
+            // Update clue preview
+            document.getElementById('code-revealed-display').innerText = codeSlotsFound.join(" ");
+
+            if (cluesFoundCount >= 4) {
+                document.getElementById('btn-to-vault').disabled = false;
+            }
+        } else {
+            playSound('click');
+            itemEl.classList.add('searched');
+            feedback.innerText = item.text;
+        }
+
+        // AMENDMENT 6: SECRET ACHIEVEMENT (Professional Snooper)
+        if (itemsSearched.size === campItemsData.length && !snooperAchievementUnlocked) {
+            snooperAchievementUnlocked = true;
+            addXP(50);
+            showAchievementBanner("Professional Snooper (+50 XP)");
         }
     }
 
-    function submitCode() {
-        const entered = currentInput.join("");
-        if (entered === correctCode) {
-            playSound('success');
-            spawnParticles(['🔓', '🎉', '✨', '💖']);
-            showCard('card-finale');
+    function showAchievementBanner(text) {
+        playSound('success');
+        const pop = document.getElementById('achievement-pop');
+        pop.querySelector('span').innerText = text;
+        pop.classList.add('show');
+        setTimeout(() => pop.classList.remove('show'), 3500);
+    }
+
+    // VAULT KEYPAD LOGIC
+    function goToVault() {
+        playSound('found');
+        showCard('card-vault');
+    }
+
+    function pressVaultKey(num) {
+        if (userVaultInput.length < 4) {
+            playSound('click');
+            userVaultInput.push(num);
+            updateVaultSlots();
+        }
+    }
+
+    function clearVaultKey() {
+        playSound('click');
+        userVaultInput = [];
+        updateVaultSlots();
+        document.getElementById('vault-status').innerText = "Keypad cleared.";
+    }
+
+    function updateVaultSlots() {
+        for (let i = 0; i < 4; i++) {
+            document.getElementById(`vslot-${i}`).innerText = userVaultInput[i] || "-";
+        }
+    }
+
+    // AMENDMENT 8: FAKE HACKER SCREEN ON UNLOCK
+    function submitVaultCode() {
+        const entered = userVaultInput.join("");
+        const status = document.getElementById('vault-status');
+        const hacker = document.getElementById('hacker-screen');
+        const keypad = document.getElementById('keypad-controls');
+
+        if (entered.length < 4) {
+            playSound('error');
+            status.innerText = "⚠️ Enter full 4-digit code!";
+            return;
+        }
+
+        if (entered === correctVaultCode) {
+            keypad.style.display = 'none';
+            hacker.style.display = 'block';
+            status.innerText = "Processing clearance...";
+
+            let hackSteps = [
+                "> Decrypting security payload...",
+                "> [██████░░░░] 60%",
+                "> Checking operative database...",
+                "> Verifying clearance level...",
+                "> Connecting to server...",
+                "> ACCESS GRANTED!"
+            ];
+
+            hackSteps.forEach((step, i) => {
+                setTimeout(() => {
+                    hacker.innerHTML += "<br>" + step;
+                    playSound('click');
+
+                    if (i === hackSteps.length - 1) {
+                        playSound('success');
+                        stopTimer();
+                        addXP(100);
+                        setTimeout(() => {
+                            showCard('card-finish');
+                            spawnParticles(['🏆', '✨', '💖', '🔑']);
+                        }, 1200);
+                    }
+                }, (i + 1) * 600);
+            });
         } else {
             playSound('error');
-            const card = document.getElementById('card-decryption');
+            const card = document.getElementById('card-vault');
             card.classList.add('shake');
             setTimeout(() => card.classList.remove('shake'), 400);
-            document.getElementById('lock-status').innerText = "❌ Access Denied: Incorrect Code!";
-            clearKeypad();
+            status.innerText = "❌ Access Denied: Incorrect Security Pin!";
+            clearVaultKey();
         }
     }
 
+    // AMENDMENT 14: HIDDEN PASSWORD EASTER EGG
+    function triggerLovePassword() {
+        playSound('click');
+        const status = document.getElementById('vault-status');
+        status.innerHTML = `<span style="color:#f3c669;">❤️ Access Granted. Just kidding. Wrong password. But I love you too.</span>`;
+    }
+
+    // AMENDMENT 10: EASTER EGG ON NAME
+    function showLoveEgg() {
+        playSound('success');
+        alert("❤️ Bonus Fact:\n\nYour wife loves you more than all the stars combined.");
+    }
+
+    // TIMER
+    function startTimer() {
+        timerSeconds = 0;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timerSeconds++;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        let mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+        let secs = (timerSeconds % 60).toString().padStart(2, '0');
+        document.getElementById('final-time').innerText = `${mins}:${secs}`;
+    }
+
+    // PARTICLES & CELEBRATION
     function spawnParticles(icons) {
         const container = document.getElementById('app');
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 10; i++) {
             const p = document.createElement('div');
             p.classList.add('particle');
             p.innerText = icons[Math.floor(Math.random() * icons.length)];
-            p.style.left = (20 + Math.random() * 60) + '%';
-            p.style.top = (40 + Math.random() * 30) + '%';
+            p.style.left = (15 + Math.random() * 70) + '%';
+            p.style.top = (35 + Math.random() * 40) + '%';
             container.appendChild(p);
 
             setTimeout(() => p.remove(), 2000);
@@ -595,7 +976,7 @@
 
     function spawnSparkles() {
         playSound('success');
-        spawnParticles(['🔍', '✨', '💖', '🔓', '🌲', '⭐']);
+        spawnParticles(['🏆', '✨', '💖', '🌲', '⭐', '🔑']);
     }
 </script>
 
