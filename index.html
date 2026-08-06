@@ -2,739 +2,282 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MISSION 2 • THE HUNT FOR CLUES</title>
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>
-MISSION 2 • THE HUNT FOR CLUES
-</title>
-
-<!-- Google Font -->
-
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap"
-rel="stylesheet">
-
-<link rel="stylesheet"
-href="style.css">
-
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ====================================================== -->
-<!-- LOADING SCREEN -->
-<!-- ====================================================== -->
+  <!-- ====================================================== -->
+  <!-- LOADING SCREEN -->
+  <!-- ====================================================== -->
+  <div id="loadingScreen">
+    <div class="loadingCard">
+      <h1>MISSION CONTROL</h1>
+      <h2>Incoming Secure Transmission...</h2>
+      <div class="loadingBar">
+        <div id="loadingFill"></div>
+      </div>
+      <p id="loadingText">Connecting to Satellite...</p>
+    </div>
+  </div>
 
-<div id="loadingScreen">
+  <!-- ====================================================== -->
+  <!-- INTRO SCREEN -->
+  <!-- ====================================================== -->
+  <section id="introScreen" class="hidden">
+    <div class="glassPanel">
+      <h1>🧩 MISSION 2</h1>
+      <h2>THE HUNT FOR CLUES</h2>
+      <div id="terminal">
+        <p>&gt; Initializing...</p>
+      </div>
+      <div class="briefing">
+        <h3>📡 Mission Brief</h3>
+        <p>Congratulations, Chief Adventurer. Mission 1 has been completed successfully.</p>
+        <p>Mission Control has detected unusual activity near the campsite. A hungry bear is approaching your location.</p>
+        <p>Your task is to recover all essential camping equipment before the bear reaches camp.</p>
+        <h3>🎯 Objectives</h3>
+        <ul>
+          <li>🔍 Find all hidden camping equipment.</li>
+          <li>🐻 Escape before the bear reaches camp.</li>
+          <li>🎣 Unlock the Fishing Challenge.</li>
+        </ul>
+        <button id="startMission">🚀 START MISSION</button>
+      </div>
+    </div>
+  </section>
 
-<div class="loadingCard">
-
-<h1>
-
-MISSION CONTROL
-
-</h1>
-
-<h2>
-
-Incoming Secure Transmission...
-
-</h2>
-
-<div class="loadingBar">
-
-<div id="loadingFill">
-
-</div>
-
-</div>
-
-<p id="loadingText">
-
-Connecting to Satellite...
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ====================================================== -->
-<!-- INTRO SCREEN -->
-<!-- ====================================================== -->
-
-<section id="introScreen"
-class="hidden">
-
-<div class="glassPanel">
-
-<h1>
-
-🧩 MISSION 2
-
-</h1>
-
-<h2>
-
-THE HUNT FOR CLUES
-
-</h2>
-
-<div id="terminal">
-
-<p>
-
-> Initializing...
-
-</p>
-
-</div>
-
-<div class="briefing">
-
-<h3>
-
-📡 Mission Brief
-
-</h3>
-
-<p>
-
-Congratulations, Chief Adventurer.
-
-Mission 1 has been completed successfully.
-
-</p>
-
-<p>
-
-Mission Control has detected unusual activity near the campsite.
-
-A hungry bear is approaching your location.
-
-</p>
-
-<p>
-
-Your task is to recover all essential camping equipment before the bear reaches camp.
-
-</p>
-
-<h3>
-
-🎯 Objectives
-
-</h3>
-
-<ul>
-
-<li>
-🔍 Find all hidden camping equipment.
-</li>
-
-<li>
-🐻 Escape before the bear reaches camp.
-</li>
-
-<li>
-🎣 Unlock the Fishing Challenge.
-</li>
-
-</ul>
-
-<button
-id="startMission">
-
-🚀 START MISSION
-
-</button>
-
-</div>
-
-</div>
-
-</section>
-<!-- ====================================================== -->
-<!-- GAME HUD -->
-<!-- ====================================================== -->
-
-<header id="gameHUD" class="hidden">
-
+  <!-- ====================================================== -->
+  <!-- GAME HUD -->
+  <!-- ====================================================== -->
+  <header id="gameHUD" class="hidden">
     <div class="hudLeft">
-
-        <h2>MISSION 2</h2>
-
-        <p id="objectiveText">
-            Recover all hidden camping equipment.
-        </p>
-
+      <h2>MISSION 2</h2>
+      <p id="objectiveText">Recover all hidden camping equipment.</p>
     </div>
 
     <div class="hudCenter">
-
-        <div class="bearContainer">
-
-            <span class="bearIcon">🐻</span>
-
-            <div class="bearTrack">
-
-                <div id="bearProgress"></div>
-
-            </div>
-
-            <span class="campIcon">⛺</span>
-
+      <div class="bearContainer">
+        <span class="bearIcon">🐻</span>
+        <div class="bearTrack">
+          <div id="bearProgress"></div>
         </div>
-
+        <span class="campIcon">⛺</span>
+      </div>
     </div>
 
     <div class="hudRight">
+      <div class="timerBox">
+        ⏱ <span id="timer">01:00</span>
+      </div>
+      <div class="xpBox">
+        ⭐ <span id="xp">0</span> XP
+      </div>
+    </div>
+  </header>
 
-        <div class="timerBox">
+  <!-- ====================================================== -->
+  <!-- INVENTORY -->
+  <!-- ====================================================== -->
+  <aside id="inventoryPanel" class="hidden">
+    <h2>🎒 Inventory</h2>
+    <div id="inventoryGrid">
+      <div class="inventorySlot">
+        <img src="assets/items/tent.png" alt="Tent">
+        <p>Tent</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/backpack.png" alt="Backpack">
+        <p>Backpack</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/flashlight.png" alt="Flashlight">
+        <p>Flashlight</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/compass.png" alt="Compass">
+        <p>Compass</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/boots.png" alt="Boots">
+        <p>Boots</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/bottle.png" alt="Bottle">
+        <p>Bottle</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/fishingRod.png" alt="Fishing Rod">
+        <p>Fishing Rod</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/map.png" alt="Map">
+        <p>Map</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/camera.png" alt="Camera">
+        <p>Camera</p>
+      </div>
+      <div class="inventorySlot">
+        <img src="assets/items/key.png" alt="Vault Key">
+        <p>Vault Key</p>
+      </div>
+    </div>
+  </aside>
 
-            ⏱
+  <!-- ====================================================== -->
+  <!-- PHASE 1 -->
+  <!-- ====================================================== -->
+  <section id="phase1" class="hidden">
+    <div id="campScene">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+  </section>
 
-            <span id="timer">
+  <!-- ====================================================== -->
+  <!-- PHASE 1 COMPLETE -->
+  <!-- ====================================================== -->
+  <section id="phase1Complete" class="hidden">
+    <div class="glassPanel">
+      <h1>🏕 Camp Successfully Secured</h1>
+      <p>Excellent work, Chief. You recovered every item before the bear arrived.</p>
+      <div class="phaseStats">
+        <div>⭐ XP Earned <span id="phase1XP">200</span></div>
+        <div>🎒 Objects Found <span>10 / 10</span></div>
+        <div>🐻 Bear Avoided <span>YES</span></div>
+      </div>
+      <button id="continueFishing">🎣 Continue to Fishing Challenge</button>
+    </div>
+  </section>
 
-                01:00
+  <!-- ====================================================== -->
+  <!-- PHASE 2 - FISHING CHALLENGE -->
+  <!-- ====================================================== -->
+  <section id="phase2" class="hidden">
+    <!-- Updated container ID from lakeScene to lake for script compatibility -->
+    <div id="lake">
+      <!-- Item 3: Added missing Hook element -->
+      <div id="hook"></div>
+      
+      <!-- Item 4: Added missing Bite indicator element -->
+      <div id="bite" class="hidden">❗ FISH BITE!</div>
 
-            </span>
-
-        </div>
-
-        <div class="xpBox">
-
-            ⭐
-
-            <span id="xp">
-
-                0
-
-            </span>
-
-            XP
-
-        </div>
-
+      <canvas id="fishingCanvas"></canvas>
     </div>
 
-</header>
-
-<!-- ====================================================== -->
-<!-- INVENTORY -->
-<!-- ====================================================== -->
-
-<aside id="inventoryPanel"
-class="hidden">
-
-<h2>
-
-🎒 Inventory
-
-</h2>
-
-<div id="inventoryGrid">
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/tent.png">
-
-<p>Tent</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/backpack.png">
-
-<p>Backpack</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/flashlight.png">
-
-<p>Flashlight</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/compass.png">
-
-<p>Compass</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/boots.png">
-
-<p>Boots</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/bottle.png">
-
-<p>Bottle</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/fishingRod.png">
-
-<p>Fishing Rod</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/map.png">
-
-<p>Map</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/camera.png">
-
-<p>Camera</p>
-
-</div>
-
-<div class="inventorySlot">
-
-<img
-src="assets/items/key.png">
-
-<p>Vault Key</p>
-
-</div>
-
-</div>
-
-</aside>
-
-<!-- ====================================================== -->
-<!-- PHASE 1 -->
-<!-- ====================================================== -->
-
-<section
-id="phase1"
-class="hidden">
-
-<div id="campScene">
-
-<!--
-The campsite background will be drawn
-using JavaScript on a Canvas.
-
-Hidden PNG objects will be placed here.
--->
-
-<canvas
-id="gameCanvas">
-
-</canvas>
-
-</div>
-
-</section>
-
-<!-- ====================================================== -->
-<!-- PHASE 1 COMPLETE -->
-<!-- ====================================================== -->
-
-<section
-id="phase1Complete"
-class="hidden">
-
-<div class="glassPanel">
-
-<h1>
-
-🏕 Camp Successfully Secured
-
-</h1>
-
-<p>
-
-Excellent work, Chief.
-
-You recovered every item before the bear arrived.
-
-</p>
-
-<div class="phaseStats">
-
-<div>
-
-⭐ XP Earned
-
-<span id="phase1XP">
-
-200
-
-</span>
-
-</div>
-
-<div>
-
-🎒 Objects Found
-
-<span>
-
-10 / 10
-
-</span>
-
-</div>
-
-<div>
-
-🐻 Bear Avoided
-
-<span>
-
-YES
-
-</span>
-
-</div>
-
-</div>
-
-<button
-id="continueFishing">
-
-🎣 Continue to Fishing Challenge
-
-</button>
-
-</div>
-
-</section>
-<!-- ====================================================== -->
-<!-- PHASE 2 - FISHING CHALLENGE -->
-<!-- ====================================================== -->
-
-<section
-id="phase2"
-class="hidden">
-
-<div id="lakeScene">
-
-<canvas
-id="fishingCanvas">
-</canvas>
-
-</div>
-
-<div id="fishingHUD">
-
-<div class="fishingHeader">
-
-<h1>
-🎣 Fishing Challenge
-</h1>
-
-<p>
-
-Catch <strong>6 Special Fish</strong>
-before time runs out.
-
-</p>
-
-</div>
-
-<div class="fishingStats">
-
-<div class="fishCounter">
-
-🐟
-
-<span id="fishCaught">
-
-0
-
-</span>
-
-/
-
-6
-
-</div>
-
-<div class="fishTimer">
-
-⏱
-
-<span id="fishTimer">
-
-01:00
-
-</span>
-
-</div>
-
-</div>
-
-<div class="powerContainer">
-
-<p>
-
-Casting Power
-
-</p>
-
-<div class="powerBar">
-
-<div
-id="powerFill">
-
-</div>
-
-</div>
-
-</div>
-
-<button
-id="castRod">
-
-🎣 CAST ROD
-
-</button>
-
-</div>
-
-</section>
-
-<!-- ====================================================== -->
-<!-- MISSION COMPLETE -->
-<!-- ====================================================== -->
-
-<section
-id="missionComplete"
-class="hidden">
-
-<div class="glassPanel completePanel">
-
-<h1>
-
-🏆 MISSION COMPLETE
-
-</h1>
-
-<h2>
-
-THE HUNT FOR CLUES
-
-</h2>
-
-<div class="reportGrid">
-
-<div class="reportCard">
-
-<h3>
-
-⭐ Total XP
-
-</h3>
-
-<p
-id="finalXP">
-
-0
-
-</p>
-
-</div>
-
-<div class="reportCard">
-
-<h3>
-
-🎒 Items Found
-
-</h3>
-
-<p>
-
-10 / 10
-
-</p>
-
-</div>
-
-<div class="reportCard">
-
-<h3>
-
-🐟 Special Fish
-
-</h3>
-
-<p>
-
-6 / 6
-
-</p>
-
-</div>
-
-<div class="reportCard">
-
-<h3>
-
-🏅 Completion
-
-</h3>
-
-<p>
-
-100%
-
-</p>
-
-</div>
-
-</div>
-
-<div class="badges">
-
-<div class="badge">
-
-🏕
-Camp Survivor
-
-</div>
-
-<div class="badge">
-
-🎣
-Master Angler
-
-</div>
-
-</div>
-
-<div class="endingMessage">
-
-<h2>
-
-Amazing work, Chief. ❤️
-
-</h2>
-
-<p>
-
-You've completed another mission and uncovered another piece of our secret adventure.
-
-The next mission remains encrypted...
-
-Mission 3 will unlock next week.
-
-Stay sharp.
-
-🫡
-
-</p>
-
-</div>
-
-<button
-id="replayMission">
-
-🔄 Replay Mission
-
-</button>
-
-</div>
-
-</section>
-
-<!-- ====================================================== -->
-<!-- AUDIO -->
-<!-- ====================================================== -->
-
-<audio
-id="bgMusic"
-loop>
-
-<source
-src="assets/sounds/background.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<audio
-id="collectSound">
-
-<source
-src="assets/sounds/collect.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<audio
-id="splashSound">
-
-<source
-src="assets/sounds/splash.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<audio
-id="successSound">
-
-<source
-src="assets/sounds/mission-complete.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<audio
-id="bearSound">
-
-<source
-src="assets/sounds/bear.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<!-- ====================================================== -->
-<!-- JAVASCRIPT -->
-<!-- ====================================================== -->
-
-<script src="game.js"></script>
-<script src="phase1.js"></script>
-<script src="phase2.js"></script>
+    <div id="fishingHUD">
+      <div class="fishingHeader">
+        <h1>🎣 Fishing Challenge</h1>
+        <p>Catch <strong>6 Special Fish</strong> before time runs out.</p>
+      </div>
+
+      <div class="fishingStats">
+        <div class="fishCounter">
+          🐟 <span id="fishCaught">0</span> / 6
+        </div>
+        <div class="fishTimer">
+          <!-- Item 1: Updated ID to fishingTimer -->
+          ⏱ <span id="fishingTimer">01:00</span>
+          
+          <!-- Item 2: Added missing fishScore container -->
+          <div class="fishScore">
+            ⭐ Score <span id="fishScore">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="powerContainer">
+        <p>Casting Power</p>
+        <div class="powerBar">
+          <div id="powerFill"></div>
+        </div>
+      </div>
+
+      <!-- Item 5: Added missing Reel Bar container -->
+      <div class="reelContainer">
+        <p>Reel Strength</p>
+        <div class="reelBar">
+          <div id="reelFill"></div>
+        </div>
+      </div>
+
+      <button id="castRod">🎣 CAST ROD</button>
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- MISSION COMPLETE -->
+  <!-- ====================================================== -->
+  <section id="missionComplete" class="hidden">
+    <div class="glassPanel completePanel">
+      <h1>🏆 MISSION COMPLETE</h1>
+      <h2>THE HUNT FOR CLUES</h2>
+
+      <div class="reportGrid">
+        <div class="reportCard">
+          <h3>⭐ Total XP</h3>
+          <p id="finalXP">0</p>
+        </div>
+        <div class="reportCard">
+          <h3>🎒 Items Found</h3>
+          <p>10 / 10</p>
+        </div>
+        <div class="reportCard">
+          <h3>🐟 Special Fish</h3>
+          <p>6 / 6</p>
+        </div>
+        <div class="reportCard">
+          <h3>🏅 Completion</h3>
+          <p>100%</p>
+        </div>
+      </div>
+
+      <div class="badges">
+        <div class="badge">🏕 Camp Survivor</div>
+        <div class="badge">🎣 Master Angler</div>
+      </div>
+
+      <div class="endingMessage">
+        <h2>Amazing work, Chief. ❤️</h2>
+        <p>You've completed another mission and uncovered another piece of our secret adventure. The next mission remains encrypted... Mission 3 will unlock next week. Stay sharp. 🫡</p>
+      </div>
+
+      <button id="replayMission">🔄 Replay Mission</button>
+    </div>
+  </section>
+
+  <!-- ====================================================== -->
+  <!-- AUDIO -->
+  <!-- ====================================================== -->
+  <audio id="bgMusic" loop>
+    <source src="assets/sounds/background.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="collectSound">
+    <source src="assets/sounds/collect.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="splashSound">
+    <source src="assets/sounds/splash.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="successSound">
+    <source src="assets/sounds/mission-complete.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="bearSound">
+    <source src="assets/sounds/bear.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ====================================================== -->
+  <!-- JAVASCRIPT -->
+  <!-- ====================================================== -->
+  <!-- Removed phase1.js and phase2.js tags to resolve 404 errors -->
+  <script src="game.js"></script>
 
 </body>
 
