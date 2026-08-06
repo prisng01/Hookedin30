@@ -914,6 +914,7 @@ function startFishing() {
 
     updateFishingHUD();
     startFishingTimer();
+    spawnFish();
 }
 
 /*======================================================
@@ -1151,19 +1152,6 @@ function fishBite() {
 }
 
 /*======================================================
-ENABLE CATCH
-======================================================*/
-
-function enableCatch() {
-    const fish = currentFish;
-    if (!fish) return;
-
-    fish.onclick = () => {
-        catchFish(fish);
-    };
-}
-
-/*======================================================
 CATCH
 ======================================================*/
 
@@ -1191,16 +1179,6 @@ function catchFish(fish) {
         finishFishingMission();
     }
 }
-
-/*======================================================
-START FISH
-======================================================*/
-
-setTimeout(() => {
-    if (document.getElementById("lake")) {
-        spawnFish();
-    }
-}, 1000);
 
 /*======================================================
 SECTION 5C
@@ -1268,6 +1246,11 @@ function successfulCatch() {
         catchFish(currentFish);
     }
 
+    const bite = document.getElementById("bite");
+    if (bite) {
+        bite.classList.add("hidden");
+    }
+
     showBonus("🎣 Perfect Catch!");
 }
 
@@ -1278,6 +1261,11 @@ ESCAPED
 function fishEscaped() {
     clearInterval(fishFightInterval);
     fishing.reeling = false;
+
+    const bite = document.getElementById("bite");
+    if (bite) {
+        bite.classList.add("hidden");
+    }
 
     showBonus("💨 Fish Escaped!");
 
