@@ -570,17 +570,6 @@ scene.appendChild(img);
 });
 
 }
-
-function collectItem(item,img){
-
-if(item.found) return;
-
-item.found=true;
-
-img.classList.add("found");
-
-sparkle(img);
-
 flyToInventory(img,item.id);
 
 addXP(50);
@@ -695,47 +684,6 @@ s.remove();
 },700);
 
 }
-
-}
-
-/*======================================================
- BEAR
-======================================================*/
-
-function startBearAI();
-
-    const bar =
-    document.getElementById("bearProgress");
-
-    bearInterval = setInterval(()=>{
-
-        bearDistance -= 1.6;
-
-        if(bearDistance < 0)
-            bearDistance = 0;
-
-        bar.style.width =
-        bearDistance + "%";
-
-        if(bearDistance < 40){
-
-            document.body.classList.add("danger");
-
-        }
-
-        if(bearDistance < 20){
-
-            bearRoar();
-
-        }
-
-        if(bearDistance <= 0){
-
-            clearInterval(bearInterval);
-
-        }
-
-    },1000);
 
 }
 
