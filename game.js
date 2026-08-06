@@ -257,24 +257,15 @@ const hiddenItems = [
 ];
 
 /*======================================================
- START PHASE 1
-======================================================*/
-
-function startPhase1() {
-    createHiddenObjects();
-    startEnvironment();
-    startHintSystem();
-    startBearAI();
-}
-
-/*======================================================
  CREATE HIDDEN OBJECTS
 ======================================================*/
 
 function createHiddenObjects() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
-    scene.innerHTML = "";
+
+    // Remove only old collectible items
+    scene.querySelectorAll(".collectible").forEach(item => item.remove());
 
     hiddenItems.forEach(item => {
         const img = document.createElement("img");
@@ -288,10 +279,10 @@ function createHiddenObjects() {
         img.style.height = item.height + "px";
         img.draggable = false;
         img.onclick = () => collectItem(item, img);
+
         scene.appendChild(img);
     });
 }
-
 /*======================================================
  COLLECT ITEM
 ======================================================*/
