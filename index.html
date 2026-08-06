@@ -23,7 +23,7 @@
             user-select: none;
         }
 
-        /* 14. CINEMATIC INTRO OVERLAY */
+        /* CINEMATIC INTRO OVERLAY */
         #cinematic-intro {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -95,7 +95,17 @@
             overflow: hidden; 
         }
 
-        /* TOP HUD & 9. REAL MISSION PROGRESS */
+        .container.shake {
+            animation: shakeScreen 0.3s ease;
+        }
+
+        @keyframes shakeScreen {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        /* TOP HUD & MISSION PROGRESS */
         .top-hud {
             display: flex;
             justify-content: space-between;
@@ -121,7 +131,7 @@
             transition: width 0.4s ease;
         }
 
-        /* 3. INVENTORY HUD */
+        /* INVENTORY HUD */
         .inventory-box {
             display: flex;
             align-items: center;
@@ -165,7 +175,7 @@
         .title { font-family: 'Cinzel', serif; color: #f3c669; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; }
         .subtitle { font-size: 10px; color: #82a384; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* 1. OBJECTIVES LIST */
+        /* OBJECTIVES LIST */
         .objectives-card {
             background: rgba(8, 13, 9, 0.8);
             border: 1px solid #2b3d2c;
@@ -181,7 +191,7 @@
         .obj-item { display: flex; align-items: center; gap: 8px; margin: 5px 0; color: #a4c4a6; }
         .obj-item.done { color: #4af626; text-decoration: line-through; }
 
-        /* 2. REAL SCENE MAP & 5/13. ANIMATIONS */
+        /* REAL SCENE MAP */
         .scene-map {
             position: relative;
             width: 100%;
@@ -194,7 +204,7 @@
             background: linear-gradient(to bottom, #09131a 0%, #162b20 40%, #1e3a2b 100%);
         }
 
-        /* AMBIENT ANIMATED ELEMENTS (5 & 13) */
+        /* AMBIENT ANIMATED ELEMENTS */
         .moon { position: absolute; top: 15px; right: 25px; font-size: 24px; animation: moonGlow 3s infinite alternate; }
         @keyframes moonGlow { 0% { filter: drop-shadow(0 0 2px #fff); } 100% { filter: drop-shadow(0 0 12px #f3c669); } }
 
@@ -204,7 +214,7 @@
         .star { position: absolute; color: #fff; font-size: 8px; animation: twinkle 1.5s infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 1; } }
 
-        .fire-anim { position: absolute; font-size: 32px; animation: flicker 0.3s infinite alternate; cursor: pointer; }
+        .fire-anim { position: absolute; font-size: 32px; animation: flicker 0.3s infinite alternate; cursor: pointer; z-index: 12; }
         @keyframes flicker { 0% { transform: scale(1); filter: drop-shadow(0 0 5px #f4511e); } 100% { transform: scale(1.12); filter: drop-shadow(0 0 15px #ffb300); } }
 
         .wave-anim { position: absolute; bottom: 0; width: 100%; height: 35px; background: rgba(32, 178, 170, 0.3); animation: waveMove 3s ease-in-out infinite alternate; }
@@ -226,7 +236,7 @@
         }
         .map-obj:hover { transform: scale(1.3); filter: drop-shadow(0 0 8px #f3c669); }
 
-        /* 6. FOOTPRINTS */
+        /* FOOTPRINTS & FLOATERS */
         .footprint {
             position: absolute;
             font-size: 14px;
@@ -236,6 +246,17 @@
             z-index: 5;
         }
         @keyframes fadeOut { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(0.6); } }
+
+        .floater-text {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 800;
+            color: #f3c669;
+            pointer-events: none;
+            animation: floatUp 1s forwards;
+            z-index: 30;
+        }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-25px); } }
 
         /* TERMINAL & DIALOGUE */
         .terminal-box {
@@ -253,7 +274,7 @@
             min-height: 55px;
         }
 
-        /* 7. SECURITY SCANNER */
+        /* SECURITY SCANNER */
         .scanner-line {
             width: 100%; height: 2px; background: #4af626;
             box-shadow: 0 0 10px #4af626;
@@ -276,7 +297,7 @@
         }
         .keypad-btn:hover { background: #2b422e; }
 
-        /* 8. ACHIEVEMENTS & 12. HIDDEN HEARTS */
+        /* ACHIEVEMENTS & HIDDEN HEARTS */
         .badges-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 5px 0; }
         .badge-card {
             background: #0d140e; border: 1px solid #2b3d2c; border-radius: 6px;
@@ -299,7 +320,7 @@
         .btn-primary:hover { transform: translateY(-2px); }
         .btn-primary:disabled { background: #2d3e2f; color: #5f7561; cursor: not-allowed; transform: none; }
 
-        /* SCREEN FLASH (15) */
+        /* SCREEN FLASH */
         #flash-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #fff; opacity: 0; pointer-events: none; z-index: 999;
@@ -309,7 +330,7 @@
 </head>
 <body>
 
-<!-- 14. CINEMATIC INTRO -->
+<!-- CINEMATIC INTRO -->
 <div id="cinematic-intro">
     <div class="studio-text">OPENAI STUDIOS PRESENTS</div>
     <div class="op-title">OPERATION: BIRTHDAY 30</div>
@@ -318,7 +339,7 @@
 
 <div id="flash-overlay"></div>
 
-<div class="container">
+<div class="container" id="main-container">
 
     <!-- TOP HUD & PROGRESS -->
     <div class="top-hud">
@@ -333,7 +354,7 @@
             <span id="progress-pct" style="color:#4af626; font-weight:700;">0%</span>
         </div>
 
-        <!-- 3. INVENTORY -->
+        <!-- INVENTORY -->
         <div class="inventory-box">
             <span style="color:#f3c669; font-weight:800;">🔑 <span id="key-count">0</span>/4</span>
             <div class="inventory-slots" id="inv-slots-ui">
@@ -345,7 +366,7 @@
         </div>
     </div>
 
-    <!-- CARD 0: BRIEFING & 1. OBJECTIVES -->
+    <!-- CARD 0: BRIEFING & OBJECTIVES -->
     <div class="card active" id="card-intro">
         <div>
             <div class="subtitle">Briefing Phase</div>
@@ -369,7 +390,7 @@
         <button class="btn-primary" onclick="startMission()">Start Recon ➔</button>
     </div>
 
-    <!-- CARD 1: CAMPSITE MAP SEARCH (2, 5, 6, 10, 12) -->
+    <!-- CARD 1: CAMPSITE MAP SEARCH -->
     <div class="card" id="card-campsite">
         <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
             <div>
@@ -379,7 +400,7 @@
             <div style="font-size:10px; color:#f3c669;">Hearts: <span id="heart-count">0</span>/5 ❤️</div>
         </div>
 
-        <!-- 2 & 5. ANIMATED SCENE MAP -->
+        <!-- ANIMATED SCENE MAP -->
         <div class="scene-map" id="camp-map" onclick="spawnFootprint(event)">
             <!-- Ambient Animations -->
             <div class="star" style="top:10%; left:20%;">★</div>
@@ -388,16 +409,16 @@
             <div class="moon">🌙</div>
             <div class="cloud" style="top:15%;">☁️</div>
 
-            <!-- Tap Objects on Map -->
-            <div class="map-obj" style="top:20px; left:40px;" onclick="tapMapItem('tent', '⛺')">⛺</div>
-            <div class="fire-anim" style="top:110px; left:280px;" onclick="tapMapItem('fire', '🔥')">🔥</div>
-            <div class="map-obj" style="top:180px; left:80px;" onclick="tapMapItem('wood', '🪵')">🪵</div>
-            <div class="map-obj" style="top:190px; left:200px;" onclick="tapMapItem('rod', '🎣')">🎣</div>
-            <div class="map-obj" style="top:80px; left:520px;" onclick="tapMapItem('backpack', '🎒')">🎒</div>
-            <div class="map-obj" style="top:200px; left:440px;" onclick="tapMapItem('coke', '🥤')">🥤</div>
-            <div class="map-obj" style="top:230px; left:580px;" onclick="tapMapItem('owl', '🦉')">🦉</div>
+            <!-- Map Tap Objects (Log changed to mini Campfire!) -->
+            <div class="map-obj" style="top:20px; left:40px;" onclick="tapMapItem('tent', '⛺', event)">⛺</div>
+            <div class="fire-anim" style="top:110px; left:280px;" onclick="tapMapItem('fire', '🔥', event)">🔥</div>
+            <div class="fire-anim" style="top:180px; left:80px; font-size:24px;" onclick="tapMapItem('wood_fire', '🪵🔥', event)">🪵🔥</div>
+            <div class="map-obj" style="top:190px; left:200px;" onclick="tapMapItem('rod', '🎣', event)">🎣</div>
+            <div class="map-obj" style="top:80px; left:520px;" onclick="tapMapItem('backpack', '🎒', event)">🎒</div>
+            <div class="map-obj" style="top:200px; left:440px;" onclick="tapMapItem('coke', '🥤', event)">🥤</div>
+            <div class="map-obj" style="top:230px; left:580px;" onclick="tapMapItem('owl', '🦉', event)">🦉</div>
 
-            <!-- 12. HIDDEN HEARTS -->
+            <!-- HIDDEN HEARTS -->
             <div class="hidden-heart" style="top:10px; left:300px;" onclick="collectHeart(this, event)">❤️</div>
             <div class="hidden-heart" style="top:260px; left:30px;" onclick="collectHeart(this, event)">❤️</div>
             <div class="hidden-heart" style="top:140px; left:620px;" onclick="collectHeart(this, event)">❤️</div>
@@ -410,7 +431,7 @@
         <button class="btn-primary" id="btn-to-beach" disabled onclick="goToBeach()">Head to Beach ➔</button>
     </div>
 
-    <!-- CARD 2: ALIVE BEACH MINI-GAME (13) -->
+    <!-- CARD 2: ALIVE BEACH MINI-GAME -->
     <div class="card" id="card-beach">
         <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
             <div>
@@ -421,19 +442,19 @@
         </div>
 
         <div class="scene-map" id="beach-map" style="background: linear-gradient(to bottom, #0d233a 0%, #1f5066 45%, #d9b868 45%, #c29f4e 100%);" onclick="spawnFootprint(event)">
-            <!-- 13. ALIVE BEACH ANIMATIONS -->
+            <!-- ALIVE BEACH ANIMATIONS -->
             <div class="cloud" style="top:10%;">☁️</div>
             <div class="star" style="top:8%; left:30%;">★</div>
             <div class="wave-anim"></div>
-            <div class="fish-anim" style="top:125px;" onclick="tapBeachItem('fish', '🐟')">🐟</div>
-            <div class="crab-anim" style="top:220px; left:180px;" onclick="tapBeachItem('crab', '🦀')">🦀</div>
+            <div class="fish-anim" style="top:125px;" onclick="tapBeachItem('fish', '🐟', event)">🐟</div>
+            <div class="crab-anim" style="top:220px; left:180px;" onclick="tapBeachItem('crab', '🦀', event)">🦀</div>
 
             <!-- Beach Items -->
-            <div class="map-obj" style="top:180px; left:80px;" onclick="tapBeachItem('glasses', '🕶️')">🕶️</div>
-            <div class="map-obj" style="top:240px; left:350px;" onclick="tapBeachItem('starfish', '⭐️')">⭐️</div>
-            <div class="map-obj" style="top:170px; left:520px;" onclick="tapBeachItem('lotion', '🧴')">🧴</div>
+            <div class="map-obj" style="top:180px; left:80px;" onclick="tapBeachItem('glasses', '🕶️', event)">🕶️</div>
+            <div class="map-obj" style="top:240px; left:350px;" onclick="tapBeachItem('starfish', '⭐️', event)">⭐️</div>
+            <div class="map-obj" style="top:170px; left:520px;" onclick="tapBeachItem('lotion', '🧴', event)">🧴</div>
 
-            <!-- 12. HIDDEN HEARTS -->
+            <!-- HIDDEN HEARTS -->
             <div class="hidden-heart" style="top:260px; left:480px;" onclick="collectHeart(this, event)">❤️</div>
             <div class="hidden-heart" style="top:20px; left:500px;" onclick="collectHeart(this, event)">❤️</div>
         </div>
@@ -445,14 +466,14 @@
         <button class="btn-primary" id="btn-to-vault" disabled onclick="goToVaultSecurity()">Proceed to Vault ➔</button>
     </div>
 
-    <!-- CARD 3: 7. SECURITY SCANNER & KEYPAD -->
+    <!-- CARD 3: SECURITY SCANNER & KEYPAD -->
     <div class="card" id="card-vault">
         <div>
             <div class="subtitle">Phase 03 / Vault Access</div>
             <div class="title">Security Gate</div>
         </div>
 
-        <!-- 7. BETTER VAULT SCANNER -->
+        <!-- VAULT SCANNER -->
         <div id="security-scan-box" style="background:#080d09; border:1px solid #3d543f; border-radius:10px; padding:15px; width:100%; max-width:380px; text-align:center;">
             <div style="font-size:11px; color:#f3c669; font-weight:800; margin-bottom:8px;">SECURITY LEVEL: MAXIMUM</div>
             <div style="position:relative; height:80px; background:#0e170f; border:1px dashed #2b3d2c; border-radius:6px; overflow:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center;">
@@ -461,7 +482,7 @@
             </div>
         </div>
 
-        <!-- KEYPAD (HIDDEN INITIALLY) -->
+        <!-- KEYPAD -->
         <div id="vault-keypad-section" style="display:none; width:100%;">
             <div class="code-display">
                 <div class="code-slot" id="vslot-0">-</div>
@@ -491,7 +512,7 @@
         </div>
     </div>
 
-    <!-- CARD 4: 11 & 15. ENDING & UNLOCK ANIMATION -->
+    <!-- CARD 4: ENDING & UNLOCK ANIMATION -->
     <div class="card" id="card-finish">
         <div>
             <div class="subtitle">═════════════════════════════</div>
@@ -499,7 +520,7 @@
             <div class="subtitle">═════════════════════════════</div>
         </div>
 
-        <!-- 11. REWARDS DISPLAY -->
+        <!-- REWARDS DISPLAY -->
         <div style="background: rgba(8,13,9,0.9); border: 1px solid #48614b; border-radius: 10px; padding: 12px; width: 100%; max-width: 480px; text-align: left; font-size: 11px;">
             <div style="color:#f3c669; font-weight:800; margin-bottom:4px;">REWARDS EARNED</div>
             <p>✔️ +250 XP</p>
@@ -508,7 +529,7 @@
             <p>✔️ Encrypted Photo File</p>
         </div>
 
-        <!-- 8. ACHIEVEMENTS COLLECTION -->
+        <!-- ACHIEVEMENTS COLLECTION -->
         <div>
             <div style="font-size:10px; font-weight:800; color:#f3c669; margin-bottom:4px;">ACHIEVEMENTS COLLECTED</div>
             <div class="badges-row">
@@ -519,7 +540,7 @@
             </div>
         </div>
 
-        <!-- 12. SECRET HEART MESSAGE (UNLOCKED IF 5 HEARTS FOUND) -->
+        <!-- SECRET HEART MESSAGE -->
         <div id="secret-heart-msg" style="display:none; background:rgba(243, 198, 105, 0.1); border:1px dashed #f3c669; border-radius:8px; padding:8px; width:100%; max-width:480px; font-size:11px; color:#f3c669;">
             ❤️ <strong>SPECIAL MESSAGE UNLOCKED:</strong><br>"You'll always be my favourite adventure."
         </div>
@@ -542,15 +563,13 @@
     let heartsCollected = 0;
     let userVaultInput = [];
 
-    // RANDOMIZED DIGIT ASSIGNMENTS (4)
-    // Code sequence: 2 - 2 - 0 - 8
+    // RANDOMIZED DIGIT ASSIGNMENTS
     const codeDigits = ['2', '2', '0', '8'];
     
-    // 4. RANDOM ESCAPE-ROOM CLUES POOL
     const clueTemplates = [
         (d) => `You found a soggy note: "The digit is ${d}."`,
         (d) => `The item whispers... "Remember the number ${d}."`,
-        (d) => `Carved into the wood: [ Digit = ${d} ]`,
+        (d) => `Carved near the fire: [ Digit = ${d} ]`,
         (d) => `An ancient scrap reveals digit ${d}!`
     ];
 
@@ -581,12 +600,15 @@
         } else if (type === 'heart') {
             osc.type = 'sine'; osc.frequency.setValueAtTime(880, now);
             gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        } else if (type === 'fire') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now);
+            gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
         }
         osc.connect(gain); gain.connect(audioCtx.destination);
         osc.start(now); osc.stop(now + 0.25);
     }
 
-    // 14. CINEMATIC INTRO TIMING
+    // CINEMATIC INTRO TIMING
     window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const intro = document.getElementById('cinematic-intro');
@@ -595,7 +617,7 @@
         }, 5000);
     });
 
-    // 9. UPDATE MISSION PROGRESS
+    // UPDATE MISSION PROGRESS
     function updateProgress(add) {
         progress = Math.min(100, progress + add);
         document.getElementById('main-progress').style.width = progress + '%';
@@ -623,7 +645,7 @@
         showCard('card-campsite');
     }
 
-    // 6. WALKING FOOTPRINTS
+    // WALKING FOOTPRINTS
     function spawnFootprint(e) {
         playSound('click');
         const map = e.currentTarget;
@@ -641,7 +663,23 @@
         setTimeout(() => foot.remove(), 1200);
     }
 
-    // 3. INVENTORY ANIMATION
+    function spawnFloater(text, e, mapId) {
+        const map = document.getElementById(mapId);
+        const rect = map.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const floater = document.createElement('div');
+        floater.className = 'floater-text';
+        floater.innerText = text;
+        floater.style.left = (x - 10) + 'px';
+        floater.style.top = (y - 15) + 'px';
+        map.appendChild(floater);
+
+        setTimeout(() => floater.remove(), 1000);
+    }
+
+    // INVENTORY ANIMATION
     function addToInventory(icon) {
         if (invItems.length < 4) {
             invItems.push(icon);
@@ -655,43 +693,54 @@
         }
     }
 
-    // 2 & 4 & 10. CAMPSITE INTERACTION (FUNNY MESSAGES & RANDOM CLUES)
+    // CAMPSITE INTERACTION
     const campState = {};
-    function tapMapItem(type, icon) {
+    function tapMapItem(type, icon, e) {
+        e.stopPropagation();
         const term = document.getElementById('camp-term');
         
         if (campState[type]) {
-            term.innerHTML = `> You already checked the ${type}.`;
+            if (type === 'fire') {
+                playSound('fire');
+                term.innerHTML = `> 🔥 Roasting marshmallows over the fire... Tasty! 🍡`;
+                spawnFloater('🍡 Roasted!', e, 'camp-map');
+            } else {
+                term.innerHTML = `> You already checked the ${type}.`;
+            }
             return;
         }
 
         campState[type] = true;
 
-        // 10. FUNNY MESSAGES VS KEY CLUES
         if (type === 'fire') {
             playSound('found');
             const clueText = clueTemplates[0](codeDigits[0]);
             term.innerHTML = `> 🔥 ${clueText}`;
             addToInventory('🔑');
+            spawnFloater('+1 Key 🔑', e, 'camp-map');
             campsiteFoundCount++;
         } else if (type === 'rod') {
             playSound('found');
             const clueText = clueTemplates[1](codeDigits[1]);
             term.innerHTML = `> 🎣 ${clueText}`;
             addToInventory('🔑');
+            spawnFloater('+1 Key 🔑', e, 'camp-map');
             campsiteFoundCount++;
         } else if (type === 'backpack') {
             playSound('found');
             const clueText = clueTemplates[2](codeDigits[2]);
             term.innerHTML = `> 🎒 ${clueText}`;
             addToInventory('🔑');
+            spawnFloater('+1 Key 🔑', e, 'camp-map');
             campsiteFoundCount++;
+        } else if (type === 'wood_fire') {
+            playSound('fire');
+            term.innerHTML = `> 🪵🔥 You lit the small campfire! It crackles warmly.`;
+            spawnFloater('🔥 Spark!', e, 'camp-map');
         } else if (type === 'coke') {
             term.innerHTML = `> 🥤 Hydrated. Still clueless.`;
         } else if (type === 'tent') {
             term.innerHTML = `> ⛺ Just a cozy sleeping bag inside. No clues here!`;
-        } else if (type === 'wood') {
-            term.innerHTML = `> 🪵 Just dry firewood.`;
         } else if (type === 'owl') {
             term.innerHTML = `> 🦉 The owl stares at you silently. Hoot.`;
         }
@@ -708,8 +757,9 @@
         showCard('card-beach');
     }
 
-    // 13. ALIVE BEACH INTERACTIONS
-    function tapBeachItem(type, icon) {
+    // ALIVE BEACH INTERACTIONS
+    function tapBeachItem(type, icon, e) {
+        e.stopPropagation();
         const term = document.getElementById('beach-term');
 
         if (type === 'fish') {
@@ -717,9 +767,12 @@
             const clueText = clueTemplates[3](codeDigits[3]);
             term.innerHTML = `> 🐟 The fish whispers... "${clueText}"`;
             addToInventory('🔑');
+            spawnFloater('+1 Key 🔑', e, 'beach-map');
             beachFoundCount++;
         } else if (type === 'crab') {
             term.innerHTML = `> 🦀 The crab stole your shoe! No clue here though.`;
+            document.getElementById('main-container').classList.add('shake');
+            setTimeout(() => document.getElementById('main-container').classList.remove('shake'), 300);
         } else if (type === 'glasses') {
             term.innerHTML = `> 🕶️ Stylish, but no secret numbers written on them.`;
         } else if (type === 'starfish') {
@@ -735,20 +788,21 @@
         }
     }
 
-    // 12. HIDDEN HEARTS
+    // HIDDEN HEARTS
     function collectHeart(el, e) {
         e.stopPropagation();
         playSound('heart');
         el.style.display = 'none';
         heartsCollected++;
         document.getElementById('heart-count').innerText = heartsCollected;
+        spawnFloater('❤️ Heart Found!', e, el.parentElement.id);
 
         if (heartsCollected >= 5) {
             document.getElementById('secret-heart-msg').style.display = 'block';
         }
     }
 
-    // 7. VAULT SECURITY SCAN SEQUENCE
+    // VAULT SECURITY SCAN SEQUENCE
     function goToVaultSecurity() {
         playSound('click');
         showCard('card-vault');
@@ -795,7 +849,7 @@
         }
     }
 
-    // 15. FINAL UNLOCK ANIMATION & DECRYPTION
+    // FINAL UNLOCK ANIMATION & DECRYPTION
     function submitVault() {
         const code = userVaultInput.join("");
         const term = document.getElementById('vault-term');
@@ -803,7 +857,6 @@
         if (code === codeDigits.join("")) {
             term.innerText = "> Decrypting Vault Files...";
 
-            // Flash overlay animation
             const flash = document.getElementById('flash-overlay');
             
             setTimeout(() => {
@@ -821,6 +874,8 @@
 
         } else {
             term.innerText = "❌ ACCESS DENIED: Invalid Code!";
+            document.getElementById('main-container').classList.add('shake');
+            setTimeout(() => document.getElementById('main-container').classList.remove('shake'), 300);
             clearVault();
         }
     }
