@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #0d1117;
+            background-color: #080c10;
             font-family: 'Inter', sans-serif;
             color: #ffffff;
             display: flex;
@@ -33,7 +33,8 @@
             position: relative;
             background: #000;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            border-radius: 12px;
         }
 
         /* PHASE SCENES */
@@ -44,26 +45,23 @@
             width: 100%;
             height: 100%;
             display: none;
-            background-size: cover;
-            background-position: center;
         }
 
         .game-phase.active {
             display: block;
         }
 
-        /* BACKGROUNDS WITH SVG PHOTOREALISTIC GRADIENTS */
-        #phase-1 {
-            background-image: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%),
-                              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232b4131'/%3E%3Cstop offset='100%25' stop-color='%23112217'/%3E%3C/linearGradient%3E%3ClinearGradient id='water' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231d3b38'/%3E%3Cstop offset='100%25' stop-color='%230b1b1a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='500' fill='url(%23sky)'/%3E%3Cpath d='M0 380 Q 300 350, 600 390 T 1200 360 L 1200 550 L 0 550 Z' fill='url(%23water)'/%3E%3Crect y='500' width='1200' height='400' fill='%23191512'/%3E%3C/svg%3E");
+        /* BACKGROUND SCENE ARTWORK */
+        .scene-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
-        #phase-2 {
-            background-image: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.5) 100%),
-                              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='900' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3ClinearGradient id='lake' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23224b5e'/%3E%3Cstop offset='100%25' stop-color='%230f232d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='400' fill='%231c3327'/%3E%3Crect y='380' width='1200' height='520' fill='url(%23lake)'/%3E%3C/svg%3E");
-        }
-
-        /* PHOTOREALISTIC CANVAS OVERLAY */
+        /* CANVAS OVERLAY FOR LIGHTING AND RIPPLES */
         canvas.render-canvas {
             position: absolute;
             top: 0;
@@ -71,6 +69,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 2;
         }
 
         /* HUD ELEMENTS */
@@ -103,14 +102,14 @@
             font-weight: 900;
             letter-spacing: -0.5px;
             text-transform: uppercase;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
 
         .hud-subtitle {
             font-size: 13px;
             color: #d1d5db;
             font-weight: 500;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
         }
 
         /* SCORE & PAUSE */
@@ -148,7 +147,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -193,7 +192,7 @@
 
         .track-fill {
             height: 100%;
-            width: 30%;
+            width: 0%;
             background: linear-gradient(90deg, #22c55e, #ef4444);
             border-radius: 4px;
             transition: width 0.2s linear;
@@ -202,7 +201,7 @@
         .bear-icon {
             position: absolute;
             top: -12px;
-            left: 30%;
+            left: 0%;
             font-size: 16px;
             transform: translateX(-50%);
             transition: left 0.2s linear;
@@ -223,8 +222,8 @@
             position: absolute;
             left: 20px;
             top: 110px;
-            width: 190px;
-            background: rgba(0, 0, 0, 0.6);
+            width: 200px;
+            background: rgba(0, 0, 0, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             padding: 12px;
@@ -253,7 +252,7 @@
             align-items: center;
             gap: 8px;
             font-size: 12px;
-            color: #9ca3af;
+            color: #d1d5db;
             transition: all 0.2s;
         }
 
@@ -274,8 +273,8 @@
             position: absolute;
             left: 20px;
             bottom: 20px;
-            width: 190px;
-            background: rgba(0, 0, 0, 0.6);
+            width: 200px;
+            background: rgba(0, 0, 0, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             padding: 12px;
@@ -302,21 +301,22 @@
         }
 
         .fish-slot {
-            height: 28px;
+            height: 32px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px dashed rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 14px;
+            font-size: 16px;
             color: #4b5563;
         }
 
         .fish-slot.caught {
-            background: rgba(30, 136, 229, 0.2);
+            background: rgba(30, 136, 229, 0.25);
             border: 1px solid #1e88e5;
             color: #90caf9;
+            box-shadow: 0 0 8px rgba(30, 136, 229, 0.5);
         }
 
         /* TIP BOXES */
@@ -354,13 +354,13 @@
             position: absolute;
             cursor: pointer;
             transition: transform 0.15s ease, filter 0.15s ease;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
             z-index: 5;
         }
 
         .clickable-object:hover {
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 10px rgba(243, 198, 105, 0.8));
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 12px rgba(243, 198, 105, 0.9));
         }
 
         /* FISHING CAST BUTTON */
@@ -377,16 +377,16 @@
         }
 
         .cast-btn {
-            width: 70px;
-            height: 70px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: radial-gradient(circle, #2b3542 0%, #111827 100%);
             border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
+            font-size: 30px;
             color: white;
             cursor: pointer;
             transition: all 0.2s;
@@ -402,8 +402,8 @@
         }
 
         @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(243, 198, 105, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(243, 198, 105, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(243, 198, 105, 0.6); }
+            70% { box-shadow: 0 0 0 18px rgba(243, 198, 105, 0); }
             100% { box-shadow: 0 0 0 0 rgba(243, 198, 105, 0); }
         }
 
@@ -412,7 +412,7 @@
             font-weight: 900;
             letter-spacing: 1px;
             color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         /* MODAL DIALOGS */
@@ -446,7 +446,7 @@
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
         }
 
         .modal-card h2 {
@@ -490,6 +490,54 @@
     
     <!-- ==================== PHASE 1: CAMP SEARCH ==================== -->
     <div id="phase-1" class="game-phase active">
+        <!-- DETAILED SVG ILLUSTRATION BACKGROUND FOR PHASE 1 -->
+        <svg class="scene-bg" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="p1-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#1a2e22"/>
+                    <stop offset="50%" stop-color="#2a4533"/>
+                    <stop offset="100%" stop-color="#122418"/>
+                </linearGradient>
+                <linearGradient id="p1-ground" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#1e1b18"/>
+                    <stop offset="100%" stop-color="#0d0b0a"/>
+                </linearGradient>
+                <radialGradient id="fire-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="rgba(255, 140, 0, 0.4)"/>
+                    <stop offset="100%" stop-color="rgba(255, 140, 0, 0)"/>
+                </radialGradient>
+            </defs>
+
+            <!-- Sky -->
+            <rect width="1200" height="600" fill="url(#p1-sky)" />
+            
+            <!-- Mountain & Tree Silhouettes Background -->
+            <path d="M0 450 L150 320 L350 480 L550 280 L800 500 L1050 310 L1200 420 L1200 600 L0 600 Z" fill="#112016" />
+            <path d="M0 500 Q 300 460, 600 510 T 1200 480 L1200 650 L0 650 Z" fill="#0d1810" />
+
+            <!-- Ground Base -->
+            <rect y="580" width="1200" height="320" fill="url(#p1-ground)" />
+
+            <!-- Pine Trees Midground -->
+            <path d="M80 380 L120 500 L40 500 Z M100 320 L135 420 L65 420 Z" fill="#08120b" />
+            <path d="M220 360 L260 490 L180 490 Z M240 300 L275 400 L205 400 Z" fill="#08120b" />
+            <path d="M980 340 L1020 480 L940 480 Z M1000 280 L1035 380 L965 380 Z" fill="#08120b" />
+
+            <!-- Tent Illustration Right Side -->
+            <polygon points="850,420 1120,620 750,620" fill="#2d4236" stroke="#1c2c23" stroke-width="4"/>
+            <polygon points="850,420 750,620 710,620" fill="#1e2e25" />
+            <polygon points="850,420 950,620 810,620" fill="#121d17" /> <!-- Inner Tent Entrance -->
+
+            <!-- Log Seats & Campfire Base -->
+            <ellipse cx="600" cy="650" rx="140" ry="40" fill="url(#fire-glow)" />
+            <ellipse cx="600" cy="650" rx="45" ry="12" fill="#2a241f" stroke="#120f0d" stroke-width="3"/>
+            
+            <!-- Rocks near Campfire -->
+            <circle cx="540" cy="640" r="14" fill="#3a3d40" />
+            <circle cx="660" cy="645" r="18" fill="#2c2e30" />
+            <circle cx="570" cy="665" r="12" fill="#44474a" />
+        </svg>
+
         <canvas id="canvas-phase1" class="render-canvas"></canvas>
 
         <!-- HEADER -->
@@ -541,21 +589,52 @@
             <div class="tip-desc">Look everywhere carefully!</div>
         </div>
 
-        <!-- HIDDEN CLICKABLE ITEMS -->
-        <div class="clickable-object" style="top: 220px; right: 80px; font-size: 110px;" onclick="claimItem('Tent', this)">⛺</div>
-        <div class="clickable-object" style="top: 310px; right: 230px; font-size: 55px;" onclick="claimItem('Backpack', this)">🎒</div>
-        <div class="clickable-object" style="top: 420px; left: 450px; font-size: 32px;" onclick="claimItem('Flashlight', this)">🔦</div>
-        <div class="clickable-object" style="top: 410px; left: 360px; font-size: 26px;" onclick="claimItem('Compass', this)">🧭</div>
-        <div class="clickable-object" style="top: 360px; right: 310px; font-size: 40px;" onclick="claimItem('Boots', this)">🥾</div>
-        <div class="clickable-object" style="top: 330px; right: 380px; font-size: 30px;" onclick="claimItem('Water Bottle', this)">🥤</div>
-        <div class="clickable-object" style="top: 150px; left: 240px; font-size: 70px; transform: rotate(-25deg);" onclick="claimItem('Fishing Rod', this)">🎣</div>
-        <div class="clickable-object" style="top: 320px; left: 350px; font-size: 35px;" onclick="claimItem('Map', this)">🗺️</div>
-        <div class="clickable-object" style="top: 310px; left: 230px; font-size: 30px;" onclick="claimItem('Camera', this)">📷</div>
-        <div class="clickable-object" style="top: 430px; left: 560px; font-size: 24px;" onclick="claimItem('Vault Key', this)">🔑</div>
+        <!-- EXACT VISUAL PLACEMENT OF HIDDEN ITEMS -->
+        <div class="clickable-object" style="top: 430px; right: 280px; font-size: 100px;" onclick="claimItem('Tent', this)">⛺</div>
+        <div class="clickable-object" style="top: 550px; right: 440px; font-size: 52px;" onclick="claimItem('Backpack', this)">🎒</div>
+        <div class="clickable-object" style="top: 625px; left: 520px; font-size: 30px; transform: rotate(25deg);" onclick="claimItem('Flashlight', this)">🔦</div>
+        <div class="clickable-object" style="top: 610px; left: 420px; font-size: 26px;" onclick="claimItem('Compass', this)">🧭</div>
+        <div class="clickable-object" style="top: 580px; right: 210px; font-size: 38px;" onclick="claimItem('Boots', this)">🥾</div>
+        <div class="clickable-object" style="top: 550px; right: 140px; font-size: 30px;" onclick="claimItem('Water Bottle', this)">🥤</div>
+        <div class="clickable-object" style="top: 360px; left: 210px; font-size: 75px; transform: rotate(-35deg);" onclick="claimItem('Fishing Rod', this)">🎣</div>
+        <div class="clickable-object" style="top: 560px; left: 330px; font-size: 34px; transform: rotate(-10deg);" onclick="claimItem('Map', this)">🗺️</div>
+        <div class="clickable-object" style="top: 530px; left: 240px; font-size: 32px;" onclick="claimItem('Camera', this)">📷</div>
+        <div class="clickable-object" style="top: 650px; left: 660px; font-size: 24px; transform: rotate(45deg);" onclick="claimItem('Vault Key', this)">🔑</div>
+        
+        <!-- Campfire Graphic element -->
+        <div style="position: absolute; top: 605px; left: 575px; font-size: 48px; pointer-events: none; z-index: 4; filter: drop-shadow(0 0 10px orange);">🔥</div>
     </div>
 
     <!-- ==================== PHASE 2: FISHING CHALLENGE ==================== -->
     <div id="phase-2" class="game-phase">
+        <!-- DETAILED SVG ILLUSTRATION BACKGROUND FOR PHASE 2 -->
+        <svg class="scene-bg" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="p2-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0f2027"/>
+                    <stop offset="40%" stop-color="#203a43"/>
+                    <stop offset="100%" stop-color="#2c5364"/>
+                </linearGradient>
+                <linearGradient id="p2-lake" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#1e3c40"/>
+                    <stop offset="100%" stop-color="#081214"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Sky & Dusk Horizon -->
+            <rect width="1200" height="420" fill="url(#p2-sky)" />
+            
+            <!-- Mountain Silhouette -->
+            <path d="M0 380 L200 240 L450 390 L750 210 L1000 380 L1200 290 L1200 420 L0 420 Z" fill="#132229" />
+            <path d="M0 400 Q 400 370, 800 410 T 1200 390 L1200 430 L0 430 Z" fill="#0d171c" />
+
+            <!-- Water Lake Base -->
+            <rect y="420" width="1200" height="480" fill="url(#p2-lake)" />
+
+            <!-- Shoreline Shore Foreground -->
+            <path d="M0 780 Q 400 730, 1200 820 L1200 900 L0 900 Z" fill="#14110f" />
+        </svg>
+
         <canvas id="canvas-phase2" class="render-canvas"></canvas>
 
         <!-- HEADER -->
@@ -664,7 +743,7 @@
                 `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
             // Update Bear Progress Bar
-            let progress = ((60 - p1TimeLeft) / 60) * 100;
+            let progress = ((52 - p1TimeLeft) / 52) * 100;
             document.getElementById('p1-bear-fill').style.width = progress + '%';
             document.getElementById('p1-bear-icon').style.left = progress + '%';
 
@@ -790,7 +869,6 @@
 
     /* ==================== CANVAS RENDERING (RIPPLES & LIGHTING) ==================== */
     let p1Canvas, p1Ctx, p2Canvas, p2Ctx;
-    let ripples = [];
     let ripplesP2 = [];
 
     function initPhase1Canvas() {
@@ -804,11 +882,11 @@
             // Ambient campfire warmth flickering effect
             let time = Date.now() * 0.003;
             let glowX = p1Canvas.width * 0.5;
-            let glowY = p1Canvas.height * 0.65;
-            let radius = 180 + Math.sin(time) * 15;
+            let glowY = p1Canvas.height * 0.72;
+            let radius = 190 + Math.sin(time) * 20;
 
             let grad = p1Ctx.createRadialGradient(glowX, glowY, 10, glowX, glowY, radius);
-            grad.addColorStop(0, 'rgba(255, 120, 30, 0.25)');
+            grad.addColorStop(0, 'rgba(255, 120, 30, 0.3)');
             grad.addColorStop(1, 'rgba(0,0,0,0)');
 
             p1Ctx.fillStyle = grad;
@@ -831,11 +909,11 @@
         setInterval(() => {
             ripplesP2.push({
                 x: Math.random() * p2Canvas.width,
-                y: p2Canvas.height * 0.45 + Math.random() * (p2Canvas.height * 0.4),
+                y: p2Canvas.height * 0.5 + Math.random() * (p2Canvas.height * 0.35),
                 r: 2,
                 alpha: 0.8
             });
-        }, 800);
+        }, 700);
 
         function renderP2() {
             p2Ctx.clearRect(0, 0, p2Canvas.width, p2Canvas.height);
@@ -843,19 +921,19 @@
             // Draw ambient question mark targets floating in water
             let time = Date.now() * 0.002;
             let targets = [
-                {x: p2Canvas.width * 0.38, y: p2Canvas.height * 0.72},
-                {x: p2Canvas.width * 0.76, y: p2Canvas.height * 0.65},
-                {x: p2Canvas.width * 0.84, y: p2Canvas.height * 0.74}
+                {x: p2Canvas.width * 0.38, y: p2Canvas.height * 0.65},
+                {x: p2Canvas.width * 0.72, y: p2Canvas.height * 0.58},
+                {x: p2Canvas.width * 0.82, y: p2Canvas.height * 0.70}
             ];
 
             targets.forEach(t => {
-                let floatY = t.y + Math.sin(time + t.x) * 4;
-                p2Ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                let floatY = t.y + Math.sin(time + t.x) * 5;
+                p2Ctx.fillStyle = 'rgba(243, 198, 105, 0.25)';
                 p2Ctx.beginPath();
-                p2Ctx.arc(t.x, floatY, 16, 0, Math.PI * 2);
+                p2Ctx.arc(t.x, floatY, 18, 0, Math.PI * 2);
                 p2Ctx.fill();
-                p2Ctx.fillStyle = '#ffffff';
-                p2Ctx.font = 'bold 14px Inter';
+                p2Ctx.fillStyle = '#f3c669';
+                p2Ctx.font = '900 16px Inter';
                 p2Ctx.textAlign = 'center';
                 p2Ctx.fillText('?', t.x, floatY + 5);
             });
@@ -884,11 +962,11 @@
     }
 
     function triggerBiteSplash() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             ripplesP2.push({
-                x: p2Canvas.width * 0.5 + (Math.random() - 0.5) * 40,
-                y: p2Canvas.height * 0.6 + (Math.random() - 0.5) * 20,
-                r: 5,
+                x: p2Canvas.width * 0.5 + (Math.random() - 0.5) * 50,
+                y: p2Canvas.height * 0.62 + (Math.random() - 0.5) * 30,
+                r: 6,
                 alpha: 1.0
             });
         }
