@@ -2,6 +2,7 @@
  OPERATION BIRTHDAY 30
  MISSION 2
  GAME.JS
+ SECTION 1
 ======================================================*/
 
 "use strict";
@@ -101,14 +102,17 @@ function startTerminal() {
 
     function typeLine() {
         if (line >= terminalLines.length) return;
+
         let p = document.createElement("p");
         terminal.appendChild(p);
+
         let text = terminalLines[line];
         let i = 0;
 
         const typing = setInterval(() => {
             p.innerHTML = text.substring(0, i);
             i++;
+
             if (i > text.length) {
                 clearInterval(typing);
                 line++;
@@ -151,10 +155,8 @@ startMissionBtn.addEventListener("click", () => {
 
 function addXP(amount, target) {
     game.xp += amount;
-    xpText.innerHTML = game.xp;
-    if (target) {
-        floatingXP(amount, target);
-    }
+    if (xpText) xpText.innerHTML = game.xp;
+    if (target) floatingXP(amount, target);
 }
 
 /*======================================================
@@ -162,13 +164,14 @@ function addXP(amount, target) {
 ======================================================*/
 
 function floatingXP(amount, target) {
+    if (!target) return;
     const xp = document.createElement("div");
     xp.className = "floatingXP";
     xp.innerHTML = "⭐ +" + amount;
 
     const rect = target.getBoundingClientRect();
     xp.style.left = (rect.left + 15) + "px";
-    xp.style.top = (rect.top) + "px";
+    xp.style.top = rect.top + "px";
 
     document.body.appendChild(xp);
 
@@ -184,7 +187,9 @@ function floatingXP(amount, target) {
 function startCountdown() {
     const timer = setInterval(() => {
         game.timer--;
-        timerText.innerHTML = "00:" + String(game.timer).padStart(2, "0");
+        if (timerText) {
+            timerText.innerHTML = "00:" + String(game.timer).padStart(2, "0");
+        }
 
         if (game.timer <= 0) {
             clearInterval(timer);
@@ -195,29 +200,40 @@ function startCountdown() {
 }
 
 /*======================================================
- SAVE & LOAD
+ SAVE
 ======================================================*/
 
 function saveGame() {
     localStorage.setItem("mission2", JSON.stringify(game));
 }
 
+/*======================================================
+ LOAD
+======================================================*/
+
 function loadGame() {
     const save = localStorage.getItem("mission2");
     if (save) {
         Object.assign(game, JSON.parse(save));
-        xpText.innerHTML = game.xp;
+        if (xpText) xpText.innerHTML = game.xp;
     }
 }
 
 loadGame();
 
 /*======================================================
- SECTION 2: PHASE 1 GAME ENGINE
+ SECTION 2
+ PHASE 1 GAME ENGINE
 ======================================================*/
 
+// Bear progress (100% = far away)
 let bearDistance = 100;
 let bearInterval = null;
+
+/*======================================================
+ HIDDEN OBJECTS
+ Fixed Campsite Locations
+======================================================*/
 
 const hiddenItems = [
     { id: "tent", x: 710, y: 320, width: 160, height: 130, found: false },
@@ -232,6 +248,10 @@ const hiddenItems = [
     { id: "key", x: 1090, y: 145, width: 32, height: 32, found: false }
 ];
 
+/*======================================================
+ START PHASE 1
+======================================================*/
+
 function startPhase1() {
     createHiddenObjects();
     startEnvironment();
@@ -239,8 +259,13 @@ function startPhase1() {
     startBearAI();
 }
 
+/*======================================================
+ CREATE HIDDEN OBJECTS
+======================================================*/
+
 function createHiddenObjects() {
     const scene = document.getElementById("campScene");
+    if (!scene) return;
     scene.innerHTML = "";
 
     hiddenItems.forEach(item => {
@@ -254,21 +279,21 @@ function createHiddenObjects() {
         img.style.width = item.width + "px";
         img.style.height = item.height + "px";
         img.draggable = false;
-
         img.onclick = () => collectItem(item, img);
-
         scene.appendChild(img);
     });
 }
 
-/* FIXED ISSUE 1: Wrapped orphaned code block into collectItem() */
+/*======================================================
+ COLLECT ITEM
+======================================================*/
+
 function collectItem(item, img) {
     if (item.found) return;
-
     item.found = true;
+
     resetHintTimer();
     img.classList.add("found");
-
     sparkle(img);
 
     const sound = document.getElementById("collectSound");
@@ -278,13 +303,15 @@ function collectItem(item, img) {
     }
 
     flyToInventory(img, item.id);
-
     addXP(50, img);
     addScore(50);
     updateCombo();
     giveTimeBonus();
 
     game.itemsFound++;
+    if (typeof updateInventory === "function") {
+        updateInventory(item.id);
+    }
 
     setTimeout(() => {
         img.remove();
@@ -296,11 +323,12 @@ function collectItem(item, img) {
 }
 
 /*======================================================
- SPARKLES & EFFECTS
+ SPARKLES
 ======================================================*/
 
 function sparkle(target) {
     const scene = document.getElementById("campScene");
+    if (!scene) return;
     const rect = target.getBoundingClientRect();
     const sceneRect = scene.getBoundingClientRect();
 
@@ -320,7 +348,7 @@ function sparkle(target) {
 
         requestAnimationFrame(() => {
             s.style.transform = `translate(${x}px,${y}px) scale(2)`;
-            s.style.opacity = 0;
+            s.style.opacity = "0";
         });
 
         setTimeout(() => {
@@ -328,6 +356,10 @@ function sparkle(target) {
         }, 700);
     }
 }
+
+/*======================================================
+ ROAR
+======================================================*/
 
 function bearRoar() {
     document.body.classList.add("shake");
@@ -339,20 +371,28 @@ function bearRoar() {
     }, 400);
 }
 
+/*======================================================
+ MISSION COMPLETE
+======================================================*/
+
 function missionSuccess() {
     clearInterval(bearInterval);
     perfectBonus();
     saveGame();
 
-    const successSound = document.getElementById("successSound");
-    if (successSound) successSound.play();
+    const sound = document.getElementById("successSound");
+    if (sound) sound.play();
 
-    document.getElementById("phase1").classList.add("fadeOut");
+    document.getElementById("phase1")?.classList.add("fadeOut");
 
     setTimeout(() => {
         startMissionTransition();
     }, 1200);
 }
+
+/*======================================================
+ RESET PHASE
+======================================================*/
 
 function resetObjects() {
     hiddenItems.forEach(item => {
@@ -400,8 +440,8 @@ function flyToInventory(itemElement, itemId) {
     document.body.appendChild(flying);
 
     requestAnimationFrame(() => {
-        flying.style.left = (end.left + 15) + "px";
-        flying.style.top = (end.top + 10) + "px";
+        flying.style.left = end.left + 15 + "px";
+        flying.style.top = end.top + 10 + "px";
         flying.style.width = "42px";
         flying.style.height = "42px";
         flying.style.opacity = ".2";
@@ -422,6 +462,7 @@ function flyToInventory(itemElement, itemId) {
 }
 
 /*======================================================
+ SECTION 3C
  BEAR AI SYSTEM
 ======================================================*/
 
@@ -435,7 +476,8 @@ bear.style.width = "180px";
 bear.style.zIndex = "200";
 bear.style.pointerEvents = "none";
 
-document.getElementById("campScene").appendChild(bear);
+const campScene = document.getElementById("campScene");
+if (campScene) campScene.appendChild(bear);
 
 let bearPosition = -220;
 let bearSpeed = 1.6;
@@ -451,6 +493,7 @@ function startBearAI() {
         if (bearDistance < 0) bearDistance = 0;
         if (progressBar) progressBar.style.width = bearDistance + "%";
 
+        /* Bear speeds up */
         if (bearDistance < 40) {
             bearSpeed = 2.6;
             document.body.classList.add("danger");
@@ -461,12 +504,17 @@ function startBearAI() {
             bearRoar();
         }
 
+        /* Bear reaches camp */
         if (bearDistance <= 0) {
             clearInterval(bearInterval);
             gameOver();
         }
     }, 100);
 }
+
+/*======================================================
+ GAME OVER
+======================================================*/
 
 function gameOver() {
     const roar = document.getElementById("bearSound");
@@ -483,19 +531,26 @@ function gameOver() {
 }
 
 /*======================================================
- SECTION 4A: ANIMATED CAMPSITE ENVIRONMENT
+SECTION 4A
+ANIMATED CAMPSITE
 ======================================================*/
 
-/* FIXED ISSUE 2: Single definition for createCampfire */
+/*------------------------------------------------------
+CREATE CAMPFIRE
+------------------------------------------------------*/
+
 function createCampfire() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
-    if (document.getElementById("campFire")) return;
 
     const fire = document.createElement("div");
     fire.id = "campFire";
     scene.appendChild(fire);
 }
+
+/*------------------------------------------------------
+SMOKE PARTICLES
+------------------------------------------------------*/
 
 function createSmoke() {
     const scene = document.getElementById("campScene");
@@ -514,7 +569,10 @@ function createSmoke() {
     }, 500);
 }
 
-/* FIXED ISSUE 2: Single definition for createLeaves */
+/*------------------------------------------------------
+FLOATING LEAVES
+------------------------------------------------------*/
+
 function createLeaves() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
@@ -533,6 +591,10 @@ function createLeaves() {
     }, 1500);
 }
 
+/*------------------------------------------------------
+MOVING CLOUDS
+------------------------------------------------------*/
+
 function createClouds() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
@@ -548,6 +610,10 @@ function createClouds() {
         }, 35000);
     }, 9000);
 }
+
+/*------------------------------------------------------
+FLYING BIRDS
+------------------------------------------------------*/
 
 function createBirds() {
     const scene = document.getElementById("campScene");
@@ -565,6 +631,10 @@ function createBirds() {
     }, 14000);
 }
 
+/*------------------------------------------------------
+SUNLIGHT EFFECT
+------------------------------------------------------*/
+
 function createSunlight() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
@@ -573,6 +643,10 @@ function createSunlight() {
     sun.id = "sunGlow";
     scene.appendChild(sun);
 }
+
+/*------------------------------------------------------
+START ENVIRONMENT
+------------------------------------------------------*/
 
 function startEnvironment() {
     createCampfire();
@@ -584,15 +658,24 @@ function startEnvironment() {
 }
 
 /*======================================================
- SECTION 4B: SMART HINT SYSTEM
+SECTION 4B
+SMART HINT SYSTEM
 ======================================================*/
 
 let hintTimer = null;
 let lastFoundTime = Date.now();
 
+/*------------------------------------------------------
+RESET HINT TIMER
+------------------------------------------------------*/
+
 function resetHintTimer() {
     lastFoundTime = Date.now();
 }
+
+/*------------------------------------------------------
+START HINT SYSTEM
+------------------------------------------------------*/
 
 function startHintSystem() {
     if (hintTimer) {
@@ -601,12 +684,17 @@ function startHintSystem() {
 
     hintTimer = setInterval(() => {
         const secondsIdle = (Date.now() - lastFoundTime) / 1000;
+
         if (secondsIdle >= 10) {
             showHint();
             lastFoundTime = Date.now();
         }
     }, 1000);
 }
+
+/*------------------------------------------------------
+SHOW HINT
+------------------------------------------------------*/
 
 function showHint() {
     const remaining = hiddenItems.filter(item => !item.found);
@@ -617,6 +705,7 @@ function showHint() {
     if (!scene) return;
 
     const objects = scene.querySelectorAll(".collectible");
+
     objects.forEach(obj => {
         if (obj.dataset.item === randomItem.id) {
             obj.classList.add("hintGlow");
@@ -628,12 +717,17 @@ function showHint() {
 }
 
 /*======================================================
- SECTION 4C: SCORE & COMBO SYSTEM
+SECTION 4C
+SCORE & COMBO SYSTEM
 ======================================================*/
 
 let score = 0;
 let combo = 0;
 let lastCollectTime = 0;
+
+/*------------------------------------------------------
+ADD SCORE
+------------------------------------------------------*/
 
 function addScore(points) {
     score += points;
@@ -643,13 +737,19 @@ function addScore(points) {
     }
 }
 
+/*------------------------------------------------------
+COMBO SYSTEM
+------------------------------------------------------*/
+
 function updateCombo() {
     const now = Date.now();
+
     if (now - lastCollectTime <= 3000) {
         combo++;
     } else {
         combo = 1;
     }
+
     lastCollectTime = now;
 
     if (combo >= 2) {
@@ -657,6 +757,10 @@ function updateCombo() {
         addScore(combo * 25);
     }
 }
+
+/*------------------------------------------------------
+SHOW COMBO
+------------------------------------------------------*/
 
 function showCombo(comboCount) {
     const comboText = document.createElement("div");
@@ -672,6 +776,10 @@ function showCombo(comboCount) {
     }, 1000);
 }
 
+/*------------------------------------------------------
+TIME BONUS
+------------------------------------------------------*/
+
 function giveTimeBonus() {
     if (game.timer >= 40) {
         addScore(100);
@@ -679,12 +787,20 @@ function giveTimeBonus() {
     }
 }
 
+/*------------------------------------------------------
+PERFECT BONUS
+------------------------------------------------------*/
+
 function perfectBonus() {
     if (game.itemsFound === hiddenItems.length) {
         addScore(500);
         showBonus("🏆 Perfect Search +500");
     }
 }
+
+/*------------------------------------------------------
+SHOW BONUS
+------------------------------------------------------*/
 
 function showBonus(text) {
     const bonus = document.createElement("div");
@@ -702,7 +818,8 @@ function showBonus(text) {
 }
 
 /*======================================================
- SECTION 4D: MISSION TRANSITION
+SECTION 4D
+MISSION TRANSITION
 ======================================================*/
 
 function startMissionTransition() {
@@ -728,25 +845,35 @@ function startMissionTransition() {
     document.getElementById("continueFishing").addEventListener("click", startFishingIntro);
 }
 
+/*======================================================
+FISHING INTRO
+======================================================*/
+
 function startFishingIntro() {
     const overlay = document.getElementById("missionOverlay");
-    if (overlay) {
-        overlay.classList.add("fadeOut");
-        setTimeout(() => {
-            overlay.remove();
-            launchFishingMission();
-        }, 1000);
-    }
+    if (overlay) overlay.classList.add("fadeOut");
+
+    setTimeout(() => {
+        if (overlay) overlay.remove();
+        launchFishingMission();
+    }, 1000);
 }
 
-function launchFishingMission() {
-    const phase1Elem = document.getElementById("phase1");
-    const phase2Elem = document.getElementById("phase2");
+/*======================================================
+START PHASE 2
+======================================================*/
 
-    if (phase1Elem) phase1Elem.style.display = "none";
-    if (phase2Elem) {
-        phase2Elem.classList.remove("hidden");
-        phase2Elem.classList.add("fadeIn");
+function launchFishingMission() {
+    const phase1 = document.getElementById("phase1");
+    const phase2 = document.getElementById("phase2");
+
+    if (phase1) {
+        phase1.style.display = "none";
+    }
+
+    if (phase2) {
+        phase2.classList.remove("hidden");
+        phase2.classList.add("fadeIn");
     }
 
     if (typeof startFishing === "function") {
@@ -755,7 +882,8 @@ function launchFishingMission() {
 }
 
 /*======================================================
- SECTION 5A: FISHING ENGINE
+SECTION 5A
+FISHING ENGINE
 ======================================================*/
 
 const fishing = {
@@ -773,6 +901,10 @@ const fishing = {
 let fishingInterval;
 let powerInterval;
 
+/*======================================================
+START FISHING
+======================================================*/
+
 function startFishing() {
     fishing.timer = 60;
     fishing.score = 0;
@@ -784,8 +916,13 @@ function startFishing() {
     startFishingTimer();
 }
 
+/*======================================================
+FISHING TIMER
+======================================================*/
+
 function startFishingTimer() {
     clearInterval(fishingInterval);
+
     fishingInterval = setInterval(() => {
         fishing.timer--;
         updateFishingHUD();
@@ -797,15 +934,19 @@ function startFishingTimer() {
     }, 1000);
 }
 
+/*======================================================
+HUD
+======================================================*/
+
 function updateFishingHUD() {
     const timer = document.getElementById("fishingTimer");
     if (timer) {
         timer.innerHTML = "00:" + String(fishing.timer).padStart(2, "0");
     }
 
-    const scoreElem = document.getElementById("fishScore");
-    if (scoreElem) {
-        scoreElem.innerHTML = fishing.score;
+    const score = document.getElementById("fishScore");
+    if (score) {
+        score.innerHTML = fishing.score;
     }
 
     const caught = document.getElementById("fishCaught");
@@ -813,6 +954,10 @@ function updateFishingHUD() {
         caught.innerHTML = fishing.specialFish + "/6";
     }
 }
+
+/*======================================================
+POWER METER
+======================================================*/
 
 function startCasting() {
     if (fishing.casting) return;
@@ -826,14 +971,23 @@ function startCasting() {
     powerInterval = setInterval(() => {
         fishing.power += fishing.direction * 2;
 
-        if (fishing.power >= 100) fishing.direction = -1;
-        if (fishing.power <= 0) fishing.direction = 1;
+        if (fishing.power >= 100) {
+            fishing.direction = -1;
+        }
+
+        if (fishing.power <= 0) {
+            fishing.direction = 1;
+        }
 
         if (meter) {
             meter.style.width = fishing.power + "%";
         }
     }, 15);
 }
+
+/*======================================================
+CAST
+======================================================*/
 
 function castLine() {
     if (!fishing.casting) return;
@@ -844,6 +998,10 @@ function castLine() {
 
     animateCast(fishing.power);
 }
+
+/*======================================================
+CAST ANIMATION
+======================================================*/
 
 function animateCast(power) {
     const hook = document.getElementById("hook");
@@ -864,30 +1022,21 @@ function animateCast(power) {
     }, 1200);
 }
 
+/*======================================================
+WAIT FOR BITE
+======================================================*/
+
 function waitForFish() {
     const delay = 1000 + Math.random() * 2500;
+
     setTimeout(() => {
         fishBite();
     }, delay);
 }
 
-/* FIXED ISSUE 2: Single definition for fishBite */
-function fishBite() {
-    fishing.reeling = true;
-
-    const bite = document.getElementById("bite");
-    if (bite) bite.classList.remove("hidden");
-
-    const splash = document.getElementById("splashSound");
-    if (splash) {
-        splash.currentTime = 0;
-        splash.play();
-    }
-
-    setTimeout(() => {
-        startReeling();
-    }, 700);
-}
+/*======================================================
+CONTROLS
+======================================================*/
 
 document.addEventListener("mousedown", () => {
     if (document.getElementById("phase2")?.classList.contains("hidden")) return;
@@ -900,7 +1049,8 @@ document.addEventListener("mouseup", () => {
 });
 
 /*======================================================
- SECTION 5B: FISH AI
+SECTION 5B
+FISH AI
 ======================================================*/
 
 const fishTypes = [
@@ -911,6 +1061,10 @@ const fishTypes = [
 ];
 
 let currentFish = null;
+
+/*======================================================
+SPAWN FISH
+======================================================*/
 
 function spawnFish() {
     const lake = document.getElementById("lake");
@@ -935,6 +1089,10 @@ function spawnFish() {
     swimFish(fish, type.speed);
 }
 
+/*======================================================
+RANDOM FISH
+======================================================*/
+
 function randomFish() {
     const roll = Math.random() * 100;
     let total = 0;
@@ -945,8 +1103,13 @@ function randomFish() {
             return fish;
         }
     }
+
     return fishTypes[0];
 }
+
+/*======================================================
+SWIM
+======================================================*/
 
 function swimFish(fish, speed) {
     let x = -120;
@@ -965,11 +1128,47 @@ function swimFish(fish, speed) {
     }, 16);
 }
 
-/* FIXED ISSUE 3: Moved specialFish mission check inside catchFish() */
-/* FIXED ISSUE 5: Removed unused enableCatch() function */
+/*======================================================
+FISH BITE
+======================================================*/
+
+function fishBite() {
+    fishing.reeling = true;
+    const bite = document.getElementById("bite");
+    if (bite) {
+        bite.classList.remove("hidden");
+    }
+
+    const splash = document.getElementById("splashSound");
+    if (splash) {
+        splash.currentTime = 0;
+        splash.play();
+    }
+
+    setTimeout(() => {
+        startReeling();
+    }, 700);
+}
+
+/*======================================================
+ENABLE CATCH
+======================================================*/
+
+function enableCatch() {
+    const fish = currentFish;
+    if (!fish) return;
+
+    fish.onclick = () => {
+        catchFish(fish);
+    };
+}
+
+/*======================================================
+CATCH
+======================================================*/
+
 function catchFish(fish) {
     const points = parseInt(fish.dataset.points);
-
     fishing.score += points;
     fishing.fishCaught++;
 
@@ -993,6 +1192,10 @@ function catchFish(fish) {
     }
 }
 
+/*======================================================
+START FISH
+======================================================*/
+
 setTimeout(() => {
     if (document.getElementById("lake")) {
         spawnFish();
@@ -1000,11 +1203,17 @@ setTimeout(() => {
 }, 1000);
 
 /*======================================================
- SECTION 5C: REEL MINI GAME
+SECTION 5C
+REEL MINI GAME
 ======================================================*/
 
 let reelProgress = 0;
+let reelInterval = null;
 let fishFightInterval = null;
+
+/*------------------------------------------------------
+START REEL
+------------------------------------------------------*/
 
 function startReeling() {
     if (!fishing.reeling) return;
@@ -1026,6 +1235,10 @@ function startReeling() {
     }, 120);
 }
 
+/*------------------------------------------------------
+SPACE TO REEL
+------------------------------------------------------*/
+
 document.addEventListener("keydown", (e) => {
     if (e.code !== "Space") return;
     if (!fishing.reeling) return;
@@ -1034,12 +1247,18 @@ document.addEventListener("keydown", (e) => {
     if (reelProgress > 100) reelProgress = 100;
 
     const bar = document.getElementById("reelFill");
-    if (bar) bar.style.width = reelProgress + "%";
+    if (bar) {
+        bar.style.width = reelProgress + "%";
+    }
 
     if (reelProgress >= 100) {
         successfulCatch();
     }
 });
+
+/*------------------------------------------------------
+SUCCESS
+------------------------------------------------------*/
 
 function successfulCatch() {
     clearInterval(fishFightInterval);
@@ -1051,6 +1270,10 @@ function successfulCatch() {
 
     showBonus("🎣 Perfect Catch!");
 }
+
+/*------------------------------------------------------
+ESCAPED
+------------------------------------------------------*/
 
 function fishEscaped() {
     clearInterval(fishFightInterval);
@@ -1069,7 +1292,8 @@ function fishEscaped() {
 }
 
 /*======================================================
- SECTION 6: MISSION COMPLETE & SUMMARY
+SECTION 6
+MISSION COMPLETE
 ======================================================*/
 
 function finishFishingMission() {
@@ -1086,32 +1310,36 @@ function finishFishingMission() {
     }, 1000);
 }
 
-/* FIXED ISSUE 4: Added missing showMissionSummary() function */
-function showMissionSummary() {
-    const summaryOverlay = document.createElement("div");
-    summaryOverlay.id = "summaryOverlay";
-    document.body.appendChild(summaryOverlay);
+/*======================================================
+SHOW MISSION SUMMARY
+======================================================*/
 
+function showMissionSummary() {
     const rank = calculateRank();
     const totalScore = score + fishing.score;
 
-    summaryOverlay.innerHTML = `
+    const overlay = document.createElement("div");
+    overlay.id = "summaryOverlay";
+    document.body.appendChild(overlay);
+
+    overlay.innerHTML = `
         <div class="summaryWindow">
             <h1>MISSION SUMMARY</h1>
             <h2>${rank}</h2>
-            <br>
-            <p>Equipment Score: ${score}</p>
+            <p>Hidden Objects Score: ${score}</p>
             <p>Fishing Score: ${fishing.score}</p>
             <p><strong>Total Score: ${totalScore}</strong></p>
             <br>
-            <button id="completeEndingBtn">Finalize Mission →</button>
+            <button id="claimRewardBtn">Claim Reward →</button>
         </div>
     `;
 
-    document.getElementById("completeEndingBtn").addEventListener("click", () => {
-        showBirthdayEnding();
-    });
+    document.getElementById("claimRewardBtn").addEventListener("click", showBirthdayEnding);
 }
+
+/*======================================================
+CALCULATE RANK
+======================================================*/
 
 function calculateRank() {
     const total = score + fishing.score;
@@ -1119,12 +1347,17 @@ function calculateRank() {
     if (total >= 4500) return "🏆 Rank S";
     if (total >= 3500) return "🥇 Rank A";
     if (total >= 2500) return "🥈 Rank B";
+
     return "🥉 Rank C";
 }
 
+/*======================================================
+ENDING
+======================================================*/
+
 function showBirthdayEnding() {
-    const summaryOverlay = document.getElementById("summaryOverlay");
-    if (summaryOverlay) summaryOverlay.remove();
+    const summary = document.getElementById("summaryOverlay");
+    if (summary) summary.remove();
 
     const ending = document.createElement("div");
     ending.id = "birthdayEnding";
@@ -1136,23 +1369,34 @@ function showBirthdayEnding() {
             <br>
             <h2>Mission 2 Completed Successfully</h2>
             <br>
-            <p>Your determination, patience, and adventurous spirit have once again saved the day.</p>
+            <p>
+                Your determination,
+                patience,
+                and adventurous spirit
+                have once again saved the day.
+            </p>
             <br>
-            <h2>❤️ Happy 30th Birthday ❤️</h2>
-            <br>
-            <p>Another mission awaits... but not today.</p>
+            <p>
+                Another mission awaits...
+                but not today.
+            </p>
             <br>
             <h1>🔒 Mission 3</h1>
             <h2>LOCKED</h2>
-            <p>Transmission will resume next week...</p>
+            <p>
+                Transmission will resume
+                next week...
+            </p>
             <br>
-            <button onclick="location.reload()">Return to HQ</button>
+            <button onclick="location.reload()">
+                Return to HQ
+            </button>
         </div>
     `;
 }
 
 /*======================================================
- GAME READY
+GAME READY
 ======================================================*/
 
 window.onload = () => {
