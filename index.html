@@ -81,6 +81,11 @@
       <div class="xpBox">
         ⭐ <span id="xp">0</span> XP
       </div>
+
+      <!-- Item 1: Added missing Score display in Main HUD -->
+      <div class="scoreBox">
+        🏆 <span id="score">0</span>
+      </div>
     </div>
   </header>
 
@@ -162,14 +167,9 @@
   <!-- PHASE 2 - FISHING CHALLENGE -->
   <!-- ====================================================== -->
   <section id="phase2" class="hidden">
-    <!-- Updated container ID from lakeScene to lake for script compatibility -->
     <div id="lake">
-      <!-- Item 3: Added missing Hook element -->
       <div id="hook"></div>
-      
-      <!-- Item 4: Added missing Bite indicator element -->
       <div id="bite" class="hidden">❗ FISH BITE!</div>
-
       <canvas id="fishingCanvas"></canvas>
     </div>
 
@@ -184,10 +184,7 @@
           🐟 <span id="fishCaught">0</span> / 6
         </div>
         <div class="fishTimer">
-          <!-- Item 1: Updated ID to fishingTimer -->
           ⏱ <span id="fishingTimer">01:00</span>
-          
-          <!-- Item 2: Added missing fishScore container -->
           <div class="fishScore">
             ⭐ Score <span id="fishScore">0</span>
           </div>
@@ -201,7 +198,6 @@
         </div>
       </div>
 
-      <!-- Item 5: Added missing Reel Bar container -->
       <div class="reelContainer">
         <p>Reel Strength</p>
         <div class="reelBar">
@@ -276,7 +272,6 @@
   <!-- ====================================================== -->
   <!-- JAVASCRIPT -->
   <!-- ====================================================== -->
-  <!-- Removed phase1.js and phase2.js tags to resolve 404 errors -->
   <script src="game.js"></script>
 
 </body>
