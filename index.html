@@ -17,9 +17,10 @@
 
     <!-- LOADING SCREEN -->
     <div id="loadingScreen">
-        <div class="loadingContainer">
+        <div class="loadingCard">
             <h1>OPERATION BIRTHDAY 30</h1>
-            <div class="progressBar">
+            <h2>MISSION 2 - THE HUNT FOR CLUES</h2>
+            <div class="loadingBar">
                 <div id="loadingFill"></div>
             </div>
             <p id="loadingText">Connecting to Mission Control...</p>
@@ -28,13 +29,8 @@
 
     <!-- INTRO SCREEN -->
     <div id="introScreen" class="hidden">
-        <div class="terminalWindow">
-            <div class="terminalHeader">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <p>TERMINAL v2.0 - MISSION 2</p>
-            </div>
+        <div class="glassPanel">
+            <h2>TERMINAL v2.0 - MISSION 2</h2>
             <div id="terminal"></div>
             <button id="startMission">🚀 START MISSION</button>
         </div>
@@ -42,21 +38,30 @@
 
     <!-- MAIN GAME HUD -->
     <div id="gameHUD" class="hidden">
-        <div class="hudCard">⭐ XP: <span id="xp">0</span></div>
-        <div class="hudCard">⏱️ TIME: <span id="timer">01:00</span></div>
-        <div class="hudCard">🏆 SCORE: <span id="score">0</span></div>
-        <div class="hudCard bearTracker">
-            <span>🐻 BEAR DISTANCE</span>
-            <div class="trackBar">
-                <div id="bearProgress"></div>
+        <div class="hudLeft">
+            <h2>CAMP DEFENSE</h2>
+            <p id="objectiveText">Find all hidden equipment before the bear arrives!</p>
+        </div>
+        <div class="hudCenter">
+            <div class="bearContainer">
+                <span class="bearIcon">🐻</span>
+                <div class="bearTrack">
+                    <div id="bearProgress"></div>
+                </div>
+                <span class="campIcon">⛺</span>
             </div>
+        </div>
+        <div class="hudRight">
+            <div class="xpBox">⭐ XP: <span id="xp">0</span></div>
+            <div class="timerBox">⏱️ <span id="timer">01:00</span></div>
+            <div class="scoreBox">🏆 <span id="score">0</span></div>
         </div>
     </div>
 
     <!-- INVENTORY PANEL -->
     <div id="inventoryPanel" class="hidden">
-        <h3>INVENTORY</h3>
-        <div class="inventoryGrid">
+        <h2>INVENTORY</h2>
+        <div id="inventoryGrid">
             <div class="inventorySlot"><p>Tent</p></div>
             <div class="inventorySlot"><p>Backpack</p></div>
             <div class="inventorySlot"><p>Torchlight</p></div>
@@ -73,36 +78,37 @@
     <!-- PHASE 1: CAMPSITE SEARCH -->
     <section id="phase1" class="hidden">
         <div id="campScene">
-            <!-- Dynamic elements (collectibles, bear, campfire, smoke) are injected via JS -->
+            <!-- Canvas and dynamic collectibles injected via JS -->
         </div>
     </section>
 
     <!-- PHASE 2: FISHING CHALLENGE -->
     <section id="phase2" class="hidden">
         <div id="fishingHUD">
-            <div class="fishStats">
-                <p>⏱️ <span id="fishingTimer">01:00</span></p>
-                <p>🐟 CAUGHT: <span id="fishCaught">0</span>/6</p>
-                <p>⭐ SCORE: <span id="fishScore">0</span></p>
+            <div class="fishingHeader">
+                <h1>LAKE FISHING</h1>
+                <p>Catch 6 Special Fish to complete the mission!</p>
             </div>
 
-            <div class="controlsContainer">
-                <div class="meterBox">
-                    <label>CAST POWER</label>
-                    <div class="meterBar">
-                        <div id="powerFill"></div>
-                    </div>
-                </div>
+            <div class="fishingStats">
+                <div class="fishTimer">⏱️ <span id="fishingTimer">01:00</span></div>
+                <div class="fishCounter">🐟 <span id="fishCaught">0</span>/6</div>
+                <div class="scoreBox">⭐ <span id="fishScore">0</span></div>
+            </div>
 
-                <div class="meterBox">
-                    <label>REEL TENSION</label>
-                    <div class="meterBar">
+            <div class="powerContainer">
+                <p>CAST POWER / REEL TENSION</p>
+                <div class="powerBar">
+                    <div id="powerFill"></div>
+                </div>
+                <div class="reelContainer">
+                    <div class="reelBar">
                         <div id="reelFill"></div>
                     </div>
                 </div>
-
-                <button id="castRod">🎣 CAST ROD</button>
             </div>
+
+            <button id="castRod">🎣 CAST ROD</button>
         </div>
 
         <div id="lake">
