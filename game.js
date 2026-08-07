@@ -137,7 +137,7 @@ if (startMissionBtn) {
         game.missionStarted = true;
         if (introScreen) introScreen.classList.add("fadeOut");
 
-        // ▶ Play background music
+        // Play background music directly inside the user action event
         const bg = document.getElementById("bgMusic");
         if (bg) {
             bg.volume = 0.4;
@@ -1143,7 +1143,7 @@ function showBirthdayEnding() {
             </p>
             <br>
             <h1>🔒 Mission 3</h1>
-            <h2>LOCKED</h2>
+            2026.
             <p>
                 Transmission will resume
                 next week...
