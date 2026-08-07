@@ -2,7 +2,6 @@
  OPERATION BIRTHDAY 30
  MISSION 2
  GAME.JS
- SECTION 1
 ======================================================*/
 
 "use strict";
@@ -56,9 +55,9 @@ let messageIndex = 0;
 
 const loadingAnimation = setInterval(() => {
     load += 2;
-    loadingFill.style.width = load + "%";
+    if (loadingFill) loadingFill.style.width = load + "%";
 
-    if (load % 20 === 0) {
+    if (load % 20 === 0 && loadingText) {
         loadingText.innerHTML = loadingMessages[messageIndex];
         messageIndex++;
     }
@@ -74,13 +73,17 @@ const loadingAnimation = setInterval(() => {
 ======================================================*/
 
 function showIntro() {
-    loadingScreen.classList.add("fadeOut");
-    setTimeout(() => {
-        loadingScreen.style.display = "none";
-        introScreen.classList.remove("hidden");
-        introScreen.classList.add("fadeIn");
-        startTerminal();
-    }, 700);
+    if (loadingScreen) {
+        loadingScreen.classList.add("fadeOut");
+        setTimeout(() => {
+            loadingScreen.style.display = "none";
+            if (introScreen) {
+                introScreen.classList.remove("hidden");
+                introScreen.classList.add("fadeIn");
+            }
+            startTerminal();
+        }, 700);
+    }
 }
 
 /*======================================================
@@ -97,6 +100,7 @@ const terminalLines = [
 ];
 
 function startTerminal() {
+    if (!terminal) return;
     terminal.innerHTML = "";
     let line = 0;
 
@@ -128,35 +132,47 @@ function startTerminal() {
  START MISSION
 ======================================================*/
 
-startMissionBtn.addEventListener("click", () => {
-    game.missionStarted = true;
-    introScreen.classList.add("fadeOut");
+if (startMissionBtn) {
+    startMissionBtn.addEventListener("click", () => {
+        game.missionStarted = true;
+        if (introScreen) introScreen.classList.add("fadeOut");
 
-    // ▶ Play background music
-    const bg = document.getElementById("bgMusic");
-    if (bg) {
-        bg.volume = 0.4;
-        bg.play().catch(() => {});
-    }
-
-    setTimeout(() => {
-        introScreen.style.display = "none";
-        gameHUD.classList.remove("hidden");
-        inventoryPanel.classList.remove("hidden");
-        phase1.classList.remove("hidden");
-        gameHUD.classList.add("fadeIn");
-        inventoryPanel.classList.add("fadeIn");
-        phase1.classList.add("fadeIn");
-
-        /* Start Phase 1 */
-        startCountdown();
-
-        if (typeof startPhase1 === "function") {
-            startPhase1();
+        // ▶ Play background music
+        const bg = document.getElementById("bgMusic");
+        if (bg) {
+            bg.volume = 0.4;
+            bg.play().catch(() => {});
         }
 
-    }, 700);
-});
+        setTimeout(() => {
+            if (introScreen) introScreen.style.display = "none";
+            if (gameHUD) {
+                gameHUD.classList.remove("hidden");
+                gameHUD.classList.add("fadeIn");
+            }
+            if (inventoryPanel) {
+                inventoryPanel.classList.remove("hidden");
+                inventoryPanel.classList.add("fadeIn");
+            }
+            if (phase1) {
+                phase1.classList.remove("hidden");
+                phase1.classList.add("fadeIn");
+            }
+
+            /* Start Phase 1 */
+            startCountdown();
+            startPhase1();
+        }, 700);
+    });
+}
+
+function startPhase1() {
+    createHiddenObjects();
+    startEnvironment();
+    startBearAI();
+    startHintSystem();
+}
+
 /*======================================================
  XP SYSTEM
 ======================================================*/
@@ -192,15 +208,17 @@ function floatingXP(amount, target) {
  TIMER
 ======================================================*/
 
+let gameTimerInterval = null;
+
 function startCountdown() {
-    const timer = setInterval(() => {
+    gameTimerInterval = setInterval(() => {
         game.timer--;
         if (timerText) {
             timerText.innerHTML = "00:" + String(game.timer).padStart(2, "0");
         }
 
         if (game.timer <= 0) {
-            clearInterval(timer);
+            clearInterval(gameTimerInterval);
             alert("🐻 The bear reached the campsite!");
             location.reload();
         }
@@ -208,16 +226,12 @@ function startCountdown() {
 }
 
 /*======================================================
- SAVE
+ SAVE & LOAD
 ======================================================*/
 
 function saveGame() {
     localStorage.setItem("mission2", JSON.stringify(game));
 }
-
-/*======================================================
- LOAD
-======================================================*/
 
 function loadGame() {
     const save = localStorage.getItem("mission2");
@@ -230,18 +244,11 @@ function loadGame() {
 loadGame();
 
 /*======================================================
- SECTION 2
- PHASE 1 GAME ENGINE
+ PHASE 1 GAME ENGINE & HIDDEN OBJECTS
 ======================================================*/
 
-// Bear progress (100% = far away)
 let bearDistance = 100;
 let bearInterval = null;
-
-/*======================================================
- HIDDEN OBJECTS
- Fixed Campsite Locations
-======================================================*/
 
 const hiddenItems = [
     { id: "tent", x: 710, y: 320, width: 160, height: 130, found: false },
@@ -256,15 +263,10 @@ const hiddenItems = [
     { id: "key", x: 1090, y: 145, width: 32, height: 32, found: false }
 ];
 
-/*======================================================
- CREATE HIDDEN OBJECTS
-======================================================*/
-
 function createHiddenObjects() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
 
-    // Remove only old collectible items
     scene.querySelectorAll(".collectible").forEach(item => item.remove());
 
     hiddenItems.forEach(item => {
@@ -283,9 +285,6 @@ function createHiddenObjects() {
         scene.appendChild(img);
     });
 }
-/*======================================================
- COLLECT ITEM
-======================================================*/
 
 function collectItem(item, img) {
     if (item.found) return;
@@ -298,7 +297,7 @@ function collectItem(item, img) {
     const sound = document.getElementById("collectSound");
     if (sound) {
         sound.currentTime = 0;
-        sound.play();
+        sound.play().catch(() => {});
     }
 
     flyToInventory(img, item.id);
@@ -308,9 +307,7 @@ function collectItem(item, img) {
     giveTimeBonus();
 
     game.itemsFound++;
-    if (typeof updateInventory === "function") {
-        updateInventory(item.id);
-    }
+    updateInventory(item.id);
 
     setTimeout(() => {
         img.remove();
@@ -321,9 +318,15 @@ function collectItem(item, img) {
     }
 }
 
-/*======================================================
- SPARKLES
-======================================================*/
+function updateInventory(itemId) {
+    const inventorySlots = document.querySelectorAll(".inventorySlot");
+    inventorySlots.forEach(slot => {
+        const text = slot.querySelector("p");
+        if (text && text.innerText.replace(/\s/g, "").toLowerCase() === itemId.toLowerCase()) {
+            slot.classList.add("found");
+        }
+    });
+}
 
 function sparkle(target) {
     const scene = document.getElementById("campScene");
@@ -356,31 +359,24 @@ function sparkle(target) {
     }
 }
 
-/*======================================================
- ROAR
-======================================================*/
-
 function bearRoar() {
     document.body.classList.add("shake");
     const roar = document.getElementById("bearSound");
-    if (roar) roar.play();
+    if (roar) roar.play().catch(() => {});
 
     setTimeout(() => {
         document.body.classList.remove("shake");
     }, 400);
 }
 
-/*======================================================
- MISSION COMPLETE
-======================================================*/
-
 function missionSuccess() {
     clearInterval(bearInterval);
+    clearInterval(gameTimerInterval);
     perfectBonus();
     saveGame();
 
     const sound = document.getElementById("successSound");
-    if (sound) sound.play();
+    if (sound) sound.play().catch(() => {});
 
     document.getElementById("phase1")?.classList.add("fadeOut");
 
@@ -389,20 +385,10 @@ function missionSuccess() {
     }, 1200);
 }
 
-/*======================================================
- RESET PHASE
-======================================================*/
-
 function resetObjects() {
-    hiddenItems.forEach(item => {
-        item.found = false;
-    });
+    hiddenItems.forEach(item => { item.found = false; });
     game.itemsFound = 0;
 }
-
-/*======================================================
- ITEM FLIES TO INVENTORY
-======================================================*/
 
 function flyToInventory(itemElement, itemId) {
     const inventorySlots = document.querySelectorAll(".inventorySlot");
@@ -411,7 +397,6 @@ function flyToInventory(itemElement, itemId) {
     inventorySlots.forEach(slot => {
         const text = slot.querySelector("p");
         if (!text) return;
-
         const compare = text.innerText.replace(/\s/g, "").toLowerCase();
         if (compare === itemId.toLowerCase()) {
             targetSlot = slot;
@@ -461,7 +446,6 @@ function flyToInventory(itemElement, itemId) {
 }
 
 /*======================================================
- SECTION 3C
  BEAR AI SYSTEM
 ======================================================*/
 
@@ -492,7 +476,6 @@ function startBearAI() {
         if (bearDistance < 0) bearDistance = 0;
         if (progressBar) progressBar.style.width = bearDistance + "%";
 
-        /* Bear speeds up */
         if (bearDistance < 40) {
             bearSpeed = 2.6;
             document.body.classList.add("danger");
@@ -503,7 +486,6 @@ function startBearAI() {
             bearRoar();
         }
 
-        /* Bear reaches camp */
         if (bearDistance <= 0) {
             clearInterval(bearInterval);
             gameOver();
@@ -511,13 +493,9 @@ function startBearAI() {
     }, 100);
 }
 
-/*======================================================
- GAME OVER
-======================================================*/
-
 function gameOver() {
     const roar = document.getElementById("bearSound");
-    if (roar) roar.play();
+    if (roar) roar.play().catch(() => {});
 
     const warning = document.createElement("div");
     warning.className = "bearWarning";
@@ -530,26 +508,16 @@ function gameOver() {
 }
 
 /*======================================================
-SECTION 4A
-ANIMATED CAMPSITE
+ ANIMATED CAMPSITE ENVIRONMENT
 ======================================================*/
-
-/*------------------------------------------------------
-CREATE CAMPFIRE
-------------------------------------------------------*/
 
 function createCampfire() {
     const scene = document.getElementById("campScene");
-    if (!scene) return;
-
+    if (!scene || document.getElementById("campFire")) return;
     const fire = document.createElement("div");
     fire.id = "campFire";
     scene.appendChild(fire);
 }
-
-/*------------------------------------------------------
-SMOKE PARTICLES
-------------------------------------------------------*/
 
 function createSmoke() {
     const scene = document.getElementById("campScene");
@@ -562,15 +530,9 @@ function createSmoke() {
         smoke.style.bottom = (210 + Math.random() * 20) + "px";
         scene.appendChild(smoke);
 
-        setTimeout(() => {
-            smoke.remove();
-        }, 5000);
+        setTimeout(() => { smoke.remove(); }, 5000);
     }, 500);
 }
-
-/*------------------------------------------------------
-FLOATING LEAVES
-------------------------------------------------------*/
 
 function createLeaves() {
     const scene = document.getElementById("campScene");
@@ -584,15 +546,9 @@ function createLeaves() {
         leaf.style.animationDuration = (6 + Math.random() * 4) + "s";
         scene.appendChild(leaf);
 
-        setTimeout(() => {
-            leaf.remove();
-        }, 9000);
+        setTimeout(() => { leaf.remove(); }, 9000);
     }, 1500);
 }
-
-/*------------------------------------------------------
-MOVING CLOUDS
-------------------------------------------------------*/
 
 function createClouds() {
     const scene = document.getElementById("campScene");
@@ -604,15 +560,9 @@ function createClouds() {
         cloud.style.top = (30 + Math.random() * 120) + "px";
         scene.appendChild(cloud);
 
-        setTimeout(() => {
-            cloud.remove();
-        }, 35000);
+        setTimeout(() => { cloud.remove(); }, 35000);
     }, 9000);
 }
-
-/*------------------------------------------------------
-FLYING BIRDS
-------------------------------------------------------*/
 
 function createBirds() {
     const scene = document.getElementById("campScene");
@@ -624,28 +574,17 @@ function createBirds() {
         bird.style.top = (50 + Math.random() * 150) + "px";
         scene.appendChild(bird);
 
-        setTimeout(() => {
-            bird.remove();
-        }, 12000);
+        setTimeout(() => { bird.remove(); }, 12000);
     }, 14000);
 }
 
-/*------------------------------------------------------
-SUNLIGHT EFFECT
-------------------------------------------------------*/
-
 function createSunlight() {
     const scene = document.getElementById("campScene");
-    if (!scene) return;
-
+    if (!scene || document.getElementById("sunGlow")) return;
     const sun = document.createElement("div");
     sun.id = "sunGlow";
     scene.appendChild(sun);
 }
-
-/*------------------------------------------------------
-START ENVIRONMENT
-------------------------------------------------------*/
 
 function startEnvironment() {
     createCampfire();
@@ -657,43 +596,27 @@ function startEnvironment() {
 }
 
 /*======================================================
-SECTION 4B
-SMART HINT SYSTEM
+ SMART HINT SYSTEM
 ======================================================*/
 
 let hintTimer = null;
 let lastFoundTime = Date.now();
 
-/*------------------------------------------------------
-RESET HINT TIMER
-------------------------------------------------------*/
-
 function resetHintTimer() {
     lastFoundTime = Date.now();
 }
 
-/*------------------------------------------------------
-START HINT SYSTEM
-------------------------------------------------------*/
-
 function startHintSystem() {
-    if (hintTimer) {
-        clearInterval(hintTimer);
-    }
+    if (hintTimer) clearInterval(hintTimer);
 
     hintTimer = setInterval(() => {
         const secondsIdle = (Date.now() - lastFoundTime) / 1000;
-
         if (secondsIdle >= 10) {
             showHint();
             lastFoundTime = Date.now();
         }
     }, 1000);
 }
-
-/*------------------------------------------------------
-SHOW HINT
-------------------------------------------------------*/
 
 function showHint() {
     const remaining = hiddenItems.filter(item => !item.found);
@@ -704,51 +627,35 @@ function showHint() {
     if (!scene) return;
 
     const objects = scene.querySelectorAll(".collectible");
-
     objects.forEach(obj => {
         if (obj.dataset.item === randomItem.id) {
             obj.classList.add("hintGlow");
-            setTimeout(() => {
-                obj.classList.remove("hintGlow");
-            }, 2000);
+            setTimeout(() => { obj.classList.remove("hintGlow"); }, 2000);
         }
     });
 }
 
 /*======================================================
-SECTION 4C
-SCORE & COMBO SYSTEM
+ SCORE & COMBO SYSTEM
 ======================================================*/
 
 let score = 0;
 let combo = 0;
 let lastCollectTime = 0;
 
-/*------------------------------------------------------
-ADD SCORE
-------------------------------------------------------*/
-
 function addScore(points) {
     score += points;
     const scoreText = document.getElementById("score");
-    if (scoreText) {
-        scoreText.innerHTML = score;
-    }
+    if (scoreText) scoreText.innerHTML = score;
 }
-
-/*------------------------------------------------------
-COMBO SYSTEM
-------------------------------------------------------*/
 
 function updateCombo() {
     const now = Date.now();
-
     if (now - lastCollectTime <= 3000) {
         combo++;
     } else {
         combo = 1;
     }
-
     lastCollectTime = now;
 
     if (combo >= 2) {
@@ -756,10 +663,6 @@ function updateCombo() {
         addScore(combo * 25);
     }
 }
-
-/*------------------------------------------------------
-SHOW COMBO
-------------------------------------------------------*/
 
 function showCombo(comboCount) {
     const comboText = document.createElement("div");
@@ -769,15 +672,8 @@ function showCombo(comboCount) {
     comboText.style.top = "180px";
 
     document.body.appendChild(comboText);
-
-    setTimeout(() => {
-        comboText.remove();
-    }, 1000);
+    setTimeout(() => { comboText.remove(); }, 1000);
 }
-
-/*------------------------------------------------------
-TIME BONUS
-------------------------------------------------------*/
 
 function giveTimeBonus() {
     if (game.timer >= 40) {
@@ -786,20 +682,12 @@ function giveTimeBonus() {
     }
 }
 
-/*------------------------------------------------------
-PERFECT BONUS
-------------------------------------------------------*/
-
 function perfectBonus() {
     if (game.itemsFound === hiddenItems.length) {
         addScore(500);
         showBonus("🏆 Perfect Search +500");
     }
 }
-
-/*------------------------------------------------------
-SHOW BONUS
-------------------------------------------------------*/
 
 function showBonus(text) {
     const bonus = document.createElement("div");
@@ -810,15 +698,11 @@ function showBonus(text) {
     bonus.style.transform = "translateX(-50%)";
 
     document.body.appendChild(bonus);
-
-    setTimeout(() => {
-        bonus.remove();
-    }, 1800);
+    setTimeout(() => { bonus.remove(); }, 1800);
 }
 
 /*======================================================
-SECTION 4D
-MISSION TRANSITION
+ MISSION TRANSITION & PHASE 2 LAUNCH
 ======================================================*/
 
 function startMissionTransition() {
@@ -844,10 +728,6 @@ function startMissionTransition() {
     document.getElementById("continueFishing").addEventListener("click", startFishingIntro);
 }
 
-/*======================================================
-FISHING INTRO
-======================================================*/
-
 function startFishingIntro() {
     const overlay = document.getElementById("missionOverlay");
     if (overlay) overlay.classList.add("fadeOut");
@@ -858,31 +738,21 @@ function startFishingIntro() {
     }, 1000);
 }
 
-/*======================================================
-START PHASE 2
-======================================================*/
-
 function launchFishingMission() {
-    const phase1 = document.getElementById("phase1");
-    const phase2 = document.getElementById("phase2");
+    const phase1Elem = document.getElementById("phase1");
+    const phase2Elem = document.getElementById("phase2");
 
-    if (phase1) {
-        phase1.style.display = "none";
+    if (phase1Elem) phase1Elem.style.display = "none";
+    if (phase2Elem) {
+        phase2Elem.classList.remove("hidden");
+        phase2Elem.classList.add("fadeIn");
     }
 
-    if (phase2) {
-        phase2.classList.remove("hidden");
-        phase2.classList.add("fadeIn");
-    }
-
-    if (typeof startFishing === "function") {
-        startFishing();
-    }
+    startFishing();
 }
 
 /*======================================================
-SECTION 5A
-FISHING ENGINE
+ FISHING ENGINE
 ======================================================*/
 
 const fishing = {
@@ -897,12 +767,8 @@ const fishing = {
     direction: 1
 };
 
-let fishingInterval;
-let powerInterval;
-
-/*======================================================
-START FISHING
-======================================================*/
+let fishingInterval = null;
+let powerInterval = null;
 
 function startFishing() {
     fishing.timer = 60;
@@ -913,7 +779,6 @@ function startFishing() {
     fishing.casting = false;
     fishing.reeling = false;
 
-    // Reset UI
     const bite = document.getElementById("bite");
     if (bite) bite.classList.add("hidden");
 
@@ -923,7 +788,6 @@ function startFishing() {
     const reelFill = document.getElementById("reelFill");
     if (reelFill) reelFill.style.width = "0%";
 
-    // Reset hook position
     const hook = document.getElementById("hook");
     if (hook) {
         hook.style.left = "50%";
@@ -935,10 +799,6 @@ function startFishing() {
     startFishingTimer();
     spawnFish();
 }
-
-/*======================================================
-FISHING TIMER
-======================================================*/
 
 function startFishingTimer() {
     clearInterval(fishingInterval);
@@ -954,33 +814,19 @@ function startFishingTimer() {
     }, 1000);
 }
 
-/*======================================================
-HUD
-======================================================*/
-
 function updateFishingHUD() {
     const timer = document.getElementById("fishingTimer");
-    if (timer) {
-        timer.innerHTML = "00:" + String(fishing.timer).padStart(2, "0");
-    }
+    if (timer) timer.innerHTML = "00:" + String(fishing.timer).padStart(2, "0");
 
-    const score = document.getElementById("fishScore");
-    if (score) {
-        score.innerHTML = fishing.score;
-    }
+    const scoreElem = document.getElementById("fishScore");
+    if (scoreElem) scoreElem.innerHTML = fishing.score;
 
-    const caught = document.getElementById("fishCaught");
-    if (caught) {
-        caught.innerHTML = fishing.specialFish;
-    }
+    const caughtElem = document.getElementById("fishCaught");
+    if (caughtElem) caughtElem.innerHTML = fishing.specialFish;
 }
 
-/*======================================================
-POWER METER
-======================================================*/
-
 function startCasting() {
-    if (fishing.casting) return;
+    if (fishing.casting || fishing.reeling) return;
 
     fishing.casting = true;
     fishing.power = 0;
@@ -991,23 +837,12 @@ function startCasting() {
     powerInterval = setInterval(() => {
         fishing.power += fishing.direction * 2;
 
-        if (fishing.power >= 100) {
-            fishing.direction = -1;
-        }
+        if (fishing.power >= 100) fishing.direction = -1;
+        if (fishing.power <= 0) fishing.direction = 1;
 
-        if (fishing.power <= 0) {
-            fishing.direction = 1;
-        }
-
-        if (meter) {
-            meter.style.width = fishing.power + "%";
-        }
+        if (meter) meter.style.width = fishing.power + "%";
     }, 15);
 }
-
-/*======================================================
-CAST
-======================================================*/
 
 function castLine() {
     if (!fishing.casting) return;
@@ -1019,17 +854,11 @@ function castLine() {
     animateCast(fishing.power);
 }
 
-/*======================================================
-CAST BUTTON
-======================================================*/
-
 const castBtn = document.getElementById("castRod");
-
 if (castBtn) {
     castBtn.addEventListener("mousedown", startCasting);
     castBtn.addEventListener("mouseup", castLine);
 
-    // Mobile support
     castBtn.addEventListener("touchstart", (e) => {
         e.preventDefault();
         startCasting();
@@ -1040,9 +869,6 @@ if (castBtn) {
         castLine();
     });
 }
-/*======================================================
-CAST ANIMATION
-======================================================*/
 
 function animateCast(power) {
     const hook = document.getElementById("hook");
@@ -1063,35 +889,15 @@ function animateCast(power) {
     }, 1200);
 }
 
-/*======================================================
-WAIT FOR BITE
-======================================================*/
-
 function waitForFish() {
     const delay = 1000 + Math.random() * 2500;
-
     setTimeout(() => {
         fishBite();
     }, delay);
 }
 
 /*======================================================
-CONTROLS
-======================================================*/
-
-document.addEventListener("mousedown", () => {
-    if (document.getElementById("phase2")?.classList.contains("hidden")) return;
-    startCasting();
-});
-
-document.addEventListener("mouseup", () => {
-    if (document.getElementById("phase2")?.classList.contains("hidden")) return;
-    castLine();
-});
-
-/*======================================================
-SECTION 5B
-FISH AI
+ FISH AI & SPAWNING
 ======================================================*/
 
 const fishTypes = [
@@ -1103,17 +909,11 @@ const fishTypes = [
 
 let currentFish = null;
 
-/*======================================================
-SPAWN FISH
-======================================================*/
-
 function spawnFish() {
     const lake = document.getElementById("lake");
     if (!lake) return;
 
-    if (currentFish) {
-        currentFish.remove();
-    }
+    if (currentFish) currentFish.remove();
 
     const fish = document.createElement("img");
     const type = randomFish();
@@ -1130,27 +930,16 @@ function spawnFish() {
     swimFish(fish, type.speed);
 }
 
-/*======================================================
-RANDOM FISH
-======================================================*/
-
 function randomFish() {
     const roll = Math.random() * 100;
     let total = 0;
 
     for (const fish of fishTypes) {
         total += fish.chance;
-        if (roll <= total) {
-            return fish;
-        }
+        if (roll <= total) return fish;
     }
-
     return fishTypes[0];
 }
-
-/*======================================================
-SWIM
-======================================================*/
 
 function swimFish(fish, speed) {
     let x = -120;
@@ -1162,28 +951,22 @@ function swimFish(fish, speed) {
 
         if (x > window.innerWidth + 150) {
             clearInterval(swim);
-            fish.remove();
-            currentFish = null;
+            if (fish.parentNode) fish.remove();
+            if (currentFish === fish) currentFish = null;
             setTimeout(spawnFish, 1000);
         }
     }, 16);
 }
 
-/*======================================================
-FISH BITE
-======================================================*/
-
 function fishBite() {
     fishing.reeling = true;
     const bite = document.getElementById("bite");
-    if (bite) {
-        bite.classList.remove("hidden");
-    }
+    if (bite) bite.classList.remove("hidden");
 
     const splash = document.getElementById("splashSound");
     if (splash) {
         splash.currentTime = 0;
-        splash.play();
+        splash.play().catch(() => {});
     }
 
     setTimeout(() => {
@@ -1191,16 +974,10 @@ function fishBite() {
     }, 700);
 }
 
-/*======================================================
-CATCH
-======================================================*/
-
 function catchFish(fish) {
     const points = parseInt(fish.dataset.points);
     fishing.score += points;
     fishing.fishCaught++;
-
-    // Count every fish caught
     fishing.specialFish++;
 
     updateFishingHUD();
@@ -1218,18 +995,13 @@ function catchFish(fish) {
         finishFishingMission();
     }
 }
+
 /*======================================================
-SECTION 5C
-REEL MINI GAME
+ REEL MINI GAME
 ======================================================*/
 
 let reelProgress = 0;
-let reelInterval = null;
 let fishFightInterval = null;
-
-/*------------------------------------------------------
-START REEL
-------------------------------------------------------*/
 
 function startReeling() {
     if (!fishing.reeling) return;
@@ -1251,10 +1023,6 @@ function startReeling() {
     }, 120);
 }
 
-/*------------------------------------------------------
-SPACE TO REEL
-------------------------------------------------------*/
-
 document.addEventListener("keydown", (e) => {
     if (e.code !== "Space") return;
     if (!fishing.reeling) return;
@@ -1263,38 +1031,24 @@ document.addEventListener("keydown", (e) => {
     if (reelProgress > 100) reelProgress = 100;
 
     const bar = document.getElementById("reelFill");
-    if (bar) {
-        bar.style.width = reelProgress + "%";
-    }
+    if (bar) bar.style.width = reelProgress + "%";
 
     if (reelProgress >= 100) {
         successfulCatch();
     }
 });
 
-/*------------------------------------------------------
-SUCCESS
-------------------------------------------------------*/
-
 function successfulCatch() {
     clearInterval(fishFightInterval);
     fishing.reeling = false;
 
-    if (currentFish) {
-        catchFish(currentFish);
-    }
+    if (currentFish) catchFish(currentFish);
 
     showBonus("🎣 Perfect Catch!");
 
     const bite = document.getElementById("bite");
-    if (bite) {
-        bite.classList.add("hidden");
-    }
+    if (bite) bite.classList.add("hidden");
 }
-
-/*------------------------------------------------------
-ESCAPED
-------------------------------------------------------*/
 
 function fishEscaped() {
     clearInterval(fishFightInterval);
@@ -1307,38 +1061,27 @@ function fishEscaped() {
         currentFish = null;
     }
 
-    setTimeout(() => {
-        spawnFish();
-    }, 1000);
+    setTimeout(() => { spawnFish(); }, 1000);
 
     const bite = document.getElementById("bite");
-    if (bite) {
-        bite.classList.add("hidden");
-    }
+    if (bite) bite.classList.add("hidden");
 }
 
 /*======================================================
-SECTION 6
-MISSION COMPLETE
+ END GAME & SUMMARY
 ======================================================*/
 
 function finishFishingMission() {
     clearInterval(fishingInterval);
     clearInterval(fishFightInterval);
 
-    const phase2 = document.getElementById("phase2");
-    if (phase2) {
-        phase2.classList.add("fadeOut");
-    }
+    const phase2Elem = document.getElementById("phase2");
+    if (phase2Elem) phase2Elem.classList.add("fadeOut");
 
     setTimeout(() => {
         showMissionSummary();
     }, 1000);
 }
-
-/*======================================================
-SHOW MISSION SUMMARY
-======================================================*/
 
 function showMissionSummary() {
     const rank = calculateRank();
@@ -1363,10 +1106,6 @@ function showMissionSummary() {
     document.getElementById("claimRewardBtn").addEventListener("click", showBirthdayEnding);
 }
 
-/*======================================================
-CALCULATE RANK
-======================================================*/
-
 function calculateRank() {
     const total = score + fishing.score;
 
@@ -1376,10 +1115,6 @@ function calculateRank() {
 
     return "🥉 Rank C";
 }
-
-/*======================================================
-ENDING
-======================================================*/
 
 function showBirthdayEnding() {
     const summary = document.getElementById("summaryOverlay");
@@ -1422,7 +1157,7 @@ function showBirthdayEnding() {
 }
 
 /*======================================================
-GAME READY
+ GAME INITIALIZATION
 ======================================================*/
 
 window.onload = () => {
