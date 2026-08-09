@@ -9,9 +9,11 @@
 <body>
 
     <!-- Game HUD -->
-    <header id="gameHUD">
+    <header id="gameHUD" class="hidden">
         <div class="hudLeft">
-            <div id="timerDisplay">10:00</div>
+            <div id="timer">00:60</div>
+            <div id="xp">0</div>
+            <div id="score">0</div>
         </div>
 
         <div class="hudCenter">
@@ -22,33 +24,82 @@
                 </div>
                 <span class="campIcon">⛺</span>
             </div>
-            <!-- Added Bear Distance Tracker -->
             <p id="bearProximityText">95m</p>
+            <p id="objectiveText"></p>
+            <p id="itemsFoundText">0 / 8</p>
         </div>
 
         <div class="hudRight">
-            <!-- Added Hint Button with pointer-events enabled via style/class -->
             <button id="hintButton" class="btn">? HINT 3</button>
         </div>
     </header>
 
     <!-- Main Game Viewport / Canvas Area -->
     <main id="gameContainer">
-        <!-- Canvas or game elements go here -->
+        <!-- Phase 1 Canvas -->
+        <canvas id="gameCanvas"></canvas>
+        <!-- Phase 2 Canvas -->
+        <canvas id="fishingCanvas" class="hidden"></canvas>
     </main>
 
+    <!-- Screens / Overlays -->
+    <div id="loadingScreen"><h1>Loading...</h1></div>
+    
+    <div id="introScreen" class="hidden">
+        <h1>Operation Birthday 30: Mission 02</h1>
+        <button id="startMission" class="btn">Start Mission</button>
+    </div>
+
+    <div id="phase1Complete" class="hidden">
+        <h1>Camp Successfully Secured</h1>
+        <p></p>
+        <p>XP Earned: <span id="phase1XP">0</span></p>
+        <button id="continueFishing" class="btn">Continue to Fishing Challenge</button>
+    </div>
+
+    <div id="phase2" class="hidden">
+        <div class="fishingHeader">
+            <p>Fish Caught: <span id="fishCaught">0</span> / 6</p>
+            <p>Time: <span id="fishingTimer">01:00</span></p>
+            <p>Score: <span id="fishScore">0</span></p>
+        </div>
+        <div class="fishingControls">
+            <div class="meterFill"><div id="powerFill"></div></div>
+            <div class="meterFill"><div id="reelFill"></div></div>
+            <button id="castRod" class="btn">🎣 CAST ROD</button>
+            <div id="bite" class="hidden">BITE!</div>
+            <div id="hook" class="hidden">HOOKED!</div>
+        </div>
+    </div>
+
+    <div id="missionComplete" class="hidden">
+        <h1>Mission Complete</h1>
+        <p>Final XP: <span id="finalXP">0</span></p>
+        <div class="reportCard"><p></p></div>
+        <div class="reportCard"><p></p></div>
+        <div class="reportCard"><p></p></div>
+        <div class="reportCard"><p></p></div>
+        <button id="replayMission" class="btn">Play Again</button>
+    </div>
+
     <!-- Inventory Section -->
-    <section id="inventoryBar">
-        <div class="inventorySlot" style="opacity: 0.45;">
-            <p>Compass</p>
-        </div>
-        <div class="inventorySlot" style="opacity: 0.45;">
-            <p>Map</p>
-        </div>
-        <div class="inventorySlot" style="opacity: 0.45;">
-            <p>Flashlight</p>
-        </div>
+    <section id="inventoryPanel" class="hidden">
+        <div class="inventorySlot"><p>Torchlight</p></div>
+        <div class="inventorySlot"><p>Compass</p></div>
+        <div class="inventorySlot"><p>Boots</p></div>
+        <div class="inventorySlot"><p>Bottle</p></div>
+        <div class="inventorySlot"><p>Fishing Rod</p></div>
+        <div class="inventorySlot"><p>Map</p></div>
+        <div class="inventorySlot"><p>Camera</p></div>
+        <div class="inventorySlot"><p>Key</p></div>
     </section>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop src="assets/audio/bg.mp3"></audio>
+    <audio id="collectSound" src="assets/audio/collect.mp3"></audio>
+    <audio id="splashSound" src="assets/audio/splash.mp3"></audio>
+    <audio id="successSound" src="assets/audio/success.mp3"></audio>
+    <audio id="bearSound" src="assets/audio/bear.mp3"></audio>
 
     <script src="game.js"></script>
 </body>
