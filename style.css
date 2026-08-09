@@ -1,187 +1,1407 @@
+/*======================================================
+  OPERATION BIRTHDAY 30
+  MISSION 02
+  STYLE.CSS
+======================================================*/
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    user-select: none;
-    -webkit-user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 body {
-    background-color: #080e14;
+    background: #06121a;
     color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: "Inter", Arial, sans-serif;
 }
 
-#game-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-}
+/*======================================================
+  GAME CANVAS
+======================================================*/
 
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-.overlay {
-    position: absolute;
+#gameCanvas {
+    position: fixed;
     inset: 0;
-    background: rgba(4, 12, 20, 0.92);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    backdrop-filter: blur(12px);
+
+    width: 100vw;
+    height: 100vh;
+
+    display: block;
+
+    background: #06121a;
+
+    cursor: crosshair;
 }
+
+
+/*======================================================
+  GENERAL HIDDEN STATE
+======================================================*/
 
 .hidden {
     display: none !important;
 }
 
-.card {
-    background: rgba(15, 28, 44, 0.95);
-    padding: 32px 42px;
-    border-radius: 16px;
-    border: 1px solid rgba(79, 195, 247, 0.3);
-    text-align: center;
-    max-width: 500px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-}
 
-h1 {
-    font-size: 22px;
-    color: #4fc3f7;
-    margin-bottom: 12px;
-    letter-spacing: 0.5px;
-    line-height: 1.4;
-}
+/*======================================================
+  OVERLAY BASE
+======================================================*/
 
-p {
-    font-size: 14px;
-    color: #b0bec5;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+#start-overlay,
+#phase2-overlay,
+#end-overlay {
 
-.hud {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
     display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(13, 66, 89, 0.28),
+            rgba(2, 10, 15, 0.86)
+        );
+
+    backdrop-filter: blur(4px);
+
+    animation:
+        overlayFadeIn
+        0.5s ease forwards;
+}
+
+
+/*======================================================
+  MISSION PANEL
+======================================================*/
+
+.mission-panel {
+
+    width: min(
+        720px,
+        94vw
+    );
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 38px 42px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.55);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9, 35, 49, 0.96),
+            rgba(4, 18, 27, 0.97)
+        );
+
+    box-shadow:
+        0 0 30px
+        rgba(57, 217, 255, 0.16),
+
+        inset 0 0 40px
+        rgba(0, 0, 0, 0.35);
+
+    text-align: center;
+
+    animation:
+        panelAppear
+        0.65s
+        cubic-bezier(.16,1,.3,1)
+        forwards;
+}
+
+
+/*======================================================
+  MISSION TYPOGRAPHY
+======================================================*/
+
+.mission-panel h1 {
+
+    margin-bottom: 8px;
+
+    color: #ffffff;
+
+    font-family:
+        "Orbitron",
+        "Arial Black",
+        sans-serif;
+
+    font-size:
+        clamp(
+            25px,
+            4vw,
+            42px
+        );
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 15px
+        rgba(57, 217, 255, 0.45);
+}
+
+
+.mission-panel h2 {
+
+    margin-bottom: 24px;
+
+    color: #39d9ff;
+
+    font-family: monospace;
+
+    font-size:
+        clamp(
+            14px,
+            2vw,
+            19px
+        );
+
+    letter-spacing: 2px;
+}
+
+
+.mission-panel p {
+
+    color: #d7e9ef;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+
+/*======================================================
+  MISSION TERMINAL
+======================================================*/
+
+.mission-terminal {
+
+    margin:
+        20px
+        0;
+
+    padding: 16px;
+
+    border-left:
+        3px solid
+        #39d9ff;
+
+    background:
+        rgba(0, 0, 0, 0.32);
+
+    color: #39d9ff;
+
+    font-family: monospace;
+
+    text-align: left;
+
+    line-height: 1.7;
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/*======================================================
+  MISSION BUTTON
+======================================================*/
+
+.btn {
+
+    margin-top: 24px;
+
+    padding:
+        14px
+        30px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.8);
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ab8e8,
+            #0879a7
+        );
+
+    color: #ffffff;
+
+    font-weight: 800;
+
+    font-size: 15px;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 18px
+        rgba(57, 217, 255, 0.28);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+
+.btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        brightness(1.12);
+
+    box-shadow:
+        0 0 28px
+        rgba(57, 217, 255, 0.48);
+}
+
+
+.btn:active {
+
+    transform:
+        translateY(1px)
+        scale(0.98);
+}
+
+
+/*======================================================
+  TOP GAME HUD
+======================================================*/
+
+#gameHUD {
+
+    position: fixed;
+
+    top: 18px;
+
+    left: 18px;
+
+    right: 18px;
+
+    z-index: 30;
+
+    display: flex;
+
+    align-items: flex-start;
+
     justify-content: space-between;
+
     pointer-events: none;
-    z-index: 5;
 }
 
-.panel {
-    background: rgba(8, 20, 32, 0.85);
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.15);
-    backdrop-filter: blur(8px);
+
+/*======================================================
+  HUD BOX
+======================================================*/
+
+.hudBox {
+
+    min-width: 145px;
+
+    padding:
+        10px
+        15px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.35);
+
+    border-radius: 10px;
+
+    background:
+        rgba(3, 15, 22, 0.78);
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.25);
 }
 
-.stat-label {
+
+.hudLabel {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        rgba(
+            210,
+            235,
+            242,
+            0.72
+        );
+
+    font-family: monospace;
+
     font-size: 10px;
+
+    letter-spacing: 1.5px;
+
     text-transform: uppercase;
-    color: #8ab4f8;
+}
+
+
+.hudValue {
+
+    color: #ffffff;
+
+    font-family:
+        "Orbitron",
+        monospace;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+
+/*======================================================
+  PRIMARY / SECONDARY HUD
+======================================================*/
+
+#hud-left {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+#hud-right {
+
+    display: flex;
+
+    gap: 8px;
+}
+
+
+/*======================================================
+  ACTION PROMPT
+======================================================*/
+
+#action-prompt {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 26px;
+
+    z-index: 35;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        min(
+            650px,
+            90vw
+        );
+
+    padding:
+        11px
+        18px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.65);
+
+    border-radius: 999px;
+
+    background:
+        rgba(3, 17, 25, 0.84);
+
+    color: #ffffff;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-align: center;
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 0 18px
+        rgba(57, 217, 255, 0.15);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease;
+}
+
+
+/*======================================================
+  POWER METER
+======================================================*/
+
+#power-container {
+
+    position: fixed;
+
+    right: 26px;
+
+    top: 50%;
+
+    z-index: 40;
+
+    transform:
+        translateY(-50%);
+
+    width: 28px;
+
+    height: 220px;
+
+    padding: 4px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.5);
+
+    border-radius: 15px;
+
+    background:
+        rgba(0,0,0,0.55);
+
+    box-shadow:
+        0 0 20px
+        rgba(0,0,0,0.4);
+}
+
+
+#power-bar {
+
+    position: absolute;
+
+    left: 4px;
+
+    right: 4px;
+
+    bottom: 4px;
+
+    height: 0%;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            to top,
+            #27e85c 0%,
+            #f4d03f 60%,
+            #ff4747 100%
+        );
+
+    box-shadow:
+        0 0 12px
+        rgba(57, 217, 255, 0.35);
+
+    transition:
+        height 0.04s linear;
+}
+
+
+/*======================================================
+  TENSION METER
+======================================================*/
+
+#tension-container {
+
+    position: fixed;
+
+    left: 26px;
+
+    top: 50%;
+
+    z-index: 40;
+
+    transform:
+        translateY(-50%);
+
+    width: 28px;
+
+    height: 220px;
+
+    padding: 4px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.5);
+
+    border-radius: 15px;
+
+    background:
+        rgba(0,0,0,0.55);
+
+    box-shadow:
+        0 0 20px
+        rgba(0,0,0,0.4);
+}
+
+
+#tension-bar {
+
+    position: absolute;
+
+    left: 4px;
+
+    right: 4px;
+
+    bottom: 4px;
+
+    height: 0%;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            to top,
+            #28d65c 0%,
+            #f5c542 55%,
+            #ff3030 100%
+        );
+
+    transition:
+        height 0.08s linear;
+}
+
+
+/*======================================================
+  METER LABELS
+======================================================*/
+
+#power-container::before {
+
+    content:
+        "POWER";
+
+    position: absolute;
+
+    right: 38px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%)
+        rotate(-90deg);
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+
+#tension-container::before {
+
+    content:
+        "TENSION";
+
+    position: absolute;
+
+    left: 38px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%)
+        rotate(90deg);
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+
+/*======================================================
+  AUDIO BUTTON
+======================================================*/
+
+#audio-toggle {
+
+    position: fixed;
+
+    top: 20px;
+
+    right: 20px;
+
+    z-index: 80;
+
+    padding:
+        9px
+        14px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.5);
+
+    border-radius: 9px;
+
+    background:
+        rgba(3, 15, 22, 0.78);
+
+    color: #ffffff;
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    backdrop-filter:
+        blur(8px);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+#audio-toggle:hover {
+
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(8, 65, 86, 0.9);
+}
+
+
+/*======================================================
+  PHASE 2 FISHING HUD
+======================================================*/
+
+#fishingHUD {
+
+    position: fixed;
+
+    top: 18px;
+
+    left: 50%;
+
+    z-index: 45;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        min(
+            560px,
+            86vw
+        );
+
+    padding:
+        12px
+        16px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.35);
+
+    border-radius: 12px;
+
+    background:
+        rgba(3, 16, 23, 0.76);
+
+    backdrop-filter:
+        blur(8px);
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+
+.fishingHeader h1 {
+
+    color: #ffffff;
+
+    font-family:
+        "Orbitron",
+        Arial,
+        sans-serif;
+
+    font-size:
+        clamp(
+            15px,
+            2vw,
+            22px
+        );
+
     letter-spacing: 1px;
 }
 
-.stat-value {
-    font-size: 20px;
-    font-weight: bold;
-    font-family: monospace;
+
+.fishingHeader p {
+
+    margin-top: 4px;
+
+    color:
+        rgba(
+            225,
+            240,
+            245,
+            0.76
+        );
+
+    font-size: 11px;
 }
 
-#power-container {
-    position: absolute;
-    left: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 260px;
-    background: rgba(0,0,0,0.6);
-    border-radius: 14px;
-    padding: 4px;
-    border: 1px solid rgba(79, 195, 247, 0.4);
-    z-index: 5;
-}
 
-#power-bar {
-    width: 100%;
-    height: 0%;
-    background: linear-gradient(to top, #0288d1, #26c6da, #80deea);
-    border-radius: 10px;
-    position: absolute;
-    bottom: 4px;
-    left: 4px;
-    right: 4px;
-}
+/*======================================================
+  FISHING STATS
+======================================================*/
 
-#tension-container {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 260px;
-    background: rgba(0,0,0,0.6);
-    border-radius: 14px;
-    padding: 4px;
-    border: 1px solid rgba(255,255,255,0.2);
-    z-index: 5;
-}
+.fishingStats {
 
-#tension-bar {
-    width: 100%;
-    height: 0%;
-    background: linear-gradient(to top, #4caf50, #ffeb3b, #f44336);
-    border-radius: 10px;
-    transition: height 0.1s linear;
-}
+    display: flex;
 
-#action-prompt {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    background: rgba(4, 12, 20, 0.9);
-    padding: 12px 30px;
-    border-radius: 30px;
-    border: 1px solid #4fc3f7;
-    color: #e1f5fe;
-    text-shadow: 0 0 10px rgba(79,195,247,0.5);
-    z-index: 5;
-}
+    align-items: center;
 
-.btn {
-    pointer-events: auto;
-    background: linear-gradient(135deg, #0288d1, #01579b);
-    border: none;
-    color: white;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.2s;
+    justify-content: center;
+
+    gap: 12px;
+
     margin-top: 10px;
 }
 
-.btn:hover {
-    background: linear-gradient(135deg, #039be5, #0288d1);
-    transform: translateY(-2px);
+
+.fishCounter,
+.fishTimer {
+
+    min-width: 130px;
+
+    padding:
+        7px
+        12px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.07
+        );
+
+    color: #ffffff;
+
+    font-family: monospace;
+
+    font-size: 13px;
+}
+
+
+.fishScore {
+
+    margin-top: 3px;
+
+    color: #ffd84d;
+
+    font-size: 11px;
+}
+
+
+/*======================================================
+  FISHING CONTROL BUTTON
+======================================================*/
+
+#castRod {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 75px;
+
+    z-index: 50;
+
+    transform:
+        translateX(-50%);
+
+    padding:
+        13px
+        30px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.7);
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0799ca,
+            #075d7c
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 22px
+        rgba(57, 217, 255, 0.25);
+
+    transition:
+        transform 0.18s ease,
+        filter 0.18s ease;
+}
+
+
+#castRod:hover {
+
+    transform:
+        translateX(-50%)
+        translateY(-2px);
+
+    filter:
+        brightness(1.12);
+}
+
+
+#castRod:active {
+
+    transform:
+        translateX(-50%)
+        scale(0.97);
+}
+
+
+/*======================================================
+  REPORT GRID
+======================================================*/
+
+.reportGrid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+
+.reportCard {
+
+    padding:
+        18px
+        14px;
+
+    border:
+        1px solid
+        rgba(57, 217, 255, 0.25);
+
+    border-radius: 12px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.055
+        );
+}
+
+
+.reportCard h3 {
+
+    margin-bottom: 8px;
+
+    color:
+        #39d9ff;
+
+    font-size: 12px;
+
+    letter-spacing: 0.5px;
+}
+
+
+.reportCard p {
+
+    color: #ffffff;
+
+    font-family:
+        "Orbitron",
+        monospace;
+
+    font-size: 22px;
+
+    font-weight: 800;
+}
+
+
+/*======================================================
+  BADGES
+======================================================*/
+
+.badges {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+
+.badge {
+
+    padding:
+        9px
+        15px;
+
+    border:
+        1px solid
+        rgba(
+            57,
+            217,
+            255,
+            0.35
+        );
+
+    border-radius: 999px;
+
+    background:
+        rgba(
+            57,
+            217,
+            255,
+            0.08
+        );
+
+    color:
+        #dff8ff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/*======================================================
+  ENDING MESSAGE
+======================================================*/
+
+.endingMessage {
+
+    margin-top: 22px;
+
+    padding:
+        16px;
+
+    border-left:
+        3px solid
+        #39d9ff;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
+
+    text-align: left;
+}
+
+
+.endingMessage h2 {
+
+    margin-bottom: 8px;
+
+    color:
+        #39d9ff;
+
+    font-size: 19px;
+}
+
+
+.endingMessage p {
+
+    color:
+        rgba(
+            230,
+            244,
+            248,
+            0.86
+        );
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/*======================================================
+  PHASE TRANSITION
+======================================================*/
+
+.phaseTransition {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 90;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        #02090e;
+
+    animation:
+        transitionFade
+        0.8s ease;
+}
+
+
+.phaseTransition h1 {
+
+    color:
+        #39d9ff;
+
+    font-family:
+        monospace;
+
+    letter-spacing: 4px;
+
+    text-align: center;
+
+    text-shadow:
+        0 0 20px
+        rgba(
+            57,
+            217,
+            255,
+            0.6
+        );
+}
+
+
+/*======================================================
+  SCANLINE EFFECT
+======================================================*/
+
+#gameCanvas::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+}
+
+
+/*======================================================
+  ANIMATIONS
+======================================================*/
+
+@keyframes overlayFadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes panelAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            scale(0.94)
+            translateY(18px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+
+@keyframes transitionFade {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/*======================================================
+  MOBILE
+======================================================*/
+
+@media (
+    max-width: 700px
+) {
+
+    #gameHUD {
+
+        top: 10px;
+
+        left: 10px;
+
+        right: 10px;
+    }
+
+
+    .hudBox {
+
+        min-width: 110px;
+
+        padding:
+            8px
+            10px;
+    }
+
+
+    .hudValue {
+
+        font-size: 16px;
+    }
+
+
+    #audio-toggle {
+
+        top: 10px;
+
+        right: 10px;
+
+        font-size: 9px;
+
+        padding:
+            7px
+            10px;
+    }
+
+
+    #action-prompt {
+
+        bottom: 16px;
+
+        width: 92vw;
+
+        padding:
+            9px
+            12px;
+
+        font-size: 9px;
+    }
+
+
+    #power-container,
+    #tension-container {
+
+        height: 160px;
+
+        width: 22px;
+    }
+
+
+    #power-container {
+
+        right: 10px;
+    }
+
+
+    #tension-container {
+
+        left: 10px;
+    }
+
+
+    #power-container::before,
+    #tension-container::before {
+
+        font-size: 8px;
+    }
+
+
+    .mission-panel {
+
+        padding:
+            26px
+            20px;
+    }
+
+
+    .reportGrid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .fishingStats {
+
+        gap: 6px;
+    }
+
+
+    .fishCounter,
+    .fishTimer {
+
+        min-width: 100px;
+
+        font-size: 11px;
+    }
+
+
+    #castRod {
+
+        bottom: 52px;
+
+        padding:
+            11px
+            22px;
+
+        font-size: 11px;
+    }
+}
+
+
+/*======================================================
+  VERY SMALL SCREENS
+======================================================*/
+
+@media (
+    max-width: 420px
+) {
+
+    .mission-panel h1 {
+
+        font-size: 23px;
+    }
+
+
+    .mission-panel h2 {
+
+        font-size: 12px;
+    }
+
+
+    .mission-panel p {
+
+        font-size: 13px;
+    }
+
+
+    #fishingHUD {
+
+        width: 94vw;
+
+        top: 8px;
+    }
+
+
+    .fishingHeader h1 {
+
+        font-size: 14px;
+    }
+
+
+    .fishingHeader p {
+
+        font-size: 9px;
+    }
 }
