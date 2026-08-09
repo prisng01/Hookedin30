@@ -61,46 +61,53 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Asset Loading based on your exact file folder tree
-const assetImages = {
-    campsiteBg: new Image(),
-    lakeBg: new Image(),
-    bearWalk: new Image(),
+// Helper function to load images with error logging for GitHub Pages debugging
+function loadAsset(src) {
+    const img = new Image();
+    img.src = src;
+    img.onerror = () => console.error(`[Asset Error] Failed to load: ${src}`);
+    return img;
+}
+
+// Asset Loading mapped safely with relative paths
+const assets = {
+    backgrounds: {
+        campsite: loadAsset('assets/backgrounds/campsite.png'),
+        lake: loadAsset('assets/backgrounds/lake.png')
+    },
+    bear: {
+        walk: loadAsset('assets/bear/bear_walk.png')
+    },
     items: {
-        'Boots': new Image(),
-        'Bottle': new Image(),
-        'Camera': new Image(),
-        'Compass': new Image(),
-        'FishingRod': new Image(),
-        'Key': new Image(),
-        'Map': new Image(),
-        'Tent': new Image(),
-        'Torchlight': new Image()
+        boots: loadAsset('assets/items/boots.png'),
+        bottle: loadAsset('assets/items/bottle.png'),
+        camera: loadAsset('assets/items/camera.png'),
+        compass: loadAsset('assets/items/compass.png'),
+        fishingRod: loadAsset('assets/items/fishingRod.png'),
+        key: loadAsset('assets/items/key.png'),
+        map: loadAsset('assets/items/map.png'),
+        tent: loadAsset('assets/items/tent.png'),
+        torchlight: loadAsset('assets/items/torchlight.png')
+    },
+    fish: {
+        blueFish: loadAsset('assets/fish/blueFish.png'),
+        goldFish: loadAsset('assets/fish/goldFish.png'),
+        heartFish: loadAsset('assets/fish/heartFish.png'),
+        rainbowFish: loadAsset('assets/fish/rainbowFish.png')
+    },
+    ui: {
+        cursor: loadAsset('assets/ui/cursor.png'),
+        hook: loadAsset('assets/ui/hook.png')
     }
 };
 
-assetImages.campsiteBg.src = 'assets/backgrounds/campsite.png';
-assetImages.lakeBg.src = 'assets/backgrounds/lake.png';
-assetImages.bearWalk.src = 'assets/bear/bear_walk.png';
-
-assetImages.items['Boots'].src = 'assets/items/boots.png';
-assetImages.items['Bottle'].src = 'assets/items/bottle.png';
-assetImages.items['Camera'].src = 'assets/items/camera.png';
-assetImages.items['Compass'].src = 'assets/items/compass.png';
-assetImages.items['FishingRod'].src = 'assets/items/fishingRod.png';
-assetImages.items['Key'].src = 'assets/items/key.png';
-assetImages.items['Map'].src = 'assets/items/map.png';
-assetImages.items['Tent'].src = 'assets/items/tent.png';
-assetImages.items['Torchlight'].src = 'assets/items/torchlight.png';
-
-// Game States: MISSION_START -> PHASE1_SEARCH -> PHASE2_TRANSITION -> PHASE2_AIM -> PHASE2_POWER -> PHASE2_WAITING -> PHASE2_HOOKED -> PHASE2_REELING -> MISSION_END
 let state = 'MISSION_START';
 
 let items = [];
 let itemsCollected = 0;
 const TOTAL_ITEMS = 10;
 let bearDistance = 100;
-const ITEM_NAMES = ['Boots', 'Bottle', 'Camera', 'Compass', 'FishingRod', 'Key', 'Map', 'Tent', 'Torchlight', 'Compass'];
+const ITEM_KEYS = ['boots', 'bottle', 'camera', 'compass', 'fishingRod', 'key', 'map', 'tent', 'torchlight', 'compass'];
 
 let fishCaught = 0;
 const TARGET_FISH = 6;
@@ -176,10 +183,10 @@ function startPhase1() {
     items = [];
     for (let i = 0; i < TOTAL_ITEMS; i++) {
         items.push({
-            name: ITEM_NAMES[i],
+            key: ITEM_KEYS[i],
             x: 100 + Math.random() * (width - 200),
             y: 140 + Math.random() * (height - 280),
-            radius: 22,
+            radius: 28,
             collected: false
         });
     }
@@ -241,7 +248,7 @@ window.addEventListener('pointerdown', (e) => {
         promptEl.innerText = "WAITING FOR A FISH TO BITE...";
         setTimeout(triggerBite, 2200 + Math.random() * 2500);
     } else if (state === 'PHASE2_HOOKED') {
-        audio.play('fishPulling');
+        audio.play('splash');
         state = 'PHASE2_REELING';
         promptEl.innerText = "HOLD LEFT CLICK / SPACEBAR TO REEL IN!";
     }
@@ -321,7 +328,7 @@ function update(dt) {
         } else if (fishDistance <= 2) {
             audio.stop('reelWinding');
             audio.stop('fishPulling');
-            audio.play('collect');
+            audio.play('complete');
             fishCaught++;
             valPrimary.innerText = `${fishCaught} / ${TARGET_FISH}`;
 
@@ -342,8 +349,9 @@ function update(dt) {
 
 function render() {
     if (state === 'PHASE1_SEARCH') {
-        if (assetImages.campsiteBg.complete && assetImages.campsiteBg.naturalWidth !== 0) {
-            ctx.drawImage(assetImages.campsiteBg, 0, 0, width, height);
+        // Draw Campsite Background
+        if (assets.backgrounds.campsite.complete && assets.backgrounds.campsite.naturalWidth !== 0) {
+            ctx.drawImage(assets.backgrounds.campsite, 0, 0, width, height);
         } else {
             let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
             bgGrad.addColorStop(0, '#132219');
@@ -352,32 +360,36 @@ function render() {
             ctx.fillRect(0, 0, width, height);
         }
 
+        // Draw items using images from assets/items/
         items.forEach(item => {
             if (!item.collected) {
-                let itemImg = assetImages.items[item.name];
-                if (itemImg && itemImg.complete && itemImg.naturalWidth !== 0) {
-                    ctx.drawImage(itemImg, item.x - item.radius, item.y - item.radius, item.radius * 2, item.radius * 2);
+                let img = assets.items[item.key];
+                if (img && img.complete && img.naturalWidth !== 0) {
+                    ctx.drawImage(img, item.x - item.radius, item.y - item.radius, item.radius * 2, item.radius * 2);
                 } else {
+                    // Fallback shape if image hasn't loaded or returned 404
                     ctx.fillStyle = '#ffd54f';
                     ctx.beginPath();
                     ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.strokeStyle = '#ffffff';
+                    ctx.strokeStyle = '#000';
                     ctx.lineWidth = 2;
                     ctx.stroke();
-
-                    ctx.fillStyle = '#000000';
-                    ctx.font = 'bold 10px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(item.name[0], item.x, item.y + 3);
                 }
             }
         });
+
+        // Draw Bear threat icon if loaded
+        let bearImg = assets.bear.walk;
+        if (bearImg && bearImg.complete && bearImg.naturalWidth !== 0) {
+            ctx.drawImage(bearImg, width - 90, 20, 60, 60);
+        }
     }
 
     if (state.startsWith('PHASE2')) {
-        if (assetImages.lakeBg.complete && assetImages.lakeBg.naturalWidth !== 0) {
-            ctx.drawImage(assetImages.lakeBg, 0, 0, width, height);
+        // Draw Lake Background
+        if (assets.backgrounds.lake.complete && assets.backgrounds.lake.naturalWidth !== 0) {
+            ctx.drawImage(assets.backgrounds.lake, 0, 0, width, height);
         } else {
             let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
             bgGrad.addColorStop(0, '#0d1b2a');
@@ -412,10 +424,16 @@ function render() {
             ctx.quadraticCurveTo(width / 2, lureY + sag, lureX, lureY);
             ctx.stroke();
 
-            ctx.fillStyle = '#81d4fa';
-            ctx.beginPath();
-            ctx.arc(lureX, lureY, 7, 0, Math.PI * 2);
-            ctx.fill();
+            // Draw hook UI asset if loaded
+            let hookImg = assets.ui.hook;
+            if (hookImg && hookImg.complete && hookImg.naturalWidth !== 0) {
+                ctx.drawImage(hookImg, lureX - 12, lureY - 12, 24, 24);
+            } else {
+                ctx.fillStyle = '#81d4fa';
+                ctx.beginPath();
+                ctx.arc(lureX, lureY, 7, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
     }
 }
