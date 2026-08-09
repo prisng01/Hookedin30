@@ -27,7 +27,7 @@ const hiddenItems = [
 ];
 
 /*======================================================
- AUDIO MANAGER WITH AUTOPLAY UNLOCK
+ AUDIO MANAGER WITH PAGE-LOAD START & FINISH STOP
 ======================================================*/
 const audio = {
     bgm: document.getElementById("bgm"),
@@ -45,17 +45,26 @@ function playSound(soundName) {
     }
 }
 
-// Unlocks web audio contexts across modern browser security blocks
-function unlockAudio() {
-    Object.values(audio).forEach(sound => {
-        if (sound) {
-            sound.play().then(() => {
-                sound.pause();
-                sound.currentTime = 0;
-            }).catch(() => {});
-        }
-    });
+// Start BGM immediately on page open or on first screen touch/click
+function startBGMOnOpen() {
+    if (audio.bgm && audio.bgm.paused) {
+        audio.bgm.volume = 0.35;
+        audio.bgm.play().then(() => {
+            // Remove listeners once audio successfully starts playing
+            document.removeEventListener("click", startBGMOnOpen);
+            document.removeEventListener("keydown", startBGMOnOpen);
+            document.removeEventListener("touchstart", startBGMOnOpen);
+        }).catch(() => {
+            // Autoplay blocked by browser policy; awaits first user interaction
+        });
+    }
 }
+
+// Attach load and interaction listeners to play music on arrival
+window.addEventListener("DOMContentLoaded", startBGMOnOpen);
+document.addEventListener("click", startBGMOnOpen);
+document.addEventListener("keydown", startBGMOnOpen);
+document.addEventListener("touchstart", startBGMOnOpen);
 
 /*======================================================
  DOM ELEMENTS
@@ -174,16 +183,11 @@ function startTerminal() {
  GAMEPLAY START (PHASE 1)
 ======================================================*/
 function startGame() {
-    unlockAudio();
     playSound("click");
-
     hideAllOverlays();
 
-    // Play Background Audio
-    if (audio.bgm) {
-        audio.bgm.volume = 0.35;
-        audio.bgm.play().catch(e => console.error("BGM blocked:", e));
-    }
+    // Ensure music continues playing
+    startBGMOnOpen();
 
     if (introScreen) introScreen.style.display = "none";
     if (gameHUD) {
@@ -258,12 +262,10 @@ function collectItem(item, element) {
 
     if (xpText) xpText.innerHTML = game.xp;
 
-    // Smooth removal
     element.style.opacity = "0";
     element.style.pointerEvents = "none";
     setTimeout(() => element.remove(), 200);
 
-    // Strike out word in inventory
     const invSlot = document.querySelector(`.inventory-item[data-id="${item.id}"]`);
     if (invSlot) {
         invSlot.classList.add("found");
@@ -348,6 +350,12 @@ function startPhase2() {
 }
 
 function showBirthdayEnding() {
+    // STOP BGM when game finishes
+    if (audio.bgm) {
+        audio.bgm.pause();
+        audio.bgm.currentTime = 0;
+    }
+
     hideAllOverlays();
     const birthdayEnding = document.getElementById("birthdayEnding");
     if (birthdayEnding) {
