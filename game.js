@@ -6,7 +6,7 @@
 // ---------- GAME STATE ----------
 let currentPhase = 1;
 let playerXP = 0;
-let phase1Timer = 90; // 1.5 Minutes (90 seconds)
+let phase1Timer = 90;
 let phase1TimerInterval = null;
 let itemsFoundCount = 0;
 
@@ -33,6 +33,12 @@ const hiddenItems = [
 // ---------- INITIALIZATION ----------
 window.addEventListener("DOMContentLoaded", () => {
     simulateLoading();
+    
+    // Bind Start Mission Button
+    const startBtn = document.getElementById("startMission");
+    if (startBtn) {
+        startBtn.addEventListener("click", startMission);
+    }
 });
 
 function simulateLoading() {
@@ -164,7 +170,6 @@ function collectItem(item, elem, event) {
 
     showFloatingXP(event.clientX, event.clientY, "+100 XP");
 
-    // Matches dynamic dataset in index.html inventory grid
     const slot = document.querySelector(`.inventorySlot[data-item="${item.id}"]`);
     if (slot) slot.classList.add("found");
 
@@ -190,8 +195,7 @@ function showFloatingXP(x, y, text) {
 
 function addXP(amount) {
     playerXP += amount;
-    // Updated to match xpText span ID
-    const xpElem = document.getElementById("xpText");
+    const xpElem = document.getElementById("xp");
     if (xpElem) xpElem.innerText = playerXP;
 }
 
@@ -238,7 +242,7 @@ function startFishingPhase() {
 
     fishingTimerInterval = setInterval(() => {
         fishingTimer--;
-        const timerElem = document.getElementById("fishTimer");
+        const timerElem = document.getElementById("fishingTimer");
         if (timerElem) timerElem.innerText = `00:${String(fishingTimer).padStart(2, '0')}`;
 
         if (fishingTimer <= 0) {
@@ -280,8 +284,7 @@ function catchFish(fishElem) {
 }
 
 function updateFishHUD() {
-    // Matches updated fishCounter span ID in index.html
-    const counter = document.getElementById("fishCounter");
+    const counter = document.getElementById("fishCaught");
     if (counter) counter.innerText = `${fishCaught} / ${totalFishTarget}`;
 }
 
