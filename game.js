@@ -2,11 +2,11 @@
  OPERATION BIRTHDAY 30
  MISSION 02
  GAME.JS
- COMPLETE AMENDED VERSION
+ COMPLETE AMENDED VERSION (TRANSPARENT ITEMS & CORRECT BEAR DIRECTION)
 
  IMPORTANT:
  - ALL IMAGE ASSETS ARE PNG
- - PHASE 1 = CAMPSITE SEARCH
+ - PHASE 1 = CAMPSITE SEARCH (ITEMS WITH WHITE BACKGROUND REMOVED VIA BLENDING)
  - PHASE 2 = FISHING
  - NO ANGLER IMAGE
  - FISHING ROD IS DRAWN DIRECTLY ON CANVAS
@@ -129,7 +129,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         const campCtx =
             campCanvas
-                ? campCanvas.getContext("2d")
+                ? campCanvas.getContext("2d", { willReadFrequently: true })
                 : null;
 
 
@@ -564,7 +564,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     0;
 
                 sound.play().catch(
-                    () => {}
+                    error => {
+                        console.warn("Audio play prevented or failed:", error);
+                    }
                 );
 
             } catch (error) {
@@ -853,12 +855,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         function createCampsiteItems() {
 
-            /*
-             * Positions are percentages of the campsite.
-             * They are deliberately fixed so each item
-             * remains in a natural place.
-             */
-
             const positions = [
 
                 {
@@ -1051,11 +1047,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             );
 
 
-            /*
-             * Use the existing Phase 1 complete
-             * panel as the failure screen.
-             */
-
             show(
                 phase1Complete
             );
@@ -1157,7 +1148,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          BLENDED CAMPSITE ITEM
+          TRANSPARENT / BLENDED CAMPSITE ITEM
         =================================================*/
 
         function drawHiddenItem(
@@ -1198,11 +1189,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 campHeight;
 
 
-            /*
-             * Scale objects according to
-             * the campsite size.
-             */
-
             const baseSize =
                 Math.min(
                     campWidth,
@@ -1230,30 +1216,25 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * VERY subtle shadow.
-             * No circle behind item.
+             * Remove white background by utilizing "multiply" blend mode
+             * combined with a high visibility alpha layer so items stand out clearly.
              */
 
             campCtx.shadowColor =
-                "rgba(0,0,0,0.28)";
+                "rgba(0,0,0,0.4)";
 
             campCtx.shadowBlur =
-                4;
+                6;
 
             campCtx.shadowOffsetX =
-                1;
-
-            campCtx.shadowOffsetY =
                 2;
 
+            campCtx.shadowOffsetY =
+                3;
 
-            /*
-             * First layer:
-             * blend into campsite.
-             */
 
             campCtx.globalAlpha =
-                0.62;
+                0.88;
 
             campCtx.globalCompositeOperation =
                 "multiply";
@@ -1277,17 +1258,14 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Second layer:
-             * restore enough detail
-             * for the player to discover it.
+             * Second pass to lock in crisp color definition.
              */
 
             campCtx.globalCompositeOperation =
                 "source-over";
 
             campCtx.globalAlpha =
-                0.38;
-
+                0.80;
 
             campCtx.shadowColor =
                 "transparent";
@@ -1315,7 +1293,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          DRAW BEAR
+          DRAW BEAR (WALKING TOWARDS CAMP / LEFTWARD)
         =================================================*/
 
         function drawBear() {
@@ -1335,12 +1313,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     campWidth,
                     campHeight
                 ) *
-                0.10;
+                0.12;
 
 
             /*
-             * Bear approaches from
-             * the upper-right area.
+             * Bear walks from right edge towards left edge (the campsite).
+             * progress starts at 100% (far right) and moves down to 0% (campsite/left).
              */
 
             const progress =
@@ -1349,32 +1327,44 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             const bearX =
-                campWidth -
-                80 -
+                campWidth * 0.12 +
                 progress *
-                    80;
+                    (campWidth * 0.78);
 
 
             const bearY =
-                55;
+                campHeight * 0.28;
 
 
             campCtx.save();
 
 
             campCtx.globalAlpha =
-                0.92;
+                0.95;
+
+
+            /*
+             * Flip horizontally so the bear faces left toward the campsite.
+             */
+
+            campCtx.translate(
+                bearX,
+                bearY
+            );
+
+            campCtx.scale(
+                -1,
+                1
+            );
 
 
             campCtx.drawImage(
 
                 assets.bear,
 
-                bearX -
-                    bearSize / 2,
+                -bearSize / 2,
 
-                bearY -
-                    bearSize / 2,
+                -bearSize / 2,
 
                 bearSize,
 
@@ -1451,11 +1441,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 rect.top;
 
 
-            /*
-             * Canvas may be scaled by CSS,
-             * so convert to actual canvas coordinates.
-             */
-
             const canvasX =
                 x *
                 (
@@ -1494,22 +1479,14 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     campHeight;
 
 
-                /*
-                 * Invisible click area.
-                 *
-                 * Object remains visually small,
-                 * but player doesn't need pixel-perfect
-                 * clicking.
-                 */
-
                 const hitRadius =
                     Math.max(
-                        30,
+                        35,
                         Math.min(
                             campWidth,
                             campHeight
                         ) *
-                        0.045
+                        0.055
                     );
 
 
@@ -1571,17 +1548,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             updateMainHUD();
 
 
-            /*
-             * Redraw immediately
-             * so item disappears.
-             */
-
             renderCampsite();
 
-
-            /*
-             * All 10 collected.
-             */
 
             if (
                 game.itemsFound >=
@@ -1610,10 +1578,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             game.phase =
                 1;
-
-
-            game.xp +=
-                0;
 
 
             game.bearProgress =
@@ -1754,9 +1718,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             game.fishCaught =
                 0;
-
-            game.score =
-                game.score;
 
             game.fishingActive =
                 true;
@@ -2049,7 +2010,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         window.addEventListener(
             "mousedown",
-            event => {
+            () => {
 
                 if (
                     game.phase ===
@@ -2209,11 +2170,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*
-             * Fish takes between
-             * 2.5 and 5 seconds to bite.
-             */
-
             clearTimeout(
                 fishBiteTimeout
             );
@@ -2283,11 +2239,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*
-             * Hide the bite message after
-             * a short period.
-             */
-
             setTimeout(
                 () => {
 
@@ -2341,10 +2292,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             game.fishCaught++;
 
-
-            /*
-             * Give score for fish.
-             */
 
             game.score +=
                 150;
@@ -2405,11 +2352,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 return;
             }
 
-
-            /*
-             * Small success delay before
-             * next cast.
-             */
 
             setTimeout(
                 () => {
@@ -2674,10 +2616,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 "round";
 
 
-            /*------------------------------------------
-              ROD SHADOW
-            ------------------------------------------*/
-
             fishingCtx.strokeStyle =
                 "rgba(0,0,0,0.45)";
 
@@ -2699,10 +2637,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             fishingCtx.stroke();
 
-
-            /*------------------------------------------
-              MAIN ROD
-            ------------------------------------------*/
 
             const gradient =
                 fishingCtx.createLinearGradient(
@@ -2754,10 +2688,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             fishingCtx.stroke();
 
 
-            /*------------------------------------------
-              CORK HANDLE
-            ------------------------------------------*/
-
             const handleX =
                 handX -
                 Math.cos(angle) *
@@ -2791,10 +2721,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             fishingCtx.stroke();
 
-
-            /*------------------------------------------
-              REEL BODY
-            ------------------------------------------*/
 
             const reelX =
                 handX -
@@ -2869,10 +2795,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             fishingCtx.stroke();
 
 
-            /*------------------------------------------
-              REEL HANDLE
-            ------------------------------------------*/
-
             const rotation =
                 reelRotation *
                 8;
@@ -2937,10 +2859,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             fishingCtx.fill();
 
-
-            /*------------------------------------------
-              ROD GUIDES
-            ------------------------------------------*/
 
             for (
                 let i = 1;
@@ -3096,10 +3014,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             fishingCtx.stroke();
 
 
-            /*------------------------------------------
-              BOBBER
-            ------------------------------------------*/
-
             fishingCtx.fillStyle =
                 "#f4f4f4";
 
@@ -3244,10 +3158,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 drawFishingRod();
 
 
-            /*------------------------------------------
-              AIMING GUIDE
-            ------------------------------------------*/
-
             if (
                 fishingState ===
                     "AIM" ||
@@ -3353,10 +3263,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*------------------------------------------
-              AIM
-            ------------------------------------------*/
-
             if (
                 fishingState ===
                 "AIM"
@@ -3400,10 +3306,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                         0.42;
             }
 
-
-            /*------------------------------------------
-              POWER
-            ------------------------------------------*/
 
             if (
                 fishingState ===
@@ -3452,10 +3354,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*------------------------------------------
-              WAITING
-            ------------------------------------------*/
-
             if (
                 fishingState ===
                 "WAITING"
@@ -3465,10 +3363,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     -0.52;
             }
 
-
-            /*------------------------------------------
-              HOOKED
-            ------------------------------------------*/
 
             if (
                 fishingState ===
@@ -3494,10 +3388,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*------------------------------------------
-              REELING
-            ------------------------------------------*/
-
             if (
                 fishingState ===
                 "REELING"
@@ -3506,11 +3396,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 if (
                     reelActive
                 ) {
-
-                    /*
-                     * Reeling brings the fish closer
-                     * but increases line tension.
-                     */
 
                     lineTension =
                         Math.min(
@@ -3541,11 +3426,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 } else {
 
-                    /*
-                     * Releasing the reel lets tension
-                     * drop but fish moves away slightly.
-                     */
-
                     lineTension =
                         Math.max(
                             0,
@@ -3569,10 +3449,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     lineTension >=
                     100
                 ) {
-
-                    /*
-                     * Line snaps.
-                     */
 
                     lineTension =
                         0;
@@ -3605,10 +3481,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 }
             }
 
-
-            /*------------------------------------------
-              SMOOTH ROD MOVEMENT
-            ------------------------------------------*/
 
             rodAngle +=
                 (
