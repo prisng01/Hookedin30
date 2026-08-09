@@ -596,6 +596,86 @@ canvas{
     to{ transform:translateX(30%); }
 }
 
+/* ---------- Collectible Items & Blending ---------- */
+
+.collectible{
+    position:absolute;
+    cursor:pointer;
+    transition: transform .25s, filter .25s;
+    background: transparent !important;
+    border: none !important;
+    mix-blend-mode: multiply; /* Removes white boxes behind item graphics */
+    object-fit: contain;
+}
+
+.collectible:hover{
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 12px gold);
+}
+
+.collectible.found{
+    animation:itemCollected .5s forwards;
+}
+
+/* ---------- Hotspot Box for Background Artwork ---------- */
+
+.collectible-hotspot{
+    position:absolute;
+    cursor:pointer;
+    background: rgba(255, 255, 255, 0); /* Invisible click region */
+    border: 2px dashed rgba(255, 211, 77, 0.2);
+    border-radius:12px;
+    transition: all .2s ease;
+    z-index: 10;
+}
+
+.collectible-hotspot:hover{
+    border-color: #39D98A;
+    background: rgba(57, 217, 138, 0.15);
+    filter: drop-shadow(0 0 15px #39D98A);
+}
+
+@keyframes itemCollected{
+    0%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.4); }
+    100%{ transform:scale(.2); opacity:0; }
+}
+
+/* ---------- Animated Walking Bear ---------- */
+
+.walking-bear {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    z-index: 15;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+}
+
+.bear-approaching {
+    animation: walkToTent 90s linear forwards, bearWobble 0.4s ease-in-out infinite alternate;
+}
+
+/* Moves bear from right side of campsite directly to tent position on left */
+@keyframes walkToTent {
+    0% {
+        right: -150px;
+        bottom: 60px;
+        transform: scaleX(1);
+    }
+    100% {
+        right: 62%;
+        bottom: 110px;
+        transform: scaleX(1);
+    }
+}
+
+/* Walking step bounce */
+@keyframes bearWobble {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
 /*======================================================
  PHASE 2 - FISHING SCENE (#lake)
 ======================================================*/
@@ -891,26 +971,6 @@ canvas{
     100%{ opacity:0; transform: scale(2) rotate(360deg); }
 }
 
-.collectible{
-    cursor:pointer;
-    transition: transform .25s, filter .25s;
-}
-
-.collectible:hover{
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 12px gold);
-}
-
-.collectible.found{
-    animation:itemCollected .5s forwards;
-}
-
-@keyframes itemCollected{
-    0%{ transform:scale(1); opacity:1; }
-    50%{ transform:scale(1.4); }
-    100%{ transform:scale(.2); opacity:0; }
-}
-
 .shake{
     animation: shake .35s;
 }
@@ -1041,31 +1101,6 @@ body.danger{
     transform: translateY(-3px);
 }
 
-/*=============================
- RESPONSIVE MEDIA QUERIES
-=============================*/
-
-@media(max-width:1200px){
-    #inventoryPanel{ width:220px; }
-    #campScene{ left:240px; width:calc(100% - 260px); }
-}
-
-@media(max-width:900px){
-    #inventoryPanel{ display:none; }
-    #gameHUD{ flex-direction:column; height:auto; gap:15px; padding:20px; }
-    .bearTrack{ width:180px; }
-    .reportGrid{ grid-template-columns:1fr; }
-    .fishingStats{ flex-direction:column; }
-    .powerContainer{ width:100%; }
-}
-
-@media(max-width:700px){
-    h1{ font-size:34px; }
-    h2{ font-size:22px; }
-    .glassPanel, .loadingCard{ padding:25px; }
-    button{ width:100%; }
-}
-
 #hook{
     position:absolute;
     left:50%;
@@ -1125,4 +1160,29 @@ body.danger{
     0%{opacity:1;}
     50%{opacity:.3;}
     100%{opacity:1;}
+}
+
+/*=============================
+ RESPONSIVE MEDIA QUERIES
+=============================*/
+
+@media(max-width:1200px){
+    #inventoryPanel{ width:220px; }
+    #campScene{ left:240px; width:calc(100% - 260px); }
+}
+
+@media(max-width:900px){
+    #inventoryPanel{ display:none; }
+    #gameHUD{ flex-direction:column; height:auto; gap:15px; padding:20px; }
+    .bearTrack{ width:180px; }
+    .reportGrid{ grid-template-columns:1fr; }
+    .fishingStats{ flex-direction:column; }
+    .powerContainer{ width:100%; }
+}
+
+@media(max-width:700px){
+    h1{ font-size:34px; }
+    h2{ font-size:22px; }
+    .glassPanel, .loadingCard{ padding:25px; }
+    button{ width:100%; }
 }
