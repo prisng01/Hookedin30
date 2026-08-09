@@ -3,63 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Well done with mission 1 love, welcome to mission 2! Wilderness survival</title>
+
+    <title>OPERATION: BIRTHDAY 30 — MISSION 02</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div id="game-container">
+
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Mission Briefing -->
+
+    <!-- ======================================================
+         MISSION BRIEFING
+    ======================================================= -->
+
     <div id="start-overlay" class="overlay">
+
         <div class="card">
-            <h1>Well done with mission 1 love, welcome to mission 2! Wilderness survival</h1>
-            <p><strong>Phase 1: Campsite Search</strong><br>Scour the campsite and gather 10 critical survival items before the bear arrives.<br><br><strong>Phase 2: Realistic Fishing Game</strong><br>Head to the river and catch 6 target fish using cast timing and tension control.</p>
-            <button class="btn" id="start-btn">START MISSION 2</button>
+
+            <div style="
+                font-family: monospace;
+                color: #39d9ff;
+                font-size: 12px;
+                letter-spacing: 2px;
+                margin-bottom: 8px;
+            ">
+                INCOMING TRANSMISSION...
+            </div>
+
+
+            <h1>
+                OPERATION: BIRTHDAY 30
+            </h1>
+
+
+            <h2 style="
+                color:#39d9ff;
+                letter-spacing:3px;
+                margin-top:-5px;
+            ">
+                MISSION 02 // WILDERNESS SURVIVAL
+            </h2>
+
+
+            <!-- CLASSIFIED TRANSMISSION -->
+
+            <div style="
+                margin:18px 0;
+                padding:14px;
+                background:rgba(0,0,0,0.35);
+                border-left:3px solid #39d9ff;
+                text-align:left;
+                font-family:monospace;
+                line-height:1.6;
+            ">
+
+                <div style="color:#39d9ff;">
+                    &gt; SECURE CHANNEL ESTABLISHED
+                </div>
+
+                <div style="color:#39d9ff;">
+                    &gt; CLEARANCE VERIFIED
+                </div>
+
+                <div style="color:#39d9ff;">
+                    &gt; MISSION FILE DECRYPTED
+                </div>
+
+            </div>
+
+
+            <!-- MISSION BRIEF -->
+
+            <p style="text-align:left;">
+
+                <strong style="color:#39d9ff;">
+                    MISSION BRIEF
+                </strong>
+
+                <br><br>
+
+                Chief, your previous operation was a success.
+                Unfortunately, the mission is not over.
+
+                <br><br>
+
+                Intelligence reports indicate that essential
+                survival equipment has been abandoned at a
+                remote wilderness campsite.
+
+            </p>
+
+
+            <!-- OBJECTIVES -->
+
+            <div style="
+                text-align:left;
+                margin-top:18px;
+            ">
+
+                <strong style="color:#39d9ff;">
+                    PRIMARY OBJECTIVE
+                </strong>
+
+                <p>
+                    Recover all <strong>10 survival items</strong>
+                    before the approaching threat reaches the campsite.
+                </p>
+
+
+                <strong style="color:#39d9ff;">
+                    SECONDARY OBJECTIVE
+                </strong>
+
+                <p>
+                    Proceed to the river and capture
+                    <strong>6 target fish</strong>.
+                </p>
+
+            </div>
+
+
+            <!-- WARNING -->
+
+            <div style="
+                margin-top:18px;
+                padding:12px;
+                border:1px solid #ff4d4d;
+                background:rgba(120,0,0,0.18);
+                color:#ff7777;
+                font-family:monospace;
+                text-align:left;
+            ">
+
+                ⚠ WARNING: THREAT LEVEL ELEVATED
+                <br>
+
+                ⚠ THE AREA IS NOT SECURE
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <p style="
+                margin-top:18px;
+                font-family:monospace;
+                color:#39d9ff;
+            ">
+
+                MISSION STATUS: ACTIVE
+
+            </p>
+
+
+            <!-- FINAL MESSAGE -->
+
+            <p>
+
+                Good luck, Chief.
+                <br>
+
+                Your next adventure begins now. ❤️
+
+            </p>
+
+
+            <!-- START BUTTON -->
+
+            <button class="btn" id="start-btn">
+                INITIATE MISSION 02
+            </button>
+
         </div>
+
     </div>
 
-    <!-- Phase 2 Transition Screen -->
+
+
+    <!-- ======================================================
+         PHASE 2 TRANSITION SCREEN
+    ======================================================= -->
+
     <div id="phase2-overlay" class="overlay hidden">
+
         <div class="card">
-            <h1>MISSION 2: PHASE 1 COMPLETE</h1>
-            <p>All campsite supplies secured!<br><br>Proceed to Phase 2: Realistic Fishing Game - Catch <strong>6 target fish</strong> to finalize Mission 2.</p>
-            <button class="btn" id="phase2-btn">BEGIN FISHING PHASE</button>
+
+            <h1>
+                MISSION 02: PHASE 1 COMPLETE
+            </h1>
+
+            <p>
+
+                All campsite supplies secured!
+
+                <br><br>
+
+                Proceed to Phase 2:
+                <strong>Realistic Fishing Game</strong>
+
+                <br><br>
+
+                Catch
+                <strong>6 target fish</strong>
+                to finalize Mission 02.
+
+            </p>
+
+            <button class="btn" id="phase2-btn">
+                BEGIN FISHING PHASE
+            </button>
+
         </div>
+
     </div>
 
-    <!-- Final Mission Outcome Overlay -->
+
+
+    <!-- ======================================================
+         FINAL MISSION OUTCOME OVERLAY
+    ======================================================= -->
+
     <div id="end-overlay" class="overlay hidden">
+
         <div class="card">
-            <h1 id="end-title">MISSION 2 COMPLETE</h1>
-            <p id="end-desc">You successfully survived Phase 1 and completed Phase 2!<br><br><strong>Mission 3 is coming soon next week!</strong></p>
-            <button class="btn" id="restart-btn">REPLAY MISSION 2</button>
+
+            <h1 id="end-title">
+                MISSION 02 COMPLETE
+            </h1>
+
+            <p id="end-desc">
+
+                You successfully survived Phase 1
+                and completed Phase 2!
+
+                <br><br>
+
+                <strong>
+                    Mission 03 is coming soon next week!
+                </strong>
+
+            </p>
+
+            <button class="btn" id="restart-btn">
+                REPLAY MISSION 02
+            </button>
+
         </div>
+
     </div>
 
-    <!-- Gameplay HUD -->
+
+
+    <!-- ======================================================
+         GAMEPLAY HUD
+    ======================================================= -->
+
     <div class="hud">
+
+        <!-- PRIMARY STAT -->
+
         <div class="panel">
-            <div class="stat-label" id="label-primary">Phase Progress</div>
-            <div class="stat-value" id="val-primary">0 / 10</div>
+
+            <div
+                class="stat-label"
+                id="label-primary"
+            >
+                Phase Progress
+            </div>
+
+            <div
+                class="stat-value"
+                id="val-primary"
+            >
+                0 / 10
+            </div>
+
         </div>
+
+
+        <!-- SECONDARY STAT -->
+
         <div class="panel">
-            <div class="stat-label" id="label-secondary">Bear Proximity</div>
-            <div class="stat-value" id="val-secondary">100m</div>
+
+            <div
+                class="stat-label"
+                id="label-secondary"
+            >
+                Bear Proximity
+            </div>
+
+            <div
+                class="stat-value"
+                id="val-secondary"
+            >
+                100m
+            </div>
+
         </div>
-        <div class="panel" style="pointer-events: auto;">
-            <button class="btn" id="audio-toggle" style="padding: 6px 12px; margin: 0; font-size: 12px;">🔊 Audio: ON</button>
+
+
+        <!-- AUDIO CONTROL -->
+
+        <div
+            class="panel"
+            style="pointer-events: auto;"
+        >
+
+            <button
+                class="btn"
+                id="audio-toggle"
+                style="
+                    padding: 6px 12px;
+                    margin: 0;
+                    font-size: 12px;
+                "
+            >
+                🔊 Audio: ON
+            </button>
+
         </div>
+
     </div>
 
-    <!-- Phase 2 Fishing Gauges -->
-    <div id="power-container" class="hidden"><div id="power-bar"></div></div>
-    <div id="tension-container" class="hidden"><div id="tension-bar"></div></div>
 
-    <div id="action-prompt">MISSION 2 - PHASE 1: CAMPSITE SEARCH</div>
+
+    <!-- ======================================================
+         PHASE 2 FISHING GAUGES
+    ======================================================= -->
+
+    <div
+        id="power-container"
+        class="hidden"
+    >
+        <div id="power-bar"></div>
+    </div>
+
+
+    <div
+        id="tension-container"
+        class="hidden"
+    >
+        <div id="tension-bar"></div>
+    </div>
+
+
+
+    <!-- ======================================================
+         ACTION / MISSION PROMPT
+    ======================================================= -->
+
+    <div id="action-prompt">
+        MISSION 02 - PHASE 1: CAMPSITE SEARCH
+    </div>
+
+
 </div>
 
+
+<!-- ==========================================================
+     GAME JAVASCRIPT
+=========================================================== -->
+
 <script src="game.js"></script>
+
 </body>
 </html>
