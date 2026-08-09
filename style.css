@@ -1,10 +1,11 @@
 /*======================================================
-  OPERATION BIRTHDAY 30: MISSION 02 - STYLES
+  OPERATION BIRTHDAY 30: MISSION 02
+  FULL CORRECTED STYLES
 ======================================================*/
 
 :root {
     --bg-dark: #0b0f19;
-    --hud-bg: rgba(11, 15, 25, 0.85);
+    --hud-bg: rgba(11, 15, 25, 0.92);
     --accent-cyan: #39d9ff;
     --accent-glow: rgba(57, 217, 255, 0.4);
     --text-main: #ffffff;
@@ -13,7 +14,7 @@
 
 
 /*======================================================
-  GLOBAL
+  GLOBAL RESET
 ======================================================*/
 
 * {
@@ -27,12 +28,17 @@ html,
 body {
     width: 100%;
     height: 100%;
+}
+
+
+html {
     overflow: hidden;
 }
 
 
 body {
     background-color: var(--bg-dark);
+
     color: var(--text-main);
 
     font-family:
@@ -71,35 +77,48 @@ body {
 ======================================================*/
 
 #gameHUD {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 58px;
+
+    flex-shrink: 0;
+
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
     padding: 8px 16px;
 
-    background: var(--hud-bg);
+    background:
+        var(--hud-bg);
 
     border-bottom:
         1px solid
         var(--border-color);
 
+    z-index: 100;
+
     pointer-events: none;
-
-    z-index: 10;
-
-    flex-shrink: 0;
-
-    min-height: 58px;
 }
 
 
-/* Re-enable buttons */
+/*
+ * Only interactive controls inside
+ * the HUD receive pointer events.
+ */
 
 #gameHUD button {
     pointer-events: auto;
 }
 
+
+/*======================================================
+  HUD LEFT / RIGHT
+======================================================*/
 
 .hudLeft,
 .hudRight {
@@ -118,7 +137,13 @@ body {
 }
 
 
+/*======================================================
+  HUD CENTER
+======================================================*/
+
 .hudCenter {
+    flex: 1;
+
     display: flex;
 
     flex-direction: column;
@@ -127,7 +152,7 @@ body {
 
     justify-content: center;
 
-    flex: 1;
+    min-width: 0;
 
     text-align: center;
 }
@@ -171,6 +196,8 @@ body {
     display: flex;
 
     align-items: center;
+
+    justify-content: center;
 
     gap: 8px;
 }
@@ -262,6 +289,12 @@ body {
 ======================================================*/
 
 .btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
     background:
         rgba(
             57,
@@ -293,6 +326,8 @@ body {
     transition:
         all 0.2s
         ease-in-out;
+
+    user-select: none;
 }
 
 
@@ -309,6 +344,12 @@ body {
 }
 
 
+.btn:active {
+    transform:
+        scale(0.97);
+}
+
+
 .btn:disabled {
     opacity: 0.45;
 
@@ -321,17 +362,19 @@ body {
 
 
 /*======================================================
-  GAME VIEWPORT
+  MAIN GAME CONTAINER
 ======================================================*/
 
 #gameContainer {
-    flex: 1;
-
     position: relative;
+
+    flex: 1;
 
     width: 100%;
 
     min-height: 0;
+
+    overflow: hidden;
 
     display: flex;
 
@@ -345,21 +388,36 @@ body {
             #151c2e 0%,
             #0b0f19 100%
         );
-
-    overflow: hidden;
 }
 
 
 /*======================================================
-  CANVAS
+  PHASE 1
 ======================================================*/
 
-canvas {
+#phase1 {
     position: absolute;
 
-    top: 0;
+    inset: 0;
 
-    left: 0;
+    width: 100%;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    z-index: 1;
+}
+
+
+/*======================================================
+  PHASE 1 CANVAS
+======================================================*/
+
+#gameCanvas {
+    position: absolute;
+
+    inset: 0;
 
     width: 100%;
 
@@ -367,7 +425,83 @@ canvas {
 
     display: block;
 
+    z-index: 1;
+
     touch-action: none;
+
+    cursor: crosshair;
+}
+
+
+/*======================================================
+  PHASE 2
+======================================================*/
+
+#phase2 {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    z-index: 5;
+
+    background:
+        var(--bg-dark);
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+
+/*======================================================
+  FISHING CANVAS
+======================================================*/
+
+#fishingCanvas {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    z-index: 1;
+
+    touch-action: none;
+
+    pointer-events: auto;
+}
+
+
+/*
+ * Fishing interface sits above canvas.
+ */
+
+#phase2 .fishingHeader,
+#phase2 .fishingStats,
+#phase2 .powerContainer,
+#phase2 .reelContainer,
+#phase2 .fishingControls {
+    position: relative;
+
+    z-index: 5;
 }
 
 
@@ -378,11 +512,14 @@ canvas {
 #loadingScreen,
 #introScreen,
 #phase1Complete,
-#phase2,
 #missionComplete {
-    position: absolute;
+    position: fixed;
 
     inset: 0;
+
+    width: 100vw;
+
+    height: 100dvh;
 
     background:
         var(--bg-dark);
@@ -395,7 +532,7 @@ canvas {
 
     align-items: center;
 
-    z-index: 20;
+    z-index: 1000;
 
     gap: 20px;
 
@@ -407,17 +544,14 @@ canvas {
 }
 
 
-#introScreen h1,
-#phase1Complete h1,
-#missionComplete h1 {
-    color:
-        var(--accent-cyan);
+/*
+ * The phase overlays need to remain
+ * above the game but below loading/intro.
+ */
 
-    font-family: monospace;
-
-    text-shadow:
-        0 0 10px
-        var(--accent-glow);
+#phase1Complete,
+#missionComplete {
+    z-index: 200;
 }
 
 
@@ -426,12 +560,15 @@ canvas {
 ======================================================*/
 
 .loadingContent {
-    width: min(
-        90vw,
-        600px
-    );
+    width:
+        min(
+            90vw,
+            600px
+        );
 
     text-align: center;
+
+    padding: 30px;
 }
 
 
@@ -441,7 +578,18 @@ canvas {
 
     font-family: monospace;
 
+    font-size:
+        clamp(
+            22px,
+            4vw,
+            38px
+        );
+
     letter-spacing: 3px;
+
+    text-shadow:
+        0 0 10px
+        var(--accent-glow);
 }
 
 
@@ -453,6 +601,9 @@ canvas {
     font-size: 14px;
 
     letter-spacing: 4px;
+
+    color:
+        var(--text-main);
 }
 
 
@@ -510,15 +661,16 @@ canvas {
 
 
 /*======================================================
-  INTRO
+  INTRO SCREEN
 ======================================================*/
 
 .introContent,
 .missionResult {
-    width: min(
-        92vw,
-        900px
-    );
+    width:
+        min(
+            92vw,
+            900px
+        );
 
     padding: 30px;
 
@@ -531,7 +683,7 @@ canvas {
             11,
             15,
             25,
-            0.88
+            0.92
         );
 
     box-shadow:
@@ -561,11 +713,27 @@ canvas {
 }
 
 
-.introContent h1 {
+.introContent h1,
+#phase1Complete h1,
+#missionComplete h1 {
     color:
         var(--accent-cyan);
 
     font-family: monospace;
+
+    text-shadow:
+        0 0 10px
+        var(--accent-glow);
+}
+
+
+.introContent h1 {
+    font-size:
+        clamp(
+            22px,
+            4vw,
+            38px
+        );
 
     letter-spacing: 2px;
 }
@@ -581,6 +749,10 @@ canvas {
     letter-spacing: 4px;
 }
 
+
+/*======================================================
+  TERMINAL
+======================================================*/
 
 #terminal {
     width: 100%;
@@ -616,6 +788,33 @@ canvas {
         var(--accent-cyan);
 
     overflow-y: auto;
+
+    border-radius: 4px;
+}
+
+
+/*======================================================
+  PHASE 1 COMPLETE
+======================================================*/
+
+#phase1Complete {
+    text-align: center;
+}
+
+
+#phase1Complete .missionResult {
+    max-width: 700px;
+}
+
+
+#phase1Complete p {
+    font-family: monospace;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    margin-bottom: 12px;
 }
 
 
@@ -624,6 +823,8 @@ canvas {
 ======================================================*/
 
 .fishingHeader {
+    position: relative;
+
     display: flex;
 
     flex-direction: column;
@@ -637,6 +838,8 @@ canvas {
     font-size: 1.1rem;
 
     margin-bottom: 20px;
+
+    z-index: 5;
 }
 
 
@@ -660,19 +863,25 @@ canvas {
 ======================================================*/
 
 .fishingStats {
+    position: relative;
+
     display: flex;
 
     align-items: center;
 
     justify-content: center;
 
-    gap: 25px;
+    gap: 12px;
+
+    flex-wrap: wrap;
 
     margin-bottom: 20px;
 
     font-family: monospace;
 
     font-size: 13px;
+
+    z-index: 5;
 }
 
 
@@ -688,43 +897,41 @@ canvas {
 
     background:
         rgba(
-            255,
-            255,
-            255,
-            0.04
+            11,
+            15,
+            25,
+            0.75
         );
 
     border-radius: 5px;
+
+    white-space: nowrap;
 }
 
 
 /*======================================================
-  FISHING CONTROLS
+  FISHING METERS
 ======================================================*/
-
-.fishingControls {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 15px;
-
-    align-items: center;
-}
-
 
 .powerContainer,
 .reelContainer {
-    width: min(
-        80vw,
-        300px
-    );
+    position: relative;
+
+    width:
+        min(
+            80vw,
+            300px
+        );
 
     text-align: center;
 
     font-family: monospace;
 
     font-size: 11px;
+
+    z-index: 5;
+
+    margin-bottom: 12px;
 }
 
 
@@ -734,9 +941,9 @@ canvas {
 }
 
 
-.meterFill,
 .powerBar,
-.reelBar {
+.reelBar,
+.meterFill {
     width: 100%;
 
     height: 12px;
@@ -773,6 +980,32 @@ canvas {
 }
 
 
+/*======================================================
+  FISHING CONTROLS
+======================================================*/
+
+.fishingControls {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    align-items: center;
+
+    z-index: 10;
+}
+
+
+#castRod {
+    min-width: 180px;
+
+    min-height: 42px;
+}
+
+
 #bite,
 #hook {
     font-family: monospace;
@@ -795,6 +1028,14 @@ canvas {
 ======================================================*/
 
 #inventoryPanel {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 64px;
+
+    flex-shrink: 0;
+
     display: flex;
 
     justify-content: center;
@@ -812,21 +1053,15 @@ canvas {
         1px solid
         var(--border-color);
 
-    z-index: 10;
-
-    flex-shrink: 0;
+    z-index: 100;
 
     overflow-x: auto;
 
-    width: 100%;
+    overflow-y: hidden;
 
     scrollbar-width: thin;
 }
 
-
-/*
- * 10 items need to fit on laptop screens.
- */
 
 .inventorySlot {
     width: 86px;
@@ -884,8 +1119,6 @@ canvas {
 }
 
 
-/* Collected state */
-
 .inventorySlot.collected {
     opacity: 1;
 
@@ -907,8 +1140,20 @@ canvas {
 
 
 /*======================================================
-  MISSION REPORT
+  MISSION COMPLETE
 ======================================================*/
+
+#missionComplete {
+    text-align: center;
+}
+
+
+#missionComplete .missionResult {
+    max-height: 90vh;
+
+    overflow-y: auto;
+}
+
 
 .reportGrid {
     display: grid;
@@ -1022,6 +1267,8 @@ canvas {
     font-size: 11px;
 
     line-height: 1.6;
+
+    margin-bottom: 8px;
 }
 
 
@@ -1029,9 +1276,7 @@ canvas {
   MOBILE / SMALL LAPTOP
 ======================================================*/
 
-@media (
-    max-width: 900px
-) {
+@media (max-width: 900px) {
 
     #gameHUD {
         padding:
@@ -1062,6 +1307,11 @@ canvas {
     }
 
 
+    #inventoryPanel {
+        justify-content: flex-start;
+    }
+
+
     .inventorySlot {
         width: 76px;
 
@@ -1078,9 +1328,12 @@ canvas {
 }
 
 
-@media (
-    max-width: 600px
-) {
+@media (max-width: 600px) {
+
+    #gameHUD {
+        min-height: 50px;
+    }
+
 
     .hudLeft {
         flex-direction: column;
@@ -1107,6 +1360,11 @@ canvas {
     }
 
 
+    #objectiveText {
+        display: none;
+    }
+
+
     .fishingStats {
         gap: 8px;
 
@@ -1123,6 +1381,49 @@ canvas {
     .introContent,
     .missionResult {
         padding: 20px;
+    }
+
+
+    #terminal {
+        min-height: 140px;
+
+        font-size: 10px;
+    }
+
+
+    .loadingContent h1 {
+        font-size: 22px;
+    }
+
+}
+
+
+/*======================================================
+  VERY SMALL SCREENS
+======================================================*/
+
+@media (max-width: 420px) {
+
+    .reportGrid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .fishingHeader h1 {
+        font-size: 22px;
+    }
+
+
+    .introContent h1 {
+        font-size: 20px;
+    }
+
+
+    .missionResult {
+        max-height: 92vh;
+
+        overflow-y: auto;
     }
 
 }
