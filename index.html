@@ -32,7 +32,7 @@
         <div class="glassPanel">
             <h2>TERMINAL v2.0 - MISSION 2</h2>
             <div id="terminal"></div>
-            <button id="startMission" onclick="startMission()">🚀 START MISSION</button>
+            <button id="startMission">🚀 START MISSION</button>
         </div>
     </div>
 
@@ -52,9 +52,8 @@
             </div>
         </div>
         <div class="hudRight">
-            <div class="xpBox">⭐ XP: <span id="xpText">0</span></div>
+            <div class="xpBox">⭐ XP: <span id="xp">0</span></div>
             <div class="timerBox">⏱️ <span id="timer">01:30</span></div>
-            <div class="scoreBox">🏆 <span id="score">0</span></div>
         </div>
     </div>
 
@@ -77,9 +76,7 @@
 
     <!-- PHASE 1: CAMPSITE SEARCH -->
     <section id="phase1" class="hidden">
-        <div id="campScene">
-            <!-- Dynamic collectibles & hotspots injected via game.js -->
-        </div>
+        <div id="campScene"></div>
     </section>
 
     <!-- PHASE 2: FISHING CHALLENGE -->
@@ -89,43 +86,28 @@
                 <h1>LAKE FISHING</h1>
                 <p>Catch 5 Special Fish to complete the mission!</p>
             </div>
-
             <div class="fishingStats">
-                <div class="fishTimer">⏱️ <span id="fishTimer">01:00</span></div>
-                <div class="fishCounter">🐟 <span id="fishCounter">0 / 5</span></div>
-            </div>
-
-            <div class="powerContainer">
-                <p>CAST POWER / REEL TENSION</p>
-                <div class="powerBar">
-                    <div id="powerFill"></div>
-                </div>
-                <div class="reelContainer">
-                    <div class="reelBar">
-                        <div id="reelFill"></div>
-                    </div>
-                </div>
+                <div class="fishTimer">⏱️ <span id="fishingTimer">01:00</span></div>
+                <div class="fishCounter">🐟 <span id="fishCaught">0 / 5</span></div>
             </div>
         </div>
-
-        <div id="lake">
-            <div id="hook"></div>
-            <div id="bite" class="hidden">‼️ BITE! CLICK TO REEL! ‼️</div>
-        </div>
+        <div id="lake"></div>
     </section>
 
-    <!-- MISSION COMPLETE / ENDING SCREEN -->
-    <section id="missionComplete" class="hidden">
+    <!-- MISSION COMPLETE SCREEN -->
+    <div id="missionComplete" class="hidden">
         <div class="glassPanel completePanel">
             <h1>MISSION COMPLETE!</h1>
-            <h2>OPERATION BIRTHDAY 30 - PHASE 2 CLEARED</h2>
-            <div class="reportCard">
-                <h3>TOTAL XP GAINED</h3>
-                <p><span id="finalXP">0</span> XP</p>
+            <h2>CONGRATULATIONS, AGENT!</h2>
+            <div class="reportGrid">
+                <div class="reportCard">
+                    <h3>TOTAL XP EARNED</h3>
+                    <p><span id="finalXP">0</span> XP</p>
+                </div>
             </div>
             <button id="replayMission">Proceed to Mission 3 →</button>
         </div>
-    </section>
+    </div>
 
     <script src="game.js"></script>
 </body>
