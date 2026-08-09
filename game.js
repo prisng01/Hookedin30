@@ -891,77 +891,79 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             const positions = [
 
-                {
-                    key: "tent",
-                    x: 0.16,
-                    y: 0.32,
-                    scale: 1.00
-                },
+              const positions = [
 
-                {
-                    key: "backpack",
-                    x: 0.36,
-                    y: 0.27,
-                    scale: 0.85
-                },
+    {
+        key: "tent",
+        x: 0.16,
+        y: 0.32,
+        scale: 1.25
+    },
 
-                {
-                    key: "torchlight",
-                    x: 0.58,
-                    y: 0.34,
-                    scale: 0.65
-                },
+    {
+        key: "backpack",
+        x: 0.36,
+        y: 0.27,
+        scale: 1.05
+    },
 
-                {
-                    key: "compass",
-                    x: 0.24,
-                    y: 0.52,
-                    scale: 0.55
-                },
+    {
+        key: "torchlight",
+        x: 0.58,
+        y: 0.34,
+        scale: 1.00
+    },
 
-                {
-                    key: "boots",
-                    x: 0.45,
-                    y: 0.59,
-                    scale: 0.72
-                },
+    {
+        key: "compass",
+        x: 0.24,
+        y: 0.52,
+        scale: 0.95
+    },
 
-                {
-                    key: "bottle",
-                    x: 0.69,
-                    y: 0.48,
-                    scale: 0.65
-                },
+    {
+        key: "boots",
+        x: 0.45,
+        y: 0.59,
+        scale: 0.95
+    },
 
-                {
-                    key: "fishingRod",
-                    x: 0.79,
-                    y: 0.28,
-                    scale: 0.75
-                },
+    {
+        key: "bottle",
+        x: 0.69,
+        y: 0.48,
+        scale: 0.95
+    },
 
-                {
-                    key: "map",
-                    x: 0.54,
-                    y: 0.70,
-                    scale: 0.65
-                },
+    {
+        key: "fishingRod",
+        x: 0.79,
+        y: 0.28,
+        scale: 1.00
+    },
 
-                {
-                    key: "camera",
-                    x: 0.30,
-                    y: 0.72,
-                    scale: 0.65
-                },
+    {
+        key: "map",
+        x: 0.54,
+        y: 0.70,
+        scale: 0.95
+    },
 
-                {
-                    key: "key",
-                    x: 0.84,
-                    y: 0.67,
-                    scale: 0.50
-                }
+    {
+        key: "camera",
+        x: 0.30,
+        y: 0.72,
+        scale: 0.95
+    },
 
-            ];
+    {
+        key: "key",
+        x: 0.84,
+        y: 0.67,
+        scale: 0.95
+    }
+
+];
 
 
             items =
