@@ -12,7 +12,7 @@ const game = {
     isPhase1Active: false
 };
 
-// Item definitions (X/Y coordinates mapped to a standard 1200x675 scene frame)
+// Item definitions (Mapped to 1200x675 canvas scale)
 const hiddenItems = [
     { id: "tent", isHotspot: true, x: 80, y: 280, width: 420, height: 280, found: false },
     { id: "backpack", isHotspot: false, x: 560, y: 455, width: 75, height: 85, found: false },
@@ -25,6 +25,26 @@ const hiddenItems = [
     { id: "camera", isHotspot: false, x: 365, y: 535, width: 55, height: 50, found: false },
     { id: "key", isHotspot: false, x: 1090, y: 145, width: 32, height: 32, found: false }
 ];
+
+/*======================================================
+ AUDIO MANAGER
+======================================================*/
+const audio = {
+    bgm: document.getElementById("bgm"),
+    click: document.getElementById("clickSound"),
+    found: document.getElementById("foundSound"),
+    win: document.getElementById("winSound"),
+    bear: document.getElementById("bearSound")
+};
+
+function playSound(sound) {
+    if (audio[sound]) {
+        audio[sound].currentTime = 0;
+        audio[sound].play().catch(() => {
+            // Autoplay blocked by browser policy until interaction
+        });
+    }
+}
 
 /*======================================================
  DOM ELEMENTS
@@ -82,7 +102,6 @@ function showIntro() {
             loadingScreen.style.display = "none";
             loadingScreen.classList.add("hidden");
 
-            // Ensure game layers and ending overlays stay strictly hidden
             hideAllOverlays();
 
             if (introScreen) {
@@ -144,7 +163,14 @@ function startTerminal() {
  GAMEPLAY START (PHASE 1)
 ======================================================*/
 function startGame() {
+    playSound("click");
     hideAllOverlays();
+
+    // Start background audio on primary click
+    if (audio.bgm) {
+        audio.bgm.volume = 0.35;
+        audio.bgm.play().catch(e => console.log("BGM playback blocked:", e));
+    }
 
     if (introScreen) introScreen.style.display = "none";
     if (gameHUD) {
@@ -177,7 +203,6 @@ function createHiddenObjects() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
 
-    // Clean up old elements
     scene.querySelectorAll(".collectible, .collectible-hotspot").forEach(el => el.remove());
 
     hiddenItems.forEach(item => {
@@ -185,11 +210,9 @@ function createHiddenObjects() {
         let elem;
 
         if (item.isHotspot) {
-            // Transparent click box for background graphics (e.g., Tent)
             elem = document.createElement("div");
             elem.className = "collectible-hotspot";
         } else {
-            // Standard image item
             elem = document.createElement("img");
             elem.src = `assets/items/${item.id}.png`;
             elem.className = "collectible";
@@ -207,7 +230,6 @@ function createHiddenObjects() {
         scene.appendChild(elem);
     });
 
-    // Reset inventory HUD styles
     document.querySelectorAll(".inventory-item").forEach(slot => {
         slot.classList.remove("found");
     });
@@ -220,14 +242,14 @@ function collectItem(item, element) {
     game.foundCount++;
     game.xp += 50;
 
+    playSound("found");
+
     if (xpText) xpText.innerHTML = game.xp;
     element.remove();
 
-    // Mark off in inventory panel
     const invSlot = document.querySelector(`.inventory-item[data-id="${item.id}"]`);
     if (invSlot) invSlot.classList.add("found");
 
-    // Check victory
     if (game.foundCount >= game.totalItems) {
         completePhase1();
     }
@@ -262,12 +284,13 @@ function startBearTracker() {
     game.bearInterval = setInterval(() => {
         if (!game.isPhase1Active) return;
 
-        game.bearDistance += 1.1; // Reaches campsite in ~90s
+        game.bearDistance += 1.1;
         if (bearFill) bearFill.style.width = game.bearDistance + "%";
         if (bearIcon) bearIcon.style.left = `calc(${game.bearDistance}% - 12px)`;
 
         if (game.bearDistance >= 100) {
             clearInterval(game.bearInterval);
+            playSound("bear");
             endPhase1(false);
         }
     }, 1000);
@@ -281,7 +304,8 @@ function completePhase1() {
     clearInterval(game.timerInterval);
     clearInterval(game.bearInterval);
 
-    game.xp += 500; // Bonus for saving camp
+    playSound("win");
+    game.xp += 500;
     if (xpText) xpText.innerHTML = game.xp;
 
     const summaryOverlay = document.getElementById("summaryOverlay");
@@ -300,13 +324,8 @@ function endPhase1(success) {
 }
 
 function startPhase2() {
-    hideAllOverlays();
-    const birthdayEnding = document.getElementById("birthdayEnding");
-    if (birthdayEnding) {
-        document.getElementById("finalXP").innerText = `${game.xp} XP`;
-        birthdayEnding.classList.remove("hidden");
-        birthdayEnding.style.display = "flex";
-    }
+    playSound("click");
+    showBirthdayEnding();
 }
 
 function showBirthdayEnding() {
