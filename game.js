@@ -2,39 +2,38 @@
    OPERATION BIRTHDAY 30: MISSION 02 - GAME JS
    ========================================== */
 
-// Game State Configuration & Variables
 const GAME_CONFIG = {
-    phase1Time: 60, // seconds
+    phase1Time: 60,
     fishingTime: 60,
     totalItems: 8
 };
 
 let gameState = {
-    currentPhase: 1, // 1: Campsite Search, 2: Fishing Mini-game
+    currentPhase: 1, // 1: Campsite, 2: Fishing
     timeRemaining: GAME_CONFIG.phase1Time,
     xp: 0,
     score: 0,
     fishCaught: 0,
-    bearDistance: 95, // meters
+    bearDistance: 95,
     bearProgressPercent: 0,
     itemsFound: 0,
     isPaused: false,
-    gameInterval: null
+    gameInterval: null,
+    isFishingActive: false,
+    fishHooked: false
 };
 
-// Item List matching index.html inventoryPanel slots
 let items = [
-    { name: 'Torchlight', collected: false, x: 150, y: 200, width: 40, height: 40 },
-    { name: 'Compass', collected: false, x: 300, y: 350, width: 40, height: 40 },
-    { name: 'Boots', collected: false, x: 500, y: 250, width: 40, height: 40 },
-    { name: 'Bottle', collected: false, x: 650, y: 400, width: 40, height: 40 },
-    { name: 'Fishing Rod', collected: false, x: 200, y: 450, width: 40, height: 40 },
-    { name: 'Map', collected: false, x: 400, y: 150, width: 40, height: 40 },
-    { name: 'Camera', collected: false, x: 700, y: 200, width: 40, height: 40 },
-    { name: 'Key', collected: false, x: 550, y: 480, width: 40, height: 40 } // Adjusted key position for visibility & easier clickability
+    { name: 'Torchlight', collected: false, x: 150, y: 200, width: 45, height: 45 },
+    { name: 'Compass', collected: false, x: 300, y: 350, width: 45, height: 45 },
+    { name: 'Boots', collected: false, x: 500, y: 250, width: 45, height: 45 },
+    { name: 'Bottle', collected: false, x: 650, y: 400, width: 45, height: 45 },
+    { name: 'Fishing Rod', collected: false, x: 200, y: 450, width: 45, height: 45 },
+    { name: 'Map', collected: false, x: 400, y: 150, width: 45, height: 45 },
+    { name: 'Camera', collected: false, x: 700, y: 200, width: 45, height: 45 },
+    { name: 'Key', collected: false, x: 550, y: 480, width: 45, height: 45 }
 ];
 
-// Assets Loader Placeholder
 let assets = {
     campsiteBg: new Image(),
     lakeBg: new Image()
@@ -43,7 +42,6 @@ let assets = {
 assets.campsiteBg.src = 'assets/backgrounds/campsite.png';
 assets.lakeBg.src = 'assets/backgrounds/lake.png';
 
-// DOM Elements Reference
 const screens = {
     loading: document.getElementById('loadingScreen'),
     intro: document.getElementById('introScreen'),
@@ -58,54 +56,65 @@ const screens = {
 };
 
 const hudElements = {
-    timer: document.getElementById('timer'),
+    timer: document.getElementById('timer') || document.getElementById('timerDisplay'),
     xp: document.getElementById('xp'),
     score: document.getElementById('score'),
     bearProgress: document.getElementById('bearProgress'),
     bearProximityText: document.getElementById('bearProximityText'),
-    itemsFoundText: document.getElementById('itemsFoundText'),
-    hintButton: document.getElementById('hintButton')
+    itemsFoundText: document.getElementById('itemsFoundText')
 };
 
-// Initialization on Window Load
 window.addEventListener('load', () => {
-    // Hide loading, show intro
     setTimeout(() => {
-        screens.loading.classList.add('hidden');
-        screens.intro.classList.remove('hidden');
-    }, 500);
+        if (screens.loading) screens.loading.classList.add('hidden');
+        if (screens.intro) screens.intro.classList.remove('hidden');
+    }, 400);
 
-    document.getElementById('startMission').addEventListener('click', startGame);
-    document.getElementById('continueFishing').addEventListener('click', startFishingPhase);
-    document.getElementById('replayMission').addEventListener('click', resetGame);
+    const startBtn = document.getElementById('startMission');
+    if (startBtn) startBtn.addEventListener('click', startGame);
+
+    const continueBtn = document.getElementById('continueFishing');
+    if (continueBtn) continueBtn.addEventListener('click', startFishingPhase);
+
+    const replayBtn = document.getElementById('replayMission');
+    if (replayBtn) replayBtn.addEventListener('click', resetGame);
     
-    // Canvas click handler for finding hidden items
-    screens.canvas.addEventListener('click', handleCanvasClick);
+    if (screens.canvas) screens.canvas.addEventListener('click', handleCanvasClick);
+    
+    const castRodBtn = document.getElementById('castRod');
+    if (castRodBtn) castRodBtn.addEventListener('click', handleCastRod);
 });
 
 function startGame() {
-    screens.intro.classList.add('hidden');
-    screens.hud.classList.remove('hidden');
-    screens.inventoryPanel.classList.remove('hidden');
+    if (screens.intro) screens.intro.classList.add('hidden');
+    if (screens.hud) screens.hud.classList.remove('hidden');
+    if (screens.inventoryPanel) screens.inventoryPanel.classList.remove('hidden');
     
     initCanvasSize();
     startTimer();
-    gameLoop();
+    requestAnimationFrame(mainGameLoop);
 }
 
 function initCanvasSize() {
-    screens.canvas.width = screens.container.clientWidth;
-    screens.canvas.height = screens.container.clientHeight;
+    if (screens.canvas && screens.container) {
+        screens.canvas.width = screens.container.clientWidth;
+        screens.canvas.height = screens.container.clientHeight;
+    }
+    if (screens.fishingCanvas && screens.container) {
+        screens.fishingCanvas.width = screens.container.clientWidth;
+        screens.fishingCanvas.height = screens.container.clientHeight;
+    }
 }
 
 function startTimer() {
+    if (gameState.gameInterval) clearInterval(gameState.gameInterval);
+    
     gameState.gameInterval = setInterval(() => {
         if (gameState.isPaused) return;
 
         gameState.timeRemaining--;
         updateHUD();
 
-        // Advance Bear Closer over time
         if (gameState.currentPhase === 1) {
             gameState.bearDistance = Math.max(0, 95 - Math.floor((60 - gameState.timeRemaining) * (95 / 60)));
             gameState.bearProgressPercent = Math.min(100, ((60 - gameState.timeRemaining) / 60) * 100);
@@ -125,21 +134,29 @@ function startTimer() {
 function updateHUD() {
     let minutes = Math.floor(gameState.timeRemaining / 60);
     let seconds = gameState.timeRemaining % 60;
-    hudElements.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    hudElements.xp.textContent = gameState.xp;
-    hudElements.score.textContent = gameState.score;
-    hudElements.bearProgress.style.width = `${gameState.bearProgressPercent}%`;
-    hudElements.bearProximityText.textContent = `${gameState.bearDistance}m`;
-    hudElements.itemsFoundText.textContent = `${gameState.itemsFound} / ${GAME_CONFIG.totalItems}`;
+    let timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (hudElements.timer) hudElements.timer.textContent = timeStr;
+    if (hudElements.xp) hudElements.xp.textContent = gameState.xp;
+    if (hudElements.score) hudElements.score.textContent = gameState.score;
+    if (hudElements.bearProgress) hudElements.bearProgress.style.width = `${gameState.bearProgressPercent}%`;
+    if (hudElements.bearProximityText) hudElements.bearProximityText.textContent = `${gameState.bearDistance}m`;
+    if (hudElements.itemsFoundText) hudElements.itemsFoundText.textContent = `${gameState.itemsFound} / ${GAME_CONFIG.totalItems}`;
 }
 
-function gameLoop() {
-    if (gameState.currentPhase !== 1) return;
+function mainGameLoop() {
+    if (gameState.currentPhase === 1) {
+        renderCampsite();
+    } else if (gameState.currentPhase === 2) {
+        renderFishing();
+    }
+    requestAnimationFrame(mainGameLoop);
+}
 
+function renderCampsite() {
     const ctx = screens.canvas.getContext('2d');
     ctx.clearRect(0, 0, screens.canvas.width, screens.canvas.height);
 
-    // Draw Campsite Background Image or Fallback Gradient
     if (assets.campsiteBg.complete && assets.campsiteBg.naturalWidth !== 0) {
         ctx.drawImage(assets.campsiteBg, 0, 0, screens.canvas.width, screens.canvas.height);
     } else {
@@ -147,23 +164,41 @@ function gameLoop() {
         ctx.fillRect(0, 0, screens.canvas.width, screens.canvas.height);
     }
 
-    // Draw uncollected items with subtle pulses or highlights to make them discoverable (including the key)
     items.forEach(item => {
         if (!item.collected) {
-            ctx.fillStyle = 'rgba(57, 217, 255, 0.4)';
+            ctx.fillStyle = 'rgba(57, 217, 255, 0.35)';
             ctx.strokeStyle = '#39d9ff';
             ctx.lineWidth = 2;
             ctx.fillRect(item.x, item.y, item.width, item.height);
             ctx.strokeRect(item.x, item.y, item.width, item.height);
 
-            // Label text above item box for identification
             ctx.fillStyle = '#ffffff';
-            ctx.font = '10px monospace';
-            ctx.fillText(item.name, item.x, item.y - 5);
+            ctx.font = '11px monospace';
+            ctx.fillText(item.name, item.x, item.y - 6);
         }
     });
+}
 
-    requestAnimationFrame(gameLoop);
+function renderFishing() {
+    const ctx = screens.fishingCanvas.getContext('2d');
+    ctx.clearRect(0, 0, screens.fishingCanvas.width, screens.fishingCanvas.height);
+
+    if (assets.lakeBg.complete && assets.lakeBg.naturalWidth !== 0) {
+        ctx.drawImage(assets.lakeBg, 0, 0, screens.fishingCanvas.width, screens.fishingCanvas.height);
+    } else {
+        ctx.fillStyle = '#0b1329';
+        ctx.fillRect(0, 0, screens.fishingCanvas.width, screens.fishingCanvas.height);
+        
+        // Draw decorative lake waves
+        ctx.strokeStyle = 'rgba(57, 217, 255, 0.2)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 50; i < screens.fishingCanvas.height; i += 80) {
+            ctx.moveTo(0, i);
+            ctx.lineTo(screens.fishingCanvas.width, i);
+        }
+        ctx.stroke();
+    }
 }
 
 function handleCanvasClick(event) {
@@ -183,10 +218,10 @@ function handleCanvasClick(event) {
             gameState.xp += 50;
             gameState.score += 100;
 
-            // Update matching inventory DOM slot
             const slots = document.querySelectorAll('.inventorySlot');
             slots.forEach(slot => {
-                if (slot.querySelector('p').textContent.toLowerCase() === item.name.toLowerCase()) {
+                const p = slot.querySelector('p');
+                if (p && p.textContent.toLowerCase() === item.name.toLowerCase()) {
                     slot.classList.add('collected');
                 }
             });
@@ -199,6 +234,29 @@ function handleCanvasClick(event) {
             }
         }
     });
+}
+
+function handleCastRod() {
+    const biteElem = document.getElementById('bite');
+    const hookElem = document.getElementById('hook');
+    
+    if (biteElem) biteElem.classList.remove('hidden');
+    biteElem.textContent = "WAITING FOR BITE...";
+    
+    setTimeout(() => {
+        if (gameState.currentPhase === 2) {
+            if (biteElem) biteElem.textContent = "BITE! CLICK HOOK!";
+            gameState.fishHooked = true;
+            
+            setTimeout(() => {
+                if (gameState.fishHooked) {
+                    gameState.fishHooked = false;
+                    if (biteElem) biteElem.textContent = "GOT AWAY!";
+                    setTimeout(() => { if (biteElem) biteElem.classList.add('hidden'); }, 1000);
+                }
+            }, 1500);
+        }
+    }, 1500);
 }
 
 function endPhase1() {
