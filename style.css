@@ -27,6 +27,11 @@ body {
     overflow: hidden;
 }
 
+/* Utility class to hide elements */
+.hidden {
+    display: none !important;
+}
+
 /* ==========================================
    GAME HUD
    ========================================== */
@@ -58,7 +63,7 @@ body {
     align-items: center;
 }
 
-#timerDisplay {
+#timer, #timerDisplay {
     font-family: monospace;
     font-size: 1.2rem;
     font-weight: bold;
@@ -96,7 +101,7 @@ body {
     letter-spacing: 1px;
 }
 
-/* Hint Button Styling */
+/* Hint Button Styling & General Buttons */
 .btn {
     background: rgba(57, 217, 255, 0.1);
     color: var(--accent-cyan);
@@ -117,19 +122,87 @@ body {
 }
 
 /* ==========================================
-   GAME VIEWPORT CONTAINER
+   GAME VIEWPORT CONTAINER & SCREENS
    ========================================== */
 #gameContainer {
     flex: 1;
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: radial-gradient(circle at center, #151c2e 0%, #0b0f19 100%);
 }
 
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Overlays & Phase Screens */
+#loadingScreen, #introScreen, #phase1Complete, #phase2, #missionComplete {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+}
+
+#introScreen h1, #phase1Complete h1, #missionComplete h1 {
+    color: var(--accent-cyan);
+    font-family: monospace;
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Fishing Mini-game Layout Elements */
+.fishingHeader {
+    display: flex;
+    gap: 30px;
+    font-family: monospace;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.fishingControls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.meterFill {
+    width: 200px;
+    height: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#powerFill, #reelFill {
+    width: 0%;
+    height: 100%;
+    background: var(--accent-cyan);
+}
+
+#bite, #hook {
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--accent-cyan);
+    font-size: 1.5rem;
+}
+
 /* ==========================================
-   INVENTORY BAR
+   INVENTORY PANEL
    ========================================== */
-#inventoryBar {
+#inventoryPanel {
     display: flex;
     justify-content: center;
     gap: 15px;
@@ -160,7 +233,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Active/Collected state styles that can be toggled via JS */
+/* Active/Collected state styles toggled via JS */
 .inventorySlot.collected {
     opacity: 1;
     border-color: var(--accent-cyan);
