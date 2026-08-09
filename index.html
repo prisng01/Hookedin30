@@ -3,35 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realistic Fishing Game - Full Mission Workflow</title>
+    <title>Mission 2: Wilderness Survival</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { background: #0c1821; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; overflow: hidden; }
+        body { background: #081018; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; overflow: hidden; }
         #game-container { position: relative; width: 100vw; height: 100vh; }
         canvas { display: block; width: 100%; height: 100%; }
         
-        /* Overlays & Menus */
-        .overlay { position: absolute; inset: 0; background: rgba(5, 15, 25, 0.88); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; backdrop-filter: blur(10px); }
+        .overlay { position: absolute; inset: 0; background: rgba(4, 12, 20, 0.92); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; backdrop-filter: blur(12px); }
         .hidden { display: none !important; }
-        .card { background: rgba(15, 30, 48, 0.9); padding: 30px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card { background: rgba(15, 28, 44, 0.95); padding: 32px 42px; border-radius: 16px; border: 1px solid rgba(79, 195, 247, 0.3); text-align: center; max-width: 500px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
         
-        h1 { font-size: 28px; color: #4fc3f7; margin-bottom: 12px; }
-        h2 { font-size: 22px; color: #81c784; margin-bottom: 15px; }
+        h1 { font-size: 26px; color: #4fc3f7; margin-bottom: 12px; letter-spacing: 1px; }
         p { font-size: 14px; color: #b0bec5; line-height: 1.6; margin-bottom: 20px; }
         
-        /* HUD UI */
         .hud { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; pointer-events: none; z-index: 5; }
-        .panel { background: rgba(10, 25, 40, 0.75); padding: 12px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px); }
+        .panel { background: rgba(8, 20, 32, 0.85); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px); }
         .stat-label { font-size: 10px; text-transform: uppercase; color: #8ab4f8; letter-spacing: 1px; }
         .stat-value { font-size: 20px; font-weight: bold; font-family: monospace; }
         
-        /* Phase 1 & 2 Gauges */
+        #power-container { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); width: 28px; height: 260px; background: rgba(0,0,0,0.6); border-radius: 14px; padding: 4px; border: 1px solid rgba(79, 195, 247, 0.4); z-index: 5; }
+        #power-bar { width: 100%; height: 0%; background: linear-gradient(to top, #0288d1, #26c6da, #80deea); border-radius: 10px; position: absolute; bottom: 4px; left: 4px; right: 4px; }
+
         #tension-container { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); width: 28px; height: 260px; background: rgba(0,0,0,0.6); border-radius: 14px; padding: 4px; border: 1px solid rgba(255,255,255,0.2); z-index: 5; }
         #tension-bar { width: 100%; height: 0%; background: linear-gradient(to top, #4caf50, #ffeb3b, #f44336); border-radius: 10px; transition: height 0.1s linear; }
         
-        #action-prompt { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 18px; font-weight: bold; background: rgba(0,0,0,0.85); padding: 12px 28px; border-radius: 30px; border: 1px solid #4fc3f7; color: #e1f5fe; text-shadow: 0 0 10px rgba(79,195,247,0.5); z-index: 5; }
+        #action-prompt { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 16px; font-weight: bold; background: rgba(4, 12, 20, 0.9); padding: 12px 30px; border-radius: 30px; border: 1px solid #4fc3f7; color: #e1f5fe; text-shadow: 0 0 10px rgba(79,195,247,0.5); z-index: 5; }
         
-        .btn { pointer-events: auto; background: linear-gradient(135deg, #0288d1, #01579b); border: none; color: white; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn { pointer-events: auto; background: linear-gradient(135deg, #0288d1, #01579b); border: none; color: white; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
         .btn:hover { background: linear-gradient(135deg, #039be5, #0288d1); transform: translateY(-2px); }
     </style>
 </head>
@@ -40,81 +39,87 @@
 <div id="game-container">
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Mission Start Screen -->
+    <!-- Mission Briefing -->
     <div id="start-overlay" class="overlay">
         <div class="card">
-            <h1>MISSION START</h1>
-            <p>Welcome Angler. Your objective is to catch a target weight of <strong>20.0 lbs</strong> of fish.</p>
-            <p><strong>Phase 1:</strong> Aim your angle and timed power cast.<br><strong>Phase 2:</strong> Hold Left Click to reel, balance tension safely.</p>
-            <button class="btn" id="start-btn">BEGIN MISSION</button>
+            <h1>MISSION 2 BRIEFING</h1>
+            <p><strong>Phase 1: Campsite Search</strong><br>Scour the campsite and gather 10 critical survival items before the bear arrives.<br><br><strong>Phase 2: River Fishing</strong><br>Head to the river and catch 6 target fish using cast timing and tension control.</p>
+            <button class="btn" id="start-btn">START MISSION 2</button>
         </div>
     </div>
 
-    <!-- Ending Screen -->
+    <!-- Phase 2 Transition Screen -->
+    <div id="phase2-overlay" class="overlay hidden">
+        <div class="card">
+            <h1>MISSION 2: PHASE 1 COMPLETE</h1>
+            <p>All campsite supplies secured!<br><br>Proceed to Phase 2: Catch <strong>6 target fish</strong> to finalize Mission 2.</p>
+            <button class="btn" id="phase2-btn">BEGIN FISHING PHASE</button>
+        </div>
+    </div>
+
+    <!-- Final Mission Outcome Overlay -->
     <div id="end-overlay" class="overlay hidden">
         <div class="card">
-            <h1 id="end-title">MISSION COMPLETE!</h1>
-            <p id="end-desc">You successfully reached the quota!</p>
-            <div class="stat-label">Total Catch Weight</div>
-            <div class="stat-value" id="final-score" style="margin-bottom: 20px;">0.0 lbs</div>
-            <button class="btn" id="restart-btn">PLAY AGAIN</button>
+            <h1 id="end-title">MISSION 2 COMPLETE</h1>
+            <p id="end-desc">You successfully survived Phase 1 and completed Phase 2!</p>
+            <button class="btn" id="restart-btn">REPLAY MISSION 2</button>
         </div>
     </div>
 
     <!-- Gameplay HUD -->
     <div class="hud">
         <div class="panel">
-            <div class="stat-label">Target Progress</div>
-            <div class="stat-value" id="score-val">0.0 / 20.0 lbs</div>
+            <div class="stat-label" id="label-primary">Phase Progress</div>
+            <div class="stat-value" id="val-primary">0 / 10</div>
         </div>
         <div class="panel">
-            <div class="stat-label">Fish Distance</div>
-            <div class="stat-value" id="dist-val">0.0 m</div>
+            <div class="stat-label" id="label-secondary">Bear Proximity</div>
+            <div class="stat-value" id="val-secondary">100m</div>
         </div>
         <div class="panel" style="pointer-events: auto;">
             <button class="btn" id="audio-toggle" style="padding: 6px 12px; margin: 0; font-size: 12px;">🔊 Audio: ON</button>
         </div>
     </div>
 
-    <!-- Tension Bar HUD -->
-    <div id="tension-container">
-        <div id="tension-bar"></div>
-    </div>
+    <!-- Gauges -->
+    <div id="power-container" class="hidden"><div id="power-bar"></div></div>
+    <div id="tension-container" class="hidden"><div id="tension-bar"></div></div>
 
-    <div id="action-prompt">AIM & CLICK TO SET CAST ANGLE</div>
+    <div id="action-prompt">MISSION 2: SEARCH CAMPSITE FOR SUPPLIES</div>
 </div>
 
 <script>
-// --- AUDIO ENGINE SETUP ---
-class AudioManager {
+class MissionAudioManager {
     constructor() {
         this.muted = false;
-        // Audio Asset Mapping:
-        // input_file_0.png -> Mechanical Reel Click / Ticking
-        // input_file_1.png -> Soft Water Splash / Rod Whip
-        // input_file_2.png -> Ambient Nature & Water Loop
-        // input_file_3.png -> Heavy Bass Impact / Splash Hit
-        // input_file_4.png -> Quick Swoosh / Action UI
         this.sounds = {
-            reel: new Audio('input_file_0.png'),
-            cast: new Audio('input_file_1.png'),
-            ambient: new Audio('input_file_2.png'),
-            hook: new Audio('input_file_3.png'),
-            action: new Audio('input_file_4.png')
+            bg: new Audio('background.mp3'),
+            bear: new Audio('bear.mp3'),
+            collect: new Audio('collect.mp3'),
+            reelWinding: new Audio('freesound_community-fishingrod-winding-92375.mp3'),
+            fishPulling: new Audio('freesound_community-fly-reel-fish-pulling-saricione-94671.mp3'),
+            lakeAmbience: new Audio('mindmist-fishing-on-the-lake-310740.mp3'),
+            complete: new Audio('mission-complete.mp3'),
+            whoosh: new Audio('spinopel-fishing-rod-whoosh-411640.mp3')
         };
 
-        this.sounds.ambient.loop = true;
-        this.sounds.ambient.volume = 0.45;
-        this.sounds.reel.volume = 0.6;
-        this.sounds.hook.volume = 0.8;
+        this.sounds.bg.loop = true;
+        this.sounds.lakeAmbience.loop = true;
+        this.sounds.reelWinding.loop = true;
+        this.sounds.fishPulling.loop = true;
+
+        this.sounds.bg.volume = 0.4;
+        this.sounds.lakeAmbience.volume = 0.5;
+        this.sounds.bear.volume = 0.8;
+        this.sounds.complete.volume = 0.9;
     }
 
     play(name) {
         if (this.muted || !this.sounds[name]) return;
-        if (name === 'reel') {
-            if (this.sounds.reel.paused) {
-                this.sounds.reel.currentTime = 0;
-                this.sounds.reel.play().catch(() => {});
+        if (name === 'reelWinding' || name === 'fishPulling') {
+            if (this.sounds[name].paused) {
+                this.sounds[name].currentTime = 0;
+                this.sounds[name].play().catch(() => {});
             }
         } else {
             this.sounds[name].currentTime = 0;
@@ -123,21 +128,18 @@ class AudioManager {
     }
 
     stop(name) {
-        if (this.sounds[name]) {
-            this.sounds[name].pause();
-        }
+        if (this.sounds[name]) this.sounds[name].pause();
     }
 
-    startAmbient() {
-        if (!this.muted) {
-            this.sounds.ambient.play().catch(() => {});
-        }
+    stopAllLoops() {
+        this.stop('bg');
+        this.stop('lakeAmbience');
+        this.stop('reelWinding');
+        this.stop('fishPulling');
     }
 }
 
-const audio = new AudioManager();
-
-// --- GAME ENGINE ---
+const audio = new MissionAudioManager();
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -149,108 +151,172 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Game States: 'MISSION_START', 'PHASE1_AIM', 'PHASE1_POWER', 'WAITING', 'HOOKED', 'PHASE2_REELING', 'CAUGHT', 'ENDING'
+// States: MISSION_START -> PHASE1_SEARCH -> PHASE2_TRANSITION -> PHASE2_AIM -> PHASE2_POWER -> PHASE2_WAITING -> PHASE2_HOOKED -> PHASE2_REELING -> MISSION_END
 let state = 'MISSION_START';
-const TARGET_WEIGHT = 20.0;
-let totalScore = 0;
 
-// Phase 1 Mechanics
-let aimAngle = 0; // -1 to 1
-let aimDir = 1;
-let castPower = 0;
-let powerDir = 1;
+let items = [];
+let itemsCollected = 0;
+const TOTAL_ITEMS = 10;
+let bearDistance = 100;
+const ITEM_NAMES = ['Flashlight', 'First Aid', 'Canteen', 'Matches', 'Map', 'Rope', 'Knife', 'Fuel', 'Compass', 'Flare'];
 
-// Phase 2 Mechanics
-let lineTension = 0; // 0 to 100
-let fishDistance = 0;
+let fishCaught = 0;
+const TARGET_FISH = 6;
+let aimAngle = 0, aimDir = 1;
+let castPower = 0, powerDir = 1;
+let lineTension = 0, fishDistance = 0;
 let lureX = 0, lureY = 0;
 let reelActive = false;
 
-// UI Elements
 const startOverlay = document.getElementById('start-overlay');
+const phase2Overlay = document.getElementById('phase2-overlay');
 const endOverlay = document.getElementById('end-overlay');
 const startBtn = document.getElementById('start-btn');
+const phase2Btn = document.getElementById('phase2-btn');
 const restartBtn = document.getElementById('restart-btn');
 const promptEl = document.getElementById('action-prompt');
-const scoreEl = document.getElementById('score-val');
-const distEl = document.getElementById('dist-val');
+const labelPrimary = document.getElementById('label-primary');
+const valPrimary = document.getElementById('val-primary');
+const labelSecondary = document.getElementById('label-secondary');
+const valSecondary = document.getElementById('val-secondary');
+const powerMeter = document.getElementById('power-container');
+const powerBar = document.getElementById('power-bar');
+const tensionContainer = document.getElementById('tension-container');
 const tensionBar = document.getElementById('tension-bar');
 const audioBtn = document.getElementById('audio-toggle');
-const endTitle = document.getElementById('end-title');
-const endDesc = document.getElementById('end-desc');
-const finalScore = document.getElementById('final-score');
-
-// User Interactions
-startBtn.addEventListener('click', () => {
-    audio.startAmbient();
-    audio.play('action');
-    startOverlay.classList.add('hidden');
-    resetMission();
-});
-
-restartBtn.addEventListener('click', () => {
-    audio.play('action');
-    endOverlay.classList.add('hidden');
-    resetMission();
-});
 
 audioBtn.addEventListener('click', () => {
     audio.muted = !audio.muted;
     audioBtn.innerText = audio.muted ? "🔇 Audio: OFF" : "🔊 Audio: ON";
-    if (audio.muted) audio.stop('ambient');
-    else audio.startAmbient();
+    if (audio.muted) {
+        audio.stopAllLoops();
+    } else if (state === 'PHASE1_SEARCH') {
+        audio.play('bg');
+    } else if (state.startsWith('PHASE2')) {
+        audio.play('lakeAmbience');
+    }
 });
 
-function resetMission() {
-    totalScore = 0;
-    scoreEl.innerText = `0.0 / ${TARGET_WEIGHT.toFixed(1)} lbs`;
-    startPhase1Aim();
+startBtn.addEventListener('click', () => {
+    audio.play('collect');
+    startOverlay.classList.add('hidden');
+    startPhase1();
+});
+
+phase2Btn.addEventListener('click', () => {
+    audio.play('collect');
+    phase2Overlay.classList.add('hidden');
+    startPhase2();
+});
+
+restartBtn.addEventListener('click', () => {
+    audio.play('collect');
+    endOverlay.classList.add('hidden');
+    startPhase1();
+});
+
+function startPhase1() {
+    audio.stopAllLoops();
+    audio.play('bg');
+
+    state = 'PHASE1_SEARCH';
+    itemsCollected = 0;
+    bearDistance = 100;
+    powerMeter.classList.add('hidden');
+    tensionContainer.classList.add('hidden');
+
+    labelPrimary.innerText = "Supplies Found";
+    valPrimary.innerText = `0 / ${TOTAL_ITEMS}`;
+    labelSecondary.innerText = "Bear Proximity";
+    valSecondary.innerText = `100m`;
+    promptEl.innerText = "MISSION 2 - PHASE 1: FIND 10 CAMPSITE SUPPLIES";
+
+    items = [];
+    for (let i = 0; i < TOTAL_ITEMS; i++) {
+        items.push({
+            name: ITEM_NAMES[i],
+            x: 100 + Math.random() * (width - 200),
+            y: 140 + Math.random() * (height - 280),
+            radius: 16,
+            collected: false
+        });
+    }
 }
 
-function startPhase1Aim() {
-    state = 'PHASE1_AIM';
+function startPhase2() {
+    audio.stopAllLoops();
+    audio.play('lakeAmbience');
+
+    state = 'PHASE2_AIM';
+    fishCaught = 0;
     aimAngle = 0;
     castPower = 0;
     lineTension = 0;
-    fishDistance = 0;
-    promptEl.innerText = "PHASE 1: CLICK TO LOCK AIM ANGLE";
+
+    powerMeter.classList.add('hidden');
+    tensionContainer.classList.remove('hidden');
+
+    labelPrimary.innerText = "Fish Caught";
+    valPrimary.innerText = `0 / ${TARGET_FISH}`;
+    labelSecondary.innerText = "Target Distance";
+    valSecondary.innerText = `0.0m`;
+    promptEl.innerText = "MISSION 2 - PHASE 2: CLICK TO LOCK CAST AIM";
 }
 
 window.addEventListener('pointerdown', (e) => {
-    if (e.target.tagName === 'BUTTON' || state === 'MISSION_START' || state === 'ENDING') return;
+    if (e.target.tagName === 'BUTTON' || state === 'MISSION_START' || state === 'MISSION_END') return;
 
-    if (state === 'PHASE1_AIM') {
-        audio.play('action');
-        state = 'PHASE1_POWER';
-        promptEl.innerText = "PHASE 1: CLICK TO LOCK CAST POWER";
-    } else if (state === 'PHASE1_POWER') {
-        // Execute Cast
-        audio.play('cast');
-        state = 'WAITING';
-        fishDistance = 25 + (castPower * 0.45);
+    if (state === 'PHASE1_SEARCH') {
+        items.forEach(item => {
+            if (!item.collected) {
+                let dist = Math.hypot(e.clientX - item.x, e.clientY - item.y);
+                if (dist < item.radius + 12) {
+                    item.collected = true;
+                    itemsCollected++;
+                    audio.play('collect');
+                    valPrimary.innerText = `${itemsCollected} / ${TOTAL_ITEMS}`;
+                    
+                    if (itemsCollected >= TOTAL_ITEMS) {
+                        state = 'PHASE2_TRANSITION';
+                        audio.stop('bg');
+                        phase2Overlay.classList.remove('hidden');
+                    }
+                }
+            }
+        });
+    } else if (state === 'PHASE2_AIM') {
+        audio.play('collect');
+        state = 'PHASE2_POWER';
+        powerMeter.classList.remove('hidden');
+        promptEl.innerText = "MISSION 2 - PHASE 2: CLICK TO LOCK CAST POWER";
+    } else if (state === 'PHASE2_POWER') {
+        audio.play('whoosh');
+        state = 'PHASE2_WAITING';
+        powerMeter.classList.add('hidden');
+        fishDistance = 22 + (castPower * 0.42);
         lureX = (width / 2) + (aimAngle * (width * 0.35));
-        lureY = height * 0.65;
-        promptEl.innerText = "WAITING FOR A BITE...";
-        setTimeout(triggerBite, 2500 + Math.random() * 3500);
-    } else if (state === 'HOOKED') {
-        audio.play('hook');
-        audio.play('action');
+        lureY = height * (0.8 - (castPower / 100) * 0.35);
+        promptEl.innerText = "WAITING FOR A FISH TO BITE...";
+        setTimeout(triggerBite, 2200 + Math.random() * 2500);
+    } else if (state === 'PHASE2_HOOKED') {
+        audio.play('fishPulling');
         state = 'PHASE2_REELING';
-        promptEl.innerText = "PHASE 2: HOLD LEFT CLICK TO REEL IN!";
+        promptEl.innerText = "HOLD LEFT CLICK / SPACEBAR TO REEL IN!";
     }
 });
 
 window.addEventListener('mousedown', () => { if (state === 'PHASE2_REELING') reelActive = true; });
-window.addEventListener('mouseup', () => { reelActive = false; audio.stop('reel'); });
+window.addEventListener('mouseup', () => { reelActive = false; audio.stop('reelWinding'); });
+window.addEventListener('keydown', (e) => { if (e.code === 'Space' && state === 'PHASE2_REELING') reelActive = true; });
+window.addEventListener('keyup', (e) => { if (e.code === 'Space') { reelActive = false; audio.stop('reelWinding'); } });
 
 function triggerBite() {
-    if (state !== 'WAITING') return;
-    state = 'HOOKED';
-    audio.play('action');
-    promptEl.innerText = "FISH ON! CLICK TO SET HOOK!";
+    if (state !== 'PHASE2_WAITING') return;
+    state = 'PHASE2_HOOKED';
+    audio.play('fishPulling');
+    promptEl.innerText = "FISH STRIKE! CLICK TO HOOK!";
 }
 
-// Main Loop
 let lastTime = performance.now();
 function gameLoop(now) {
     let dt = (now - lastTime) / 1000;
@@ -263,129 +329,151 @@ function gameLoop(now) {
 }
 
 function update(dt) {
-    // Phase 1: Aiming
-    if (state === 'PHASE1_AIM') {
+    if (state === 'PHASE1_SEARCH') {
+        bearDistance -= 2.2 * dt;
+        valSecondary.innerText = `${Math.max(0, bearDistance).toFixed(0)}m`;
+
+        if (bearDistance <= 0) {
+            audio.stopAllLoops();
+            audio.play('bear');
+            state = 'MISSION_END';
+            document.getElementById('end-title').innerText = "MISSION 2 FAILED!";
+            document.getElementById('end-desc').innerText = "The bear reached the campsite before you collected all supplies.";
+            endOverlay.classList.remove('hidden');
+        }
+    }
+
+    if (state === 'PHASE2_AIM') {
         aimAngle += aimDir * 1.5 * dt;
-        if (aimAngle > 1) { aimAngle = 1; aimDir = -1; }
-        if (aimAngle < -1) { aimAngle = -1; aimDir = 1; }
+        if (aimAngle > 1) aimDir = -1;
+        if (aimAngle < -1) aimDir = 1;
     }
 
-    // Phase 1: Power Setting
-    if (state === 'PHASE1_POWER') {
+    if (state === 'PHASE2_POWER') {
         castPower += powerDir * 110 * dt;
-        if (castPower > 100) { castPower = 100; powerDir = -1; }
-        if (castPower < 0) { castPower = 0; powerDir = 1; }
+        if (castPower > 100) powerDir = -1;
+        if (castPower < 0) powerDir = 1;
+        powerBar.style.height = `${castPower}%`;
     }
 
-    // Phase 2: Reeling & Tension Mechanics
     if (state === 'PHASE2_REELING') {
         if (reelActive) {
-            audio.play('reel');
-            lineTension = Math.min(100, lineTension + 48 * dt);
-            fishDistance -= 7.5 * dt;
+            audio.play('reelWinding');
+            lineTension = Math.min(100, lineTension + 46 * dt);
+            fishDistance -= 8.2 * dt;
         } else {
-            audio.stop('reel');
+            audio.stop('reelWinding');
             lineTension = Math.max(0, lineTension - 32 * dt);
-            fishDistance += 2.5 * dt; // Fish pulls away
+            fishDistance += 2.2 * dt;
         }
 
-        // Dynamic Fish Tug
-        if (Math.random() < 0.06) {
-            lineTension += Math.random() * 12;
-        }
+        valSecondary.innerText = `${Math.max(0, fishDistance).toFixed(1)}m`;
+        tensionBar.style.height = `${lineTension}%`;
 
-        // Check Snap or Catch
         if (lineTension >= 100) {
-            audio.stop('reel');
-            audio.play('action');
+            audio.stop('reelWinding');
+            audio.stop('fishPulling');
             lineTension = 0;
-            promptEl.innerText = "LINE SNAPPED! RETRYING CAST...";
-            setTimeout(startPhase1Aim, 2000);
-            state = 'WAITING'; // Pause state during reset timer
+            promptEl.innerText = "LINE SNAPPED! RE-AIM AND CAST...";
+            state = 'PHASE2_AIM';
         } else if (fishDistance <= 2) {
-            audio.stop('reel');
-            audio.play('hook');
-            let weight = parseFloat((2.5 + Math.random() * 8.5).toFixed(1));
-            totalScore += weight;
-            scoreEl.innerText = `${totalScore.toFixed(1)} / ${TARGET_WEIGHT.toFixed(1)} lbs`;
+            audio.stop('reelWinding');
+            audio.stop('fishPulling');
+            audio.play('collect');
+            fishCaught++;
+            valPrimary.innerText = `${fishCaught} / ${TARGET_FISH}`;
 
-            if (totalScore >= TARGET_WEIGHT) {
-                state = 'ENDING';
-                endTitle.innerText = "MISSION COMPLETE!";
-                endDesc.innerText = "Congratulations! You completed the quota requirements.";
-                finalScore.innerText = `${totalScore.toFixed(1)} lbs`;
+            if (fishCaught >= TARGET_FISH) {
+                audio.stopAllLoops();
+                audio.play('complete');
+                state = 'MISSION_END';
+                document.getElementById('end-title').innerText = "MISSION 2 ACCOMPLISHED!";
+                document.getElementById('end-desc').innerText = "You successfully completed both Phase 1 and Phase 2!";
                 endOverlay.classList.remove('hidden');
             } else {
-                state = 'CAUGHT';
-                promptEl.innerText = `CAUGHT A ${weight} LB FISH! READY FOR NEXT CAST`;
-                setTimeout(startPhase1Aim, 2500);
+                promptEl.innerText = `FISH LANDED! (${fishCaught}/${TARGET_FISH}) - RE-AIM FOR NEXT CAST`;
+                state = 'PHASE2_AIM';
             }
         }
     }
-
-    distEl.innerText = `${Math.max(0, fishDistance).toFixed(1)} m`;
-    tensionBar.style.height = `${lineTension}%`;
 }
 
 function render() {
-    // Water Background Gradient
-    let grad = ctx.createLinearGradient(0, 0, 0, height);
-    grad.addColorStop(0, '#112233');
-    grad.addColorStop(0.4, '#0a1c2e');
-    grad.addColorStop(1, '#040b14');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
+    if (state === 'PHASE1_SEARCH') {
+        let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+        bgGrad.addColorStop(0, '#132219');
+        bgGrad.addColorStop(1, '#09120c');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
 
-    // Dynamic Wave Lines
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-    ctx.lineWidth = 2;
-    for (let i = 0; i < 7; i++) {
+        ctx.fillStyle = '#8d6e63';
         ctx.beginPath();
-        let y = height * 0.38 + i * 45;
-        ctx.moveTo(0, y);
-        ctx.bezierCurveTo(width * 0.3, y + Math.sin(Date.now() * 0.002 + i) * 12, width * 0.7, y - Math.sin(Date.now() * 0.002 + i) * 12, width, y);
-        ctx.stroke();
+        ctx.moveTo(width / 2, height / 2 - 50);
+        ctx.lineTo(width / 2 - 70, height / 2 + 50);
+        ctx.lineTo(width / 2 + 70, height / 2 + 50);
+        ctx.fill();
+
+        ctx.fillStyle = '#ff7043';
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2 + 90, 18, 0, Math.PI * 2);
+        ctx.fill();
+
+        items.forEach(item => {
+            if (!item.collected) {
+                ctx.fillStyle = '#ffd54f';
+                ctx.beginPath();
+                ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#000000';
+                ctx.font = 'bold 10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(item.name[0], item.x, item.y + 3);
+            }
+        });
     }
 
-    // Phase 1 Aim Visualizer
-    if (state === 'PHASE1_AIM' || state === 'PHASE1_POWER') {
-        let originX = width / 2;
-        let originY = height;
-        let targetX = originX + (aimAngle * (width * 0.35));
-        let targetY = height * 0.65;
+    if (state.startsWith('PHASE2')) {
+        let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+        bgGrad.addColorStop(0, '#0d1b2a');
+        bgGrad.addColorStop(0.5, '#08121e');
+        bgGrad.addColorStop(1, '#02060c');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
 
-        ctx.strokeStyle = '#4fc3f7';
-        ctx.lineWidth = 3;
-        ctx.setLineDash([8, 8]);
-        ctx.beginPath();
-        ctx.moveTo(originX, originY);
-        ctx.lineTo(targetX, targetY);
-        ctx.stroke();
-        ctx.setLineDash([]);
+        if (state === 'PHASE2_AIM' || state === 'PHASE2_POWER') {
+            let originX = width / 2;
+            let originY = height;
+            let targetX = originX + (aimAngle * (width * 0.35));
+            let targetY = height * (0.8 - (castPower / 100) * 0.35);
 
-        // Target Reticle
-        ctx.strokeStyle = '#81c784';
-        ctx.beginPath();
-        ctx.arc(targetX, targetY, 15, 0, Math.PI * 2);
-        ctx.stroke();
-    }
+            ctx.strokeStyle = '#4fc3f7';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 8]);
+            ctx.beginPath();
+            ctx.moveTo(originX, originY);
+            ctx.lineTo(targetX, targetY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
 
-    // Phase 2 Fishing Line & Lure
-    if (state === 'WAITING' || state === 'HOOKED' || state === 'PHASE2_REELING') {
-        ctx.strokeStyle = lineTension > 75 ? '#f44336' : '#ffffff';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(width / 2, height);
-        
-        let sag = (100 - lineTension) * 0.7;
-        ctx.quadraticCurveTo(width / 2, lureY + sag, lureX, lureY);
-        ctx.stroke();
+        if (state === 'PHASE2_WAITING' || state === 'PHASE2_HOOKED' || state === 'PHASE2_REELING') {
+            ctx.strokeStyle = lineTension > 75 ? '#ff5252' : '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(width / 2, height);
+            let sag = (100 - lineTension) * 0.5;
+            ctx.quadraticCurveTo(width / 2, lureY + sag, lureX, lureY);
+            ctx.stroke();
 
-        // Water Ripple on Lure
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.beginPath();
-        ctx.arc(lureX, lureY, 6 + Math.sin(Date.now() * 0.006) * 5, 0, Math.PI * 2);
-        ctx.stroke();
+            ctx.fillStyle = '#81d4fa';
+            ctx.beginPath();
+            ctx.arc(lureX, lureY, 7, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 }
 
