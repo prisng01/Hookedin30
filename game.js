@@ -54,7 +54,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             itemsFound: 0,
 
-            totalItems: 10,
+            totalItems: 8, // Updated to match the 8 available survival items
 
             fishCaught: 0,
 
@@ -78,13 +78,11 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          PHASE 1 ITEMS
+          PHASE 1 ITEMS (Tent & Backpack removed as requested)
         =================================================*/
 
         const ITEM_KEYS = [
 
-            "tent",
-            "backpack",
             "torchlight",
             "compass",
             "boots",
@@ -98,10 +96,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         const itemNames = {
-
-            tent: "Tent",
-
-            backpack: "Backpack",
 
             torchlight: "Torchlight",
 
@@ -480,7 +474,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          ASSETS
+          ASSETS (Fish filenames updated to match your files)
         =================================================*/
 
         function loadImage(src) {
@@ -522,16 +516,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 ),
 
             items: {
-
-                tent:
-                    loadImage(
-                        "assets/items/tent.png"
-                    ),
-
-                backpack:
-                    loadImage(
-                        "assets/items/backpack.png"
-                    ),
 
                 torchlight:
                     loadImage(
@@ -579,12 +563,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 goldFish:
                     loadImage(
-                        "assets/fish/goldFish_2.png"
+                        "assets/fish/goldfish.png"
                     ),
 
                 heartFish:
                     loadImage(
-                        "assets/fish/heartFish_2.png"
+                        "assets/fish/heartfish.png"
                     ),
 
                 rainbowFish:
@@ -981,7 +965,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             if (objectiveText) {
 
                 objectiveText.innerText =
-                    "Recover all 10 survival items before the bear arrives.";
+                    "Recover all 8 survival items before the bear arrives.";
             }
 
 
@@ -999,30 +983,14 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          CREATE 10 UNIQUE CAMPSITE ITEMS (MATCHING REFERENCE IMAGE LAYOUT)
+          CREATE 8 UNIQUE CAMPSITE ITEMS
         =================================================*/
 
         function createCampsiteItems() {
 
             const positions = [
 
-                // 1. Tent (Left background tent flap area)
-                {
-                    key: "tent",
-                    x: 0.16,
-                    y: 0.38,
-                    scale: 1.05
-                },
-
-                // 2. Backpack (Right mid-ground rock ledge)
-                {
-                    key: "backpack",
-                    x: 0.74,
-                    y: 0.73,
-                    scale: 0.88
-                },
-
-                // 3. Torchlight (Right foreground metal ammo crate)
+                // 1. Torchlight (Right foreground metal ammo crate)
                 {
                     key: "torchlight",
                     x: 0.82,
@@ -1030,7 +998,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.72
                 },
 
-                // 4. Compass (Center ground near fire pit rocks)
+                // 2. Compass (Center ground near fire pit rocks)
                 {
                     key: "compass",
                     x: 0.70,
@@ -1038,7 +1006,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.65
                 },
 
-                // 5. Boots (Bottom left corner mud ground)
+                // 3. Boots (Bottom left corner mud ground)
                 {
                     key: "boots",
                     x: 0.15,
@@ -1046,7 +1014,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.85
                 },
 
-                // 6. Bottle (Bottom left near tent edge)
+                // 4. Bottle (Bottom left near tent edge)
                 {
                     key: "bottle",
                     x: 0.09,
@@ -1054,7 +1022,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.70
                 },
 
-                // 7. Fishing Rod (Right edge upright leaning on rocks)
+                // 5. Fishing Rod (Right edge upright leaning on rocks)
                 {
                     key: "fishingRod",
                     x: 0.93,
@@ -1062,7 +1030,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.90
                 },
 
-                // 8. Map (Left camping chair seat)
+                // 6. Map (Left camping chair seat)
                 {
                     key: "map",
                     x: 0.22,
@@ -1070,7 +1038,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.78
                 },
 
-                // 9. Camera (Left foreground camping table / tripod)
+                // 7. Camera (Left foreground camping table / tripod)
                 {
                     key: "camera",
                     x: 0.24,
@@ -1078,7 +1046,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     scale: 0.72
                 },
 
-                // 10. Key (Prominently placed near center foreground fire pit / rocks)
+                // 8. Key (Prominently placed near center foreground fire pit / rocks)
                 {
                     key: "key",
                     x: 0.44,
@@ -1452,7 +1420,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          ENHANCED GAME-LIKE BEAR (WALKING CORRECTLY TOWARDS CAMP & ANIMATED)
+          ENHANCED GAME-LIKE BEAR
         =================================================*/
 
         function drawBear() {
