@@ -779,7 +779,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
           START MISSION
         =================================================*/
 
-        function startMission() {
+        function initMission() {
 
             stopSound(
                 bgMusic
@@ -3712,7 +3712,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             startMission.addEventListener(
                 "click",
-                startMission
+                initMission
             );
         }
 
@@ -3745,7 +3745,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     );
 
 
-                    startMission();
+                    initMission();
 
                 }
             );
