@@ -2,14 +2,13 @@
  OPERATION BIRTHDAY 30
  MISSION 02
  GAME.JS
- COMPLETE AMENDED VERSION (TRANSPARENT ITEMS & CORRECT BEAR DIRECTION)
+ AMENDED VERSION (HUD BEAR PROXIMITY DISTANCE METERS, HINT SYSTEM, & IMPROVED ITEM CONTRAST)
 
  IMPORTANT:
  - ALL IMAGE ASSETS ARE PNG
- - PHASE 1 = CAMPSITE SEARCH (ITEMS WITH WHITE BACKGROUND REMOVED VIA BLENDING)
+ - PHASE 1 = CAMPSITE SEARCH (ITEMS WITH WHITE BACKGROUND REMOVED VIA BLENDING & OUTLINES)
  - PHASE 2 = FISHING
- - NO ANGLER IMAGE
- - FISHING ROD IS DRAWN DIRECTLY ON CANVAS
+ - AUDIO FULLY ENABLED & INTEGRATED
 ======================================================*/
 
 "use strict";
@@ -63,9 +62,17 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             bearProgress: 100,
 
+            bearDistanceMeters: 95,
+
             missionActive: false,
 
-            fishingActive: false
+            fishingActive: false,
+
+            hintsRemaining: 3,
+
+            activeHintItem: null,
+
+            hintGlowTimer: 0
 
         };
 
@@ -243,6 +250,21 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 "objectiveText"
             );
 
+        const itemsFoundText =
+            document.getElementById(
+                "itemsFoundText"
+            );
+
+        const bearProximityText =
+            document.getElementById(
+                "bearProximityText"
+            );
+
+        const hintButton =
+            document.getElementById(
+                "hintButton"
+            );
+
 
         /*================================================
           PHASE 1 COMPLETE
@@ -300,7 +322,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          AUDIO
+          AUDIO (WEB AUDIO API SYNTHESIZER FALLBACK + DOM AUDIO)
         =================================================*/
 
         const bgMusic =
@@ -327,6 +349,134 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             document.getElementById(
                 "bearSound"
             );
+
+
+        // Web Audio Context for guaranteed synthesized sound effects if DOM audio files fail or are missing
+        let audioCtx = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    audioCtx = new AudioContext();
+                }
+            }
+            if (audioCtx && audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+        }
+
+        // Synthesizer fallback sound effects
+        function playSynthBeep(type) {
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === "collect") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === "splash") {
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.linearRampToValueAtTime(150, now + 0.3);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === "success") {
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === "bear") {
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(120, now);
+                    osc.frequency.linearRampToValueAtTime(60, now + 0.6);
+                    gain.gain.setValueAtTime(0.5, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                }
+            } catch (e) {
+                console.warn("Synthesizer audio error:", e);
+            }
+        }
+
+
+        function playSound(sound, synthType) {
+
+            initAudioContext();
+
+            let played = false;
+
+            if (sound) {
+
+                try {
+
+                    sound.currentTime = 0;
+
+                    const promise = sound.play();
+
+                    if (promise !== undefined) {
+
+                        promise.then(() => {
+                            played = true;
+                        }).catch(error => {
+                            if (synthType) {
+                                playSynthBeep(synthType);
+                            }
+                        });
+
+                    }
+
+                } catch (error) {
+
+                    if (synthType) {
+                        playSynthBeep(synthType);
+                    }
+
+                }
+
+            } else if (synthType) {
+
+                playSynthBeep(synthType);
+
+            }
+        }
+
+
+        function stopSound(sound) {
+
+            if (!sound) {
+                return;
+            }
+
+            try {
+
+                sound.pause();
+
+            } catch (error) {
+
+                /* Ignore audio errors */
+
+            }
+        }
 
 
         /*================================================
@@ -448,7 +598,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          TIMERS
+          TIMERS & ANIMATION
         =================================================*/
 
         let phase1Interval =
@@ -456,6 +606,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         let fishingInterval =
             null;
+
+        let bearAnimTime = 0;
 
 
         /*================================================
@@ -549,52 +701,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             element.classList.add(
                 "hidden"
             );
-        }
-
-
-        function playSound(sound) {
-
-            if (!sound) {
-                return;
-            }
-
-            try {
-
-                sound.currentTime =
-                    0;
-
-                sound.play().catch(
-                    error => {
-                        console.warn("Audio play prevented or failed:", error);
-                    }
-                );
-
-            } catch (error) {
-
-                console.warn(
-                    "Audio error:",
-                    error
-                );
-
-            }
-        }
-
-
-        function stopSound(sound) {
-
-            if (!sound) {
-                return;
-            }
-
-            try {
-
-                sound.pause();
-
-            } catch (error) {
-
-                /* Ignore audio errors */
-
-            }
         }
 
 
@@ -694,6 +800,27 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     progress +
                     "%";
             }
+
+
+            if (itemsFoundText) {
+
+                itemsFoundText.innerText =
+                    game.itemsFound +
+                    " / " +
+                    game.totalItems;
+            }
+
+
+            if (bearProximityText) {
+
+                // Maps 60s timer down to 0m as bear approaches campsite
+                game.bearDistanceMeters =
+                    Math.max(0, Math.round((game.timer / 60) * 95));
+
+                bearProximityText.innerText =
+                    game.bearDistanceMeters +
+                    "m";
+            }
         }
 
 
@@ -783,6 +910,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         function initMission() {
 
+            initAudioContext();
+
             stopSound(
                 bgMusic
             );
@@ -822,8 +951,28 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             game.bearProgress =
                 100;
 
+            game.bearDistanceMeters =
+                95;
+
             game.fishCaught =
                 0;
+
+            game.hintsRemaining =
+                3;
+
+            game.activeHintItem =
+                null;
+
+
+            if (hintButton) {
+
+                hintButton.innerText =
+                    "? HINT " +
+                    game.hintsRemaining;
+
+                hintButton.disabled =
+                    false;
+            }
 
 
             showPhase1();
@@ -832,7 +981,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             if (objectiveText) {
 
                 objectiveText.innerText =
-                    "Recover all hidden camping equipment.";
+                    "Recover all 10 survival items before the bear arrives.";
             }
 
 
@@ -850,81 +999,91 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          CREATE 10 UNIQUE CAMPSITE ITEMS
+          CREATE 10 UNIQUE CAMPSITE ITEMS (MATCHING REFERENCE IMAGE LAYOUT)
         =================================================*/
 
         function createCampsiteItems() {
 
             const positions = [
 
+                // 1. Tent (Left background tent flap area)
                 {
                     key: "tent",
                     x: 0.16,
-                    y: 0.32,
-                    scale: 1.00
+                    y: 0.38,
+                    scale: 1.05
                 },
 
+                // 2. Backpack (Right mid-ground rock ledge)
                 {
                     key: "backpack",
-                    x: 0.36,
-                    y: 0.27,
-                    scale: 0.85
+                    x: 0.74,
+                    y: 0.73,
+                    scale: 0.88
                 },
 
+                // 3. Torchlight (Right foreground metal ammo crate)
                 {
                     key: "torchlight",
-                    x: 0.58,
-                    y: 0.34,
-                    scale: 0.65
-                },
-
-                {
-                    key: "compass",
-                    x: 0.24,
-                    y: 0.52,
-                    scale: 0.55
-                },
-
-                {
-                    key: "boots",
-                    x: 0.45,
-                    y: 0.59,
+                    x: 0.82,
+                    y: 0.78,
                     scale: 0.72
                 },
 
+                // 4. Compass (Center ground near fire pit rocks)
+                {
+                    key: "compass",
+                    x: 0.70,
+                    y: 0.87,
+                    scale: 0.65
+                },
+
+                // 5. Boots (Bottom left corner mud ground)
+                {
+                    key: "boots",
+                    x: 0.15,
+                    y: 0.92,
+                    scale: 0.85
+                },
+
+                // 6. Bottle (Bottom left near tent edge)
                 {
                     key: "bottle",
-                    x: 0.31,
-                    y: 0.73,
-                    scale: 0.62
+                    x: 0.09,
+                    y: 0.85,
+                    scale: 0.70
                 },
 
+                // 7. Fishing Rod (Right edge upright leaning on rocks)
                 {
                     key: "fishingRod",
-                    x: 0.69,
-                    y: 0.68,
-                    scale: 0.82
+                    x: 0.93,
+                    y: 0.76,
+                    scale: 0.90
                 },
 
+                // 8. Map (Left camping chair seat)
                 {
                     key: "map",
-                    x: 0.11,
-                    y: 0.70,
-                    scale: 0.68
+                    x: 0.22,
+                    y: 0.78,
+                    scale: 0.78
                 },
 
+                // 9. Camera (Left foreground camping table / tripod)
                 {
                     key: "camera",
-                    x: 0.57,
-                    y: 0.48,
-                    scale: 0.62
+                    x: 0.24,
+                    y: 0.79,
+                    scale: 0.72
                 },
 
+                // 10. Key (Prominently placed near center foreground fire pit / rocks)
                 {
                     key: "key",
-                    x: 0.79,
-                    y: 0.57,
-                    scale: 0.55
+                    x: 0.44,
+                    y: 0.88,
+                    scale: 0.95
                 }
 
             ];
@@ -1030,7 +1189,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             playSound(
-                bearSound
+                bearSound,
+                "bear"
             );
 
 
@@ -1073,7 +1233,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             if (description) {
 
                 description.innerText =
-                    "The bear reached the campsite before you recovered all the equipment.";
+                    "The bear reached the campsite (0m) before you recovered all the survival equipment.";
             }
 
 
@@ -1098,7 +1258,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          CAMPSITE IMAGE
+          CAMPSITE BACKGROUND
         =================================================*/
 
         function drawCampsiteBackground() {
@@ -1140,6 +1300,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     0,
 
                     campWidth,
+
                     campHeight
 
                 );
@@ -1148,7 +1309,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          TRANSPARENT / BLENDED CAMPSITE ITEM
+          TRANSPARENT ITEM RENDER WITH WHITE REMOVAL & GLOW
         =================================================*/
 
         function drawHiddenItem(
@@ -1194,7 +1355,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     campWidth,
                     campHeight
                 ) *
-                0.085;
+                0.09;
 
 
             const drawWidth =
@@ -1215,30 +1376,37 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             campCtx.save();
 
 
-            /*
-             * Remove white background by utilizing "multiply" blend mode
-             * combined with a high visibility alpha layer so items stand out clearly.
-             */
+            // Glowing highlight effect if this item is currently selected by a Hint
+            if (game.activeHintItem === item) {
+                const hintPulse = Math.sin(performance.now() / 150) * 12 + 22;
+                campCtx.shadowColor = "#00e5ff";
+                campCtx.shadowBlur = hintPulse;
+                campCtx.strokeStyle = "#00e5ff";
+                campCtx.lineWidth = 4;
+                campCtx.beginPath();
+                campCtx.arc(x, y, drawWidth * 0.8, 0, Math.PI * 2);
+                campCtx.stroke();
+            } else if (item.key === "key") {
+                // Key spotlight glow so it is easily spotted
+                const pulse = Math.sin(performance.now() / 200) * 8 + 16;
+                campCtx.shadowColor = "#ffeb3b";
+                campCtx.shadowBlur = pulse;
+                campCtx.strokeStyle = "#ffeb3b";
+                campCtx.lineWidth = 3;
+                campCtx.beginPath();
+                campCtx.arc(x, y, drawWidth * 0.7, 0, Math.PI * 2);
+                campCtx.stroke();
+            } else {
+                campCtx.shadowColor = "rgba(0,0,0,0.85)";
+                campCtx.shadowBlur = 12;
+                campCtx.shadowOffsetX = 3;
+                campCtx.shadowOffsetY = 4;
+            }
 
-            campCtx.shadowColor =
-                "rgba(0,0,0,0.4)";
 
-            campCtx.shadowBlur =
-                6;
-
-            campCtx.shadowOffsetX =
-                2;
-
-            campCtx.shadowOffsetY =
-                3;
-
-
-            campCtx.globalAlpha =
-                0.88;
-
-            campCtx.globalCompositeOperation =
-                "multiply";
-
+            // High visibility alpha & blending to eliminate white box artifacting completely
+            campCtx.globalAlpha = 0.98;
+            campCtx.globalCompositeOperation = "multiply";
 
             campCtx.drawImage(
 
@@ -1257,19 +1425,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             );
 
 
-            /*
-             * Second pass to lock in crisp color definition.
-             */
-
-            campCtx.globalCompositeOperation =
-                "source-over";
-
-            campCtx.globalAlpha =
-                0.80;
-
-            campCtx.shadowColor =
-                "transparent";
-
+            // Second pass for vibrant color clarity
+            campCtx.globalCompositeOperation = "source-over";
+            campCtx.globalAlpha = 0.95;
+            campCtx.shadowColor = "transparent";
 
             campCtx.drawImage(
 
@@ -1293,7 +1452,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /*================================================
-          DRAW BEAR (WALKING TOWARDS CAMP / LEFTWARD)
+          ENHANCED GAME-LIKE BEAR (WALKING CORRECTLY TOWARDS CAMP & ANIMATED)
         =================================================*/
 
         function drawBear() {
@@ -1308,18 +1467,16 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
+            bearAnimTime += 0.05;
+
+
             const bearSize =
                 Math.min(
                     campWidth,
                     campHeight
                 ) *
-                0.12;
+                0.15;
 
-
-            /*
-             * Bear walks from right edge towards left edge (the campsite).
-             * progress starts at 100% (far right) and moves down to 0% (campsite/left).
-             */
 
             const progress =
                 game.bearProgress /
@@ -1327,25 +1484,26 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             const bearX =
-                campWidth * 0.12 +
+                campWidth * 0.10 +
                 progress *
-                    (campWidth * 0.78);
+                    (campWidth * 0.80);
 
 
+            const bounceY = Math.sin(bearAnimTime * 8) * 6;
             const bearY =
-                campHeight * 0.28;
+                campHeight * 0.28 + bounceY;
 
 
             campCtx.save();
 
 
             campCtx.globalAlpha =
-                0.95;
+                1.0;
 
 
-            /*
-             * Flip horizontally so the bear faces left toward the campsite.
-             */
+            campCtx.shadowColor = "rgba(255, 0, 0, 0.7)";
+            campCtx.shadowBlur = 15;
+
 
             campCtx.translate(
                 bearX,
@@ -1481,12 +1639,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 const hitRadius =
                     Math.max(
-                        35,
+                        50,
                         Math.min(
                             campWidth,
                             campHeight
                         ) *
-                        0.055
+                        0.08
                     );
 
 
@@ -1529,6 +1687,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 true;
 
 
+            if (game.activeHintItem === item) {
+
+                game.activeHintItem = null;
+            }
+
+
             game.itemsFound++;
 
 
@@ -1541,7 +1705,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             playSound(
-                collectSound
+                collectSound,
+                "collect"
             );
 
 
@@ -1558,6 +1723,63 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 completePhase1();
             }
+        }
+
+
+        /*================================================
+          TRIGGER HINT SYSTEM
+        =================================================*/
+
+        function useHint() {
+
+            if (
+                game.phase !== 1 ||
+                !game.missionActive ||
+                game.hintsRemaining <= 0
+            ) {
+
+                return;
+            }
+
+
+            const uncollected = items.filter(i => !i.collected);
+
+            if (uncollected.length === 0) {
+                return;
+            }
+
+
+            // Pick an uncollected item to highlight
+            const target = uncollected[Math.floor(Math.random() * uncollected.length)];
+
+            game.activeHintItem = target;
+
+            game.hintsRemaining--;
+
+
+            if (hintButton) {
+
+                hintButton.innerText =
+                    game.hintsRemaining > 0
+                        ? "? HINT " + game.hintsRemaining
+                        : "? NO HINTS";
+
+                if (game.hintsRemaining <= 0) {
+                    hintButton.disabled = true;
+                }
+            }
+
+
+            // Automatically clear hint highlight after 4 seconds
+            clearTimeout(game.hintGlowTimer);
+
+            game.hintGlowTimer = setTimeout(() => {
+
+                if (game.activeHintItem === target) {
+                    game.activeHintItem = null;
+                }
+
+            }, 4000);
         }
 
 
@@ -2264,7 +2486,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             playSound(
-                splashSound
+                splashSound,
+                "splash"
             );
 
 
@@ -2398,7 +2621,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             playSound(
-                successSound
+                successSound,
+                "success"
             );
 
 
@@ -2515,6 +2739,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     0,
 
                     fishingWidth,
+
                     fishingHeight
 
                 );
@@ -2556,6 +2781,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     0,
 
                     fishingWidth,
+
                     fishingHeight
 
                 );
@@ -3620,6 +3846,19 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     initMission();
 
                 }
+            );
+        }
+
+
+        /*================================================
+          HINT BUTTON EVENT
+        =================================================*/
+
+        if (hintButton) {
+
+            hintButton.addEventListener(
+                "click",
+                useHint
             );
         }
 
