@@ -12,9 +12,9 @@ const game = {
     isPhase1Active: false
 };
 
-// Item definitions (Mapped to 1200x675 canvas scale)
+// Item definitions (Mapped precisely to 1200x675 canvas scale)
 const hiddenItems = [
-    { id: "tent", isHotspot: true, x: 80, y: 280, width: 420, height: 280, found: false },
+    { id: "tent", isHotspot: true, x: 280, y: 320, width: 340, height: 220, found: false },
     { id: "backpack", isHotspot: false, x: 560, y: 455, width: 75, height: 85, found: false },
     { id: "torchlight", isHotspot: false, x: 815, y: 495, width: 55, height: 25, found: false },
     { id: "compass", isHotspot: false, x: 625, y: 390, width: 35, height: 35, found: false },
@@ -27,7 +27,7 @@ const hiddenItems = [
 ];
 
 /*======================================================
- AUDIO MANAGER
+ AUDIO MANAGER WITH AUTOPLAY UNLOCK
 ======================================================*/
 const audio = {
     bgm: document.getElementById("bgm"),
@@ -37,13 +37,24 @@ const audio = {
     bear: document.getElementById("bearSound")
 };
 
-function playSound(sound) {
-    if (audio[sound]) {
-        audio[sound].currentTime = 0;
-        audio[sound].play().catch(() => {
-            // Autoplay blocked by browser policy until interaction
-        });
+function playSound(soundName) {
+    const sound = audio[soundName];
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(err => console.warn(`Audio playback deferred [${soundName}]:`, err));
     }
+}
+
+// Unlocks web audio contexts across modern browser security blocks
+function unlockAudio() {
+    Object.values(audio).forEach(sound => {
+        if (sound) {
+            sound.play().then(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }).catch(() => {});
+        }
+    });
 }
 
 /*======================================================
@@ -114,7 +125,7 @@ function showIntro() {
 }
 
 function hideAllOverlays() {
-    const overlays = ["#summaryOverlay", "#birthdayEnding", "#missionOverlay", "#phase1", "#phase2", "#gameHUD"];
+    const overlays = ["#summaryOverlay", "#birthdayEnding", "#phase1", "#phase2", "#gameHUD"];
     overlays.forEach(selector => {
         const el = document.querySelector(selector);
         if (el) {
@@ -163,13 +174,15 @@ function startTerminal() {
  GAMEPLAY START (PHASE 1)
 ======================================================*/
 function startGame() {
+    unlockAudio();
     playSound("click");
+
     hideAllOverlays();
 
-    // Start background audio on primary click
+    // Play Background Audio
     if (audio.bgm) {
         audio.bgm.volume = 0.35;
-        audio.bgm.play().catch(e => console.log("BGM playback blocked:", e));
+        audio.bgm.play().catch(e => console.error("BGM blocked:", e));
     }
 
     if (introScreen) introScreen.style.display = "none";
@@ -197,7 +210,7 @@ function startGame() {
 }
 
 /*======================================================
- OBJECT CREATION & CLICK HANDLERS
+ OBJECT CREATION & MATCHING LOGIC
 ======================================================*/
 function createHiddenObjects() {
     const scene = document.getElementById("campScene");
@@ -220,7 +233,6 @@ function createHiddenObjects() {
         }
 
         elem.dataset.id = item.id;
-        elem.style.position = "absolute";
         elem.style.left = item.x + "px";
         elem.style.top = item.y + "px";
         elem.style.width = item.width + "px";
@@ -245,10 +257,17 @@ function collectItem(item, element) {
     playSound("found");
 
     if (xpText) xpText.innerHTML = game.xp;
-    element.remove();
 
+    // Smooth removal
+    element.style.opacity = "0";
+    element.style.pointerEvents = "none";
+    setTimeout(() => element.remove(), 200);
+
+    // Strike out word in inventory
     const invSlot = document.querySelector(`.inventory-item[data-id="${item.id}"]`);
-    if (invSlot) invSlot.classList.add("found");
+    if (invSlot) {
+        invSlot.classList.add("found");
+    }
 
     if (game.foundCount >= game.totalItems) {
         completePhase1();
