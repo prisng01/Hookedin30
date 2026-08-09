@@ -2,14 +2,15 @@ class MissionAudioManager {
     constructor() {
         this.muted = false;
         this.sounds = {
-            bg: new Audio('background.mp3'),
-            bear: new Audio('bear.mp3'),
-            collect: new Audio('collect.mp3'),
-            reelWinding: new Audio('freesound_community-fishingrod-winding-92375.mp3'),
-            fishPulling: new Audio('freesound_community-fly-reel-fish-pulling-saricione-94671.mp3'),
-            lakeAmbience: new Audio('mindmist-fishing-on-the-lake-310740.mp3'),
-            complete: new Audio('mission-complete.mp3'),
-            whoosh: new Audio('spinopel-fishing-rod-whoosh-411640.mp3')
+            bg: new Audio('assets/audio/background.mp3'),
+            bear: new Audio('assets/audio/bear.mp3'),
+            collect: new Audio('assets/audio/collect.mp3'),
+            reelWinding: new Audio('assets/audio/freesound_community-fishingrod-winding-92375.mp3'),
+            fishPulling: new Audio('assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3'),
+            lakeAmbience: new Audio('assets/audio/mindmist-fishing-on-the-lake-310740.mp3'),
+            complete: new Audio('assets/audio/mission-complete.mp3'),
+            whoosh: new Audio('assets/audio/spinopel-fishing-rod-whoosh-411640.mp3'),
+            splash: new Audio('assets/audio/splash.mp3')
         };
 
         this.sounds.bg.loop = true;
@@ -60,6 +61,38 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+// Asset Loading based on your exact file folder tree
+const assetImages = {
+    campsiteBg: new Image(),
+    lakeBg: new Image(),
+    bearWalk: new Image(),
+    items: {
+        'Boots': new Image(),
+        'Bottle': new Image(),
+        'Camera': new Image(),
+        'Compass': new Image(),
+        'FishingRod': new Image(),
+        'Key': new Image(),
+        'Map': new Image(),
+        'Tent': new Image(),
+        'Torchlight': new Image()
+    }
+};
+
+assetImages.campsiteBg.src = 'assets/backgrounds/campsite.png';
+assetImages.lakeBg.src = 'assets/backgrounds/lake.png';
+assetImages.bearWalk.src = 'assets/bear/bear_walk.png';
+
+assetImages.items['Boots'].src = 'assets/items/boots.png';
+assetImages.items['Bottle'].src = 'assets/items/bottle.png';
+assetImages.items['Camera'].src = 'assets/items/camera.png';
+assetImages.items['Compass'].src = 'assets/items/compass.png';
+assetImages.items['FishingRod'].src = 'assets/items/fishingRod.png';
+assetImages.items['Key'].src = 'assets/items/key.png';
+assetImages.items['Map'].src = 'assets/items/map.png';
+assetImages.items['Tent'].src = 'assets/items/tent.png';
+assetImages.items['Torchlight'].src = 'assets/items/torchlight.png';
+
 // Game States: MISSION_START -> PHASE1_SEARCH -> PHASE2_TRANSITION -> PHASE2_AIM -> PHASE2_POWER -> PHASE2_WAITING -> PHASE2_HOOKED -> PHASE2_REELING -> MISSION_END
 let state = 'MISSION_START';
 
@@ -67,7 +100,7 @@ let items = [];
 let itemsCollected = 0;
 const TOTAL_ITEMS = 10;
 let bearDistance = 100;
-const ITEM_NAMES = ['Flashlight', 'First Aid', 'Canteen', 'Matches', 'Map', 'Rope', 'Knife', 'Fuel', 'Compass', 'Flare'];
+const ITEM_NAMES = ['Boots', 'Bottle', 'Camera', 'Compass', 'FishingRod', 'Key', 'Map', 'Tent', 'Torchlight', 'Compass'];
 
 let fishCaught = 0;
 const TARGET_FISH = 6;
@@ -146,7 +179,7 @@ function startPhase1() {
             name: ITEM_NAMES[i],
             x: 100 + Math.random() * (width - 200),
             y: 140 + Math.random() * (height - 280),
-            radius: 16,
+            radius: 22,
             collected: false
         });
     }
@@ -309,49 +342,50 @@ function update(dt) {
 
 function render() {
     if (state === 'PHASE1_SEARCH') {
-        let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-        bgGrad.addColorStop(0, '#132219');
-        bgGrad.addColorStop(1, '#09120c');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, width, height);
-
-        ctx.fillStyle = '#8d6e63';
-        ctx.beginPath();
-        ctx.moveTo(width / 2, height / 2 - 50);
-        ctx.lineTo(width / 2 - 70, height / 2 + 50);
-        ctx.lineTo(width / 2 + 70, height / 2 + 50);
-        ctx.fill();
-
-        ctx.fillStyle = '#ff7043';
-        ctx.beginPath();
-        ctx.arc(width / 2, height / 2 + 90, 18, 0, Math.PI * 2);
-        ctx.fill();
+        if (assetImages.campsiteBg.complete && assetImages.campsiteBg.naturalWidth !== 0) {
+            ctx.drawImage(assetImages.campsiteBg, 0, 0, width, height);
+        } else {
+            let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+            bgGrad.addColorStop(0, '#132219');
+            bgGrad.addColorStop(1, '#09120c');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+        }
 
         items.forEach(item => {
             if (!item.collected) {
-                ctx.fillStyle = '#ffd54f';
-                ctx.beginPath();
-                ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                let itemImg = assetImages.items[item.name];
+                if (itemImg && itemImg.complete && itemImg.naturalWidth !== 0) {
+                    ctx.drawImage(itemImg, item.x - item.radius, item.y - item.radius, item.radius * 2, item.radius * 2);
+                } else {
+                    ctx.fillStyle = '#ffd54f';
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
 
-                ctx.fillStyle = '#000000';
-                ctx.font = 'bold 10px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText(item.name[0], item.x, item.y + 3);
+                    ctx.fillStyle = '#000000';
+                    ctx.font = 'bold 10px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(item.name[0], item.x, item.y + 3);
+                }
             }
         });
     }
 
     if (state.startsWith('PHASE2')) {
-        let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-        bgGrad.addColorStop(0, '#0d1b2a');
-        bgGrad.addColorStop(0.5, '#08121e');
-        bgGrad.addColorStop(1, '#02060c');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, width, height);
+        if (assetImages.lakeBg.complete && assetImages.lakeBg.naturalWidth !== 0) {
+            ctx.drawImage(assetImages.lakeBg, 0, 0, width, height);
+        } else {
+            let bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+            bgGrad.addColorStop(0, '#0d1b2a');
+            bgGrad.addColorStop(0.5, '#08121e');
+            bgGrad.addColorStop(1, '#02060c');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+        }
 
         if (state === 'PHASE2_AIM' || state === 'PHASE2_POWER') {
             let originX = width / 2;
