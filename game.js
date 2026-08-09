@@ -3,31 +3,53 @@
 ======================================================*/
 const game = {
     xp: 0,
-    timeRemaining: 90, // 1 minute 30 seconds
+    timeRemaining: 90,
     timerInterval: null,
     bearInterval: null,
-    bearDistance: 0, // 0 = far, 100 = arrived at camp
+    bearDistance: 0,
     foundCount: 0,
     totalItems: 10,
-    isPhase1Active: false
+    isPhase1Active: false,
+    
+    // Phase 2 Fishing State
+    isPhase2Active: false,
+    phase2TimeRemaining: 120, // 2 minutes
+    phase2TimerInterval: null,
+    reelProgress: 0,
+    reelDecayInterval: null,
+    fishBiteTimeout: null,
+    activeFish: null,
+    caughtFishes: {
+        blueFish: false,
+        goldFish: false,
+        heartFish: false,
+        rainbowFish: false
+    }
 };
 
-// Item definitions (Mapped precisely to 1200x675 canvas scale)
+const fishList = [
+    { id: "blueFish", name: "Blue Fish" },
+    { id: "goldFish", name: "Gold Fish" },
+    { id: "heartFish", name: "Heart Fish" },
+    { id: "rainbowFish", name: "Rainbow Fish" }
+];
+
+// Item definitions (Tent uses invisible hotspot; Backpack and others use assets/items/*.png)
 const hiddenItems = [
-    { id: "tent", isHotspot: true, x: 280, y: 320, width: 340, height: 220, found: false },
-    { id: "backpack", isHotspot: false, x: 560, y: 455, width: 75, height: 85, found: false },
-    { id: "torchlight", isHotspot: false, x: 815, y: 495, width: 55, height: 25, found: false },
-    { id: "compass", isHotspot: false, x: 625, y: 390, width: 35, height: 35, found: false },
-    { id: "boots", isHotspot: false, x: 940, y: 515, width: 75, height: 55, found: false },
-    { id: "bottle", isHotspot: false, x: 470, y: 470, width: 35, height: 65, found: false },
-    { id: "fishingRod", isHotspot: false, x: 1030, y: 235, width: 165, height: 38, found: false },
-    { id: "map", isHotspot: false, x: 720, y: 455, width: 80, height: 60, found: false },
-    { id: "camera", isHotspot: false, x: 365, y: 535, width: 55, height: 50, found: false },
-    { id: "key", isHotspot: false, x: 1090, y: 145, width: 32, height: 32, found: false }
+    { id: "tent", isHotspot: true, x: 210, y: 220, width: 440, height: 320, found: false },
+    { id: "backpack", isHotspot: false, x: 420, y: 410, width: 60, height: 65, found: false },
+    { id: "torchlight", isHotspot: false, x: 820, y: 490, width: 35, height: 25, found: false },
+    { id: "compass", isHotspot: false, x: 530, y: 520, width: 32, height: 32, found: false },
+    { id: "boots", isHotspot: false, x: 180, y: 510, width: 55, height: 45, found: false },
+    { id: "bottle", isHotspot: false, x: 470, y: 420, width: 25, height: 45, found: false },
+    { id: "fishingRod", isHotspot: false, x: 980, y: 450, width: 120, height: 30, found: false },
+    { id: "map", isHotspot: false, x: 120, y: 520, width: 50, height: 35, found: false },
+    { id: "camera", isHotspot: false, x: 340, y: 530, width: 40, height: 35, found: false },
+    { id: "key", isHotspot: false, x: 880, y: 480, width: 25, height: 25, found: false }
 ];
 
 /*======================================================
- AUDIO MANAGER WITH PAGE-LOAD START & FINISH STOP
+ AUDIO ENGINE
 ======================================================*/
 const audio = {
     bgm: document.getElementById("bgm"),
@@ -37,34 +59,39 @@ const audio = {
     bear: document.getElementById("bearSound")
 };
 
+let audioUnlocked = false;
+
+function unlockAndPlayAudio() {
+    if (audioUnlocked) return;
+    
+    Object.values(audio).forEach(sound => {
+        if (sound) {
+            sound.play().then(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }).catch(() => {});
+        }
+    });
+
+    if (audio.bgm) {
+        audio.bgm.volume = 0.35;
+        audio.bgm.play().then(() => {
+            audioUnlocked = true;
+        }).catch(err => console.warn("BGM waiting for user interaction:", err));
+    }
+}
+
+window.addEventListener("click", unlockAndPlayAudio, { once: true });
+window.addEventListener("keydown", unlockAndPlayAudio, { once: true });
+window.addEventListener("touchstart", unlockAndPlayAudio, { once: true });
+
 function playSound(soundName) {
     const sound = audio[soundName];
     if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(err => console.warn(`Audio playback deferred [${soundName}]:`, err));
+        sound.play().catch(err => console.warn(`Sound playback restricted [${soundName}]:`, err));
     }
 }
-
-// Start BGM immediately on page open or on first screen touch/click
-function startBGMOnOpen() {
-    if (audio.bgm && audio.bgm.paused) {
-        audio.bgm.volume = 0.35;
-        audio.bgm.play().then(() => {
-            // Remove listeners once audio successfully starts playing
-            document.removeEventListener("click", startBGMOnOpen);
-            document.removeEventListener("keydown", startBGMOnOpen);
-            document.removeEventListener("touchstart", startBGMOnOpen);
-        }).catch(() => {
-            // Autoplay blocked by browser policy; awaits first user interaction
-        });
-    }
-}
-
-// Attach load and interaction listeners to play music on arrival
-window.addEventListener("DOMContentLoaded", startBGMOnOpen);
-document.addEventListener("click", startBGMOnOpen);
-document.addEventListener("keydown", startBGMOnOpen);
-document.addEventListener("touchstart", startBGMOnOpen);
 
 /*======================================================
  DOM ELEMENTS
@@ -180,14 +207,13 @@ function startTerminal() {
 }
 
 /*======================================================
- GAMEPLAY START (PHASE 1)
+ GAME 1: CAMPSITE SEARCH (campsite.png)
 ======================================================*/
 function startGame() {
+    unlockAndPlayAudio();
     playSound("click");
-    hideAllOverlays();
 
-    // Ensure music continues playing
-    startBGMOnOpen();
+    hideAllOverlays();
 
     if (introScreen) introScreen.style.display = "none";
     if (gameHUD) {
@@ -213,9 +239,6 @@ function startGame() {
     startBearTracker();
 }
 
-/*======================================================
- OBJECT CREATION & MATCHING LOGIC
-======================================================*/
 function createHiddenObjects() {
     const scene = document.getElementById("campScene");
     if (!scene) return;
@@ -276,9 +299,6 @@ function collectItem(item, element) {
     }
 }
 
-/*======================================================
- TIMERS & BEAR AI
-======================================================*/
 function startTimer() {
     clearInterval(game.timerInterval);
     game.timeRemaining = 90;
@@ -317,9 +337,6 @@ function startBearTracker() {
     }, 1000);
 }
 
-/*======================================================
- PHASE COMPLETION & OVERLAYS
-======================================================*/
 function completePhase1() {
     game.isPhase1Active = false;
     clearInterval(game.timerInterval);
@@ -344,13 +361,166 @@ function endPhase1(success) {
     showBirthdayEnding();
 }
 
+/*======================================================
+ GAME 2: REALISTIC 4-FISH CHALLENGE (lake.png)
+======================================================*/
 function startPhase2() {
     playSound("click");
-    showBirthdayEnding();
+    hideAllOverlays();
+
+    if (inventoryPanel) {
+        inventoryPanel.classList.add("hidden");
+        inventoryPanel.style.display = "none";
+    }
+
+    if (phase2) {
+        phase2.classList.remove("hidden");
+        phase2.style.display = "flex";
+    }
+    if (gameHUD) {
+        gameHUD.classList.remove("hidden");
+        gameHUD.style.display = "flex";
+    }
+
+    game.isPhase2Active = true;
+    game.phase2TimeRemaining = 120; // 2 minutes
+    game.caughtFishes = { blueFish: false, goldFish: false, heartFish: false, rainbowFish: false };
+
+    // Reset UI Checklist
+    fishList.forEach(f => {
+        const goalEl = document.getElementById(`goal-${f.id}`);
+        if (goalEl) goalEl.classList.remove("caught");
+    });
+
+    // Start Phase 2 2-Minute Countdown
+    clearInterval(game.phase2TimerInterval);
+    game.phase2TimerInterval = setInterval(() => {
+        if (!game.isPhase2Active) return;
+
+        game.phase2TimeRemaining--;
+        const mins = String(Math.floor(game.phase2TimeRemaining / 60)).padStart(2, "0");
+        const secs = String(game.phase2TimeRemaining % 60).padStart(2, "0");
+        if (timerText) timerText.innerHTML = `${mins}:${secs}`;
+
+        if (game.phase2TimeRemaining <= 0) {
+            clearInterval(game.phase2TimerInterval);
+            game.isPhase2Active = false;
+            showBirthdayEnding();
+        }
+    }, 1000);
+
+    // Controls setup
+    window.removeEventListener("keydown", handleReelInput);
+    window.addEventListener("keydown", handleReelInput);
+
+    const fishingScene = document.getElementById("fishingScene");
+    if (fishingScene) {
+        fishingScene.onclick = reelIn;
+    }
+
+    // Decay interval for active fish
+    clearInterval(game.reelDecayInterval);
+    game.reelDecayInterval = setInterval(() => {
+        if (!game.isPhase2Active || !game.activeFish) return;
+
+        if (game.reelProgress > 0) {
+            game.reelProgress -= 3;
+            if (game.reelProgress < 0) game.reelProgress = 0;
+            const reelFill = document.getElementById("reelFill");
+            if (reelFill) reelFill.style.width = game.reelProgress + "%";
+        }
+    }, 100);
+
+    triggerNextFishBite();
 }
 
+function triggerNextFishBite() {
+    if (!game.isPhase2Active) return;
+
+    const statusEl = document.getElementById("fishStatus");
+    const controlsEl = document.getElementById("reelControls");
+    if (controlsEl) controlsEl.classList.add("hidden");
+    if (statusEl) statusEl.innerText = "Casting line into the lake... Waiting for a bite...";
+
+    // Get list of uncaught fish
+    const uncaught = fishList.filter(f => !game.caughtFishes[f.id]);
+    if (uncaught.length === 0) return; // All caught
+
+    // Random bite delay between 2 and 4 seconds
+    const delay = Math.floor(Math.random() * 2000) + 2000;
+    
+    clearTimeout(game.fishBiteTimeout);
+    game.fishBiteTimeout = setTimeout(() => {
+        if (!game.isPhase2Active) return;
+
+        // Pick random uncaught fish
+        game.activeFish = uncaught[Math.floor(Math.random() * uncaught.length)];
+        game.reelProgress = 10;
+
+        const activeNameEl = document.getElementById("activeFishName");
+        if (activeNameEl) activeNameEl.innerText = game.activeFish.name.toUpperCase();
+
+        if (statusEl) statusEl.innerText = "🎣 SOMETHING IS BITING!";
+        if (controlsEl) controlsEl.classList.remove("hidden");
+
+        playSound("click");
+    }, delay);
+}
+
+function handleReelInput(e) {
+    if (e.code === "Space") {
+        e.preventDefault();
+        reelIn();
+    }
+}
+
+function reelIn() {
+    if (!game.isPhase2Active || !game.activeFish) return;
+
+    game.reelProgress += 9;
+    playSound("click");
+
+    const reelFill = document.getElementById("reelFill");
+    if (reelFill) reelFill.style.width = Math.min(game.reelProgress, 100) + "%";
+
+    if (game.reelProgress >= 100) {
+        // Fish Successfully Caught
+        const caughtFish = game.activeFish;
+        game.caughtFishes[caughtFish.id] = true;
+        game.activeFish = null;
+
+        playSound("found");
+        game.xp += 150;
+        if (xpText) xpText.innerHTML = game.xp;
+
+        // Update Checklist UI
+        const goalEl = document.getElementById(`goal-${caughtFish.id}`);
+        if (goalEl) goalEl.classList.add("caught");
+
+        // Hide controls
+        const controlsEl = document.getElementById("reelControls");
+        if (controlsEl) controlsEl.classList.add("hidden");
+
+        // Check if all 4 fishes are caught
+        const totalCaught = Object.values(game.caughtFishes).filter(Boolean).length;
+        if (totalCaught >= 4) {
+            game.isPhase2Active = false;
+            clearInterval(game.phase2TimerInterval);
+            clearInterval(game.reelDecayInterval);
+            playSound("win");
+            game.xp += 600;
+            if (xpText) xpText.innerHTML = game.xp;
+            setTimeout(showBirthdayEnding, 1000);
+        } else {
+            triggerNextFishBite();
+        }
+    }
+}
+
+/*======================================================
+ GAME FINISH & ENDING
+======================================================*/
 function showBirthdayEnding() {
-    // STOP BGM when game finishes
     if (audio.bgm) {
         audio.bgm.pause();
         audio.bgm.currentTime = 0;
