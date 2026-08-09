@@ -61,7 +61,6 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Helper function to load images with error logging for GitHub Pages debugging
 function loadAsset(src) {
     const img = new Image();
     img.src = src;
@@ -69,45 +68,39 @@ function loadAsset(src) {
     return img;
 }
 
-// Asset Loading mapped safely with relative paths
 const assets = {
     backgrounds: {
         campsite: loadAsset('assets/backgrounds/campsite.png'),
         lake: loadAsset('assets/backgrounds/lake.png')
     },
     bear: {
-        walk: loadAsset('assets/bear/bear_walk.png')
+        walk: loadAsset('assets/bear/bear_walk.jpg')
     },
     items: {
         boots: loadAsset('assets/items/boots.png'),
         bottle: loadAsset('assets/items/bottle.png'),
-        camera: loadAsset('assets/items/camera.png'),
+        camera: loadAsset('assets/items/camera.jpg'),
         compass: loadAsset('assets/items/compass.png'),
         fishingRod: loadAsset('assets/items/fishingRod.png'),
+        hook: loadAsset('assets/items/hook.png'),
         key: loadAsset('assets/items/key.png'),
-        map: loadAsset('assets/items/map.png'),
-        tent: loadAsset('assets/items/tent.png'),
         torchlight: loadAsset('assets/items/torchlight.png')
     },
     fish: {
-        blueFish: loadAsset('assets/fish/blueFish.png'),
-        goldFish: loadAsset('assets/fish/goldFish.png'),
-        heartFish: loadAsset('assets/fish/heartFish.png'),
+        goldFish: loadAsset('assets/fish/goldFish_2.png'),
+        heartFish: loadAsset('assets/fish/heartFish_2.png'),
         rainbowFish: loadAsset('assets/fish/rainbowFish.png')
     },
     ui: {
-        cursor: loadAsset('assets/ui/cursor.png'),
-        hook: loadAsset('assets/ui/hook.png')
+        cursor: loadAsset('assets/ui/cursor.png')
     }
 };
 
 let state = 'MISSION_START';
-
 let items = [];
 let itemsCollected = 0;
 const TOTAL_ITEMS = 10;
-let bearDistance = 100;
-const ITEM_KEYS = ['boots', 'bottle', 'camera', 'compass', 'fishingRod', 'key', 'map', 'tent', 'torchlight', 'compass'];
+const ITEM_KEYS = ['boots', 'bottle', 'camera', 'compass', 'fishingRod', 'hook', 'key', 'torchlight'];
 
 let fishCaught = 0;
 const TARGET_FISH = 6;
@@ -116,6 +109,8 @@ let castPower = 0, powerDir = 1;
 let lineTension = 0, fishDistance = 0;
 let lureX = 0, lureY = 0;
 let reelActive = false;
+let currentFishType = 'goldFish';
+let bearDistance = 100;
 
 const startOverlay = document.getElementById('start-overlay');
 const phase2Overlay = document.getElementById('phase2-overlay');
@@ -178,15 +173,15 @@ function startPhase1() {
     valPrimary.innerText = `0 / ${TOTAL_ITEMS}`;
     labelSecondary.innerText = "Bear Proximity";
     valSecondary.innerText = `100m`;
-    promptEl.innerText = "MISSION 2 - PHASE 1: FIND 10 CAMPSITE SUPPLIES";
+    promptEl.innerText = "MISSION 2 - PHASE 1: CAMPSITE SEARCH";
 
     items = [];
     for (let i = 0; i < TOTAL_ITEMS; i++) {
         items.push({
-            key: ITEM_KEYS[i],
+            key: ITEM_KEYS[Math.floor(Math.random() * ITEM_KEYS.length)],
             x: 100 + Math.random() * (width - 200),
             y: 140 + Math.random() * (height - 280),
-            radius: 28,
+            radius: 32,
             collected: false
         });
     }
@@ -209,7 +204,7 @@ function startPhase2() {
     valPrimary.innerText = `0 / ${TARGET_FISH}`;
     labelSecondary.innerText = "Target Distance";
     valSecondary.innerText = `0.0m`;
-    promptEl.innerText = "MISSION 2 - PHASE 2: CLICK TO LOCK CAST AIM";
+    promptEl.innerText = "MISSION 2 - PHASE 2: REALISTIC FISHING GAME (CLICK TO LOCK AIM)";
 }
 
 window.addEventListener('pointerdown', (e) => {
@@ -219,7 +214,7 @@ window.addEventListener('pointerdown', (e) => {
         items.forEach(item => {
             if (!item.collected) {
                 let dist = Math.hypot(e.clientX - item.x, e.clientY - item.y);
-                if (dist < item.radius + 12) {
+                if (dist < item.radius + 15) {
                     item.collected = true;
                     itemsCollected++;
                     audio.play('collect');
@@ -250,7 +245,7 @@ window.addEventListener('pointerdown', (e) => {
     } else if (state === 'PHASE2_HOOKED') {
         audio.play('splash');
         state = 'PHASE2_REELING';
-        promptEl.innerText = "HOLD LEFT CLICK / SPACEBAR TO REEL IN!";
+        promptEl.innerText = "HOLD LEFT CLICK / SPACEBAR TO REEL IN CAREFULLY!";
     }
 });
 
@@ -262,6 +257,8 @@ window.addEventListener('keyup', (e) => { if (e.code === 'Space') { reelActive =
 function triggerBite() {
     if (state !== 'PHASE2_WAITING') return;
     state = 'PHASE2_HOOKED';
+    const fishTypes = ['goldFish', 'heartFish', 'rainbowFish'];
+    currentFishType = fishTypes[Math.floor(Math.random() * fishTypes.length)];
     audio.play('fishPulling');
     promptEl.innerText = "FISH STRIKE! CLICK TO HOOK!";
 }
@@ -287,7 +284,7 @@ function update(dt) {
             audio.play('bear');
             state = 'MISSION_END';
             document.getElementById('end-title').innerText = "MISSION 2 FAILED!";
-            document.getElementById('end-desc').innerText = "The bear reached the campsite before you collected all supplies.";
+            document.getElementById('end-desc').innerText = "The bear reached the campsite before you collected all supplies.<br><br><strong>Mission 3 is coming soon next week!</strong>";
             endOverlay.classList.remove('hidden');
         }
     }
@@ -336,8 +333,8 @@ function update(dt) {
                 audio.stopAllLoops();
                 audio.play('complete');
                 state = 'MISSION_END';
-                document.getElementById('end-title').innerText = "MISSION 2 ACCOMPLISHED!";
-                document.getElementById('end-desc').innerText = "You successfully completed both Phase 1 and Phase 2!";
+                document.getElementById('end-title').innerText = "MISSION 2 COMPLETE";
+                document.getElementById('end-desc').innerText = "You successfully completed Phase 1 (Campsite Search) and Phase 2 (Realistic Fishing Game)!<br><br><strong>Mission 3 is coming soon next week!</strong>";
                 endOverlay.classList.remove('hidden');
             } else {
                 promptEl.innerText = `FISH LANDED! (${fishCaught}/${TARGET_FISH}) - RE-AIM FOR NEXT CAST`;
@@ -347,9 +344,18 @@ function update(dt) {
     }
 }
 
+function drawBlendedImage(img, x, y, size) {
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(img, x - size * 1.15, y - size * 1.15, size * 2.3, size * 2.3);
+    ctx.restore();
+}
+
 function render() {
     if (state === 'PHASE1_SEARCH') {
-        // Draw Campsite Background
         if (assets.backgrounds.campsite.complete && assets.backgrounds.campsite.naturalWidth !== 0) {
             ctx.drawImage(assets.backgrounds.campsite, 0, 0, width, height);
         } else {
@@ -360,34 +366,41 @@ function render() {
             ctx.fillRect(0, 0, width, height);
         }
 
-        // Draw items using images from assets/items/
         items.forEach(item => {
             if (!item.collected) {
                 let img = assets.items[item.key];
                 if (img && img.complete && img.naturalWidth !== 0) {
-                    ctx.drawImage(img, item.x - item.radius, item.y - item.radius, item.radius * 2, item.radius * 2);
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = 'rgba(10, 20, 15, 0.7)';
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+
+                    drawBlendedImage(img, item.x, item.y, item.radius * 0.85);
                 } else {
-                    // Fallback shape if image hasn't loaded or returned 404
                     ctx.fillStyle = '#ffd54f';
                     ctx.beginPath();
                     ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.strokeStyle = '#000';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
                 }
             }
         });
 
-        // Draw Bear threat icon if loaded
         let bearImg = assets.bear.walk;
         if (bearImg && bearImg.complete && bearImg.naturalWidth !== 0) {
-            ctx.drawImage(bearImg, width - 90, 20, 60, 60);
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(width - 70, 60, 40, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(bearImg, width - 110, 20, 80, 80);
+            ctx.restore();
         }
     }
 
     if (state.startsWith('PHASE2')) {
-        // Draw Lake Background
         if (assets.backgrounds.lake.complete && assets.backgrounds.lake.naturalWidth !== 0) {
             ctx.drawImage(assets.backgrounds.lake, 0, 0, width, height);
         } else {
@@ -424,14 +437,18 @@ function render() {
             ctx.quadraticCurveTo(width / 2, lureY + sag, lureX, lureY);
             ctx.stroke();
 
-            // Draw hook UI asset if loaded
-            let hookImg = assets.ui.hook;
-            if (hookImg && hookImg.complete && hookImg.naturalWidth !== 0) {
-                ctx.drawImage(hookImg, lureX - 12, lureY - 12, 24, 24);
+            let fishImg = assets.fish[currentFishType];
+            if (fishImg && fishImg.complete && fishImg.naturalWidth !== 0) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.ellipse(lureX, lureY, 28, 18, 0, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(fishImg, lureX - 35, lureY - 25, 70, 50);
+                ctx.restore();
             } else {
                 ctx.fillStyle = '#81d4fa';
                 ctx.beginPath();
-                ctx.arc(lureX, lureY, 7, 0, Math.PI * 2);
+                ctx.arc(lureX, lureY, 10, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
