@@ -27,6 +27,16 @@ body {
 }
 
 /*======================================================
+ CRISP IMAGE RENDERING FIXES
+======================================================*/
+.scene-bg,
+.collectible {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated; /* Sharpens high-res & retro visuals */
+}
+
+/*======================================================
  BUTTONS & UI COMPONENTS
 ======================================================*/
 .btn {
@@ -287,21 +297,26 @@ body {
     gap: 8px;
 }
 
+/* Word matching highlight effect */
 .inventory-item {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    padding: 8px 4px;
+    padding: 10px 6px;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: #A0AEC0;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .inventory-item.found {
-    background: rgba(57, 217, 138, 0.2);
+    background: rgba(57, 217, 138, 0.25);
     border-color: #39D98A;
     color: #39D98A;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(57, 217, 138, 0.5);
+    transform: scale(1.05);
     text-decoration: line-through;
 }
 
@@ -314,38 +329,40 @@ body {
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    background-color: #1a2332;
 }
 
 .scene-bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 /* Item Blending & Hotspots */
 .collectible {
+    position: absolute;
     cursor: pointer;
-    transition: transform 0.2s ease, filter 0.2s ease;
-    background: transparent !important;
-    border: none !important;
-    mix-blend-mode: multiply; /* Removes white boxes behind item graphics */
+    transition: transform 0.15s ease, filter 0.15s ease, opacity 0.2s ease;
     object-fit: contain;
 }
 
 .collectible:hover {
-    transform: scale(1.1);
+    transform: scale(1.12);
     filter: drop-shadow(0 0 10px #39D98A);
 }
 
+/* Background Hotspots (e.g., Tent click area) */
 .collectible-hotspot {
     position: absolute;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0); /* Fully transparent hit zone */
-    z-index: 10;
+    border: 2px dashed transparent;
+    transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
 }
 
 .collectible-hotspot:hover {
-    filter: drop-shadow(0 0 15px #39D98A);
+    border-color: #39D98A;
+    background: rgba(57, 217, 138, 0.15);
 }
 
 /*======================================================
