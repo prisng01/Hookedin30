@@ -1,6 +1,6 @@
-/* ==========================================
-   OPERATION BIRTHDAY 30: MISSION 02 - STYLES
-   ========================================== */
+/*======================================================
+  OPERATION BIRTHDAY 30: MISSION 02 - STYLES
+======================================================*/
 
 :root {
     --bg-dark: #0b0f19;
@@ -11,245 +11,1118 @@
     --border-color: rgba(57, 217, 255, 0.3);
 }
 
+
+/*======================================================
+  GLOBAL
+======================================================*/
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+
     width: 100vw;
-    height: 100dvh; /* Uses dynamic viewport height to account for browser toolbars nicely */
+    height: 100dvh;
+
     max-height: 100vh;
+
     display: flex;
     flex-direction: column;
+
     overflow: hidden;
+
     margin: 0;
     padding: 0;
 }
 
-/* Utility class to hide elements */
+
+/*======================================================
+  HIDDEN
+======================================================*/
+
 .hidden {
     display: none !important;
 }
 
-/* ==========================================
-   GAME HUD
-   ========================================== */
+
+/*======================================================
+  GAME HUD
+======================================================*/
+
 #gameHUD {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
-    padding: 8px 16px; /* Reduced vertical padding for laptop screens */
+
+    padding: 8px 16px;
+
     background: var(--hud-bg);
-    border-bottom: 1px solid var(--border-color);
-    pointer-events: none; /* Disables click on header wrapper by default */
+
+    border-bottom:
+        1px solid
+        var(--border-color);
+
+    pointer-events: none;
+
     z-index: 10;
+
     flex-shrink: 0;
+
+    min-height: 58px;
 }
 
-/* Re-enable pointer events for interactive elements inside the HUD */
+
+/* Re-enable buttons */
+
 #gameHUD button {
     pointer-events: auto;
 }
 
-.hudLeft, .hudRight {
+
+.hudLeft,
+.hudRight {
     display: flex;
+
     align-items: center;
+
     gap: 15px;
+
+    min-width: 180px;
 }
+
+
+.hudRight {
+    justify-content: flex-end;
+}
+
 
 .hudCenter {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
+    justify-content: center;
+
+    flex: 1;
+
+    text-align: center;
 }
 
-#timer, #timerDisplay {
+
+/*======================================================
+  HUD VALUES
+======================================================*/
+
+#timer,
+#xp,
+#score {
     font-family: monospace;
-    font-size: 1.2rem;
+
+    font-size: 1.1rem;
+
     font-weight: bold;
+
     color: var(--accent-cyan);
 }
 
-/* Bear Proximity Container & Tracker */
+
+.timerBox,
+.xpBox,
+.scoreBox {
+    font-family: monospace;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    color: var(--text-main);
+}
+
+
+/*======================================================
+  BEAR TRACKER
+======================================================*/
+
 .bearContainer {
     display: flex;
+
     align-items: center;
+
     gap: 8px;
 }
 
-.bearTrack {
-    width: 120px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
+
+.bearIcon,
+.campIcon {
+    font-size: 18px;
+
+    line-height: 1;
 }
 
-#bearProgress {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-cyan);
-    transition: width 0.3s ease;
+
+.bearTrack {
+    width: 120px;
+
+    height: 8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.1
+        );
+
+    border-radius: 4px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        var(--border-color);
 }
+
+
+#bearProgress {
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        var(--accent-cyan);
+
+    transition:
+        width 0.3s ease;
+}
+
 
 #bearProximityText {
     font-family: monospace;
+
     font-size: 10px;
+
     color: var(--accent-cyan);
+
     margin-top: 3px;
+
     letter-spacing: 1px;
 }
 
-/* Hint Button Styling & General Buttons */
-.btn {
-    background: rgba(57, 217, 255, 0.1);
-    color: var(--accent-cyan);
-    border: 1px solid var(--accent-cyan);
-    padding: 6px 14px;
-    font-size: 11px;
+
+#objectiveText {
     font-family: monospace;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+
+    font-size: 10px;
+
+    color: var(--text-main);
+
+    margin-top: 3px;
+
+    max-width: 420px;
 }
+
+
+#itemsFoundText {
+    font-family: monospace;
+
+    font-size: 10px;
+
+    color: var(--accent-cyan);
+
+    margin-top: 3px;
+}
+
+
+/*======================================================
+  BUTTONS
+======================================================*/
+
+.btn {
+    background:
+        rgba(
+            57,
+            217,
+            255,
+            0.1
+        );
+
+    color:
+        var(--accent-cyan);
+
+    border:
+        1px solid
+        var(--accent-cyan);
+
+    padding:
+        8px 16px;
+
+    font-size: 11px;
+
+    font-family: monospace;
+
+    font-weight: bold;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    transition:
+        all 0.2s
+        ease-in-out;
+}
+
 
 .btn:hover {
-    background: var(--accent-cyan);
-    color: var(--bg-dark);
-    box-shadow: 0 0 10px var(--accent-glow);
+    background:
+        var(--accent-cyan);
+
+    color:
+        var(--bg-dark);
+
+    box-shadow:
+        0 0 10px
+        var(--accent-glow);
 }
 
-/* ==========================================
-   GAME VIEWPORT CONTAINER & SCREENS
-   ========================================== */
+
+.btn:disabled {
+    opacity: 0.45;
+
+    cursor:
+        not-allowed;
+
+    pointer-events:
+        none;
+}
+
+
+/*======================================================
+  GAME VIEWPORT
+======================================================*/
+
 #gameContainer {
     flex: 1;
+
     position: relative;
+
     width: 100%;
-    min-height: 0; /* Crucial flexbox fix so container shrinks properly inside tight vertical screens */
+
+    min-height: 0;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
-    background: radial-gradient(circle at center, #151c2e 0%, #0b0f19 100%);
+
+    background:
+        radial-gradient(
+            circle at center,
+            #151c2e 0%,
+            #0b0f19 100%
+        );
+
     overflow: hidden;
 }
+
+
+/*======================================================
+  CANVAS
+======================================================*/
 
 canvas {
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     display: block;
+
+    touch-action: none;
 }
 
-/* Overlays & Phase Screens */
-#loadingScreen, #introScreen, #phase1Complete, #phase2, #missionComplete {
+
+/*======================================================
+  OVERLAY SCREENS
+======================================================*/
+
+#loadingScreen,
+#introScreen,
+#phase1Complete,
+#phase2,
+#missionComplete {
     position: absolute;
+
     inset: 0;
-    background: var(--bg-dark);
+
+    background:
+        var(--bg-dark);
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
+
     z-index: 20;
+
     gap: 20px;
+
     text-align: center;
+
     padding: 20px;
+
+    overflow-y: auto;
 }
 
-#introScreen h1, #phase1Complete h1, #missionComplete h1 {
-    color: var(--accent-cyan);
+
+#introScreen h1,
+#phase1Complete h1,
+#missionComplete h1 {
+    color:
+        var(--accent-cyan);
+
     font-family: monospace;
-    text-shadow: 0 0 10px var(--accent-glow);
+
+    text-shadow:
+        0 0 10px
+        var(--accent-glow);
 }
 
-/* Fishing Mini-game Layout Elements */
+
+/*======================================================
+  LOADING SCREEN
+======================================================*/
+
+.loadingContent {
+    width: min(
+        90vw,
+        600px
+    );
+
+    text-align: center;
+}
+
+
+.loadingContent h1 {
+    color:
+        var(--accent-cyan);
+
+    font-family: monospace;
+
+    letter-spacing: 3px;
+}
+
+
+.loadingContent h2 {
+    margin-top: 8px;
+
+    font-family: monospace;
+
+    font-size: 14px;
+
+    letter-spacing: 4px;
+}
+
+
+#loadingText {
+    margin:
+        25px 0 12px;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    color:
+        var(--accent-cyan);
+}
+
+
+.loadingBar {
+    width: 100%;
+
+    height: 8px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 4px;
+
+    overflow: hidden;
+}
+
+
+#loadingFill {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        var(--accent-cyan);
+
+    box-shadow:
+        0 0 10px
+        var(--accent-glow);
+
+    transition:
+        width 0.1s linear;
+}
+
+
+/*======================================================
+  INTRO
+======================================================*/
+
+.introContent,
+.missionResult {
+    width: min(
+        92vw,
+        900px
+    );
+
+    padding: 30px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    background:
+        rgba(
+            11,
+            15,
+            25,
+            0.88
+        );
+
+    box-shadow:
+        0 0 30px
+        rgba(
+            57,
+            217,
+            255,
+            0.08
+        );
+
+    border-radius: 8px;
+}
+
+
+.missionLabel {
+    color:
+        var(--accent-cyan);
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 12px;
+}
+
+
+.introContent h1 {
+    color:
+        var(--accent-cyan);
+
+    font-family: monospace;
+
+    letter-spacing: 2px;
+}
+
+
+.introContent h2 {
+    font-family: monospace;
+
+    font-size: 14px;
+
+    margin-top: 8px;
+
+    letter-spacing: 4px;
+}
+
+
+#terminal {
+    width: 100%;
+
+    min-height: 180px;
+
+    margin:
+        25px 0;
+
+    padding: 18px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    border:
+        1px solid
+        var(--border-color);
+
+    text-align: left;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    color:
+        var(--accent-cyan);
+
+    overflow-y: auto;
+}
+
+
+/*======================================================
+  FISHING HEADER
+======================================================*/
+
 .fishingHeader {
     display: flex;
-    gap: 30px;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
     font-family: monospace;
+
     font-size: 1.1rem;
+
     margin-bottom: 20px;
 }
 
+
+.fishingHeader h1 {
+    color:
+        var(--accent-cyan);
+
+    text-shadow:
+        0 0 10px
+        var(--accent-glow);
+}
+
+
+.fishingHeader p {
+    font-size: 12px;
+}
+
+
+/*======================================================
+  FISHING STATS
+======================================================*/
+
+.fishingStats {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    margin-bottom: 20px;
+
+    font-family: monospace;
+
+    font-size: 13px;
+}
+
+
+.fishCounter,
+.fishTimer,
+.fishScore {
+    padding:
+        7px 12px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.04
+        );
+
+    border-radius: 5px;
+}
+
+
+/*======================================================
+  FISHING CONTROLS
+======================================================*/
+
 .fishingControls {
     display: flex;
+
     flex-direction: column;
+
     gap: 15px;
+
     align-items: center;
 }
 
-.meterFill {
-    width: 200px;
-    height: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
-}
 
-#powerFill, #reelFill {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-cyan);
-}
+.powerContainer,
+.reelContainer {
+    width: min(
+        80vw,
+        300px
+    );
 
-#bite, #hook {
+    text-align: center;
+
     font-family: monospace;
-    font-weight: bold;
-    color: var(--accent-cyan);
-    font-size: 1.5rem;
+
+    font-size: 11px;
 }
 
-/* ==========================================
-   INVENTORY PANEL
-   ========================================== */
+
+.powerContainer p,
+.reelContainer p {
+    margin-bottom: 6px;
+}
+
+
+.meterFill,
+.powerBar,
+.reelBar {
+    width: 100%;
+
+    height: 12px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.05
+        );
+}
+
+
+#powerFill,
+#reelFill {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        var(--accent-cyan);
+
+    transition:
+        width 0.08s linear;
+}
+
+
+#bite,
+#hook {
+    font-family: monospace;
+
+    font-weight: bold;
+
+    color:
+        var(--accent-cyan);
+
+    font-size: 1.5rem;
+
+    text-shadow:
+        0 0 10px
+        var(--accent-glow);
+}
+
+
+/*======================================================
+  INVENTORY PANEL
+======================================================*/
+
 #inventoryPanel {
     display: flex;
+
     justify-content: center;
-    gap: 10px;
-    padding: 10px; /* Compact padding for laptops */
-    background: var(--hud-bg);
-    border-top: 1px solid var(--border-color);
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    background:
+        var(--hud-bg);
+
+    border-top:
+        1px solid
+        var(--border-color);
+
     z-index: 10;
+
     flex-shrink: 0;
+
     overflow-x: auto;
+
+    width: 100%;
+
+    scrollbar-width: thin;
 }
+
+
+/*
+ * 10 items need to fit on laptop screens.
+ */
 
 .inventorySlot {
-    width: 75px; /* Scaled down slightly to fit all 8 items horizontally on MacBook screens */
-    height: 42px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
+    width: 86px;
+
+    min-width: 86px;
+
+    height: 48px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.05
+        );
+
+    border:
+        1px solid
+        var(--border-color);
+
     border-radius: 6px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
-    transition: all 0.3s ease;
-    opacity: 0.45; /* Default uncollected state */
+
+    transition:
+        all 0.3s ease;
+
+    opacity: 0.45;
+
     flex-shrink: 0;
+
+    text-align: center;
 }
+
 
 .inventorySlot p {
-    font-size: 10px;
+    font-size: 9px;
+
     font-family: monospace;
-    color: var(--text-main);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+
+    color:
+        var(--text-main);
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.3px;
+
+    line-height: 1.2;
 }
 
-/* Active/Collected state styles toggled via JS */
+
+/* Collected state */
+
 .inventorySlot.collected {
     opacity: 1;
-    border-color: var(--accent-cyan);
-    background: rgba(57, 217, 255, 0.15);
-    box-shadow: 0 0 8px var(--accent-glow);
+
+    border-color:
+        var(--accent-cyan);
+
+    background:
+        rgba(
+            57,
+            217,
+            255,
+            0.15
+        );
+
+    box-shadow:
+        0 0 8px
+        var(--accent-glow);
+}
+
+
+/*======================================================
+  MISSION REPORT
+======================================================*/
+
+.reportGrid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                140px,
+                1fr
+            )
+        );
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin:
+        20px 0;
+}
+
+
+.reportCard {
+    padding: 15px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 6px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.04
+        );
+}
+
+
+.reportCard h3 {
+    font-family: monospace;
+
+    font-size: 11px;
+
+    color:
+        var(--accent-cyan);
+
+    margin-bottom: 8px;
+}
+
+
+.reportCard p {
+    font-family: monospace;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+
+.badges {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin:
+        5px 0 20px;
+}
+
+
+.badge {
+    padding:
+        8px 12px;
+
+    border:
+        1px solid
+        var(--accent-cyan);
+
+    border-radius: 5px;
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    color:
+        var(--accent-cyan);
+}
+
+
+.endingMessage {
+    max-width: 650px;
+
+    margin-bottom: 20px;
+}
+
+
+.endingMessage h2 {
+    margin-bottom: 10px;
+}
+
+
+.endingMessage p {
+    font-family: monospace;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/*======================================================
+  MOBILE / SMALL LAPTOP
+======================================================*/
+
+@media (
+    max-width: 900px
+) {
+
+    #gameHUD {
+        padding:
+            6px 8px;
+    }
+
+
+    .hudLeft,
+    .hudRight {
+        gap: 7px;
+
+        min-width: auto;
+    }
+
+
+    .hudCenter {
+        min-width: 0;
+    }
+
+
+    .bearTrack {
+        width: 80px;
+    }
+
+
+    #objectiveText {
+        max-width: 220px;
+    }
+
+
+    .inventorySlot {
+        width: 76px;
+
+        min-width: 76px;
+
+        height: 44px;
+    }
+
+
+    .inventorySlot p {
+        font-size: 8px;
+    }
+
+}
+
+
+@media (
+    max-width: 600px
+) {
+
+    .hudLeft {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 3px;
+    }
+
+
+    .hudRight {
+        display: none;
+    }
+
+
+    .bearTrack {
+        width: 70px;
+    }
+
+
+    #bearProximityText,
+    #itemsFoundText {
+        display: none;
+    }
+
+
+    .fishingStats {
+        gap: 8px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .reportGrid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .introContent,
+    .missionResult {
+        padding: 20px;
+    }
+
 }
