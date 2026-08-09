@@ -15,12 +15,8 @@ let fishCaught = 0;
 let totalFishTarget = 5;
 let fishingTimer = 60;
 let fishingTimerInterval = null;
-let currentFishTarget = null;
-let isReeling = false;
-let reelProgress = 0;
 
 // ---------- HIDDEN ITEMS DEFINITION ----------
-// Set 'isHotspot: true' for items already painted into the background artwork (like the Tent)
 const hiddenItems = [
     { id: "tent", isHotspot: true, x: 80, y: 280, width: 420, height: 280, found: false },
     { id: "backpack", x: 560, y: 455, width: 75, height: 85, found: false },
@@ -92,7 +88,7 @@ function startMission() {
 }
 
 function startPhase1Timer() {
-    phase1Timer = 90; // 1.5 minutes
+    phase1Timer = 90;
     updateTimerHUD(phase1Timer);
 
     if (phase1TimerInterval) clearInterval(phase1TimerInterval);
@@ -137,11 +133,9 @@ function createHiddenObjects() {
         let elem;
 
         if (item.isHotspot) {
-            // Hotspot for objects already drawn in background (e.g. Tent)
             elem = document.createElement("div");
             elem.className = "collectible-hotspot";
         } else {
-            // Image collectibles
             elem = document.createElement("img");
             elem.src = `assets/items/${item.id}.png`;
             elem.className = "collectible";
@@ -168,18 +162,15 @@ function collectItem(item, elem, event) {
     itemsFoundCount++;
     addXP(100);
 
-    // Show floating XP text at click position
     showFloatingXP(event.clientX, event.clientY, "+100 XP");
 
-    // Highlight slot in inventory UI
+    // Matches dynamic dataset in index.html inventory grid
     const slot = document.querySelector(`.inventorySlot[data-item="${item.id}"]`);
     if (slot) slot.classList.add("found");
 
-    // Play item collect animation/remove
     elem.classList.add("found");
     setTimeout(() => elem.remove(), 400);
 
-    // Check if all items found
     if (itemsFoundCount >= hiddenItems.length) {
         clearInterval(phase1TimerInterval);
         setTimeout(transitionToPhase2, 1000);
@@ -199,6 +190,7 @@ function showFloatingXP(x, y, text) {
 
 function addXP(amount) {
     playerXP += amount;
+    // Updated to match xpText span ID
     const xpElem = document.getElementById("xpText");
     if (xpElem) xpElem.innerText = playerXP;
 }
@@ -288,6 +280,7 @@ function catchFish(fishElem) {
 }
 
 function updateFishHUD() {
+    // Matches updated fishCounter span ID in index.html
     const counter = document.getElementById("fishCounter");
     if (counter) counter.innerText = `${fishCaught} / ${totalFishTarget}`;
 }
@@ -303,12 +296,10 @@ function showBirthdayEnding() {
     const finalXP = document.getElementById("finalXP");
     if (finalXP) finalXP.innerText = playerXP;
 
-    // Bind button redirect to your next GitHub Mission URL
     const nextBtn = document.getElementById("replayMission");
     if (nextBtn) {
         nextBtn.innerText = "Proceed to Mission 3 →";
         nextBtn.onclick = () => {
-            // Update this link to your actual GitHub Pages Mission 3 URL
             window.location.href = "https://YOUR-USERNAME.github.io/MISSION-3-REPO/";
         };
     }
