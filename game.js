@@ -1006,14 +1006,14 @@ let fishFightInterval = null;
 function startReeling() {
     if (!fishing.reeling) return;
 
-    reelProgress = 0;
+    reelProgress = 50; // Initialized to 50 so fish doesn't immediately escape
     const bar = document.getElementById("reelFill");
-    if (bar) bar.style.width = "0%";
+    if (bar) bar.style.width = reelProgress + "%";
 
     clearInterval(fishFightInterval);
 
     fishFightInterval = setInterval(() => {
-        reelProgress -= 2;
+        reelProgress -= 3;
         if (reelProgress < 0) reelProgress = 0;
         if (bar) bar.style.width = reelProgress + "%";
 
@@ -1025,6 +1025,7 @@ function startReeling() {
 
 document.addEventListener("keydown", (e) => {
     if (e.code !== "Space") return;
+    e.preventDefault(); // Prevents page scrolling on spacebar press
     if (!fishing.reeling) return;
 
     reelProgress += 8;
