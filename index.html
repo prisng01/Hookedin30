@@ -60,7 +60,10 @@
      INTRO SCREEN
 ===================================================== -->
 
-<div id="introScreen" class="hidden">
+<div
+    id="introScreen"
+    class="hidden"
+>
 
     <div class="introContent">
 
@@ -191,20 +194,154 @@
 
 
 <!-- =====================================================
-     MAIN GAME VIEWPORT
+     MAIN GAME CONTAINER
 ===================================================== -->
 
 <main id="gameContainer">
 
-    <!-- PHASE 1 -->
-    <canvas id="gameCanvas"></canvas>
 
+    <!-- =================================================
+         PHASE 1 CAMPSITE
+    ================================================= -->
 
-    <!-- PHASE 2 -->
-    <canvas
-        id="fishingCanvas"
+    <div
+        id="phase1"
         class="hidden"
-    ></canvas>
+    >
+
+        <canvas
+            id="gameCanvas"
+        ></canvas>
+
+    </div>
+
+
+    <!-- =================================================
+         PHASE 2 FISHING
+    ================================================= -->
+
+    <div
+        id="phase2"
+        class="hidden"
+    >
+
+        <canvas
+            id="fishingCanvas"
+        ></canvas>
+
+
+        <div class="fishingHeader">
+
+            <h1>
+                🎣 FISHING CHALLENGE
+            </h1>
+
+            <p>
+                Catch
+                <strong>6 Special Fish</strong>
+                before time runs out.
+            </p>
+
+        </div>
+
+
+        <div class="fishingStats">
+
+            <div class="fishCounter">
+
+                🐟
+
+                <span id="fishCaught">
+                    0
+                </span>
+
+                / 6
+
+            </div>
+
+
+            <div class="fishTimer">
+
+                ⏱
+
+                <span id="fishingTimer">
+                    01:00
+                </span>
+
+            </div>
+
+
+            <div class="fishScore">
+
+                ⭐ Score
+
+                <span id="fishScore">
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="powerContainer">
+
+            <p>
+                Casting Power
+            </p>
+
+            <div class="powerBar">
+
+                <div id="powerFill"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="reelContainer">
+
+            <p>
+                Reel Strength
+            </p>
+
+            <div class="reelBar">
+
+                <div id="reelFill"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="fishingControls">
+
+            <button
+                id="castRod"
+                class="btn"
+            >
+                🎣 CAST ROD
+            </button>
+
+
+            <div
+                id="bite"
+                class="hidden"
+            >
+                ❗ BITE!
+            </div>
+
+
+            <div
+                id="hook"
+                class="hidden"
+            >
+                🎣 HOOKED!
+            </div>
+
+        </div>
+
+    </div>
 
 </main>
 
@@ -224,9 +361,11 @@
             MISSION OBJECTIVE COMPLETE
         </div>
 
+
         <h1>
             🏕 CAMP SUCCESSFULLY SECURED
         </h1>
+
 
         <p>
             Excellent work, Chief.
@@ -234,11 +373,14 @@
             the bear arrived.
         </p>
 
+
         <p>
             ⭐ XP Earned:
+
             <span id="phase1XP">
                 0
             </span>
+
         </p>
 
 
@@ -248,129 +390,6 @@
         >
             🎣 CONTINUE TO FISHING CHALLENGE
         </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     PHASE 2 - FISHING
-===================================================== -->
-
-<div
-    id="phase2"
-    class="hidden"
->
-
-    <div class="fishingHeader">
-
-        <h1>
-            🎣 FISHING CHALLENGE
-        </h1>
-
-        <p>
-            Catch
-            <strong>6 Special Fish</strong>
-            before time runs out.
-        </p>
-
-    </div>
-
-
-    <div class="fishingStats">
-
-        <div class="fishCounter">
-
-            🐟
-
-            <span id="fishCaught">
-                0
-            </span>
-
-            / 6
-
-        </div>
-
-
-        <div class="fishTimer">
-
-            ⏱
-
-            <span id="fishingTimer">
-                01:00
-            </span>
-
-        </div>
-
-
-        <div class="fishScore">
-
-            ⭐ Score
-
-            <span id="fishScore">
-                0
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="powerContainer">
-
-        <p>
-            Casting Power
-        </p>
-
-        <div class="powerBar">
-
-            <div id="powerFill"></div>
-
-        </div>
-
-    </div>
-
-
-    <div class="reelContainer">
-
-        <p>
-            Reel Strength
-        </p>
-
-        <div class="reelBar">
-
-            <div id="reelFill"></div>
-
-        </div>
-
-    </div>
-
-
-    <div class="fishingControls">
-
-        <button
-            id="castRod"
-            class="btn"
-        >
-            🎣 CAST ROD
-        </button>
-
-
-        <div
-            id="bite"
-            class="hidden"
-        >
-            ❗ BITE!
-        </div>
-
-
-        <div
-            id="hook"
-            class="hidden"
-        >
-            🎣 HOOKED!
-        </div>
 
     </div>
 
@@ -392,12 +411,14 @@
             OPERATION BIRTHDAY 30
         </div>
 
+
         <h1>
             🏆 MISSION COMPLETE
         </h1>
 
 
         <div class="reportGrid">
+
 
             <div class="reportCard">
 
@@ -450,6 +471,7 @@
 
             </div>
 
+
         </div>
 
 
@@ -458,6 +480,7 @@
             <div class="badge">
                 🏕 Camp Survivor
             </div>
+
 
             <div class="badge">
                 🎣 Master Angler
@@ -472,11 +495,13 @@
                 Amazing work, Chief. ❤️
             </h2>
 
+
             <p>
                 You've completed another mission
                 and uncovered another piece of
                 our secret adventure.
             </p>
+
 
             <p>
                 The next mission remains encrypted...
@@ -508,7 +533,7 @@
     class="hidden"
 >
 
-    <!-- 1 -->
+
     <div class="inventorySlot">
 
         <p>
@@ -518,7 +543,6 @@
     </div>
 
 
-    <!-- 2 -->
     <div class="inventorySlot">
 
         <p>
@@ -528,7 +552,6 @@
     </div>
 
 
-    <!-- 3 -->
     <div class="inventorySlot">
 
         <p>
@@ -538,7 +561,6 @@
     </div>
 
 
-    <!-- 4 -->
     <div class="inventorySlot">
 
         <p>
@@ -548,7 +570,6 @@
     </div>
 
 
-    <!-- 5 -->
     <div class="inventorySlot">
 
         <p>
@@ -558,7 +579,6 @@
     </div>
 
 
-    <!-- 6 -->
     <div class="inventorySlot">
 
         <p>
@@ -568,7 +588,6 @@
     </div>
 
 
-    <!-- 7 -->
     <div class="inventorySlot">
 
         <p>
@@ -578,7 +597,6 @@
     </div>
 
 
-    <!-- 8 -->
     <div class="inventorySlot">
 
         <p>
@@ -588,7 +606,6 @@
     </div>
 
 
-    <!-- 9 -->
     <div class="inventorySlot">
 
         <p>
@@ -598,7 +615,6 @@
     </div>
 
 
-    <!-- 10 -->
     <div class="inventorySlot">
 
         <p>
@@ -606,6 +622,7 @@
         </p>
 
     </div>
+
 
 </section>
 
@@ -646,10 +663,11 @@
 
 
 <!-- =====================================================
-     JAVASCRIPT
+     GAME JAVASCRIPT
 ===================================================== -->
 
 <script src="game.js"></script>
+
 
 </body>
 
