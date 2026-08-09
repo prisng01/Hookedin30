@@ -18,20 +18,19 @@ let gameState = {
     bearProgressPercent: 0,
     itemsFound: 0,
     isPaused: false,
-    gameInterval: null,
-    isFishingActive: false,
-    fishHooked: false
+    gameInterval: null
 };
 
+// Item list matching index.html inventoryPanel slots with accurate coordinates for campsite.png
 let items = [
-    { name: 'Torchlight', collected: false, x: 150, y: 200, width: 45, height: 45 },
-    { name: 'Compass', collected: false, x: 300, y: 350, width: 45, height: 45 },
-    { name: 'Boots', collected: false, x: 500, y: 250, width: 45, height: 45 },
-    { name: 'Bottle', collected: false, x: 650, y: 400, width: 45, height: 45 },
-    { name: 'Fishing Rod', collected: false, x: 200, y: 450, width: 45, height: 45 },
-    { name: 'Map', collected: false, x: 400, y: 150, width: 45, height: 45 },
-    { name: 'Camera', collected: false, x: 700, y: 200, width: 45, height: 45 },
-    { name: 'Key', collected: false, x: 550, y: 480, width: 45, height: 45 }
+    { name: 'Torchlight', collected: false, x: 140, y: 440, width: 45, height: 45 },
+    { name: 'Compass', collected: false, x: 310, y: 520, width: 45, height: 45 },
+    { name: 'Boots', collected: false, x: 480, y: 490, width: 45, height: 45 },
+    { name: 'Bottle', collected: false, x: 620, y: 560, width: 45, height: 45 },
+    { name: 'Fishing Rod', collected: false, x: 230, y: 620, width: 45, height: 45 },
+    { name: 'Map', collected: false, x: 420, y: 380, width: 45, height: 45 },
+    { name: 'Camera', collected: false, x: 740, y: 480, width: 45, height: 45 },
+    { name: 'Key', collected: false, x: 550, y: 640, width: 45, height: 45 }
 ];
 
 let assets = {
@@ -164,17 +163,19 @@ function renderCampsite() {
         ctx.fillRect(0, 0, screens.canvas.width, screens.canvas.height);
     }
 
+    // Render interactive items cleanly without solid blocking backgrounds (transparent / subtle outline on hover/state)
     items.forEach(item => {
         if (!item.collected) {
-            ctx.fillStyle = 'rgba(57, 217, 255, 0.35)';
-            ctx.strokeStyle = '#39d9ff';
-            ctx.lineWidth = 2;
-            ctx.fillRect(item.x, item.y, item.width, item.height);
+            ctx.strokeStyle = 'rgba(57, 217, 255, 0.7)';
+            ctx.lineWidth = 1.5;
             ctx.strokeRect(item.x, item.y, item.width, item.height);
 
+            ctx.fillStyle = 'rgba(57, 217, 255, 0.15)';
+            ctx.fillRect(item.x, item.y, item.width, item.height);
+
             ctx.fillStyle = '#ffffff';
-            ctx.font = '11px monospace';
-            ctx.fillText(item.name, item.x, item.y - 6);
+            ctx.font = '10px monospace';
+            ctx.fillText(item.name, item.x, item.y - 4);
         }
     });
 }
@@ -189,7 +190,6 @@ function renderFishing() {
         ctx.fillStyle = '#0b1329';
         ctx.fillRect(0, 0, screens.fishingCanvas.width, screens.fishingCanvas.height);
         
-        // Draw decorative lake waves
         ctx.strokeStyle = 'rgba(57, 217, 255, 0.2)';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -237,26 +237,19 @@ function handleCanvasClick(event) {
 }
 
 function handleCastRod() {
-    const biteElem = document.getElementById('bite');
-    const hookElem = document.getElementById('hook');
+    gameState.fishCaught++;
+    gameState.score += 150;
+    gameState.xp += 50;
     
-    if (biteElem) biteElem.classList.remove('hidden');
-    biteElem.textContent = "WAITING FOR BITE...";
-    
-    setTimeout(() => {
-        if (gameState.currentPhase === 2) {
-            if (biteElem) biteElem.textContent = "BITE! CLICK HOOK!";
-            gameState.fishHooked = true;
-            
-            setTimeout(() => {
-                if (gameState.fishHooked) {
-                    gameState.fishHooked = false;
-                    if (biteElem) biteElem.textContent = "GOT AWAY!";
-                    setTimeout(() => { if (biteElem) biteElem.classList.add('hidden'); }, 1000);
-                }
-            }, 1500);
-        }
-    }, 1500);
+    const fishCaughtElem = document.getElementById('fishCaught');
+    const fishScoreElem = document.getElementById('fishScore');
+    if (fishCaughtElem) fishCaughtElem.textContent = gameState.fishCaught;
+    if (fishScoreElem) fishScoreElem.textContent = gameState.score;
+
+    if (gameState.fishCaught >= 6) {
+        clearInterval(gameState.gameInterval);
+        endMission();
+    }
 }
 
 function endPhase1() {
