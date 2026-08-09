@@ -1,106 +1,656 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation Birthday 30: Mission 02</title>
-    <link rel="stylesheet" href="style.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Operation Birthday 30 - Mission 02
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
+
 <body>
 
-    <!-- Game HUD -->
-    <header id="gameHUD" class="hidden">
-        <div class="hudLeft">
-            <div id="timer">00:60</div>
-            <div id="xp">0</div>
-            <div id="score">0</div>
+
+<!-- =====================================================
+     LOADING SCREEN
+===================================================== -->
+
+<div id="loadingScreen">
+
+    <div class="loadingContent">
+
+        <h1>
+            OPERATION BIRTHDAY 30
+        </h1>
+
+        <h2>
+            MISSION 02
+        </h2>
+
+        <p id="loadingText">
+            Connecting to Mission Control...
+        </p>
+
+        <div class="loadingBar">
+
+            <div id="loadingFill"></div>
+
         </div>
 
-        <div class="hudCenter">
-            <div class="bearContainer">
-                <span class="bearIcon">🐻</span>
-                <div class="bearTrack">
-                    <div id="bearProgress"></div>
-                </div>
-                <span class="campIcon">⛺</span>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INTRO SCREEN
+===================================================== -->
+
+<div id="introScreen" class="hidden">
+
+    <div class="introContent">
+
+        <div class="missionLabel">
+            CLASSIFIED MISSION
+        </div>
+
+        <h1>
+            OPERATION BIRTHDAY 30
+        </h1>
+
+        <h2>
+            MISSION 02
+        </h2>
+
+        <div id="terminal"></div>
+
+        <button
+            id="startMission"
+            class="btn"
+        >
+            ▶ START MISSION
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     GAME HUD
+===================================================== -->
+
+<header
+    id="gameHUD"
+    class="hidden"
+>
+
+    <div class="hudLeft">
+
+        <div class="timerBox">
+
+            ⏱
+
+            <span id="timer">
+                01:00
+            </span>
+
+        </div>
+
+
+        <div class="xpBox">
+
+            ⭐
+
+            <span id="xp">
+                0
+            </span>
+
+            XP
+
+        </div>
+
+
+        <div class="scoreBox">
+
+            🏆
+
+            <span id="score">
+                0
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="hudCenter">
+
+        <div class="bearContainer">
+
+            <span class="bearIcon">
+                🐻
+            </span>
+
+            <div class="bearTrack">
+
+                <div id="bearProgress"></div>
+
             </div>
-            <p id="bearProximityText">95m</p>
-            <p id="objectiveText"></p>
-            <p id="itemsFoundText">0 / 8</p>
+
+            <span class="campIcon">
+                ⛺
+            </span>
+
         </div>
 
-        <div class="hudRight">
-            <button id="hintButton" class="btn">? HINT 3</button>
+
+        <p id="bearProximityText">
+            95m
+        </p>
+
+
+        <p id="objectiveText">
+            Recover all hidden camping equipment.
+        </p>
+
+
+        <p id="itemsFoundText">
+            0 / 10
+        </p>
+
+    </div>
+
+
+    <div class="hudRight">
+
+        <button
+            id="hintButton"
+            class="btn"
+        >
+            ? HINT 3
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN GAME VIEWPORT
+===================================================== -->
+
+<main id="gameContainer">
+
+    <!-- PHASE 1 -->
+    <canvas id="gameCanvas"></canvas>
+
+
+    <!-- PHASE 2 -->
+    <canvas
+        id="fishingCanvas"
+        class="hidden"
+    ></canvas>
+
+</main>
+
+
+<!-- =====================================================
+     PHASE 1 COMPLETE
+===================================================== -->
+
+<div
+    id="phase1Complete"
+    class="hidden"
+>
+
+    <div class="missionResult">
+
+        <div class="missionLabel">
+            MISSION OBJECTIVE COMPLETE
         </div>
-    </header>
 
-    <!-- Main Game Viewport / Canvas Area -->
-    <main id="gameContainer">
-        <!-- Phase 1 Canvas -->
-        <canvas id="gameCanvas"></canvas>
-        <!-- Phase 2 Canvas -->
-        <canvas id="fishingCanvas" class="hidden"></canvas>
-    </main>
+        <h1>
+            🏕 CAMP SUCCESSFULLY SECURED
+        </h1>
 
-    <!-- Screens / Overlays -->
-    <div id="loadingScreen"><h1>Loading...</h1></div>
-    
-    <div id="introScreen" class="hidden">
-        <h1>Operation Birthday 30: Mission 02</h1>
-        <button id="startMission" class="btn">Start Mission</button>
+        <p>
+            Excellent work, Chief.
+            You recovered every item before
+            the bear arrived.
+        </p>
+
+        <p>
+            ⭐ XP Earned:
+            <span id="phase1XP">
+                0
+            </span>
+        </p>
+
+
+        <button
+            id="continueFishing"
+            class="btn"
+        >
+            🎣 CONTINUE TO FISHING CHALLENGE
+        </button>
+
     </div>
 
-    <div id="phase1Complete" class="hidden">
-        <h1>Camp Successfully Secured</h1>
-        <p></p>
-        <p>XP Earned: <span id="phase1XP">0</span></p>
-        <button id="continueFishing" class="btn">Continue to Fishing Challenge</button>
+</div>
+
+
+<!-- =====================================================
+     PHASE 2 - FISHING
+===================================================== -->
+
+<div
+    id="phase2"
+    class="hidden"
+>
+
+    <div class="fishingHeader">
+
+        <h1>
+            🎣 FISHING CHALLENGE
+        </h1>
+
+        <p>
+            Catch
+            <strong>6 Special Fish</strong>
+            before time runs out.
+        </p>
+
     </div>
 
-    <div id="phase2" class="hidden">
-        <div class="fishingHeader">
-            <p>Fish Caught: <span id="fishCaught">0</span> / 6</p>
-            <p>Time: <span id="fishingTimer">01:00</span></p>
-            <p>Score: <span id="fishScore">0</span></p>
+
+    <div class="fishingStats">
+
+        <div class="fishCounter">
+
+            🐟
+
+            <span id="fishCaught">
+                0
+            </span>
+
+            / 6
+
         </div>
-        <div class="fishingControls">
-            <div class="meterFill"><div id="powerFill"></div></div>
-            <div class="meterFill"><div id="reelFill"></div></div>
-            <button id="castRod" class="btn">🎣 CAST ROD</button>
-            <div id="bite" class="hidden">BITE!</div>
-            <div id="hook" class="hidden">HOOKED!</div>
+
+
+        <div class="fishTimer">
+
+            ⏱
+
+            <span id="fishingTimer">
+                01:00
+            </span>
+
         </div>
+
+
+        <div class="fishScore">
+
+            ⭐ Score
+
+            <span id="fishScore">
+                0
+            </span>
+
+        </div>
+
     </div>
 
-    <div id="missionComplete" class="hidden">
-        <h1>Mission Complete</h1>
-        <p>Final XP: <span id="finalXP">0</span></p>
-        <div class="reportCard"><p></p></div>
-        <div class="reportCard"><p></p></div>
-        <div class="reportCard"><p></p></div>
-        <div class="reportCard"><p></p></div>
-        <button id="replayMission" class="btn">Play Again</button>
+
+    <div class="powerContainer">
+
+        <p>
+            Casting Power
+        </p>
+
+        <div class="powerBar">
+
+            <div id="powerFill"></div>
+
+        </div>
+
     </div>
 
-    <!-- Inventory Section -->
-    <section id="inventoryPanel" class="hidden">
-        <div class="inventorySlot"><p>Torchlight</p></div>
-        <div class="inventorySlot"><p>Compass</p></div>
-        <div class="inventorySlot"><p>Boots</p></div>
-        <div class="inventorySlot"><p>Bottle</p></div>
-        <div class="inventorySlot"><p>Fishing Rod</p></div>
-        <div class="inventorySlot"><p>Map</p></div>
-        <div class="inventorySlot"><p>Camera</p></div>
-        <div class="inventorySlot"><p>Key</p></div>
-    </section>
 
-    <!-- Audio Elements -->
-    <audio id="bgMusic" loop src="assets/audio/bg.mp3"></audio>
-    <audio id="collectSound" src="assets/audio/collect.mp3"></audio>
-    <audio id="splashSound" src="assets/audio/splash.mp3"></audio>
-    <audio id="successSound" src="assets/audio/success.mp3"></audio>
-    <audio id="bearSound" src="assets/audio/bear.mp3"></audio>
+    <div class="reelContainer">
 
-    <script src="game.js"></script>
+        <p>
+            Reel Strength
+        </p>
+
+        <div class="reelBar">
+
+            <div id="reelFill"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="fishingControls">
+
+        <button
+            id="castRod"
+            class="btn"
+        >
+            🎣 CAST ROD
+        </button>
+
+
+        <div
+            id="bite"
+            class="hidden"
+        >
+            ❗ BITE!
+        </div>
+
+
+        <div
+            id="hook"
+            class="hidden"
+        >
+            🎣 HOOKED!
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MISSION COMPLETE
+===================================================== -->
+
+<div
+    id="missionComplete"
+    class="hidden"
+>
+
+    <div class="missionResult">
+
+        <div class="missionLabel">
+            OPERATION BIRTHDAY 30
+        </div>
+
+        <h1>
+            🏆 MISSION COMPLETE
+        </h1>
+
+
+        <div class="reportGrid">
+
+            <div class="reportCard">
+
+                <h3>
+                    ⭐ TOTAL XP
+                </h3>
+
+                <p id="finalXP">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="reportCard">
+
+                <h3>
+                    🎒 ITEMS FOUND
+                </h3>
+
+                <p>
+                    10 / 10
+                </p>
+
+            </div>
+
+
+            <div class="reportCard">
+
+                <h3>
+                    🐟 SPECIAL FISH
+                </h3>
+
+                <p>
+                    6 / 6
+                </p>
+
+            </div>
+
+
+            <div class="reportCard">
+
+                <h3>
+                    🏅 COMPLETION
+                </h3>
+
+                <p>
+                    100%
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="badges">
+
+            <div class="badge">
+                🏕 Camp Survivor
+            </div>
+
+            <div class="badge">
+                🎣 Master Angler
+            </div>
+
+        </div>
+
+
+        <div class="endingMessage">
+
+            <h2>
+                Amazing work, Chief. ❤️
+            </h2>
+
+            <p>
+                You've completed another mission
+                and uncovered another piece of
+                our secret adventure.
+            </p>
+
+            <p>
+                The next mission remains encrypted...
+                Mission 3 will unlock next week.
+                Stay sharp. 🫡
+            </p>
+
+        </div>
+
+
+        <button
+            id="replayMission"
+            class="btn"
+        >
+            🔄 PLAY AGAIN
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INVENTORY
+===================================================== -->
+
+<section
+    id="inventoryPanel"
+    class="hidden"
+>
+
+    <!-- 1 -->
+    <div class="inventorySlot">
+
+        <p>
+            ⛺ Tent
+        </p>
+
+    </div>
+
+
+    <!-- 2 -->
+    <div class="inventorySlot">
+
+        <p>
+            🎒 Backpack
+        </p>
+
+    </div>
+
+
+    <!-- 3 -->
+    <div class="inventorySlot">
+
+        <p>
+            🔦 Torchlight
+        </p>
+
+    </div>
+
+
+    <!-- 4 -->
+    <div class="inventorySlot">
+
+        <p>
+            🧭 Compass
+        </p>
+
+    </div>
+
+
+    <!-- 5 -->
+    <div class="inventorySlot">
+
+        <p>
+            👢 Boots
+        </p>
+
+    </div>
+
+
+    <!-- 6 -->
+    <div class="inventorySlot">
+
+        <p>
+            🍼 Bottle
+        </p>
+
+    </div>
+
+
+    <!-- 7 -->
+    <div class="inventorySlot">
+
+        <p>
+            🎣 Fishing Rod
+        </p>
+
+    </div>
+
+
+    <!-- 8 -->
+    <div class="inventorySlot">
+
+        <p>
+            🗺 Map
+        </p>
+
+    </div>
+
+
+    <!-- 9 -->
+    <div class="inventorySlot">
+
+        <p>
+            📷 Camera
+        </p>
+
+    </div>
+
+
+    <!-- 10 -->
+    <div class="inventorySlot">
+
+        <p>
+            🔑 Key
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     AUDIO
+===================================================== -->
+
+<audio
+    id="bgMusic"
+    loop
+    src="assets/audio/bg.mp3"
+></audio>
+
+
+<audio
+    id="collectSound"
+    src="assets/audio/collect.mp3"
+></audio>
+
+
+<audio
+    id="splashSound"
+    src="assets/audio/splash.mp3"
+></audio>
+
+
+<audio
+    id="successSound"
+    src="assets/audio/success.mp3"
+></audio>
+
+
+<audio
+    id="bearSound"
+    src="assets/audio/bear.mp3"
+></audio>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="game.js"></script>
+
 </body>
+
 </html>
