@@ -3,200 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chief's Rescue Mission - Week 2</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Realistic Fishing Game - Full Mission Workflow</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background: #0c1821; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; overflow: hidden; }
+        #game-container { position: relative; width: 100vw; height: 100vh; }
+        canvas { display: block; width: 100%; height: 100%; }
+        
+        /* Overlays & Menus */
+        .overlay { position: absolute; inset: 0; background: rgba(5, 15, 25, 0.88); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; backdrop-filter: blur(10px); }
+        .hidden { display: none !important; }
+        .card { background: rgba(15, 30, 48, 0.9); padding: 30px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        h1 { font-size: 28px; color: #4fc3f7; margin-bottom: 12px; }
+        h2 { font-size: 22px; color: #81c784; margin-bottom: 15px; }
+        p { font-size: 14px; color: #b0bec5; line-height: 1.6; margin-bottom: 20px; }
+        
+        /* HUD UI */
+        .hud { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; pointer-events: none; z-index: 5; }
+        .panel { background: rgba(10, 25, 40, 0.75); padding: 12px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px); }
+        .stat-label { font-size: 10px; text-transform: uppercase; color: #8ab4f8; letter-spacing: 1px; }
+        .stat-value { font-size: 20px; font-weight: bold; font-family: monospace; }
+        
+        /* Phase 1 & 2 Gauges */
+        #tension-container { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); width: 28px; height: 260px; background: rgba(0,0,0,0.6); border-radius: 14px; padding: 4px; border: 1px solid rgba(255,255,255,0.2); z-index: 5; }
+        #tension-bar { width: 100%; height: 0%; background: linear-gradient(to top, #4caf50, #ffeb3b, #f44336); border-radius: 10px; transition: height 0.1s linear; }
+        
+        #action-prompt { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 18px; font-weight: bold; background: rgba(0,0,0,0.85); padding: 12px 28px; border-radius: 30px; border: 1px solid #4fc3f7; color: #e1f5fe; text-shadow: 0 0 10px rgba(79,195,247,0.5); z-index: 5; }
+        
+        .btn { pointer-events: auto; background: linear-gradient(135deg, #0288d1, #01579b); border: none; color: white; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn:hover { background: linear-gradient(135deg, #039be5, #0288d1); transform: translateY(-2px); }
+    </style>
 </head>
 <body>
 
-    <!-- ======================================================
-         AUDIO ENGINE
-    ====================================================== -->
-    <audio id="bgm" src="assets/audio/bgm.mp3" loop preload="auto"></audio>
-    <audio id="clickSound" src="assets/audio/click.mp3" preload="auto"></audio>
-    <audio id="foundSound" src="assets/audio/found.mp3" preload="auto"></audio>
-    <audio id="winSound" src="assets/audio/win.mp3" preload="auto"></audio>
-    <audio id="bearSound" src="assets/audio/bear.mp3" preload="auto"></audio>
+<div id="game-container">
+    <canvas id="gameCanvas"></canvas>
 
-    <!-- ======================================================
-         HEADS-UP DISPLAY (HUD)
-    ====================================================== -->
-    <div id="gameHUD" class="hud-container hidden" style="display: none;">
-        <!-- Timer Display -->
-        <div class="hud-card">
-            <span class="hud-label">TIME LEFT</span>
-            <span id="timerText" class="hud-value">01:30</span>
-        </div>
-
-        <!-- Bear Proximity Tracker -->
-        <div class="hud-card bear-tracker">
-            <span class="hud-label">BEAR DISTANCE</span>
-            <div class="bear-bar">
-                <div id="bearFill" class="bear-fill"></div>
-                <div id="bearIcon" class="bear-icon">🐻</div>
-            </div>
-        </div>
-
-        <!-- XP Score Display -->
-        <div class="hud-card">
-            <span class="hud-label">TOTAL XP</span>
-            <span id="xpText" class="hud-value">0</span>
+    <!-- Mission Start Screen -->
+    <div id="start-overlay" class="overlay">
+        <div class="card">
+            <h1>MISSION START</h1>
+            <p>Welcome Angler. Your objective is to catch a target weight of <strong>20.0 lbs</strong> of fish.</p>
+            <p><strong>Phase 1:</strong> Aim your angle and timed power cast.<br><strong>Phase 2:</strong> Hold Left Click to reel, balance tension safely.</p>
+            <button class="btn" id="start-btn">BEGIN MISSION</button>
         </div>
     </div>
 
-    <!-- ======================================================
-         SCREEN 1: LOADING SCREEN
-    ====================================================== -->
-    <div id="loadingScreen" class="overlay-screen">
-        <div class="loading-box">
-            <h1 class="glitch-title">WELCOME TO MISSION 2</h1>
-            <div class="loading-bar-container">
-                <div id="loadingFill" class="loading-fill"></div>
-            </div>
-            <p id="loadingText" class="loading-subtext">LOADING MISSION DATA... 0%</p>
+    <!-- Ending Screen -->
+    <div id="end-overlay" class="overlay hidden">
+        <div class="card">
+            <h1 id="end-title">MISSION COMPLETE!</h1>
+            <p id="end-desc">You successfully reached the quota!</p>
+            <div class="stat-label">Total Catch Weight</div>
+            <div class="stat-value" id="final-score" style="margin-bottom: 20px;">0.0 lbs</div>
+            <button class="btn" id="restart-btn">PLAY AGAIN</button>
         </div>
     </div>
 
-    <!-- ======================================================
-         SCREEN 2: TERMINAL INTRO / BRIEFING
-    ====================================================== -->
-    <div id="introScreen" class="overlay-screen hidden" style="display: none;">
-        <div class="terminal-box">
-            <div class="terminal-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="terminal-title">WELCOME TO MISSION 2 (WEEK 2)</span>
-            </div>
-            <div id="terminalText" class="terminal-body">
-                <!-- Typed line by line via JS -->
-            </div>
-            <button id="startBtn" class="btn primary-btn hidden" onclick="startGame()" style="display: none;">
-                START MISSION 2 🚀
-            </button>
+    <!-- Gameplay HUD -->
+    <div class="hud">
+        <div class="panel">
+            <div class="stat-label">Target Progress</div>
+            <div class="stat-value" id="score-val">0.0 / 20.0 lbs</div>
+        </div>
+        <div class="panel">
+            <div class="stat-label">Fish Distance</div>
+            <div class="stat-value" id="dist-val">0.0 m</div>
+        </div>
+        <div class="panel" style="pointer-events: auto;">
+            <button class="btn" id="audio-toggle" style="padding: 6px 12px; margin: 0; font-size: 12px;">🔊 Audio: ON</button>
         </div>
     </div>
 
-    <!-- ======================================================
-         PHASE 1: CAMPSITE SEARCH (campsite.png)
-    ====================================================== -->
-    <div id="phase1" class="phase-container hidden" style="display: none;">
-        <div id="campScene" class="scene-container">
-            <img src="assets/backgrounds/campsite.png" alt="Campsite Scene" class="scene-bg">
-        </div>
-
-        <!-- Inventory Grid Panel -->
-        <div id="inventoryPanel" class="inventory-panel hidden" style="display: none;">
-            <h3>EQUIPMENT TO RECOVER</h3>
-            <div class="inventory-grid">
-                <div class="inventory-item" data-id="tent">
-                    <span>⛺ Tent</span>
-                </div>
-                <div class="inventory-item" data-id="backpack">
-                    <img src="assets/items/backpack.png" alt="Backpack">
-                </div>
-                <div class="inventory-item" data-id="torchlight">
-                    <img src="assets/items/torchlight.png" alt="Torchlight">
-                </div>
-                <div class="inventory-item" data-id="compass">
-                    <img src="assets/items/compass.png" alt="Compass">
-                </div>
-                <div class="inventory-item" data-id="boots">
-                    <img src="assets/items/boots.png" alt="Boots">
-                </div>
-                <div class="inventory-item" data-id="bottle">
-                    <img src="assets/items/bottle.png" alt="Bottle">
-                </div>
-                <div class="inventory-item" data-id="fishingRod">
-                    <img src="assets/items/fishingRod.png" alt="Fishing Rod">
-                </div>
-                <div class="inventory-item" data-id="map">
-                    <img src="assets/items/map.png" alt="Map">
-                </div>
-                <div class="inventory-item" data-id="camera">
-                    <img src="assets/items/camera.png" alt="Camera">
-                </div>
-                <div class="inventory-item" data-id="key">
-                    <img src="assets/items/key.png" alt="Key">
-                </div>
-            </div>
-        </div>
+    <!-- Tension Bar HUD -->
+    <div id="tension-container">
+        <div id="tension-bar"></div>
     </div>
 
-    <!-- ======================================================
-         OVERLAY: PHASE 1 SUCCESS SUMMARY
-    ====================================================== -->
-    <div id="summaryOverlay" class="overlay-screen hidden" style="display: none;">
-        <div class="modal-card">
-            <h2>CAMPSITE CLEARED! ⛺</h2>
-            <p>You packed all the equipment before the bear reached the campsite!</p>
-            <p class="reward-text">+500 BONUS XP</p>
-            <button class="btn primary-btn" onclick="startPhase2()">
-                PROCEED TO LAKE FISHING 🎣
-            </button>
-        </div>
-    </div>
+    <div id="action-prompt">AIM & CLICK TO SET CAST ANGLE</div>
+</div>
 
-    <!-- ======================================================
-         PHASE 2: REALISTIC 4-FISH CHALLENGE (lake.png)
-    ====================================================== -->
-    <div id="phase2" class="phase-container hidden" style="display: none;">
-        <div id="fishingScene" class="scene-container">
-            <img src="assets/backgrounds/lake.png" alt="Lake Scene" class="scene-bg">
+<script>
+// --- AUDIO ENGINE SETUP ---
+class AudioManager {
+    constructor() {
+        this.muted = false;
+        // Audio Asset Mapping:
+        // input_file_0.png -> Mechanical Reel Click / Ticking
+        // input_file_1.png -> Soft Water Splash / Rod Whip
+        // input_file_2.png -> Ambient Nature & Water Loop
+        // input_file_3.png -> Heavy Bass Impact / Splash Hit
+        // input_file_4.png -> Quick Swoosh / Action UI
+        this.sounds = {
+            reel: new Audio('input_file_0.png'),
+            cast: new Audio('input_file_1.png'),
+            ambient: new Audio('input_file_2.png'),
+            hook: new Audio('input_file_3.png'),
+            action: new Audio('input_file_4.png')
+        };
 
-            <!-- 4-Fish Target Checklist -->
-            <div id="fishChecklist" class="fish-checklist">
-                <div class="fish-goal-item" id="goal-blueFish">
-                    <img src="assets/items/blueFish.png" alt="Blue Fish">
-                    <span>Blue Fish</span>
-                </div>
-                <div class="fish-goal-item" id="goal-goldFish">
-                    <img src="assets/items/goldFish.png" alt="Gold Fish">
-                    <span>Gold Fish</span>
-                </div>
-                <div class="fish-goal-item" id="goal-heartFish">
-                    <img src="assets/items/heartFish.png" alt="Heart Fish">
-                    <span>Heart Fish</span>
-                </div>
-                <div class="fish-goal-item" id="goal-rainbowFish">
-                    <img src="assets/items/rainbowFish.png" alt="Rainbow Fish">
-                    <span>Rainbow Fish</span>
-                </div>
-            </div>
+        this.sounds.ambient.loop = true;
+        this.sounds.ambient.volume = 0.45;
+        this.sounds.reel.volume = 0.6;
+        this.sounds.hook.volume = 0.8;
+    }
 
-            <!-- Reel Overlay Controls -->
-            <div id="fishingHUD" class="fishing-hud">
-                <div id="fishStatus" class="fish-status">Cast your line and wait for a bite...</div>
-                <div id="reelControls" class="reel-controls hidden">
-                    <p>⚡ <strong id="activeFishName">FISH</strong> ON THE LINE! Tap <kbd>SPACE</kbd> or Click to Reel In!</p>
-                    <div class="reel-bar">
-                        <div id="reelFill" class="reel-fill"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    play(name) {
+        if (this.muted || !this.sounds[name]) return;
+        if (name === 'reel') {
+            if (this.sounds.reel.paused) {
+                this.sounds.reel.currentTime = 0;
+                this.sounds.reel.play().catch(() => {});
+            }
+        } else {
+            this.sounds[name].currentTime = 0;
+            this.sounds[name].play().catch(() => {});
+        }
+    }
 
-    <!-- ======================================================
-         SCREEN 3: ENDING SCREEN WITH MISSION 3 TEASER
-    ====================================================== -->
-    <div id="birthdayEnding" class="overlay-screen hidden" style="display: none;">
-        <div class="modal-card ending-card">
-            <h1>🎉 MISSION 2 COMPLETE! 🎉</h1>
-            <p>Outstanding work, Chief! You secured the campsite, outsmarted the bear, and landed all four legendary fish!</p>
-            <div class="teaser-box">
-                <p>🔒 <strong>NEXT CHALLENGE LOCKED:</strong></p>
-                <p class="teaser-text">Mission 3 unlocks next week on <strong>14 August</strong>! Get ready! 🚀</p>
-            </div>
-            <div class="final-score">
-                <span>FINAL MISSION SCORE:</span>
-                <strong id="finalXP">0 XP</strong>
-            </div>
-            <button class="btn primary-btn" onclick="location.reload()">
-                REPLAY MISSION 2 🔄
-            </button>
-        </div>
-    </div>
+    stop(name) {
+        if (this.sounds[name]) {
+            this.sounds[name].pause();
+        }
+    }
 
-    <script src="game.js"></script>
+    startAmbient() {
+        if (!this.muted) {
+            this.sounds.ambient.play().catch(() => {});
+        }
+    }
+}
+
+const audio = new AudioManager();
+
+// --- GAME ENGINE ---
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// Game States: 'MISSION_START', 'PHASE1_AIM', 'PHASE1_POWER', 'WAITING', 'HOOKED', 'PHASE2_REELING', 'CAUGHT', 'ENDING'
+let state = 'MISSION_START';
+const TARGET_WEIGHT = 20.0;
+let totalScore = 0;
+
+// Phase 1 Mechanics
+let aimAngle = 0; // -1 to 1
+let aimDir = 1;
+let castPower = 0;
+let powerDir = 1;
+
+// Phase 2 Mechanics
+let lineTension = 0; // 0 to 100
+let fishDistance = 0;
+let lureX = 0, lureY = 0;
+let reelActive = false;
+
+// UI Elements
+const startOverlay = document.getElementById('start-overlay');
+const endOverlay = document.getElementById('end-overlay');
+const startBtn = document.getElementById('start-btn');
+const restartBtn = document.getElementById('restart-btn');
+const promptEl = document.getElementById('action-prompt');
+const scoreEl = document.getElementById('score-val');
+const distEl = document.getElementById('dist-val');
+const tensionBar = document.getElementById('tension-bar');
+const audioBtn = document.getElementById('audio-toggle');
+const endTitle = document.getElementById('end-title');
+const endDesc = document.getElementById('end-desc');
+const finalScore = document.getElementById('final-score');
+
+// User Interactions
+startBtn.addEventListener('click', () => {
+    audio.startAmbient();
+    audio.play('action');
+    startOverlay.classList.add('hidden');
+    resetMission();
+});
+
+restartBtn.addEventListener('click', () => {
+    audio.play('action');
+    endOverlay.classList.add('hidden');
+    resetMission();
+});
+
+audioBtn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    audioBtn.innerText = audio.muted ? "🔇 Audio: OFF" : "🔊 Audio: ON";
+    if (audio.muted) audio.stop('ambient');
+    else audio.startAmbient();
+});
+
+function resetMission() {
+    totalScore = 0;
+    scoreEl.innerText = `0.0 / ${TARGET_WEIGHT.toFixed(1)} lbs`;
+    startPhase1Aim();
+}
+
+function startPhase1Aim() {
+    state = 'PHASE1_AIM';
+    aimAngle = 0;
+    castPower = 0;
+    lineTension = 0;
+    fishDistance = 0;
+    promptEl.innerText = "PHASE 1: CLICK TO LOCK AIM ANGLE";
+}
+
+window.addEventListener('pointerdown', (e) => {
+    if (e.target.tagName === 'BUTTON' || state === 'MISSION_START' || state === 'ENDING') return;
+
+    if (state === 'PHASE1_AIM') {
+        audio.play('action');
+        state = 'PHASE1_POWER';
+        promptEl.innerText = "PHASE 1: CLICK TO LOCK CAST POWER";
+    } else if (state === 'PHASE1_POWER') {
+        // Execute Cast
+        audio.play('cast');
+        state = 'WAITING';
+        fishDistance = 25 + (castPower * 0.45);
+        lureX = (width / 2) + (aimAngle * (width * 0.35));
+        lureY = height * 0.65;
+        promptEl.innerText = "WAITING FOR A BITE...";
+        setTimeout(triggerBite, 2500 + Math.random() * 3500);
+    } else if (state === 'HOOKED') {
+        audio.play('hook');
+        audio.play('action');
+        state = 'PHASE2_REELING';
+        promptEl.innerText = "PHASE 2: HOLD LEFT CLICK TO REEL IN!";
+    }
+});
+
+window.addEventListener('mousedown', () => { if (state === 'PHASE2_REELING') reelActive = true; });
+window.addEventListener('mouseup', () => { reelActive = false; audio.stop('reel'); });
+
+function triggerBite() {
+    if (state !== 'WAITING') return;
+    state = 'HOOKED';
+    audio.play('action');
+    promptEl.innerText = "FISH ON! CLICK TO SET HOOK!";
+}
+
+// Main Loop
+let lastTime = performance.now();
+function gameLoop(now) {
+    let dt = (now - lastTime) / 1000;
+    lastTime = now;
+
+    update(dt);
+    render();
+
+    requestAnimationFrame(gameLoop);
+}
+
+function update(dt) {
+    // Phase 1: Aiming
+    if (state === 'PHASE1_AIM') {
+        aimAngle += aimDir * 1.5 * dt;
+        if (aimAngle > 1) { aimAngle = 1; aimDir = -1; }
+        if (aimAngle < -1) { aimAngle = -1; aimDir = 1; }
+    }
+
+    // Phase 1: Power Setting
+    if (state === 'PHASE1_POWER') {
+        castPower += powerDir * 110 * dt;
+        if (castPower > 100) { castPower = 100; powerDir = -1; }
+        if (castPower < 0) { castPower = 0; powerDir = 1; }
+    }
+
+    // Phase 2: Reeling & Tension Mechanics
+    if (state === 'PHASE2_REELING') {
+        if (reelActive) {
+            audio.play('reel');
+            lineTension = Math.min(100, lineTension + 48 * dt);
+            fishDistance -= 7.5 * dt;
+        } else {
+            audio.stop('reel');
+            lineTension = Math.max(0, lineTension - 32 * dt);
+            fishDistance += 2.5 * dt; // Fish pulls away
+        }
+
+        // Dynamic Fish Tug
+        if (Math.random() < 0.06) {
+            lineTension += Math.random() * 12;
+        }
+
+        // Check Snap or Catch
+        if (lineTension >= 100) {
+            audio.stop('reel');
+            audio.play('action');
+            lineTension = 0;
+            promptEl.innerText = "LINE SNAPPED! RETRYING CAST...";
+            setTimeout(startPhase1Aim, 2000);
+            state = 'WAITING'; // Pause state during reset timer
+        } else if (fishDistance <= 2) {
+            audio.stop('reel');
+            audio.play('hook');
+            let weight = parseFloat((2.5 + Math.random() * 8.5).toFixed(1));
+            totalScore += weight;
+            scoreEl.innerText = `${totalScore.toFixed(1)} / ${TARGET_WEIGHT.toFixed(1)} lbs`;
+
+            if (totalScore >= TARGET_WEIGHT) {
+                state = 'ENDING';
+                endTitle.innerText = "MISSION COMPLETE!";
+                endDesc.innerText = "Congratulations! You completed the quota requirements.";
+                finalScore.innerText = `${totalScore.toFixed(1)} lbs`;
+                endOverlay.classList.remove('hidden');
+            } else {
+                state = 'CAUGHT';
+                promptEl.innerText = `CAUGHT A ${weight} LB FISH! READY FOR NEXT CAST`;
+                setTimeout(startPhase1Aim, 2500);
+            }
+        }
+    }
+
+    distEl.innerText = `${Math.max(0, fishDistance).toFixed(1)} m`;
+    tensionBar.style.height = `${lineTension}%`;
+}
+
+function render() {
+    // Water Background Gradient
+    let grad = ctx.createLinearGradient(0, 0, 0, height);
+    grad.addColorStop(0, '#112233');
+    grad.addColorStop(0.4, '#0a1c2e');
+    grad.addColorStop(1, '#040b14');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+
+    // Dynamic Wave Lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 7; i++) {
+        ctx.beginPath();
+        let y = height * 0.38 + i * 45;
+        ctx.moveTo(0, y);
+        ctx.bezierCurveTo(width * 0.3, y + Math.sin(Date.now() * 0.002 + i) * 12, width * 0.7, y - Math.sin(Date.now() * 0.002 + i) * 12, width, y);
+        ctx.stroke();
+    }
+
+    // Phase 1 Aim Visualizer
+    if (state === 'PHASE1_AIM' || state === 'PHASE1_POWER') {
+        let originX = width / 2;
+        let originY = height;
+        let targetX = originX + (aimAngle * (width * 0.35));
+        let targetY = height * 0.65;
+
+        ctx.strokeStyle = '#4fc3f7';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 8]);
+        ctx.beginPath();
+        ctx.moveTo(originX, originY);
+        ctx.lineTo(targetX, targetY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Target Reticle
+        ctx.strokeStyle = '#81c784';
+        ctx.beginPath();
+        ctx.arc(targetX, targetY, 15, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
+    // Phase 2 Fishing Line & Lure
+    if (state === 'WAITING' || state === 'HOOKED' || state === 'PHASE2_REELING') {
+        ctx.strokeStyle = lineTension > 75 ? '#f44336' : '#ffffff';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(width / 2, height);
+        
+        let sag = (100 - lineTension) * 0.7;
+        ctx.quadraticCurveTo(width / 2, lureY + sag, lureX, lureY);
+        ctx.stroke();
+
+        // Water Ripple on Lure
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.beginPath();
+        ctx.arc(lureX, lureY, 6 + Math.sin(Date.now() * 0.006) * 5, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+}
+
+requestAnimationFrame(gameLoop);
+</script>
 </body>
 </html>
