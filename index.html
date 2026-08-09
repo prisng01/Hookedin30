@@ -32,7 +32,7 @@
         <div class="glassPanel">
             <h2>TERMINAL v2.0 - MISSION 2</h2>
             <div id="terminal"></div>
-            <button id="startMission">🚀 START MISSION</button>
+            <button id="startMission" onclick="startMission()">🚀 START MISSION</button>
         </div>
     </div>
 
@@ -52,8 +52,8 @@
             </div>
         </div>
         <div class="hudRight">
-            <div class="xpBox">⭐ XP: <span id="xp">0</span></div>
-            <div class="timerBox">⏱️ <span id="timer">01:00</span></div>
+            <div class="xpBox">⭐ XP: <span id="xpText">0</span></div>
+            <div class="timerBox">⏱️ <span id="timer">01:30</span></div>
             <div class="scoreBox">🏆 <span id="score">0</span></div>
         </div>
     </div>
@@ -62,23 +62,23 @@
     <div id="inventoryPanel" class="hidden">
         <h2>INVENTORY</h2>
         <div id="inventoryGrid">
-            <div class="inventorySlot"><p>Tent</p></div>
-            <div class="inventorySlot"><p>Backpack</p></div>
-            <div class="inventorySlot"><p>Torchlight</p></div>
-            <div class="inventorySlot"><p>Compass</p></div>
-            <div class="inventorySlot"><p>Boots</p></div>
-            <div class="inventorySlot"><p>Bottle</p></div>
-            <div class="inventorySlot"><p>Fishing Rod</p></div>
-            <div class="inventorySlot"><p>Map</p></div>
-            <div class="inventorySlot"><p>Camera</p></div>
-            <div class="inventorySlot"><p>Key</p></div>
+            <div class="inventorySlot" data-item="tent"><p>Tent</p></div>
+            <div class="inventorySlot" data-item="backpack"><p>Backpack</p></div>
+            <div class="inventorySlot" data-item="torchlight"><p>Torchlight</p></div>
+            <div class="inventorySlot" data-item="compass"><p>Compass</p></div>
+            <div class="inventorySlot" data-item="boots"><p>Boots</p></div>
+            <div class="inventorySlot" data-item="bottle"><p>Bottle</p></div>
+            <div class="inventorySlot" data-item="fishingRod"><p>Fishing Rod</p></div>
+            <div class="inventorySlot" data-item="map"><p>Map</p></div>
+            <div class="inventorySlot" data-item="camera"><p>Camera</p></div>
+            <div class="inventorySlot" data-item="key"><p>Key</p></div>
         </div>
     </div>
 
     <!-- PHASE 1: CAMPSITE SEARCH -->
     <section id="phase1" class="hidden">
         <div id="campScene">
-            <!-- Canvas and dynamic collectibles injected via JS -->
+            <!-- Dynamic collectibles & hotspots injected via game.js -->
         </div>
     </section>
 
@@ -87,13 +87,12 @@
         <div id="fishingHUD">
             <div class="fishingHeader">
                 <h1>LAKE FISHING</h1>
-                <p>Catch 6 Special Fish to complete the mission!</p>
+                <p>Catch 5 Special Fish to complete the mission!</p>
             </div>
 
             <div class="fishingStats">
-                <div class="fishTimer">⏱️ <span id="fishingTimer">01:00</span></div>
-                <div class="fishCounter">🐟 <span id="fishCaught">0</span>/6</div>
-                <div class="scoreBox">⭐ <span id="fishScore">0</span></div>
+                <div class="fishTimer">⏱️ <span id="fishTimer">01:00</span></div>
+                <div class="fishCounter">🐟 <span id="fishCounter">0 / 5</span></div>
             </div>
 
             <div class="powerContainer">
@@ -107,13 +106,24 @@
                     </div>
                 </div>
             </div>
-
-            <button id="castRod">🎣 CAST ROD</button>
         </div>
 
         <div id="lake">
             <div id="hook"></div>
-            <div id="bite" class="hidden">‼️ BITE! PRESS SPACEBAR TO REEL! ‼️</div>
+            <div id="bite" class="hidden">‼️ BITE! CLICK TO REEL! ‼️</div>
+        </div>
+    </section>
+
+    <!-- MISSION COMPLETE / ENDING SCREEN -->
+    <section id="missionComplete" class="hidden">
+        <div class="glassPanel completePanel">
+            <h1>MISSION COMPLETE!</h1>
+            <h2>OPERATION BIRTHDAY 30 - PHASE 2 CLEARED</h2>
+            <div class="reportCard">
+                <h3>TOTAL XP GAINED</h3>
+                <p><span id="finalXP">0</span> XP</p>
+            </div>
+            <button id="replayMission">Proceed to Mission 3 →</button>
         </div>
     </section>
 
