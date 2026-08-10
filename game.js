@@ -334,9 +334,6 @@ function unlockMissionAudio() {
     }
 
 
-    /*
-     * Unlock mission background audio.
-     */
     try {
 
         const missionPromise =
@@ -376,9 +373,6 @@ function unlockMissionAudio() {
     }
 
 
-    /*
-     * Unlock keyboard typing audio.
-     */
     try {
 
         const typingPromise =
@@ -597,14 +591,6 @@ function stopKeyboardTypingSound() {
    FIRST USER INTERACTION
 ========================================================= */
 
-/*
- * Browsers require a user interaction before
- * allowing audio playback.
- *
- * The first click/tap after the loading screen
- * finishes will start the mission audio.
- */
-
 function handleFirstMissionInteraction() {
 
     if (
@@ -621,32 +607,51 @@ function handleFirstMissionInteraction() {
      * loading screen is still visible.
      */
     if (
-        loadingScreen &&
-        loadingScreen.style.display !==
-        "none"
+        loadingScreen
     ) {
 
-        return;
+        const loadingStyle =
+            window.getComputedStyle(
+                loadingScreen
+            );
+
+
+        const loadingVisible =
+            loadingStyle.display !==
+                "none" &&
+            loadingStyle.visibility !==
+                "hidden" &&
+            loadingStyle.opacity !==
+                "0";
+
+
+        if (
+            loadingVisible
+        ) {
+
+            return;
+
+        }
 
     }
 
 
     /*
-     * Unlock the audio using the player's
-     * actual interaction.
+     * This click/tap is the browser-approved
+     * user interaction for audio playback.
      */
     unlockMissionAudio();
 
 
     /*
-     * Start mission background music.
+     * Start mission.mp3.
      */
     startMissionBackgroundAudio();
 
 
     /*
-     * Mark the mission intro as started
-     * so it cannot start repeatedly.
+     * Prevent the briefing from starting
+     * repeatedly.
      */
     missionIntroStarted =
         true;
