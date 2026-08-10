@@ -361,12 +361,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 goldFish:
                     loadImage(
-                        "assets/fish/goldFish_2.png"
+                        "assets/fish/goldFish.png"
                     ),
 
                 heartFish:
                     loadImage(
-                        "assets/fish/heartFish_2.png"
+                        "assets/fish/heartFish.png"
                     ),
 
                 rainbowFish:
