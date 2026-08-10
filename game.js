@@ -325,28 +325,23 @@ keyboardTypingSound.volume =
  * Browsers may block audio until the player
  * interacts with the page.
  *
- * This function uses that first interaction
- * to unlock the mission audio.
+ * This function uses the first valid user
+ * interaction to unlock the mission audio.
  */
 function unlockMissionAudio() {
 
-    if (missionAudioUnlocked) {
+    if (
+        missionAudioUnlocked
+    ) {
 
         return;
 
     }
 
 
-    missionAudioUnlocked =
-        true;
-
-
     /*
-     * Attempt to unlock the audio element.
-     *
-     * The audio is immediately paused again.
-     * This does not change the intended timing
-     * of the mission music.
+     * Attempt to unlock the mission
+     * background audio.
      */
     try {
 
@@ -376,6 +371,10 @@ function unlockMissionAudio() {
     }
 
 
+    /*
+     * Attempt to unlock the keyboard
+     * typing audio.
+     */
     try {
 
         keyboardTypingSound
@@ -403,6 +402,10 @@ function unlockMissionAudio() {
 
     }
 
+
+    missionAudioUnlocked =
+        true;
+
 }
 
 
@@ -423,8 +426,7 @@ function startMissionBackgroundAudio() {
 
     try {
 
-        missionBackgroundSound
-            .currentTime =
+        missionBackgroundSound.currentTime =
             0;
 
 
@@ -441,10 +443,6 @@ function startMissionBackgroundAudio() {
             promise.catch(
                 error => {
 
-                    /*
-                     * If autoplay is blocked,
-                     * wait for the next user interaction.
-                     */
                     console.warn(
                         "Mission background audio was blocked:",
                         error
@@ -514,30 +512,36 @@ function startKeyboardTypingSound() {
 
     try {
 
-        keyboardTypingSound.currentTime =
-            0;
-
-
-        const promise =
-            keyboardTypingSound.play();
-
-
         if (
-            promise &&
-            typeof promise.catch ===
-            "function"
+            keyboardTypingSound.paused
         ) {
 
-            promise.catch(
-                error => {
+            keyboardTypingSound.currentTime =
+                0;
 
-                    console.warn(
-                        "Typing audio was blocked:",
-                        error
-                    );
 
-                }
-            );
+            const promise =
+                keyboardTypingSound.play();
+
+
+            if (
+                promise &&
+                typeof promise.catch ===
+                "function"
+            ) {
+
+                promise.catch(
+                    error => {
+
+                        console.warn(
+                            "Typing audio was blocked:",
+                            error
+                        );
+
+                    }
+                );
+
+            }
 
         }
 
@@ -584,13 +588,6 @@ function stopKeyboardTypingSound() {
    FIRST USER INTERACTION
 ========================================================= */
 
-/*
- * The browser requires a user gesture before
- * allowing audio playback.
- *
- * Once the player interacts with the page,
- * start the opening mission audio and briefing.
- */
 function handleFirstMissionInteraction() {
 
     if (
@@ -602,13 +599,32 @@ function handleFirstMissionInteraction() {
     }
 
 
+    /*
+     * Do nothing while the loading screen
+     * is still active.
+     */
+    if (
+        !introScreen ||
+        introScreen.classList.contains(
+            "hidden"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * Unlock audio using the player's
+     * actual interaction.
+     */
     unlockMissionAudio();
 
 
     /*
-     * Give the browser a moment to unlock
-     * the audio element before starting
-     * the actual mission background.
+     * Start the mission briefing after
+     * audio has been unlocked.
      */
     setTimeout(
         () => {
@@ -634,222 +650,130 @@ function handleFirstMissionInteraction() {
 }
 
 
-/*
- * Only run this once.
- */
+/* =========================================================
+   FIRST USER INTERACTION LISTENER
+========================================================= */
+
 document.addEventListener(
     "pointerdown",
-    handleFirstMissionInteraction,
-    {
-        once: true
-    }
+    handleFirstMissionInteraction
 );
+/* =========================================================
+   ASSETS
+========================================================= */
 
-        /* =========================================================
-           FISHING AUDIO
-        ========================================================= */
+const assets = {
 
-        const fishingLakeAudio =
-            new Audio(
-                "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
-            );
+    campsite:
+        loadImage(
+            "assets/backgrounds/campsite.png"
+        ),
 
 
-        fishingLakeAudio.loop =
-            true;
+    lake:
+        loadImage(
+            "assets/backgrounds/lake.png"
+        ),
 
-        fishingLakeAudio.volume =
-            0.45;
 
+    items: {
 
-        const fishingRodWhooshAudio =
-            new Audio(
-                "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
-            );
+        tent:
+            loadImage(
+                "assets/items/tent.png"
+            ),
 
 
-        fishingRodWhooshAudio.volume =
-            0.75;
+        backpack:
+            loadImage(
+                "assets/items/backpack.png"
+            ),
 
 
-        const fishingWindingAudio =
-            new Audio(
-                "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
-            );
+        torchlight:
+            loadImage(
+                "assets/items/torchlight.png"
+            ),
 
 
-        fishingWindingAudio.loop =
-            true;
+        compass:
+            loadImage(
+                "assets/items/compass.png"
+            ),
 
-        fishingWindingAudio.volume =
-            0.70;
 
+        boots:
+            loadImage(
+                "assets/items/boots.png"
+            ),
 
-        const fishPullingAudio =
-            new Audio(
-                "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
-            );
 
+        bottle:
+            loadImage(
+                "assets/items/bottle.png"
+            ),
 
-        fishPullingAudio.volume =
-            0.80;
 
+        fishingRod:
+            loadImage(
+                "assets/items/fishingRod.png"
+            ),
 
-        const missionCompleteAudio =
-            new Audio(
-                "assets/audio/mission-complete.mp3"
-            );
 
+        map:
+            loadImage(
+                "assets/items/map.png"
+            ),
 
-        missionCompleteAudio.volume =
-            0.90;
 
+        camera:
+            loadImage(
+                "assets/items/camera.png"
+            ),
 
-        /* =========================================================
-           IMAGE LOADER
-        ========================================================= */
 
-        function loadImage(src) {
+        key:
+            loadImage(
+                "assets/items/key.png"
+            )
 
-            const image =
-                new Image();
+    },
 
 
-            image.src =
-                src;
+    fish: {
 
+        goldFish:
+            loadImage(
+                "assets/fish/goldFish.png"
+            ),
 
-            image.onerror = () => {
 
-                console.warn(
-                    "Unable to load image:",
-                    src
-                );
+        heartFish:
+            loadImage(
+                "assets/fish/heartFish.png"
+            ),
 
-            };
 
+        rainbowFish:
+            loadImage(
+                "assets/fish/rainbowFish.png"
+            )
 
-            return image;
+    }
 
-        }
+};
 
 
-        /* =========================================================
-           ASSETS
-        ========================================================= */
+/* =========================================================
+   GAME INTERVALS
+========================================================= */
 
-        const assets = {
+let phase1Interval =
+    null;
 
-            campsite:
-                loadImage(
-                    "assets/backgrounds/campsite.png"
-                ),
 
-
-            lake:
-                loadImage(
-                    "assets/backgrounds/lake.png"
-                ),
-
-
-            items: {
-
-                tent:
-                    loadImage(
-                        "assets/items/tent.png"
-                    ),
-
-
-                backpack:
-                    loadImage(
-                        "assets/items/backpack.png"
-                    ),
-
-
-                torchlight:
-                    loadImage(
-                        "assets/items/torchlight.png"
-                    ),
-
-
-                compass:
-                    loadImage(
-                        "assets/items/compass.png"
-                    ),
-
-
-                boots:
-                    loadImage(
-                        "assets/items/boots.png"
-                    ),
-
-
-                bottle:
-                    loadImage(
-                        "assets/items/bottle.png"
-                    ),
-
-
-                fishingRod:
-                    loadImage(
-                        "assets/items/fishingRod.png"
-                    ),
-
-
-                map:
-                    loadImage(
-                        "assets/items/map.png"
-                    ),
-
-
-                camera:
-                    loadImage(
-                        "assets/items/camera.png"
-                    ),
-
-
-                key:
-                    loadImage(
-                        "assets/items/key.png"
-                    )
-
-            },
-
-
-            fish: {
-
-                goldFish:
-                    loadImage(
-                        "assets/fish/goldFish.png"
-                    ),
-
-
-                heartFish:
-                    loadImage(
-                        "assets/fish/heartFish.png"
-                    ),
-
-
-                rainbowFish:
-                    loadImage(
-                        "assets/fish/rainbowFish.png"
-                    )
-
-            }
-
-        };
-
-
-        /* =========================================================
-           GAME INTERVALS
-        ========================================================= */
-
-        let phase1Interval =
-            null;
-
-
-        let fishingInterval =
-            null;
+let fishingInterval =
+    null;
 
 
         /* =========================================================
@@ -1088,145 +1012,6 @@ document.addEventListener(
                 sound.pause();
 
             } catch (error) {}
-
-        }
-
-
-        /* =========================================================
-           MISSION INTRO AUDIO HELPERS
-        ========================================================= */
-
-        function startMissionBackgroundAudio() {
-
-            if (!missionBackgroundSound) {
-                return;
-            }
-
-
-            try {
-
-                missionBackgroundSound.currentTime =
-                    0;
-
-
-                const promise =
-                    missionBackgroundSound.play();
-
-
-                if (
-                    promise &&
-                    typeof promise.catch ===
-                    "function"
-                ) {
-
-                    promise.catch(
-                        () => {}
-                    );
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Unable to start mission background audio:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        function stopMissionBackgroundAudio() {
-
-            if (!missionBackgroundSound) {
-                return;
-            }
-
-
-            try {
-
-                missionBackgroundSound.pause();
-
-                missionBackgroundSound.currentTime =
-                    0;
-
-            } catch (error) {}
-
-        }
-
-
-        function startKeyboardTypingSound() {
-
-            if (!keyboardTypingSound) {
-                return;
-            }
-
-
-            try {
-
-                if (
-                    keyboardTypingSound.paused
-                ) {
-
-                    keyboardTypingSound.currentTime =
-                        0;
-
-
-                    const promise =
-                        keyboardTypingSound.play();
-
-
-                    if (
-                        promise &&
-                        typeof promise.catch ===
-                        "function"
-                    ) {
-
-                        promise.catch(
-                            () => {}
-                        );
-
-                    }
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Unable to start typing audio:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        function stopKeyboardTypingSound() {
-
-            if (!keyboardTypingSound) {
-                return;
-            }
-
-
-            try {
-
-                keyboardTypingSound.pause();
-
-                keyboardTypingSound.currentTime =
-                    0;
-
-            } catch (error) {}
-
-        }
-
-
-        function stopAllMissionIntroAudio() {
-
-            stopMissionBackgroundAudio();
-
-            stopKeyboardTypingSound();
 
         }
 
