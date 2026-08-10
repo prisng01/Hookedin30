@@ -4560,3 +4560,85 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
     })();
 
 }
+        /* =========================================================
+           PUBLIC API
+        ========================================================= */
+
+        window.Mission2 = {
+
+            game,
+
+            startMission,
+
+            startFishingPhase,
+
+            replayGame,
+
+            resetGame,
+
+            catchFish,
+
+            fishEscaped,
+
+            drawFishingScene
+        };
+
+
+        /* =========================================================
+           INITIAL STATE
+        ========================================================= */
+
+        hide(gameHUD);
+
+        hide(inventoryPanel);
+
+        hide(phase1);
+
+        hide(phase1Complete);
+
+        hide(phase2);
+
+        hide(missionComplete);
+
+
+        updateMainHUD();
+
+        updateFishingHUD();
+
+
+        if (
+            document.readyState ===
+            "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                startLoadingScreen,
+                {
+                    once: true
+                }
+            );
+
+        } else {
+
+            startLoadingScreen();
+        }
+
+    };
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initMission2,
+            {
+                once: true
+            }
+        );
+
+    } else {
+
+        initMission2();
+    }
+
+}
