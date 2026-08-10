@@ -518,37 +518,29 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         let fishingRenderStarted = false;
 
+/* =========================================================
+   UI HELPERS
+========================================================= */
 
-        /* =========================================================
-           UI HELPERS
-        ========================================================= */
+function show(el) {
+    if (!el) {
+        return;
+    }
 
-        function show(el) {
+    el.classList.remove("hidden");
+}
 
-            if (!el) {
-                return;
-            }
+function hide(el) {
+    if (!el) {
+        return;
+    }
 
-            el.style.display =
-                "block";
-        }
+    el.classList.add("hidden");
+}
 
-
-        function hide(el) {
-
-            if (!el) {
-                return;
-            }
-
-            el.style.display =
-                "none";
-        }
-
-
-        /* =========================================================
-           AUDIO HELPERS
-        ========================================================= */
-
+/* =========================================================
+   AUDIO HELPERS
+========================================================= */
         function playSound(sound) {
 
             if (!sound) {
