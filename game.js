@@ -235,13 +235,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             document.getElementById("bearSound");
 
 
-        /*
-         * Mission-start sound.
-         *
-         * This is already in the user's assets folder:
-         *
-         * assets/audio/mission_start.mp3
-         */
         const missionStartSound =
             new Audio(
                 "assets/audio/mission_start.mp3"
@@ -271,14 +264,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 };
 
             return image;
+
         }
 
 
         /* =========================================================
            ASSETS
-           
-           IMPORTANT:
-           bear_walk.png IS NOT INCLUDED.
         ========================================================= */
 
         const assets = {
@@ -422,20 +413,47 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /* =========================================================
-           ROD ANIMATION
+           REALISTIC ROD STATE
         ========================================================= */
 
         let rodAngle =
-            -0.72;
+            -0.34;
 
         let rodTargetAngle =
-            -0.72;
+            -0.34;
 
         let rodKick =
             0;
 
         let reelRotation =
             0;
+
+
+        /*
+         * Rod geometry.
+         *
+         * The player holds the rod around the lower-right
+         * portion of the screen.
+         *
+         * The rod points OUT toward the water.
+         */
+        const ROD_CONFIG = {
+
+            handX: 0.70,
+
+            handY: 0.86,
+
+            lengthRatio: 0.46,
+
+            width: 86,
+
+            waterAngle: -0.34,
+
+            minAngle: -0.44,
+
+            maxAngle: -0.22
+
+        };
 
 
         /* =========================================================
@@ -469,7 +487,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /* =========================================================
-           AUDIO HELPERS
+           AUDIO
         ========================================================= */
 
         function playSound(sound) {
@@ -518,9 +536,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 sound.pause();
 
-            } catch (error) {
-                /* Ignore audio stop errors */
-            }
+            } catch (error) {}
 
         }
 
@@ -725,14 +741,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         function startMission() {
 
-            /*
-             * Mission-start sound is triggered directly from
-             * the START MISSION button click.
-             */
             playSound(
                 missionStartSound
             );
-
 
             stopSound(
                 bgMusic
@@ -802,11 +813,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /* =========================================================
-           CAMPSITE ITEM POSITIONS
-           
-           All 10 items.
-           
-           Tent is deliberately on the ground and enlarged.
+           CAMPSITE ITEMS
         ========================================================= */
 
         function createCampsiteItems() {
@@ -987,13 +994,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 campCtx.save();
 
-
-                /*
-                 * Brighter campsite.
-                 */
                 campCtx.filter =
                     "brightness(1.35) saturate(1.10)";
-
 
                 campCtx.drawImage(
                     assets.campsite,
@@ -1002,7 +1004,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     campWidth,
                     campHeight
                 );
-
 
                 campCtx.restore();
 
@@ -1090,9 +1091,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 item.y;
 
 
-            /*
-             * Larger base size so items are easier to spot.
-             */
             const baseSize =
                 Math.min(
                     campWidth,
@@ -1111,16 +1109,11 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             campCtx.save();
 
-
-            /*
-             * Brighter hidden objects.
-             */
             campCtx.globalAlpha =
                 0.92;
 
             campCtx.filter =
                 "brightness(1.55) saturate(1.12)";
-
 
             campCtx.imageSmoothingEnabled =
                 true;
@@ -1142,9 +1135,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            CAMPSITE CLICK
-           
-           Click area uses the same enlarged dimensions
-           as the visible item.
         ========================================================= */
 
         function handleCampsiteClick(event) {
@@ -1227,9 +1217,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     ) * 0.065;
 
 
-                /*
-                 * Extra 10% click tolerance.
-                 */
                 const width =
                     baseSize *
                     item.scale *
@@ -1316,7 +1303,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             updateMainHUD();
 
-
             playSound(
                 collectSound
             );
@@ -1380,11 +1366,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             function animateCollection() {
 
-                if (!campCtx) {
-                    return;
-                }
-
-
                 const progress =
                     frame /
                     totalFrames;
@@ -1402,7 +1383,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
                 campCtx.save();
-
 
                 campCtx.globalAlpha =
                     alpha;
@@ -1453,8 +1433,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            PHASE 1 TIMER
-           
-           Bear timer/proximity mechanics remain.
         ========================================================= */
 
         function startPhase1Timer() {
@@ -1470,7 +1448,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             game.timer =
                 60;
-
 
             updateMainHUD();
 
@@ -1550,10 +1527,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            /*
-             * Bear sound remains.
-             * No bear_walk.png is used.
-             */
             playSound(
                 bearSound
             );
@@ -1576,15 +1549,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         function completePhase1() {
 
             if (
-                game.phase !== 1
-            ) {
-
-                return;
-
-            }
-
-
-            if (
+                game.phase !== 1 ||
                 game.itemsFound <
                 game.totalItems
             ) {
@@ -1634,10 +1599,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             hide(missionComplete);
 
-
-            show(
-                phase1Complete
-            );
+            show(phase1Complete);
 
 
             playSound(
@@ -1684,22 +1646,13 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 100;
 
 
-            hide(
-                phase1Complete
-            );
+            hide(phase1Complete);
 
-            hide(
-                inventoryPanel
-            );
+            hide(inventoryPanel);
 
+            show(phase2);
 
-            show(
-                phase2
-            );
-
-            show(
-                gameHUD
-            );
+            show(gameHUD);
 
 
             if (objectiveText) {
@@ -1747,10 +1700,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodTargetAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodKick =
                 0;
@@ -1759,22 +1712,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 0;
 
 
-            if (bite) {
+            hide(bite);
 
-                hide(
-                    bite
-                );
-
-            }
-
-
-            if (hook) {
-
-                hide(
-                    hook
-                );
-
-            }
+            hide(hook);
 
 
             if (powerFill) {
@@ -1805,7 +1745,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         /* =========================================================
            FISHING TIMER
            
-           Remains 60 seconds.
+           EXACTLY 60 SECONDS
         ========================================================= */
 
         function startFishingTimer() {
@@ -1879,7 +1819,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             game.missionActive =
                 false;
-
 
             fishingState =
                 "IDLE";
@@ -2009,6 +1948,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            AIMING
+           
+           AIMING ONLY MOVES THE ROD A LITTLE.
+           IT NEVER POINTS UP INTO THE SKY.
         ========================================================= */
 
         function startAiming() {
@@ -2034,11 +1976,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 1;
 
 
-            /*
-             * Natural water-facing angle.
-             */
             rodTargetAngle =
-                -0.68;
+                ROD_CONFIG.waterAngle;
 
 
             if (castRod) {
@@ -2067,7 +2006,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             aimAngle +=
-                0.025 *
+                0.018 *
                 aimDirection;
 
 
@@ -2098,14 +2037,27 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Small angle movement.
-             * Prevents rod from pointing into the sky.
+             * Very small movement around the
+             * water-facing angle.
              */
             rodTargetAngle =
-                -0.72 +
+                ROD_CONFIG.waterAngle +
                 (
                     aimAngle *
-                    0.16
+                    0.10
+                );
+
+
+            /*
+             * Hard safety limits.
+             */
+            rodTargetAngle =
+                Math.max(
+                    ROD_CONFIG.minAngle,
+                    Math.min(
+                        ROD_CONFIG.maxAngle,
+                        rodTargetAngle
+                    )
                 );
 
 
@@ -2206,15 +2158,19 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Keep rod pointed toward lake.
+             * Power only changes the rod angle
+             * slightly. It can NEVER swing upward.
              */
             rodTargetAngle =
-                -0.72 +
+                ROD_CONFIG.minAngle +
                 (
                     castPower /
                     100
                 ) *
-                0.12;
+                (
+                    ROD_CONFIG.maxAngle -
+                    ROD_CONFIG.minAngle
+                );
 
 
             drawFishingScene();
@@ -2229,6 +2185,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            CAST LINE
+           
+           IMPORTANT:
+           The lure is ALWAYS placed over the lake/water.
+           No sky trajectory.
         ========================================================= */
 
         function castLine() {
@@ -2254,21 +2214,45 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 );
 
 
-            lureX =
+            /*
+             * Casting destination.
+             *
+             * Horizontal distance changes with power.
+             * Vertical position remains around the
+             * water surface.
+             */
+            const targetX =
                 fishingWidth *
                 (
-                    0.35 +
+                    0.53 +
                     (
                         power /
                         100
                     ) *
-                    0.45
+                    0.35
                 );
 
 
+            const targetY =
+                fishingHeight *
+                (
+                    0.61 +
+                    (
+                        1 -
+                        power /
+                        100
+                    ) *
+                    0.04
+                );
+
+
+            lureX =
+                fishingWidth *
+                0.72;
+
             lureY =
                 fishingHeight *
-                0.48;
+                0.73;
 
 
             fishDistance =
@@ -2281,11 +2265,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 1;
 
 
-            /*
-             * Keep cast directed toward the water.
-             */
             rodTargetAngle =
-                -0.48;
+                -0.28;
 
 
             if (castRod) {
@@ -2302,7 +2283,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             castAnimation(
-                power
+                power,
+                targetX,
+                targetY
             );
 
         }
@@ -2310,56 +2293,42 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            CAST ANIMATION
+           
+           LOW, WATER-FACING ARC.
+           
+           The arc is deliberately restricted so
+           the lure never flies into the sky.
         ========================================================= */
 
-        function castAnimation(power) {
+        function castAnimation(
+            power,
+            targetX,
+            targetY
+        ) {
 
             let frame =
                 0;
 
 
             const totalFrames =
-                30;
+                34;
 
 
             const startX =
                 fishingWidth *
-                0.32;
+                0.73;
 
 
             const startY =
                 fishingHeight *
-                0.78;
-
-
-            const targetX =
-                fishingWidth *
-                (
-                    0.35 +
-                    (
-                        power /
-                        100
-                    ) *
-                    0.45
-                );
-
-
-            const targetY =
-                fishingHeight *
-                (
-                    0.40 -
-                    (
-                        power /
-                        100
-                    ) *
-                    0.08
-                );
+                0.73;
 
 
             function animate() {
 
                 if (
-                    game.phase !== 2
+                    game.phase !== 2 ||
+                    !game.fishingActive
                 ) {
 
                     return;
@@ -2390,14 +2359,22 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     eased;
 
 
-                const arc =
+                /*
+                 * Very shallow cast arc.
+                 *
+                 * Maximum rise is only about 6%
+                 * of the screen, keeping everything
+                 * visually over the lake.
+                 */
+                const shallowArc =
                     Math.sin(
                         progress *
                         Math.PI
                     ) *
-                    (
-                        120 +
-                        power
+                    Math.min(
+                        55,
+                        fishingHeight *
+                        0.055
                     );
 
 
@@ -2408,17 +2385,45 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                         startY
                     ) *
                     eased -
-                    arc;
+                    shallowArc;
 
 
                 /*
-                 * Rod follows a shallow water-facing cast.
+                 * Absolute water-level safety.
+                 */
+                const minimumWaterY =
+                    fishingHeight *
+                    0.55;
+
+
+                if (
+                    lureY <
+                    minimumWaterY
+                ) {
+
+                    lureY =
+                        minimumWaterY;
+
+                }
+
+
+                /*
+                 * Rod follows the cast but stays
+                 * aimed toward the water.
                  */
                 rodTargetAngle =
-                    -0.68 +
-                    (
-                        progress *
-                        0.22
+                    -0.34 +
+                    progress *
+                    0.08;
+
+
+                rodTargetAngle =
+                    Math.max(
+                        ROD_CONFIG.minAngle,
+                        Math.min(
+                            ROD_CONFIG.maxAngle,
+                            rodTargetAngle
+                        )
                     );
 
 
@@ -2443,7 +2448,11 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                         targetX;
 
                     lureY =
-                        targetY;
+                        Math.max(
+                            targetY,
+                            fishingHeight *
+                            0.58
+                        );
 
 
                     waitForFish();
@@ -2460,6 +2469,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            WAIT FOR FISH
+           
+           FASTER THAN BEFORE.
         ========================================================= */
 
         function waitForFish() {
@@ -2479,7 +2490,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodTargetAngle =
-                -0.38;
+                -0.28;
 
 
             if (castRod) {
@@ -2494,12 +2505,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Fish arrives within a reasonable period.
+             * Faster fish arrival.
              */
             const delay =
-                1400 +
+                700 +
                 Math.random() *
-                2600;
+                1100;
 
 
             clearTimeout(
@@ -2519,7 +2530,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         /* =========================================================
            FISH BITE
            
-           Player now gets 3 seconds to react.
+           MUCH MORE FORGIVING:
+           4.5 SECOND REACTION WINDOW.
         ========================================================= */
 
         function fishBite() {
@@ -2547,18 +2559,16 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             lineTension =
-                20;
+                18;
 
 
             rodTargetAngle =
-                -0.30;
+                -0.25;
 
 
             if (bite) {
 
-                show(
-                    bite
-                );
+                show(bite);
 
                 bite.innerText =
                     "❗ FISH BITE!";
@@ -2585,8 +2595,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Easier:
-             * 3 full seconds to react.
+             * Longer reaction window.
              */
             fishBiteTimeout =
                 setTimeout(
@@ -2602,7 +2611,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                         }
 
                     },
-                    3000
+                    4500
                 );
 
         }
@@ -2667,26 +2676,18 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             lineTension =
-                35;
+                28;
 
             fishDistance =
                 100;
 
 
-            if (bite) {
-
-                hide(
-                    bite
-                );
-
-            }
+            hide(bite);
 
 
             if (hook) {
 
-                show(
-                    hook
-                );
+                show(hook);
 
                 hook.innerText =
                     "🎣 HOOKED!";
@@ -2695,7 +2696,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodTargetAngle =
-                -0.18;
+                -0.22;
 
 
             if (castRod) {
@@ -2719,9 +2720,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         /* =========================================================
            FISH FIGHT
            
-           Easier version:
-           - Fish moves less aggressively.
-           - Random tension spikes are smaller.
+           MUCH MORE FORGIVING.
         ========================================================= */
 
         function startFishFight() {
@@ -2751,20 +2750,15 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             ) {
 
                 /*
-                 * Fish still moves,
-                 * but not too aggressively.
-                 */
-                fishDistance +=
-                    0.32;
-
-            } else {
-
-                /*
-                 * Reeling brings fish
-                 * toward player faster.
+                 * Fish barely gains distance.
                  */
                 fishDistance +=
                     0.18;
+
+            } else {
+
+                fishDistance +=
+                    0.08;
 
             }
 
@@ -2779,23 +2773,28 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 );
 
 
+            /*
+             * Very mild random tension.
+             */
             const pull =
                 Math.random();
 
 
-            /*
-             * Easier:
-             * sudden tension events are
-             * less frequent and smaller.
-             */
             if (
-                pull < 0.02
+                pull < 0.012
             ) {
 
                 lineTension +=
-                    4;
+                    2;
 
             }
+
+
+            /*
+             * Gentle passive recovery.
+             */
+            lineTension -=
+                0.04;
 
 
             lineTension =
@@ -2830,6 +2829,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
+            updateFishingHUD();
+
             drawFishingScene();
 
 
@@ -2862,22 +2863,9 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 0;
 
 
-            if (bite) {
+            hide(bite);
 
-                hide(
-                    bite
-                );
-
-            }
-
-
-            if (hook) {
-
-                hide(
-                    hook
-                );
-
-            }
+            hide(hook);
 
 
             if (castRod) {
@@ -2933,24 +2921,28 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 100;
 
 
+            /*
+             * Fish stays around the water
+             * rather than appearing in the sky.
+             */
             const fishX =
                 fishingWidth *
                 (
-                    0.50 +
+                    0.48 +
                     distanceRatio *
-                    0.28
+                    0.30
                 );
 
 
             const fishY =
                 fishingHeight *
                 (
-                    0.42 +
+                    0.62 +
                     Math.sin(
                         Date.now() *
                         0.003
                     ) *
-                    0.025
+                    0.018
                 );
 
 
@@ -2963,7 +2955,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             fishingCtx.save();
-
 
             fishingCtx.globalAlpha =
                 0.96;
@@ -2986,17 +2977,13 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
         /* =========================================================
-           DRAW LURE
+           DRAW LURE / BOBBER
         ========================================================= */
 
         function drawLure() {
 
-            if (!fishingCtx) {
-                return;
-            }
-
-
             if (
+                !fishingCtx ||
                 !lureX ||
                 !lureY
             ) {
@@ -3006,11 +2993,856 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
+            /*
+             * Bobber is deliberately kept
+             * around the waterline.
+             */
+            const waterY =
+                Math.max(
+                    lureY,
+                    fishingHeight *
+                    0.55
+                );
+
+
+            fishingCtx.save();
+
+
+            /*
+             * Small vertical stem.
+             */
+            fishingCtx.strokeStyle =
+                "rgba(255,255,255,0.70)";
+
+            fishingCtx.lineWidth =
+                2;
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.moveTo(
+                lureX,
+                waterY - 10
+            );
+
+            fishingCtx.lineTo(
+                lureX,
+                waterY + 8
+            );
+
+            fishingCtx.stroke();
+
+
+            /*
+             * Red/white fishing bobber.
+             */
+            fishingCtx.fillStyle =
+                "#ffffff";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.arc(
+                lureX,
+                waterY,
+                7,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            fishingCtx.fillStyle =
+                "#e94b4b";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.arc(
+                lureX,
+                waterY - 2,
+                5,
+                Math.PI,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Tiny ripple.
+             */
+            fishingCtx.strokeStyle =
+                "rgba(255,255,255,0.40)";
+
+            fishingCtx.lineWidth =
+                1.5;
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.ellipse(
+                lureX,
+                waterY + 7,
+                13 +
+                    Math.sin(
+                        Date.now() *
+                        0.006
+                    ) *
+                    2,
+                4,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.stroke();
+
+
+            fishingCtx.restore();
+
+        }
+
+
+        /* =========================================================
+           ROD GEOMETRY
+        ========================================================= */
+
+        function getRodGeometry() {
+
+            const handX =
+                fishingWidth *
+                ROD_CONFIG.handX;
+
+            const handY =
+                fishingHeight *
+                ROD_CONFIG.handY;
+
+
+            /*
+             * Rod is deliberately long.
+             *
+             * This is the major visual change from
+             * the previous tiny rod.
+             */
+            const rodLength =
+                Math.min(
+                    fishingWidth,
+                    fishingHeight
+                ) *
+                ROD_CONFIG.lengthRatio;
+
+
+            const angle =
+                Math.max(
+                    ROD_CONFIG.minAngle,
+                    Math.min(
+                        ROD_CONFIG.maxAngle,
+                        rodAngle
+                    )
+                );
+
+
+            const tipX =
+                handX +
+                Math.cos(angle) *
+                rodLength;
+
+
+            const tipY =
+                handY +
+                Math.sin(angle) *
+                rodLength;
+
+
+            return {
+
+                handX,
+
+                handY,
+
+                rodLength,
+
+                angle,
+
+                tipX,
+
+                tipY
+
+            };
+
+        }
+
+
+        /* =========================================================
+           DRAW REALISTIC FISHING ROD
+           
+           The supplied fishingRod.png is used when available.
+           
+           It is now MUCH larger.
+           
+           A detailed fallback rod is also provided so the
+           fishing experience does not become a tiny stick
+           if the PNG is not available.
+        ========================================================= */
+
+        function drawFishingRod() {
+
+            if (!fishingCtx) {
+                return;
+            }
+
+
+            const geometry =
+                getRodGeometry();
+
+
+            updateRodAnimation();
+
+
+            fishingCtx.save();
+
+
+            /*
+             * =====================================================
+             * ROD SHADOW / DEPTH
+             * =====================================================
+             */
+
+            fishingCtx.translate(
+                geometry.handX,
+                geometry.handY
+            );
+
+
+            fishingCtx.rotate(
+                geometry.angle
+            );
+
+
+            /*
+             * =====================================================
+             * USE REAL ASSET
+             * =====================================================
+             */
+
+            const rodImage =
+                assets.items.fishingRod;
+
+
+            if (
+                rodImage &&
+                rodImage.complete &&
+                rodImage.naturalWidth > 0
+            ) {
+
+                const imageRatio =
+                    rodImage.naturalWidth /
+                    rodImage.naturalHeight;
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * Previous code used 42px height.
+                 * That made the rod tiny.
+                 *
+                 * This makes it a proper foreground
+                 * object.
+                 */
+                const rodHeight =
+                    Math.min(
+                        115,
+                        Math.max(
+                            82,
+                            fishingHeight *
+                            0.105
+                        )
+                    );
+
+
+                const rodWidth =
+                    rodHeight *
+                    imageRatio;
+
+
+                /*
+                 * Keep the image aligned with the
+                 * hand while extending toward the lake.
+                 */
+                fishingCtx.drawImage(
+                    rodImage,
+                    -rodHeight * 0.18,
+                    -rodHeight * 0.50,
+                    rodWidth,
+                    rodHeight
+                );
+
+            }
+
+
+            /*
+             * =====================================================
+             * FALLBACK / REALISM OVERLAY
+             *
+             * This adds a proper long rod shape even if
+             * fishingRod.png is an icon-sized asset.
+             * =====================================================
+             */
+
+            const rodLength =
+                geometry.rodLength;
+
+
+            /*
+             * Main graphite rod.
+             */
+            const rodGradient =
+                fishingCtx.createLinearGradient(
+                    0,
+                    -7,
+                    rodLength,
+                    7
+                );
+
+
+            rodGradient.addColorStop(
+                0,
+                "#15191d"
+            );
+
+            rodGradient.addColorStop(
+                0.55,
+                "#30363b"
+            );
+
+            rodGradient.addColorStop(
+                1,
+                "#777f83"
+            );
+
+
+            fishingCtx.strokeStyle =
+                rodGradient;
+
+            fishingCtx.lineWidth =
+                12;
+
+            fishingCtx.lineCap =
+                "round";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.moveTo(
+                0,
+                0
+            );
+
+            fishingCtx.lineTo(
+                rodLength * 0.72,
+                0
+            );
+
+            fishingCtx.stroke();
+
+
+            /*
+             * Thin rod tip.
+             */
+            fishingCtx.strokeStyle =
+                "#aeb7bb";
+
+            fishingCtx.lineWidth =
+                4;
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.moveTo(
+                rodLength * 0.62,
+                0
+            );
+
+            fishingCtx.lineTo(
+                rodLength,
+                0
+            );
+
+            fishingCtx.stroke();
+
+
+            /*
+             * Handle.
+             */
+            fishingCtx.fillStyle =
+                "#111315";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.roundRect(
+                -28,
+                -11,
+                62,
+                22,
+                10
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Handle grip rings.
+             */
+            fishingCtx.strokeStyle =
+                "#6f777b";
+
+            fishingCtx.lineWidth =
+                2;
+
+
+            for (
+                let i = 0;
+                i < 4;
+                i++
+            ) {
+
+                const ringX =
+                    -12 +
+                    i * 12;
+
+
+                fishingCtx.beginPath();
+
+                fishingCtx.moveTo(
+                    ringX,
+                    -10
+                );
+
+                fishingCtx.lineTo(
+                    ringX,
+                    10
+                );
+
+                fishingCtx.stroke();
+
+            }
+
+
+            /*
+             * Reel body.
+             */
+            const reelX =
+                38;
+
+
+            fishingCtx.fillStyle =
+                "#252a2d";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.ellipse(
+                reelX,
+                22,
+                25,
+                31,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Reel spool.
+             */
+            fishingCtx.fillStyle =
+                "#8e9699";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.ellipse(
+                reelX,
+                22,
+                15,
+                22,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Spool centre.
+             */
+            fishingCtx.fillStyle =
+                "#202427";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.arc(
+                reelX,
+                22,
+                6,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Reel handle.
+             */
+            const handleAngle =
+                reelRotation;
+
+
+            const handleArmX =
+                reelX +
+                Math.cos(
+                    handleAngle
+                ) *
+                31;
+
+
+            const handleArmY =
+                22 +
+                Math.sin(
+                    handleAngle
+                ) *
+                31;
+
+
+            fishingCtx.strokeStyle =
+                "#171a1c";
+
+            fishingCtx.lineWidth =
+                5;
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.moveTo(
+                reelX,
+                22
+            );
+
+            fishingCtx.lineTo(
+                handleArmX,
+                handleArmY
+            );
+
+            fishingCtx.stroke();
+
+
+            fishingCtx.fillStyle =
+                "#0d0f10";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.arc(
+                handleArmX,
+                handleArmY,
+                7,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Rod guides.
+             */
+            fishingCtx.strokeStyle =
+                "#c4cbcd";
+
+            fishingCtx.lineWidth =
+                2;
+
+
+            const guidePositions = [
+                0.32,
+                0.48,
+                0.62,
+                0.75,
+                0.87,
+                0.96
+            ];
+
+
+            guidePositions.forEach(
+                position => {
+
+                    const gx =
+                        rodLength *
+                        position;
+
+
+                    const guideHeight =
+                        9 -
+                        position *
+                        4;
+
+
+                    fishingCtx.beginPath();
+
+                    fishingCtx.arc(
+                        gx,
+                        0,
+                        guideHeight,
+                        Math.PI,
+                        0
+                    );
+
+                    fishingCtx.stroke();
+
+                }
+            );
+
+
+            /*
+             * Hand / grip.
+             */
+            fishingCtx.fillStyle =
+                "rgba(126,82,55,0.95)";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.ellipse(
+                -8,
+                3,
+                22,
+                17,
+                -0.2,
+                0,
+                Math.PI * 2
+            );
+
+            fishingCtx.fill();
+
+
+            /*
+             * Sleeve.
+             */
+            fishingCtx.fillStyle =
+                "#45463d";
+
+
+            fishingCtx.beginPath();
+
+            fishingCtx.moveTo(
+                -35,
+                -22
+            );
+
+            fishingCtx.lineTo(
+                -5,
+                -13
+            );
+
+            fishingCtx.lineTo(
+                -5,
+                18
+            );
+
+            fishingCtx.lineTo(
+                -35,
+                27
+            );
+
+            fishingCtx.closePath();
+
+            fishingCtx.fill();
+
+
+            fishingCtx.restore();
+
+        }
+
+
+        /* =========================================================
+           FISHING LINE
+           
+           Starts from the ACTUAL ROD TIP.
+           
+           This prevents the line from appearing to originate
+           from an arbitrary location in the sky.
+        ========================================================= */
+
+        function drawFishingLine() {
+
+            if (!fishingCtx) {
+                return;
+            }
+
+
+            if (
+                !lureX ||
+                !lureY ||
+                fishingState === "IDLE" ||
+                fishingState === "AIMING" ||
+                fishingState === "CHARGING"
+            ) {
+
+                return;
+
+            }
+
+
+            const geometry =
+                getRodGeometry();
+
+
+            /*
+             * Use actual rod tip.
+             */
+            const rodTipX =
+                geometry.tipX;
+
+            const rodTipY =
+                geometry.tipY;
+
+
+            /*
+             * Keep lure on water.
+             */
+            const safeLureY =
+                Math.max(
+                    lureY,
+                    fishingHeight *
+                    0.55
+                );
+
+
             fishingCtx.save();
 
 
             fishingCtx.strokeStyle =
-                "rgba(255,255,255,0.45)";
+                "rgba(245,245,245,0.86)";
+
+            fishingCtx.lineWidth =
+                1.6;
+
+
+            fishingCtx.beginPath();
+
+
+            fishingCtx.moveTo(
+                rodTipX,
+                rodTipY
+            );
+
+
+            /*
+             * Natural line sag.
+             */
+            const controlX =
+                (
+                    rodTipX +
+                    lureX
+                ) /
+                2;
+
+
+            const controlY =
+                Math.max(
+                    rodTipY,
+                    safeLureY
+                ) -
+                4;
+
+
+            fishingCtx.quadraticCurveTo(
+                controlX,
+                controlY,
+                lureX,
+                safeLureY
+            );
+
+
+            fishingCtx.stroke();
+
+
+            fishingCtx.restore();
+
+        }
+
+
+        /* =========================================================
+           WATER RIPPLE
+        ========================================================= */
+
+        function drawWaterRipple() {
+
+            if (
+                !fishingCtx ||
+                !lureX ||
+                !lureY
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                fishingState === "IDLE" ||
+                fishingState === "AIMING" ||
+                fishingState === "CHARGING" ||
+                fishingState === "CASTING"
+            ) {
+
+                return;
+
+            }
+
+
+            const waterY =
+                Math.max(
+                    lureY,
+                    fishingHeight *
+                    0.55
+                );
+
+
+            const pulse =
+                (
+                    Math.sin(
+                        Date.now() *
+                        0.004
+                    ) +
+                    1
+                ) /
+                2;
+
+
+            const radius =
+                10 +
+                pulse *
+                10;
+
+
+            fishingCtx.save();
+
+
+            fishingCtx.strokeStyle =
+                `rgba(255,255,255,${
+                    0.35 -
+                    pulse * 0.15
+                })`;
+
 
             fishingCtx.lineWidth =
                 2;
@@ -3019,15 +3851,12 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             fishingCtx.beginPath();
 
 
-            fishingCtx.arc(
+            fishingCtx.ellipse(
                 lureX,
-                lureY + 5,
-                12 +
-                    Math.sin(
-                        Date.now() *
-                        0.006
-                    ) *
-                    3,
+                waterY + 8,
+                radius,
+                radius * 0.35,
+                0,
                 0,
                 Math.PI * 2
             );
@@ -3036,26 +3865,384 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             fishingCtx.stroke();
 
 
+            fishingCtx.restore();
+
+        }
+
+
+        /* =========================================================
+           OPTIONAL FOREGROUND DOCK
+           
+           Creates the visual feeling of standing on a dock
+           without changing the supplied lake background.
+        ========================================================= */
+
+        function drawDockForeground() {
+
+            if (!fishingCtx) {
+                return;
+            }
+
+
+            const dockStartY =
+                fishingHeight *
+                0.82;
+
+
+            const dockWidth =
+                fishingWidth *
+                0.34;
+
+
+            fishingCtx.save();
+
+
+            /*
+             * Perspective dock boards.
+             */
             fishingCtx.fillStyle =
-                "#ffffff";
+                "rgba(74,48,29,0.78)";
 
 
             fishingCtx.beginPath();
 
-
-            fishingCtx.arc(
-                lureX,
-                lureY,
-                5,
+            fishingCtx.moveTo(
                 0,
-                Math.PI * 2
+                dockStartY
             );
 
+            fishingCtx.lineTo(
+                dockWidth,
+                dockStartY
+            );
+
+            fishingCtx.lineTo(
+                fishingWidth *
+                0.56,
+                fishingHeight
+            );
+
+            fishingCtx.lineTo(
+                0,
+                fishingHeight
+            );
+
+            fishingCtx.closePath();
 
             fishingCtx.fill();
 
 
+            /*
+             * Wooden planks.
+             */
+            fishingCtx.strokeStyle =
+                "rgba(220,185,135,0.25)";
+
+            fishingCtx.lineWidth =
+                2;
+
+
+            const plankCount =
+                13;
+
+
+            for (
+                let i = 0;
+                i <= plankCount;
+                i++
+            ) {
+
+                const t =
+                    i /
+                    plankCount;
+
+
+                const y =
+                    dockStartY +
+                    Math.pow(
+                        t,
+                        1.5
+                    ) *
+                    (
+                        fishingHeight -
+                        dockStartY
+                    );
+
+
+                fishingCtx.beginPath();
+
+                fishingCtx.moveTo(
+                    0,
+                    y
+                );
+
+                fishingCtx.lineTo(
+                    dockWidth +
+                    t *
+                    fishingWidth *
+                    0.18,
+                    y
+                );
+
+                fishingCtx.stroke();
+
+            }
+
+
             fishingCtx.restore();
+
+        }
+
+
+        /* =========================================================
+           FISHING SCENE
+        ========================================================= */
+
+        function drawFishingScene() {
+
+            if (
+                !fishingCanvas ||
+                !fishingCtx
+            ) {
+
+                return;
+
+            }
+
+
+            fishingCtx.clearRect(
+                0,
+                0,
+                fishingWidth,
+                fishingHeight
+            );
+
+
+            /* =====================================================
+               LAKE BACKGROUND
+            ===================================================== */
+
+            if (
+                assets.lake.complete &&
+                assets.lake.naturalWidth > 0
+            ) {
+
+                fishingCtx.drawImage(
+                    assets.lake,
+                    0,
+                    0,
+                    fishingWidth,
+                    fishingHeight
+                );
+
+            } else {
+
+                const gradient =
+                    fishingCtx.createLinearGradient(
+                        0,
+                        0,
+                        0,
+                        fishingHeight
+                    );
+
+
+                gradient.addColorStop(
+                    0,
+                    "#668aa0"
+                );
+
+
+                gradient.addColorStop(
+                    0.48,
+                    "#7ca8aa"
+                );
+
+
+                gradient.addColorStop(
+                    1,
+                    "#173e48"
+                );
+
+
+                fishingCtx.fillStyle =
+                    gradient;
+
+
+                fishingCtx.fillRect(
+                    0,
+                    0,
+                    fishingWidth,
+                    fishingHeight
+                );
+
+
+                fishingCtx.strokeStyle =
+                    "rgba(255,255,255,0.10)";
+
+
+                fishingCtx.lineWidth =
+                    2;
+
+
+                for (
+                    let y = 100;
+                    y < fishingHeight;
+                    y += 55
+                ) {
+
+                    fishingCtx.beginPath();
+
+                    fishingCtx.moveTo(
+                        0,
+                        y
+                    );
+
+                    fishingCtx.quadraticCurveTo(
+                        fishingWidth *
+                        0.25,
+                        y - 8,
+                        fishingWidth *
+                        0.5,
+                        y
+                    );
+
+                    fishingCtx.quadraticCurveTo(
+                        fishingWidth *
+                        0.75,
+                        y + 8,
+                        fishingWidth,
+                        y
+                    );
+
+                    fishingCtx.stroke();
+
+                }
+
+            }
+
+
+            /*
+             * Slight cinematic lake contrast.
+             */
+            fishingCtx.save();
+
+            fishingCtx.fillStyle =
+                "rgba(10,30,35,0.05)";
+
+            fishingCtx.fillRect(
+                0,
+                0,
+                fishingWidth,
+                fishingHeight
+            );
+
+            fishingCtx.restore();
+
+
+            /* =====================================================
+               DOCK
+            ===================================================== */
+
+            drawDockForeground();
+
+
+            /* =====================================================
+               FISH
+            ===================================================== */
+
+            if (
+                fishingState === "WAITING" ||
+                fishingState === "BITE" ||
+                fishingState === "HOOKED" ||
+                fishingState === "REELING"
+            ) {
+
+                drawCurrentFish();
+
+            }
+
+
+            /* =====================================================
+               LINE
+            ===================================================== */
+
+            drawFishingLine();
+
+
+            /* =====================================================
+               BOBBER
+            ===================================================== */
+
+            drawLure();
+
+
+            /* =====================================================
+               RIPPLE
+            ===================================================== */
+
+            drawWaterRipple();
+
+
+            /* =====================================================
+               ROD
+            ===================================================== */
+
+            drawFishingRod();
+
+
+            if (
+                game.phase === 2 &&
+                game.fishingActive
+            ) {
+
+                requestAnimationFrame(
+                    drawFishingScene
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           ROD ANIMATION
+        ========================================================= */
+
+        function updateRodAnimation() {
+
+            rodAngle +=
+                (
+                    rodTargetAngle -
+                    rodAngle
+                ) *
+                0.10;
+
+
+            /*
+             * Hard safety clamp.
+             *
+             * The rod cannot rotate into a sky-facing angle.
+             */
+            rodAngle =
+                Math.max(
+                    ROD_CONFIG.minAngle,
+                    Math.min(
+                        ROD_CONFIG.maxAngle,
+                        rodAngle
+                    )
+                );
+
+
+            rodKick *=
+                0.86;
+
+
+            if (reelActive) {
+
+                reelRotation +=
+                    0.35;
+
+            }
 
         }
 
@@ -3085,7 +4272,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodTargetAngle =
-                -0.12;
+                -0.20;
 
 
             if (castRod) {
@@ -3130,7 +4317,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodTargetAngle =
-                -0.18;
+                -0.24;
 
 
             if (castRod) {
@@ -3151,10 +4338,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         /* =========================================================
            REEL LOOP
            
-           EASIER:
-           Fish comes in faster.
-           Tension increases more slowly.
-           Fish pulls away less.
+           EASIER SETTINGS
         ========================================================= */
 
         function reelLoop() {
@@ -3174,38 +4358,44 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Faster fish recovery.
+             * Fish comes in significantly faster.
              */
             fishDistance -=
-                1.55;
+                1.90;
 
 
             /*
-             * Slower line tension.
+             * Much slower tension increase.
              */
             lineTension +=
-                0.45;
+                0.28;
 
 
+            /*
+             * Fish pulls away much less often.
+             */
             const fishPull =
                 Math.random();
 
 
-            /*
-             * Fish pulls away less often
-             * and less strongly.
-             */
             if (
-                fishPull < 0.02
+                fishPull < 0.012
             ) {
 
                 fishDistance +=
-                    2.5;
+                    1.25;
 
                 lineTension +=
-                    3;
+                    1.5;
 
             }
+
+
+            /*
+             * Passive tension relief.
+             */
+            lineTension -=
+                0.06;
 
 
             fishDistance =
@@ -3264,6 +4454,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         /* =========================================================
            CATCH FISH
+           
+           SCORE + XP VALUES UNCHANGED
         ========================================================= */
 
         function catchFish() {
@@ -3302,7 +4494,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             /*
-             * Existing score values remain unchanged.
+             * EXISTING SCORE VALUES PRESERVED.
              */
             let fishPoints =
                 150;
@@ -3340,9 +4532,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             if (hook) {
 
-                show(
-                    hook
-                );
+                show(hook);
 
                 hook.innerText =
                     "🐟 CAUGHT!";
@@ -3364,7 +4554,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             updateFishingHUD();
-
 
             showFishCatchEffect();
 
@@ -3414,11 +4603,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             function animateCatch() {
 
-                if (!fishingCtx) {
-                    return;
-                }
-
-
                 const progress =
                     frame /
                     totalFrames;
@@ -3437,10 +4621,8 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 fishingCtx.save();
 
-
                 fishingCtx.globalAlpha =
                     alpha;
-
 
                 fishingCtx.strokeStyle =
                     "#ffffff";
@@ -3451,7 +4633,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
                 fishingCtx.beginPath();
 
-
                 fishingCtx.arc(
                     lureX,
                     lureY,
@@ -3460,9 +4641,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                     Math.PI * 2
                 );
 
-
                 fishingCtx.stroke();
-
 
                 fishingCtx.restore();
 
@@ -3533,31 +4712,18 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodTargetAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodKick =
                 0;
 
 
-            if (bite) {
+            hide(bite);
 
-                hide(
-                    bite
-                );
-
-            }
-
-
-            if (hook) {
-
-                hide(
-                    hook
-                );
-
-            }
+            hide(hook);
 
 
             if (castRod) {
@@ -3594,7 +4760,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         /* =========================================================
            FINISH FISHING
            
-           Still requires 6 fish.
+           STILL REQUIRES 6 FISH
         ========================================================= */
 
         function finishFishing() {
@@ -3626,26 +4792,13 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            if (hook) {
+            hide(hook);
 
-                hide(
-                    hook
-                );
-
-            }
-
-
-            if (bite) {
-
-                hide(
-                    bite
-                );
-
-            }
+            hide(bite);
 
 
             /*
-             * Existing completion XP remains.
+             * EXISTING COMPLETION XP/SCORE PRESERVED.
              */
             game.xp +=
                 300;
@@ -3665,572 +4818,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 },
                 700
             );
-
-        }
-
-
-        /* =========================================================
-           ROD ANIMATION
-        ========================================================= */
-
-        function updateRodAnimation() {
-
-            rodAngle +=
-                (
-                    rodTargetAngle -
-                    rodAngle
-                ) *
-                0.12;
-
-
-            rodKick *=
-                0.86;
-
-
-            if (reelActive) {
-
-                reelRotation +=
-                    0.4;
-
-            }
-
-        }
-
-
-        /* =========================================================
-           DRAW REAL FISHING ROD
-           
-           Uses:
-           assets/items/fishingRod.png
-           
-           No artificial stick unless the image
-           fails to load.
-        ========================================================= */
-
-        function drawFishingRod() {
-
-            if (!fishingCtx) {
-                return;
-            }
-
-
-            const rodImage =
-                assets.items.fishingRod;
-
-
-            const handX =
-                fishingWidth *
-                0.50;
-
-
-            /*
-             * Lower position keeps the rod in the
-             * foreground instead of blocking the lake.
-             */
-            const handY =
-                fishingHeight *
-                0.82;
-
-
-            const rodLength =
-                Math.min(
-                    fishingWidth,
-                    fishingHeight
-                ) *
-                0.42;
-
-
-            /*
-             * Natural water-facing angle.
-             *
-             * The rod is NEVER allowed to swing
-             * vertically toward the sky.
-             */
-            const waterAngle =
-                -0.58 +
-                (
-                    rodAngle +
-                    0.72
-                ) *
-                0.35;
-
-
-            const angle =
-                waterAngle;
-
-
-            updateRodAnimation();
-
-
-            fishingCtx.save();
-
-
-            if (
-                rodImage &&
-                rodImage.complete &&
-                rodImage.naturalWidth > 0
-            ) {
-
-                const imageRatio =
-                    rodImage.naturalWidth /
-                    rodImage.naturalHeight;
-
-
-                const rodHeight =
-                    42;
-
-
-                const rodWidth =
-                    rodHeight *
-                    imageRatio;
-
-
-                fishingCtx.translate(
-                    handX,
-                    handY
-                );
-
-
-                fishingCtx.rotate(
-                    angle
-                );
-
-
-                fishingCtx.drawImage(
-                    rodImage,
-                    0,
-                    -rodHeight / 2,
-                    rodWidth,
-                    rodHeight
-                );
-
-            } else {
-
-                /*
-                 * Fallback only if fishingRod.png
-                 * cannot be loaded.
-                 */
-                fishingCtx.translate(
-                    handX,
-                    handY
-                );
-
-
-                fishingCtx.rotate(
-                    angle
-                );
-
-
-                fishingCtx.strokeStyle =
-                    "#4a2f1d";
-
-                fishingCtx.lineWidth =
-                    7;
-
-                fishingCtx.lineCap =
-                    "round";
-
-
-                fishingCtx.beginPath();
-
-
-                fishingCtx.moveTo(
-                    0,
-                    0
-                );
-
-
-                fishingCtx.lineTo(
-                    rodLength,
-                    0
-                );
-
-
-                fishingCtx.stroke();
-
-
-                fishingCtx.strokeStyle =
-                    "#b8865b";
-
-                fishingCtx.lineWidth =
-                    3;
-
-
-                fishingCtx.beginPath();
-
-
-                fishingCtx.moveTo(
-                    0,
-                    0
-                );
-
-
-                fishingCtx.lineTo(
-                    rodLength,
-                    0
-                );
-
-
-                fishingCtx.stroke();
-
-            }
-
-
-            fishingCtx.restore();
-
-        }
-
-
-        /* =========================================================
-           DRAW FISHING LINE
-           
-           Line originates from actual rod tip.
-        ========================================================= */
-
-        function drawFishingLine() {
-
-            if (!fishingCtx) {
-                return;
-            }
-
-
-            if (
-                !lureX ||
-                !lureY ||
-                fishingState === "IDLE" ||
-                fishingState === "AIMING" ||
-                fishingState === "CHARGING"
-            ) {
-
-                return;
-
-            }
-
-
-            const handX =
-                fishingWidth *
-                0.50;
-
-
-            const handY =
-                fishingHeight *
-                0.82;
-
-
-            const rodLength =
-                Math.min(
-                    fishingWidth,
-                    fishingHeight
-                ) *
-                0.42;
-
-
-            const angle =
-                -0.58 +
-                (
-                    rodAngle +
-                    0.72
-                ) *
-                0.35;
-
-
-            const rodTipX =
-                handX +
-                Math.cos(angle) *
-                rodLength;
-
-
-            const rodTipY =
-                handY +
-                Math.sin(angle) *
-                rodLength;
-
-
-            fishingCtx.save();
-
-
-            fishingCtx.strokeStyle =
-                "rgba(245,245,245,0.82)";
-
-
-            fishingCtx.lineWidth =
-                1.5;
-
-
-            fishingCtx.beginPath();
-
-
-            fishingCtx.moveTo(
-                rodTipX,
-                rodTipY
-            );
-
-
-            const controlX =
-                (
-                    rodTipX +
-                    lureX
-                ) / 2;
-
-
-            const controlY =
-                (
-                    rodTipY +
-                    lureY
-                ) / 2 -
-                20;
-
-
-            fishingCtx.quadraticCurveTo(
-                controlX,
-                controlY,
-                lureX,
-                lureY
-            );
-
-
-            fishingCtx.stroke();
-
-
-            fishingCtx.restore();
-
-        }
-
-
-        /* =========================================================
-           WATER RIPPLE
-        ========================================================= */
-
-        function drawWaterRipple() {
-
-            if (
-                !fishingCtx ||
-                !lureX ||
-                !lureY
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                fishingState === "IDLE" ||
-                fishingState === "AIMING" ||
-                fishingState === "CHARGING" ||
-                fishingState === "CASTING"
-            ) {
-
-                return;
-
-            }
-
-
-            const pulse =
-                (
-                    Math.sin(
-                        Date.now() *
-                        0.004
-                    ) +
-                    1
-                ) /
-                2;
-
-
-            const radius =
-                10 +
-                pulse *
-                10;
-
-
-            fishingCtx.save();
-
-
-            fishingCtx.strokeStyle =
-                `rgba(255,255,255,${
-                    0.35 -
-                    pulse * 0.15
-                })`;
-
-
-            fishingCtx.lineWidth =
-                2;
-
-
-            fishingCtx.beginPath();
-
-
-            fishingCtx.ellipse(
-                lureX,
-                lureY + 5,
-                radius,
-                radius * 0.35,
-                0,
-                0,
-                Math.PI * 2
-            );
-
-
-            fishingCtx.stroke();
-
-
-            fishingCtx.restore();
-
-        }
-
-
-        /* =========================================================
-           FISHING SCENE
-        ========================================================= */
-
-        function drawFishingScene() {
-
-            if (
-                !fishingCanvas ||
-                !fishingCtx
-            ) {
-
-                return;
-
-            }
-
-
-            fishingCtx.clearRect(
-                0,
-                0,
-                fishingWidth,
-                fishingHeight
-            );
-
-
-            if (
-                assets.lake.complete &&
-                assets.lake.naturalWidth > 0
-            ) {
-
-                fishingCtx.drawImage(
-                    assets.lake,
-                    0,
-                    0,
-                    fishingWidth,
-                    fishingHeight
-                );
-
-            } else {
-
-                const gradient =
-                    fishingCtx.createLinearGradient(
-                        0,
-                        0,
-                        0,
-                        fishingHeight
-                    );
-
-
-                gradient.addColorStop(
-                    0,
-                    "#3b82c4"
-                );
-
-
-                gradient.addColorStop(
-                    1,
-                    "#071d32"
-                );
-
-
-                fishingCtx.fillStyle =
-                    gradient;
-
-
-                fishingCtx.fillRect(
-                    0,
-                    0,
-                    fishingWidth,
-                    fishingHeight
-                );
-
-
-                fishingCtx.strokeStyle =
-                    "rgba(255,255,255,0.10)";
-
-
-                fishingCtx.lineWidth =
-                    2;
-
-
-                for (
-                    let y = 80;
-                    y < fishingHeight;
-                    y += 55
-                ) {
-
-                    fishingCtx.beginPath();
-
-
-                    fishingCtx.moveTo(
-                        0,
-                        y
-                    );
-
-
-                    fishingCtx.quadraticCurveTo(
-                        fishingWidth * 0.25,
-                        y - 8,
-                        fishingWidth * 0.5,
-                        y
-                    );
-
-
-                    fishingCtx.quadraticCurveTo(
-                        fishingWidth * 0.75,
-                        y + 8,
-                        fishingWidth,
-                        y
-                    );
-
-
-                    fishingCtx.stroke();
-
-                }
-
-            }
-
-
-            updateRodAnimation();
-
-
-            if (
-                fishingState === "WAITING" ||
-                fishingState === "BITE" ||
-                fishingState === "HOOKED" ||
-                fishingState === "REELING"
-            ) {
-
-                drawCurrentFish();
-
-            }
-
-
-            drawFishingLine();
-
-            drawLure();
-
-            drawWaterRipple();
-
-            drawFishingRod();
-
-
-            if (
-                game.phase === 2 &&
-                game.fishingActive
-            ) {
-
-                requestAnimationFrame(
-                    drawFishingScene
-                );
-
-            }
 
         }
 
@@ -4330,34 +4917,20 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            hide(
-                phase1
-            );
+            hide(phase1);
 
-            hide(
-                phase1Complete
-            );
+            hide(phase1Complete);
 
-            hide(
-                phase2
-            );
+            hide(phase2);
 
-            hide(
-                gameHUD
-            );
+            hide(gameHUD);
 
-            hide(
-                inventoryPanel
-            );
+            hide(inventoryPanel);
 
-            hide(
-                introScreen
-            );
+            hide(introScreen);
 
 
-            show(
-                missionComplete
-            );
+            show(missionComplete);
 
 
             const finalScore =
@@ -4514,10 +5087,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodTargetAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodKick =
                 0;
@@ -4526,27 +5099,11 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 0;
 
 
-            hide(
-                missionComplete
-            );
+            hide(missionComplete);
 
+            hide(bite);
 
-            if (bite) {
-
-                hide(
-                    bite
-                );
-
-            }
-
-
-            if (hook) {
-
-                hide(
-                    hook
-                );
-
-            }
+            hide(hook);
 
 
             if (powerFill) {
@@ -4578,29 +5135,17 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             updateFishingHUD();
 
 
-            show(
-                introScreen
-            );
+            show(introScreen);
 
-            hide(
-                gameHUD
-            );
+            hide(gameHUD);
 
-            hide(
-                inventoryPanel
-            );
+            hide(inventoryPanel);
 
-            hide(
-                phase1
-            );
+            hide(phase1);
 
-            hide(
-                phase1Complete
-            );
+            hide(phase1Complete);
 
-            hide(
-                phase2
-            );
+            hide(phase2);
 
 
             if (terminal) {
@@ -4611,9 +5156,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             }
 
 
-            stopSound(
-                bgMusic
-            );
+            stopSound(bgMusic);
 
         }
 
@@ -4720,10 +5263,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
 
             rodAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodTargetAngle =
-                -0.72;
+                ROD_CONFIG.waterAngle;
 
             rodKick =
                 0;
@@ -4732,47 +5275,21 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
                 0;
 
 
-            hide(
-                gameHUD
-            );
+            hide(gameHUD);
 
-            hide(
-                inventoryPanel
-            );
+            hide(inventoryPanel);
 
-            hide(
-                phase1
-            );
+            hide(phase1);
 
-            hide(
-                phase1Complete
-            );
+            hide(phase1Complete);
 
-            hide(
-                phase2
-            );
+            hide(phase2);
 
-            hide(
-                missionComplete
-            );
+            hide(missionComplete);
 
+            hide(bite);
 
-            if (bite) {
-
-                hide(
-                    bite
-                );
-
-            }
-
-
-            if (hook) {
-
-                hide(
-                    hook
-                );
-
-            }
+            hide(hook);
 
 
             if (powerFill) {
@@ -4804,9 +5321,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             updateFishingHUD();
 
 
-            show(
-                introScreen
-            );
+            show(introScreen);
 
 
             if (terminal) {
@@ -4950,34 +5465,19 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         function initialiseIntro() {
 
-            hide(
-                gameHUD
-            );
+            hide(gameHUD);
 
-            hide(
-                inventoryPanel
-            );
+            hide(inventoryPanel);
 
-            hide(
-                phase1
-            );
+            hide(phase1);
 
-            hide(
-                phase1Complete
-            );
+            hide(phase1Complete);
 
-            hide(
-                phase2
-            );
+            hide(phase2);
 
-            hide(
-                missionComplete
-            );
+            hide(missionComplete);
 
-
-            show(
-                introScreen
-            );
+            show(introScreen);
 
 
             updateMainHUD();
@@ -5317,29 +5817,17 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
            INITIAL STATE
         ========================================================= */
 
-        hide(
-            gameHUD
-        );
+        hide(gameHUD);
 
-        hide(
-            inventoryPanel
-        );
+        hide(inventoryPanel);
 
-        hide(
-            phase1
-        );
+        hide(phase1);
 
-        hide(
-            phase1Complete
-        );
+        hide(phase1Complete);
 
-        hide(
-            phase2
-        );
+        hide(phase2);
 
-        hide(
-            missionComplete
-        );
+        hide(missionComplete);
 
 
         updateMainHUD();
