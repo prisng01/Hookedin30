@@ -388,209 +388,138 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         let fishingInterval = null;
 
 
-        /* =========================================================
-           FISHING STATE
-        ========================================================= */
+  /* =========================================================
+   FISHING STATE
+========================================================= */
 
-        let fishingState = "IDLE";
+let fishingState = "IDLE";
 
-        let aimAngle = 0;
-        let aimDirection = 1;
+let aimAngle = 0;
+let aimDirection = 1;
 
-        let castPower = 0;
-        let castDirection = 1;
+let castPower = 0;
+let castDirection = 1;
 
-        let fishDistance = 0;
-        let lineTension = 0;
+let fishDistance = 0;
+let lineTension = 0;
 
-        let reelActive = false;
+let reelActive = false;
 
-        let lureX = 0;
-        let lureY = 0;
+let lureX = 0;
+let lureY = 0;
 
-        let currentFish = "goldFish";
+let currentFish = "goldFish";
 
-        let fishBiteTimeout = null;
-
-
-        /* =========================================================
-           FISH POOL
-        ========================================================= */
-
-        let fishPool = [];
+let fishBiteTimeout = null;
 
 
-        function getAvailableFishTypes() {
+/* =========================================================
+   FISH POOL
+========================================================= */
 
-            return Object.keys(
-                assets.fish
-            ).filter(
-                fishKey => {
+let fishPool = [];
 
-                    const image =
-                        assets.fish[fishKey];
+function shuffleFishPool() {
 
-                    return (
-                        image &&
-                        image.complete &&
-                        image.naturalWidth > 0
-                    );
+    fishPool =
+        Object.keys(
+            assets.fish
+        );
 
-                }
+    /*
+     * Fisher-Yates shuffle.
+     */
+    for (
+        let i = fishPool.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
             );
 
-        }
+
+        [
+            fishPool[i],
+            fishPool[j]
+        ] =
+        [
+            fishPool[j],
+            fishPool[i]
+        ];
+
+    }
+
+}
 
 
-        function shuffleFishPool() {
+function chooseFish() {
 
-            const availableFish =
-                getAvailableFishTypes();
+    if (
+        fishPool.length === 0
+    ) {
 
+        shuffleFishPool();
 
-            if (
-                availableFish.length === 0
-            ) {
-
-                fishPool =
-                    Object.keys(
-                        assets.fish
-                    );
-
-                return;
-
-            }
+    }
 
 
-            fishPool =
-                [...availableFish];
+    const selectedFish =
+        fishPool.shift();
 
 
-            /*
-             * Fisher-Yates shuffle.
-             */
-            for (
-                let i = fishPool.length - 1;
-                i > 0;
-                i--
-            ) {
+    return (
+        selectedFish ||
+        "goldFish"
+    );
 
-                const j =
-                    Math.floor(
-                        Math.random() *
-                        (i + 1)
-                    );
+}
 
 
-                [
-                    fishPool[i],
-                    fishPool[j]
-                ] =
-                [
-                    fishPool[j],
-                    fishPool[i]
-                ];
+/* =========================================================
+   ROD ANIMATION STATE
+========================================================= */
 
-            }
+let rodAngle = -0.72;
 
-        }
+let rodTargetAngle = -0.72;
 
+let rodKick = 0;
 
-        function chooseFish() {
-
-            if (
-                fishPool.length === 0
-            ) {
-
-                shuffleFishPool();
-
-            }
+let reelRotation = 0;
 
 
-            const availableFish =
-                getAvailableFishTypes();
+/* =========================================================
+   GENERAL UI HELPERS
+========================================================= */
+
+function show(element) {
+
+    if (!element) {
+        return;
+    }
+
+    element.classList.remove(
+        "hidden"
+    );
+
+}
 
 
-            if (
-                availableFish.length > 0
-            ) {
+function hide(element) {
 
-                const poolStillValid =
-                    fishPool.every(
-                        fish =>
-                            availableFish.includes(
-                                fish
-                            )
-                    );
+    if (!element) {
+        return;
+    }
 
+    element.classList.add(
+        "hidden"
+    );
 
-                if (
-                    !poolStillValid ||
-                    fishPool.length === 0
-                ) {
-
-                    shuffleFishPool();
-
-                }
-
-            }
-
-
-            const selectedFish =
-                fishPool.shift();
-
-
-            return (
-                selectedFish ||
-                "goldFish"
-            );
-
-        }
-
-
-        /* =========================================================
-           ROD ANIMATION STATE
-        ========================================================= */
-
-        let rodAngle = -0.72;
-
-        let rodTargetAngle = -0.72;
-
-        let rodKick = 0;
-
-        let reelRotation = 0;
-
-
-        /* =========================================================
-           GENERAL UI HELPERS
-        ========================================================= */
-
-        function show(element) {
-
-            if (!element) {
-                return;
-            }
-
-            element.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-        function hide(element) {
-
-            if (!element) {
-                return;
-            }
-
-            element.classList.add(
-                "hidden"
-            );
-
-        }
-
-
+}
         /* =========================================================
            GENERAL AUDIO HELPERS
         ========================================================= */
