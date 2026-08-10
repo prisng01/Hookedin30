@@ -377,19 +377,23 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             );
 
 
-       missionCompleteAudio.volume =
-    0.90;
+        missionCompleteAudio.volume =
+            0.90;
 
 
-/* =========================================================
-   IMAGE LOADER
-========================================================= */
+        /* =========================================================
+           IMAGE LOADER
+        ========================================================= */
 
-function loadImage(src) {
+        function loadImage(src) {
+
             const image =
                 new Image();
 
-            image.src = src;
+
+            image.src =
+                src;
+
 
             image.onerror = () => {
 
@@ -399,6 +403,7 @@ function loadImage(src) {
                 );
 
             };
+
 
             return image;
 
@@ -416,10 +421,12 @@ function loadImage(src) {
                     "assets/backgrounds/campsite.png"
                 ),
 
+
             lake:
                 loadImage(
                     "assets/backgrounds/lake.png"
                 ),
+
 
             items: {
 
@@ -428,45 +435,54 @@ function loadImage(src) {
                         "assets/items/tent.png"
                     ),
 
+
                 backpack:
                     loadImage(
                         "assets/items/backpack.png"
                     ),
+
 
                 torchlight:
                     loadImage(
                         "assets/items/torchlight.png"
                     ),
 
+
                 compass:
                     loadImage(
                         "assets/items/compass.png"
                     ),
+
 
                 boots:
                     loadImage(
                         "assets/items/boots.png"
                     ),
 
+
                 bottle:
                     loadImage(
                         "assets/items/bottle.png"
                     ),
+
 
                 fishingRod:
                     loadImage(
                         "assets/items/fishingRod.png"
                     ),
 
+
                 map:
                     loadImage(
                         "assets/items/map.png"
                     ),
 
+
                 camera:
                     loadImage(
                         "assets/items/camera.png"
                     ),
+
 
                 key:
                     loadImage(
@@ -475,6 +491,7 @@ function loadImage(src) {
 
             },
 
+
             fish: {
 
                 goldFish:
@@ -482,10 +499,12 @@ function loadImage(src) {
                         "assets/fish/goldFish.png"
                     ),
 
+
                 heartFish:
                     loadImage(
                         "assets/fish/heartFish.png"
                     ),
+
 
                 rainbowFish:
                     loadImage(
@@ -501,143 +520,192 @@ function loadImage(src) {
            GAME INTERVALS
         ========================================================= */
 
-        let phase1Interval = null;
-
-        let fishingInterval = null;
-
-
-  /* =========================================================
-   FISHING STATE
-========================================================= */
-
-let fishingState = "IDLE";
-
-let aimAngle = 0;
-let aimDirection = 1;
-
-let castPower = 0;
-let castDirection = 1;
-
-let fishDistance = 0;
-let lineTension = 0;
-
-let reelActive = false;
-
-let lureX = 0;
-let lureY = 0;
-
-let currentFish = "goldFish";
-
-let fishBiteTimeout = null;
+        let phase1Interval =
+            null;
 
 
-/* =========================================================
-   FISH POOL
-========================================================= */
+        let fishingInterval =
+            null;
 
-let fishPool = [];
 
-function shuffleFishPool() {
+        /* =========================================================
+           FISHING STATE
+        ========================================================= */
 
-    fishPool =
-        Object.keys(
-            assets.fish
-        );
+        let fishingState =
+            "IDLE";
 
-    /*
-     * Fisher-Yates shuffle.
-     */
-    for (
-        let i = fishPool.length - 1;
-        i > 0;
-        i--
-    ) {
 
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
+        let aimAngle =
+            0;
+
+
+        let aimDirection =
+            1;
+
+
+        let castPower =
+            0;
+
+
+        let castDirection =
+            1;
+
+
+        let fishDistance =
+            0;
+
+
+        let lineTension =
+            0;
+
+
+        let reelActive =
+            false;
+
+
+        let lureX =
+            0;
+
+
+        let lureY =
+            0;
+
+
+        let currentFish =
+            "goldFish";
+
+
+        let fishBiteTimeout =
+            null;
+
+
+        /* =========================================================
+           FISH POOL
+        ========================================================= */
+
+        let fishPool =
+            [];
+
+
+        function shuffleFishPool() {
+
+            fishPool =
+                Object.keys(
+                    assets.fish
+                );
+
+
+            /*
+             * Fisher-Yates shuffle.
+             */
+
+            for (
+                let i =
+                    fishPool.length - 1;
+
+                i > 0;
+
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() *
+                        (i + 1)
+                    );
+
+
+                [
+                    fishPool[i],
+                    fishPool[j]
+                ] =
+                [
+                    fishPool[j],
+                    fishPool[i]
+                ];
+
+            }
+
+        }
+
+
+        function chooseFish() {
+
+            if (
+                fishPool.length ===
+                0
+            ) {
+
+                shuffleFishPool();
+
+            }
+
+
+            const selectedFish =
+                fishPool.shift();
+
+
+            return (
+                selectedFish ||
+                "goldFish"
             );
 
-
-        [
-            fishPool[i],
-            fishPool[j]
-        ] =
-        [
-            fishPool[j],
-            fishPool[i]
-        ];
-
-    }
-
-}
+        }
 
 
-function chooseFish() {
+        /* =========================================================
+           ROD ANIMATION STATE
+        ========================================================= */
 
-    if (
-        fishPool.length === 0
-    ) {
-
-        shuffleFishPool();
-
-    }
+        let rodAngle =
+            -0.72;
 
 
-    const selectedFish =
-        fishPool.shift();
+        let rodTargetAngle =
+            -0.72;
 
 
-    return (
-        selectedFish ||
-        "goldFish"
-    );
-
-}
+        let rodKick =
+            0;
 
 
-/* =========================================================
-   ROD ANIMATION STATE
-========================================================= */
-
-let rodAngle = -0.72;
-
-let rodTargetAngle = -0.72;
-
-let rodKick = 0;
-
-let reelRotation = 0;
+        let reelRotation =
+            0;
 
 
-/* =========================================================
-   GENERAL UI HELPERS
-========================================================= */
+        /* =========================================================
+           GENERAL UI HELPERS
+        ========================================================= */
 
-function show(element) {
+        function show(element) {
 
-    if (!element) {
-        return;
-    }
-
-    element.classList.remove(
-        "hidden"
-    );
-
-}
+            if (!element) {
+                return;
+            }
 
 
-function hide(element) {
+            element.classList.remove(
+                "hidden"
+            );
 
-    if (!element) {
-        return;
-    }
+        }
 
-    element.classList.add(
-        "hidden"
-    );
 
-}
+        function hide(element) {
+
+            if (!element) {
+                return;
+            }
+
+
+            element.classList.add(
+                "hidden"
+            );
+
+        }
+
+
         /* =========================================================
            GENERAL AUDIO HELPERS
         ========================================================= */
@@ -651,7 +719,9 @@ function hide(element) {
 
             try {
 
-                sound.currentTime = 0;
+                sound.currentTime =
+                    0;
+
 
                 const promise =
                     sound.play();
@@ -659,7 +729,8 @@ function hide(element) {
 
                 if (
                     promise &&
-                    typeof promise.catch === "function"
+                    typeof promise.catch ===
+                    "function"
                 ) {
 
                     promise.catch(
@@ -667,6 +738,7 @@ function hide(element) {
                     );
 
                 }
+
 
             } catch (error) {
 
@@ -697,6 +769,145 @@ function hide(element) {
 
 
         /* =========================================================
+           MISSION INTRO AUDIO HELPERS
+        ========================================================= */
+
+        function startMissionBackgroundAudio() {
+
+            if (!missionBackgroundSound) {
+                return;
+            }
+
+
+            try {
+
+                missionBackgroundSound.currentTime =
+                    0;
+
+
+                const promise =
+                    missionBackgroundSound.play();
+
+
+                if (
+                    promise &&
+                    typeof promise.catch ===
+                    "function"
+                ) {
+
+                    promise.catch(
+                        () => {}
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Unable to start mission background audio:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function stopMissionBackgroundAudio() {
+
+            if (!missionBackgroundSound) {
+                return;
+            }
+
+
+            try {
+
+                missionBackgroundSound.pause();
+
+                missionBackgroundSound.currentTime =
+                    0;
+
+            } catch (error) {}
+
+        }
+
+
+        function startKeyboardTypingSound() {
+
+            if (!keyboardTypingSound) {
+                return;
+            }
+
+
+            try {
+
+                if (
+                    keyboardTypingSound.paused
+                ) {
+
+                    keyboardTypingSound.currentTime =
+                        0;
+
+
+                    const promise =
+                        keyboardTypingSound.play();
+
+
+                    if (
+                        promise &&
+                        typeof promise.catch ===
+                        "function"
+                    ) {
+
+                        promise.catch(
+                            () => {}
+                        );
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Unable to start typing audio:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function stopKeyboardTypingSound() {
+
+            if (!keyboardTypingSound) {
+                return;
+            }
+
+
+            try {
+
+                keyboardTypingSound.pause();
+
+                keyboardTypingSound.currentTime =
+                    0;
+
+            } catch (error) {}
+
+        }
+
+
+        function stopAllMissionIntroAudio() {
+
+            stopMissionBackgroundAudio();
+
+            stopKeyboardTypingSound();
+
+        }
+
+
+        /* =========================================================
            FISHING AUDIO HELPERS
         ========================================================= */
 
@@ -706,6 +917,7 @@ function hide(element) {
 
                 fishingLakeAudio.currentTime =
                     0;
+
 
                 fishingLakeAudio
                     .play()
@@ -744,6 +956,7 @@ function hide(element) {
                 fishingRodWhooshAudio.currentTime =
                     0;
 
+
                 fishingRodWhooshAudio
                     .play()
                     .catch(() => {});
@@ -763,6 +976,7 @@ function hide(element) {
 
                     fishingWindingAudio.currentTime =
                         0;
+
 
                     fishingWindingAudio
                         .play()
@@ -796,6 +1010,7 @@ function hide(element) {
                 fishPullingAudio.currentTime =
                     0;
 
+
                 fishPullingAudio
                     .play()
                     .catch(() => {});
@@ -826,6 +1041,7 @@ function hide(element) {
                 missionCompleteAudio.currentTime =
                     0;
 
+
                 missionCompleteAudio
                     .play()
                     .catch(() => {});
@@ -847,6 +1063,7 @@ function hide(element) {
                     campCanvas.width =
                     window.innerWidth;
 
+
                 campHeight =
                     campCanvas.height =
                     window.innerHeight;
@@ -859,6 +1076,7 @@ function hide(element) {
                 fishingWidth =
                     fishingCanvas.width =
                     window.innerWidth;
+
 
                 fishingHeight =
                     fishingCanvas.height =
@@ -897,7 +1115,9 @@ function hide(element) {
 
                 timerText.innerText =
                     "00:" +
-                    String(seconds).padStart(
+                    String(
+                        seconds
+                    ).padStart(
                         2,
                         "0"
                     );
@@ -977,7 +1197,9 @@ function hide(element) {
 
 
                 fishingTimerText.innerText =
-                    String(minutes).padStart(
+                    String(
+                        minutes
+                    ).padStart(
                         2,
                         "0"
                     ) +
@@ -1016,7 +1238,6 @@ function hide(element) {
             }
 
         }
-
 
         /* =========================================================
            PHASE 1
@@ -5287,408 +5508,460 @@ function hide(element) {
         }
 
 
-        /* =========================================================
-           REPLAY GAME
-        ========================================================= */
+         /* =========================================================
+       REPLAY GAME
+    ========================================================= */
 
-        function replayGame() {
+    function replayGame() {
 
-            stopFishingMusic();
+        /*
+         * Stop mission opening audio.
+         */
+        stopMissionBackgroundAudio();
 
-            stopFishingWinding();
-
-            stopFishPullingSound();
-
-
-            if (phase1Interval) {
-
-                clearInterval(
-                    phase1Interval
-                );
-
-                phase1Interval =
-                    null;
-
-            }
+        stopKeyboardTypingSound();
 
 
-            if (fishingInterval) {
+        /*
+         * Stop any active terminal typing.
+         */
+        if (missionTypingTimer) {
 
-                clearInterval(
-                    fishingInterval
-                );
-
-                fishingInterval =
-                    null;
-
-            }
-
-
-            clearTimeout(
-                fishBiteTimeout
+            clearInterval(
+                missionTypingTimer
             );
 
-
-            fishingState =
-                "IDLE";
-
-
-            reelActive =
-                false;
-
-
-            game.phase =
-                0;
-
-            game.xp =
-                0;
-
-            game.score =
-                0;
-
-            game.timer =
-                60;
-
-            game.fishingTimer =
-                80;
-
-            game.itemsFound =
-                0;
-
-            game.totalItems =
-                10;
-
-            game.fishCaught =
-                0;
-
-            game.targetFish =
-                6;
-
-            game.bearProgress =
-                100;
-
-            game.missionActive =
-                false;
-
-            game.fishingActive =
-                false;
-
-
-            aimAngle =
-                0;
-
-            aimDirection =
-                1;
-
-
-            castPower =
-                0;
-
-            castDirection =
-                1;
-
-
-            fishDistance =
-                0;
-
-            lineTension =
-                0;
-
-
-            lureX =
-                0;
-
-            lureY =
-                0;
-
-
-            currentFish =
-                "goldFish";
-
-
-            fishPool =
-                [];
-
-
-            rodAngle =
-                -0.58;
-
-            rodTargetAngle =
-                -0.58;
-
-            rodKick =
-                0;
-
-            reelRotation =
-                0;
-
-
-            hide(missionComplete);
-
-
-            if (bite) {
-                hide(bite);
-            }
-
-
-            if (hook) {
-                hide(hook);
-            }
-
-
-            if (powerFill) {
-
-                powerFill.style.width =
-                    "0%";
-
-            }
-
-
-            if (reelFill) {
-
-                reelFill.style.width =
-                    "0%";
-
-            }
-
-
-            if (castRod) {
-
-                castRod.innerText =
-                    "🎣 CAST ROD";
-
-            }
-
-
-            updateMainHUD();
-
-            updateFishingHUD();
-
-
-            show(introScreen);
-
-            hide(gameHUD);
-
-            hide(inventoryPanel);
-
-            hide(phase1);
-
-            hide(phase1Complete);
-
-            hide(phase2);
-
-
-            if (terminal) {
-
-                terminal.innerHTML =
-                    "<p>&gt; Mission reset.</p>";
-
-            }
-
-
-            stopSound(
-                bgMusic
-            );
+            missionTypingTimer =
+                null;
 
         }
 
 
-        /* =========================================================
-           RESET GAME
-        ========================================================= */
+        stopFishingMusic();
 
-        function resetGame() {
+        stopFishingWinding();
 
-            stopFishingMusic();
-
-            stopFishingWinding();
-
-            stopFishPullingSound();
+        stopFishPullingSound();
 
 
-            if (phase1Interval) {
+        if (phase1Interval) {
 
-                clearInterval(
-                    phase1Interval
-                );
-
-                phase1Interval =
-                    null;
-
-            }
-
-
-            if (fishingInterval) {
-
-                clearInterval(
-                    fishingInterval
-                );
-
-                fishingInterval =
-                    null;
-
-            }
-
-
-            clearTimeout(
-                fishBiteTimeout
+            clearInterval(
+                phase1Interval
             );
 
-
-            game.phase =
-                0;
-
-            game.xp =
-                0;
-
-            game.score =
-                0;
-
-            game.timer =
-                60;
-
-            game.fishingTimer =
-                80;
-
-            game.itemsFound =
-                0;
-
-            game.fishCaught =
-                0;
-
-            game.bearProgress =
-                100;
-
-            game.missionActive =
-                false;
-
-            game.fishingActive =
-                false;
-
-
-            fishingState =
-                "IDLE";
-
-
-            reelActive =
-                false;
-
-
-            aimAngle =
-                0;
-
-            aimDirection =
-                1;
-
-
-            castPower =
-                0;
-
-            castDirection =
-                1;
-
-
-            fishDistance =
-                0;
-
-            lineTension =
-                0;
-
-
-            lureX =
-                0;
-
-            lureY =
-                0;
-
-
-            currentFish =
-                "goldFish";
-
-
-            fishPool =
-                [];
-
-
-            rodAngle =
-                -0.58;
-
-            rodTargetAngle =
-                -0.58;
-
-            rodKick =
-                0;
-
-            reelRotation =
-                0;
-
-
-            hide(gameHUD);
-
-            hide(inventoryPanel);
-
-            hide(phase1);
-
-            hide(phase1Complete);
-
-            hide(phase2);
-
-            hide(missionComplete);
-
-
-            if (bite) {
-                hide(bite);
-            }
-
-
-            if (hook) {
-                hide(hook);
-            }
-
-
-            if (powerFill) {
-
-                powerFill.style.width =
-                    "0%";
-
-            }
-
-
-            if (reelFill) {
-
-                reelFill.style.width =
-                    "0%";
-
-            }
-
-
-            if (castRod) {
-
-                castRod.innerText =
-                    "🎣 CAST ROD";
-
-            }
-
-
-            updateMainHUD();
-
-            updateFishingHUD();
-
-
-            show(introScreen);
-
-
-            if (terminal) {
-
-                terminal.innerHTML =
-                    "<p>&gt; Mission ready.</p>";
-
-            }
+            phase1Interval =
+                null;
 
         }
 
 
-        /* =========================================================
+        if (fishingInterval) {
+
+            clearInterval(
+                fishingInterval
+            );
+
+            fishingInterval =
+                null;
+
+        }
+
+
+        clearTimeout(
+            fishBiteTimeout
+        );
+
+
+        fishingState =
+            "IDLE";
+
+
+        reelActive =
+            false;
+
+
+        game.phase =
+            0;
+
+        game.xp =
+            0;
+
+        game.score =
+            0;
+
+        game.timer =
+            60;
+
+        game.fishingTimer =
+            80;
+
+        game.itemsFound =
+            0;
+
+        game.totalItems =
+            10;
+
+        game.fishCaught =
+            0;
+
+        game.targetFish =
+            6;
+
+        game.bearProgress =
+            100;
+
+        game.missionActive =
+            false;
+
+        game.fishingActive =
+            false;
+
+
+        aimAngle =
+            0;
+
+        aimDirection =
+            1;
+
+
+        castPower =
+            0;
+
+        castDirection =
+            1;
+
+
+        fishDistance =
+            0;
+
+        lineTension =
+            0;
+
+
+        lureX =
+            0;
+
+        lureY =
+            0;
+
+
+        currentFish =
+            "goldFish";
+
+
+        fishPool =
+            [];
+
+
+        rodAngle =
+            -0.58;
+
+        rodTargetAngle =
+            -0.58;
+
+        rodKick =
+            0;
+
+        reelRotation =
+            0;
+
+
+        missionIntroStarted =
+            false;
+
+
+        hide(missionComplete);
+
+
+        if (bite) {
+            hide(bite);
+        }
+
+
+        if (hook) {
+            hide(hook);
+        }
+
+
+        if (powerFill) {
+
+            powerFill.style.width =
+                "0%";
+
+        }
+
+
+        if (reelFill) {
+
+            reelFill.style.width =
+                "0%";
+
+        }
+
+
+        if (castRod) {
+
+            castRod.innerText =
+                "🎣 CAST ROD";
+
+        }
+
+
+        updateMainHUD();
+
+        updateFishingHUD();
+
+
+        show(introScreen);
+
+        hide(gameHUD);
+
+        hide(inventoryPanel);
+
+        hide(phase1);
+
+        hide(phase1Complete);
+
+        hide(phase2);
+
+
+        /*
+         * Restart the mission opening properly.
+         */
+        startMissionBackgroundAudio();
+
+        startTerminal();
+
+
+        stopSound(
+            bgMusic
+        );
+
+    }
+
+
+    /* =========================================================
+       RESET GAME
+    ========================================================= */
+
+    function resetGame() {
+
+        /*
+         * Stop mission opening audio.
+         */
+        stopMissionBackgroundAudio();
+
+        stopKeyboardTypingSound();
+
+
+        /*
+         * Stop any active terminal typing.
+         */
+        if (missionTypingTimer) {
+
+            clearInterval(
+                missionTypingTimer
+            );
+
+            missionTypingTimer =
+                null;
+
+        }
+
+
+        stopFishingMusic();
+
+        stopFishingWinding();
+
+        stopFishPullingSound();
+
+
+        if (phase1Interval) {
+
+            clearInterval(
+                phase1Interval
+            );
+
+            phase1Interval =
+                null;
+
+        }
+
+
+        if (fishingInterval) {
+
+            clearInterval(
+                fishingInterval
+            );
+
+            fishingInterval =
+                null;
+
+        }
+
+
+        clearTimeout(
+            fishBiteTimeout
+        );
+
+
+        game.phase =
+            0;
+
+        game.xp =
+            0;
+
+        game.score =
+            0;
+
+        game.timer =
+            60;
+
+        game.fishingTimer =
+            80;
+
+        game.itemsFound =
+            0;
+
+        game.fishCaught =
+            0;
+
+        game.bearProgress =
+            100;
+
+        game.missionActive =
+            false;
+
+        game.fishingActive =
+            false;
+
+
+        fishingState =
+            "IDLE";
+
+
+        reelActive =
+            false;
+
+
+        aimAngle =
+            0;
+
+        aimDirection =
+            1;
+
+
+        castPower =
+            0;
+
+        castDirection =
+            1;
+
+
+        fishDistance =
+            0;
+
+        lineTension =
+            0;
+
+
+        lureX =
+            0;
+
+        lureY =
+            0;
+
+
+        currentFish =
+            "goldFish";
+
+
+        fishPool =
+            [];
+
+
+        rodAngle =
+            -0.58;
+
+        rodTargetAngle =
+            -0.58;
+
+        rodKick =
+            0;
+
+        reelRotation =
+            0;
+
+
+        missionIntroStarted =
+            false;
+
+
+        hide(gameHUD);
+
+        hide(inventoryPanel);
+
+        hide(phase1);
+
+        hide(phase1Complete);
+
+        hide(phase2);
+
+        hide(missionComplete);
+
+
+        if (bite) {
+            hide(bite);
+        }
+
+
+        if (hook) {
+            hide(hook);
+        }
+
+
+        if (powerFill) {
+
+            powerFill.style.width =
+                "0%";
+
+        }
+
+
+        if (reelFill) {
+
+            reelFill.style.width =
+                "0%";
+
+        }
+
+
+        if (castRod) {
+
+            castRod.innerText =
+                "🎣 CAST ROD";
+
+        }
+
+
+        updateMainHUD();
+
+        updateFishingHUD();
+
+
+        show(introScreen);
+
+
+        /*
+         * Restart the opening mission sequence.
+         */
+        startMissionBackgroundAudio();
+
+        startTerminal();
+
+    }
+           /* =========================================================
            TERMINAL
         ========================================================= */
 
@@ -5720,7 +5993,24 @@ function hide(element) {
         function startTerminal() {
 
             if (!terminal) {
+
                 return;
+
+            }
+
+
+            /*
+             * Stop any previous typing process.
+             */
+            if (missionTypingTimer) {
+
+                clearInterval(
+                    missionTypingTimer
+                );
+
+                missionTypingTimer =
+                    null;
+
             }
 
 
@@ -5728,7 +6018,14 @@ function hide(element) {
                 "";
 
 
-            let index = 0;
+            let index =
+                0;
+
+
+            /*
+             * Start keyboard typing audio.
+             */
+            startKeyboardTypingSound();
 
 
             function typeLine() {
@@ -5737,6 +6034,16 @@ function hide(element) {
                     index >=
                     terminalLines.length
                 ) {
+
+                    /*
+                     * All briefing text has finished.
+                     */
+                    stopKeyboardTypingSound();
+
+
+                    missionIntroStarted =
+                        true;
+
 
                     return;
 
@@ -5758,10 +6065,11 @@ function hide(element) {
                     terminalLines[index];
 
 
-                let character = 0;
+                let character =
+                    0;
 
 
-                const typing =
+                missionTypingTimer =
                     setInterval(
                         () => {
 
@@ -5781,8 +6089,12 @@ function hide(element) {
                             ) {
 
                                 clearInterval(
-                                    typing
+                                    missionTypingTimer
                                 );
+
+
+                                missionTypingTimer =
+                                    null;
 
 
                                 index++;
@@ -5805,9 +6117,7 @@ function hide(element) {
             typeLine();
 
         }
-
-
-        /* =========================================================
+              /* =========================================================
            INTRO
         ========================================================= */
 
@@ -5833,11 +6143,24 @@ function hide(element) {
 
             updateFishingHUD();
 
+
+            /*
+             * Opening mission background audio.
+             *
+             * Browsers may block autoplay until the
+             * player interacts with the page. If allowed,
+             * mission.mp3 starts immediately here.
+             */
+            startMissionBackgroundAudio();
+
+
+            /*
+             * Begin the mission briefing typing.
+             * keyboard_typing.mp3 runs while the text types.
+             */
             startTerminal();
 
         }
-
-
         /* =========================================================
            LOADING SCREEN
         ========================================================= */
@@ -5989,7 +6312,7 @@ function hide(element) {
         }
 
 
-        /* =========================================================
+              /* =========================================================
            FISHING RENDER
         ========================================================= */
 
@@ -6000,201 +6323,208 @@ function hide(element) {
         }
 
 
-          /* =========================================================
-       BUTTON EVENTS
-    ========================================================= */
+        /* =========================================================
+           BUTTON EVENTS
+        ========================================================= */
 
-    if (startMissionButton) {
+        if (startMissionButton) {
 
-        startMissionButton.addEventListener(
-            "click",
-            startMission
-        );
+            startMissionButton.addEventListener(
+                "click",
+                startMission
+            );
 
-    }
-
-
-    if (continueFishing) {
-
-        continueFishing.addEventListener(
-            "click",
-            startFishingPhase
-        );
-
-    }
+        }
 
 
-    if (replayMission) {
+        if (continueFishing) {
 
-        replayMission.addEventListener(
-            "click",
-            replayGame
-        );
+            continueFishing.addEventListener(
+                "click",
+                startFishingPhase
+            );
 
-    }
-
-
-    /* =========================================================
-       CAMPSITE EVENT
-    ========================================================= */
-
-    if (campCanvas) {
-
-        campCanvas.addEventListener(
-            "pointerdown",
-            handleCampsiteClick
-        );
-
-    }
+        }
 
 
-    /* =========================================================
-       KEYBOARD CONTROLS
-    ========================================================= */
+        if (replayMission) {
 
-    document.addEventListener(
-        "keydown",
-        event => {
+            replayMission.addEventListener(
+                "click",
+                replayGame
+            );
 
-            if (
-                event.code ===
-                "Space"
-            ) {
+        }
+
+
+        /* =========================================================
+           CAMPSITE EVENT
+        ========================================================= */
+
+        if (campCanvas) {
+
+            campCanvas.addEventListener(
+                "pointerdown",
+                handleCampsiteClick
+            );
+
+        }
+
+
+        /* =========================================================
+           KEYBOARD CONTROLS
+        ========================================================= */
+
+        document.addEventListener(
+            "keydown",
+            event => {
 
                 if (
-                    game.phase === 2 &&
-                    game.fishingActive
-                ) {
-
-                    event.preventDefault();
-
-                    handleCastRod();
-
-                }
-
-            }
-
-
-            if (
-                event.key.toLowerCase() ===
-                "r"
-            ) {
-
-                if (
-                    game.phase === 2 &&
-                    game.fishingActive
+                    event.code ===
+                    "Space"
                 ) {
 
                     if (
-                        fishingState ===
-                        "HOOKED"
+                        game.phase === 2 &&
+                        game.fishingActive
                     ) {
 
-                        startReeling();
+                        event.preventDefault();
 
-                    } else if (
-                        fishingState ===
-                        "REELING"
+                        handleCastRod();
+
+                    }
+
+                }
+
+
+                if (
+                    event.key.toLowerCase() ===
+                    "r"
+                ) {
+
+                    if (
+                        game.phase === 2 &&
+                        game.fishingActive
                     ) {
 
-                        stopReeling();
+                        if (
+                            fishingState ===
+                            "HOOKED"
+                        ) {
+
+                            startReeling();
+
+                        } else if (
+                            fishingState ===
+                            "REELING"
+                        ) {
+
+                            stopReeling();
+
+                        }
 
                     }
 
                 }
 
             }
-
-        }
-    );
+        );
 
 
-    /* =========================================================
-       VISIBILITY CHANGE
-    ========================================================= */
-
-    document.addEventListener(
-        "visibilitychange",
-        () => {
-
-            if (
-                document.hidden &&
-                fishingState ===
-                "REELING"
-            ) {
-
-                stopReeling();
-
-            }
-
-        }
-    );
-
-
-    /* =========================================================
-       PUBLIC API
-    ========================================================= */
-
-    window.Mission2 = {
-
-        game,
-
-        startMission,
-
-        startFishingPhase,
-
-        replayGame,
-
-        resetGame,
-
-        catchFish,
-
-        fishEscaped,
-
-        drawFishingScene
-
-    };
-
-
-    /* =========================================================
-       INITIAL STATE
-    ========================================================= */
-
-    hide(gameHUD);
-
-    hide(inventoryPanel);
-
-    hide(phase1);
-
-    hide(phase1Complete);
-
-    hide(phase2);
-
-    hide(missionComplete);
-
-
-    updateMainHUD();
-
-    updateFishingHUD();
-
-
-    if (
-        document.readyState ===
-        "loading"
-    ) {
+        /* =========================================================
+           VISIBILITY CHANGE
+        ========================================================= */
 
         document.addEventListener(
-            "DOMContentLoaded",
-            startLoadingScreen,
-            {
-                once: true
+            "visibilitychange",
+            () => {
+
+                if (
+                    document.hidden &&
+                    fishingState ===
+                    "REELING"
+                ) {
+
+                    stopReeling();
+
+                }
+
             }
         );
 
-    } else {
 
-        startLoadingScreen();
+        /* =========================================================
+           PUBLIC API
+        ========================================================= */
 
-    }
+        window.Mission2 = {
 
-})();
+            game,
+
+            startMission,
+
+            startFishingPhase,
+
+            replayGame,
+
+            resetGame,
+
+            catchFish,
+
+            fishEscaped,
+
+            drawFishingScene
+
+        };
+
+
+        /* =========================================================
+           INITIAL STATE
+        ========================================================= */
+
+        hide(gameHUD);
+
+        hide(inventoryPanel);
+
+        hide(phase1);
+
+        hide(phase1Complete);
+
+        hide(phase2);
+
+        hide(missionComplete);
+
+
+        updateMainHUD();
+
+        updateFishingHUD();
+
+
+        /* =========================================================
+           START GAME
+        ========================================================= */
+
+        if (
+            document.readyState ===
+            "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                startLoadingScreen,
+                {
+                    once: true
+                }
+            );
+
+        } else {
+
+            startLoadingScreen();
+
+        }
+
+
+    })();
+
+}
