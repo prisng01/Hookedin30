@@ -946,27 +946,32 @@ function hide(element) {
         }
 
 
-        function startMission() {
+       unction startMission() {
 
-            playSound(
-                missionStartSound
-            );
-
-
-            stopSound(
-                bgMusic
-            );
+    playSound(
+        missionStartSound
+    );
 
 
-            if (bgMusic) {
+    stopSound(
+        bgMusic
+    );
 
-                bgMusic.currentTime = 0;
 
-                bgMusic
-                    .play()
-                    .catch(() => {});
+    stopSound(
+        missionBackgroundSound
+    );
 
-            }
+
+    if (bgMusic) {
+
+        bgMusic.currentTime = 0;
+
+        bgMusic
+            .play()
+            .catch(() => {});
+
+    }
 
 
             game.phase = 1;
