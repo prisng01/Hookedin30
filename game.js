@@ -1,20 +1,24 @@
 "use strict";
 
 if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
+
     console.warn(
         "Mission 2 game.js already loaded. Skipping duplicate initialisation."
     );
+
 } else {
 
     window.__OPERATION_BIRTHDAY_MISSION_2_LOADED = true;
 
     (() => {
 
+
         /* =========================================================
            GAME STATE
         ========================================================= */
 
         const game = {
+
             phase: 0,
 
             xp: 0,
@@ -35,6 +39,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
             missionActive: false,
             fishingActive: false
+
         };
 
 
@@ -43,6 +48,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         ========================================================= */
 
         const ITEM_KEYS = [
+
             "tent",
             "backpack",
             "torchlight",
@@ -53,6 +59,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             "map",
             "camera",
             "key"
+
         ];
 
 
@@ -82,6 +89,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const campCanvas =
             document.getElementById("gameCanvas");
 
+
         const campCtx =
             campCanvas
                 ? campCanvas.getContext("2d")
@@ -90,6 +98,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
 
         const fishingCanvas =
             document.getElementById("fishingCanvas");
+
 
         const fishingCtx =
             fishingCanvas
@@ -107,26 +116,34 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const loadingScreen =
             document.getElementById("loadingScreen");
 
+
         const introScreen =
             document.getElementById("introScreen");
+
 
         const gameHUD =
             document.getElementById("gameHUD");
 
+
         const inventoryPanel =
             document.getElementById("inventoryPanel");
+
 
         const phase1 =
             document.getElementById("phase1");
 
+
         const phase1Complete =
             document.getElementById("phase1Complete");
+
 
         const phase2 =
             document.getElementById("phase2");
 
+
         const missionComplete =
             document.getElementById("missionComplete");
+
 
         const terminal =
             document.getElementById("terminal");
@@ -135,8 +152,10 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const startMissionButton =
             document.getElementById("startMission");
 
+
         const continueFishing =
             document.getElementById("continueFishing");
+
 
         const replayMission =
             document.getElementById("replayMission");
@@ -145,17 +164,22 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const timerText =
             document.getElementById("timer");
 
+
         const xpText =
             document.getElementById("xp");
+
 
         const scoreText =
             document.getElementById("score");
 
+
         const bearProgress =
             document.getElementById("bearProgress");
 
+
         const objectiveText =
             document.getElementById("objectiveText");
+
 
         const phase1XP =
             document.getElementById("phase1XP");
@@ -164,138 +188,204 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const fishCaughtText =
             document.getElementById("fishCaught");
 
+
         const fishingTimerText =
             document.getElementById("fishingTimer");
+
 
         const fishScoreText =
             document.getElementById("fishScore");
 
+
         const powerFill =
             document.getElementById("powerFill");
+
 
         const reelFill =
             document.getElementById("reelFill");
 
+
         const castRod =
             document.getElementById("castRod");
+
 
         const bite =
             document.getElementById("bite");
 
+
         const hook =
             document.getElementById("hook");
 
-   /* =========================================================
-   EXISTING AUDIO
-========================================================= */
 
-const bgMusic =
-    document.getElementById("bgMusic");
-
-const collectSound =
-    document.getElementById("collectSound");
-
-const splashSound =
-    document.getElementById("splashSound");
-
-const successSound =
-    document.getElementById("successSound");
-
-const bearSound =
-    document.getElementById("bearSound");
-
-
-/* =========================================================
-   MISSION AUDIO
-========================================================= */
-
-/* Background audio for the beginning of the game */
-const missionBackgroundSound =
-    new Audio(
-        "assets/audio/mission.mp3"
-    );
-
-
-/* Sound played when START MISSION is clicked */
-const missionStartSound =
-    new Audio(
-        "assets/audio/mission_start.mp3"
-    );
-
-
-/* Keyboard typing sound during mission briefing */
-const keyboardTypingSound =
-    new Audio(
-        "assets/audio/keyboard_typing.mp3"
-    );
-
-
-/* =========================================================
-   AUDIO SETTINGS
-========================================================= */
-
-missionBackgroundSound.preload = "auto";
-missionBackgroundSound.loop = true;
-missionBackgroundSound.volume = 0.45;
-
-missionStartSound.preload = "auto";
-missionStartSound.volume = 0.90;
-
-keyboardTypingSound.preload = "auto";
-keyboardTypingSound.loop = true;
-keyboardTypingSound.volume = 0.65;
-
-
-/* =========================================================
-   FISHING AUDIO
-========================================================= */
-
-const fishingLakeAudio =
-    new Audio(
-        "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
-    );
-
-fishingLakeAudio.loop = true;
-fishingLakeAudio.volume = 0.45;
-
-
-const fishingRodWhooshAudio =
-    new Audio(
-        "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
-    );
-
-fishingRodWhooshAudio.volume = 0.75;
-
-
-const fishingWindingAudio =
-    new Audio(
-        "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
-    );
-
-fishingWindingAudio.loop = true;
-fishingWindingAudio.volume = 0.70;
-
-
-const fishPullingAudio =
-    new Audio(
-        "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
-    );
-
-fishPullingAudio.volume = 0.80;
-
-
-const missionCompleteAudio =
-    new Audio(
-        "assets/audio/mission-complete.mp3"
-    );
-
-missionCompleteAudio.volume = 0.90;
         /* =========================================================
-           IMAGE LOADER
+           EXISTING AUDIO
         ========================================================= */
 
-        function loadImage(src) {
+        const bgMusic =
+            document.getElementById("bgMusic");
 
+
+        const collectSound =
+            document.getElementById("collectSound");
+
+
+        const splashSound =
+            document.getElementById("splashSound");
+
+
+        const successSound =
+            document.getElementById("successSound");
+
+
+        const bearSound =
+            document.getElementById("bearSound");
+
+
+        /* =========================================================
+           MISSION AUDIO
+        ========================================================= */
+
+        /*
+           Background audio for the beginning of the game.
+        */
+
+        const missionBackgroundSound =
+            new Audio(
+                "assets/audio/mission.mp3"
+            );
+
+
+        /*
+           Sound played when START MISSION is clicked.
+        */
+
+        const missionStartSound =
+            new Audio(
+                "assets/audio/mission_start.mp3"
+            );
+
+
+        /*
+           Keyboard typing sound during mission briefing.
+        */
+
+        const keyboardTypingSound =
+            new Audio(
+                "assets/audio/keyboard_typing.mp3"
+            );
+
+
+        /* =========================================================
+           MISSION INTRO TYPING STATE
+        ========================================================= */
+
+        let missionTypingTimer = null;
+
+        let missionIntroStarted = false;
+
+
+        const missionBriefingText =
+            "MISSION CONTROL: Chief, your mission is now active. " +
+            "Recover all hidden camping equipment before the bear reaches the campsite. " +
+            "Stay sharp. Your next objective will be revealed once the camp is secured.";
+
+
+        /* =========================================================
+           AUDIO SETTINGS
+        ========================================================= */
+
+        missionBackgroundSound.preload =
+            "auto";
+
+        missionBackgroundSound.loop =
+            true;
+
+        missionBackgroundSound.volume =
+            0.45;
+
+
+        missionStartSound.preload =
+            "auto";
+
+        missionStartSound.volume =
+            0.90;
+
+
+        keyboardTypingSound.preload =
+            "auto";
+
+        keyboardTypingSound.loop =
+            true;
+
+        keyboardTypingSound.volume =
+            0.65;
+
+
+        /* =========================================================
+           FISHING AUDIO
+        ========================================================= */
+
+        const fishingLakeAudio =
+            new Audio(
+                "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
+            );
+
+
+        fishingLakeAudio.loop =
+            true;
+
+        fishingLakeAudio.volume =
+            0.45;
+
+
+        const fishingRodWhooshAudio =
+            new Audio(
+                "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
+            );
+
+
+        fishingRodWhooshAudio.volume =
+            0.75;
+
+
+        const fishingWindingAudio =
+            new Audio(
+                "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
+            );
+
+
+        fishingWindingAudio.loop =
+            true;
+
+        fishingWindingAudio.volume =
+            0.70;
+
+
+        const fishPullingAudio =
+            new Audio(
+                "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
+            );
+
+
+        fishPullingAudio.volume =
+            0.80;
+
+
+        const missionCompleteAudio =
+            new Audio(
+                "assets/audio/mission-complete.mp3"
+            );
+
+
+       missionCompleteAudio.volume =
+    0.90;
+
+
+/* =========================================================
+   IMAGE LOADER
+========================================================= */
+
+function loadImage(src) {
             const image =
                 new Image();
 
@@ -5910,203 +6000,201 @@ function hide(element) {
         }
 
 
-        /* =========================================================
-           BUTTON EVENTS
-        ========================================================= */
+          /* =========================================================
+       BUTTON EVENTS
+    ========================================================= */
 
-        if (startMissionButton) {
+    if (startMissionButton) {
 
-            startMissionButton.addEventListener(
-                "click",
-                startMission
-            );
+        startMissionButton.addEventListener(
+            "click",
+            startMission
+        );
 
-        }
-
-
-        if (continueFishing) {
-
-            continueFishing.addEventListener(
-                "click",
-                startFishingPhase
-            );
-
-        }
+    }
 
 
-        if (replayMission) {
+    if (continueFishing) {
 
-            replayMission.addEventListener(
-                "click",
-                replayGame
-            );
+        continueFishing.addEventListener(
+            "click",
+            startFishingPhase
+        );
 
-        }
-
-
-        /* =========================================================
-           CAMPSITE EVENT
-        ========================================================= */
-
-        if (campCanvas) {
-
-            campCanvas.addEventListener(
-                "pointerdown",
-                handleCampsiteClick
-            );
-
-        }
+    }
 
 
-        /* =========================================================
-           KEYBOARD CONTROLS
-        ========================================================= */
+    if (replayMission) {
 
-        document.addEventListener(
-            "keydown",
-            event => {
+        replayMission.addEventListener(
+            "click",
+            replayGame
+        );
+
+    }
+
+
+    /* =========================================================
+       CAMPSITE EVENT
+    ========================================================= */
+
+    if (campCanvas) {
+
+        campCanvas.addEventListener(
+            "pointerdown",
+            handleCampsiteClick
+        );
+
+    }
+
+
+    /* =========================================================
+       KEYBOARD CONTROLS
+    ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.code ===
+                "Space"
+            ) {
 
                 if (
-                    event.code ===
-                    "Space"
+                    game.phase === 2 &&
+                    game.fishingActive
                 ) {
 
-                    if (
-                        game.phase === 2 &&
-                        game.fishingActive
-                    ) {
+                    event.preventDefault();
 
-                        event.preventDefault();
-
-                        handleCastRod();
-
-                    }
+                    handleCastRod();
 
                 }
 
+            }
+
+
+            if (
+                event.key.toLowerCase() ===
+                "r"
+            ) {
 
                 if (
-                    event.key.toLowerCase() ===
-                    "r"
+                    game.phase === 2 &&
+                    game.fishingActive
                 ) {
 
                     if (
-                        game.phase === 2 &&
-                        game.fishingActive
+                        fishingState ===
+                        "HOOKED"
                     ) {
 
-                        if (
-                            fishingState ===
-                            "HOOKED"
-                        ) {
+                        startReeling();
 
-                            startReeling();
+                    } else if (
+                        fishingState ===
+                        "REELING"
+                    ) {
 
-                        } else if (
-                            fishingState ===
-                            "REELING"
-                        ) {
-
-                            stopReeling();
-
-                        }
+                        stopReeling();
 
                     }
 
                 }
 
             }
-        );
+
+        }
+    );
 
 
-        /* =========================================================
-           VISIBILITY CHANGE
-        ========================================================= */
+    /* =========================================================
+       VISIBILITY CHANGE
+    ========================================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                document.hidden &&
+                fishingState ===
+                "REELING"
+            ) {
+
+                stopReeling();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       PUBLIC API
+    ========================================================= */
+
+    window.Mission2 = {
+
+        game,
+
+        startMission,
+
+        startFishingPhase,
+
+        replayGame,
+
+        resetGame,
+
+        catchFish,
+
+        fishEscaped,
+
+        drawFishingScene
+
+    };
+
+
+    /* =========================================================
+       INITIAL STATE
+    ========================================================= */
+
+    hide(gameHUD);
+
+    hide(inventoryPanel);
+
+    hide(phase1);
+
+    hide(phase1Complete);
+
+    hide(phase2);
+
+    hide(missionComplete);
+
+
+    updateMainHUD();
+
+    updateFishingHUD();
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
 
         document.addEventListener(
-            "visibilitychange",
-            () => {
-
-                if (
-                    document.hidden &&
-                    fishingState ===
-                    "REELING"
-                ) {
-
-                    stopReeling();
-
-                }
-
+            "DOMContentLoaded",
+            startLoadingScreen,
+            {
+                once: true
             }
         );
 
+    } else {
 
-        /* =========================================================
-           PUBLIC API
-        ========================================================= */
+        startLoadingScreen();
 
-        window.Mission2 = {
+    }
 
-            game,
-
-            startMission,
-
-            startFishingPhase,
-
-            replayGame,
-
-            resetGame,
-
-            catchFish,
-
-            fishEscaped,
-
-            drawFishingScene
-
-        };
-
-
-        /* =========================================================
-           INITIAL STATE
-        ========================================================= */
-
-        hide(gameHUD);
-
-        hide(inventoryPanel);
-
-        hide(phase1);
-
-        hide(phase1Complete);
-
-        hide(phase2);
-
-        hide(missionComplete);
-
-
-        updateMainHUD();
-
-        updateFishingHUD();
-
-
-        if (
-            document.readyState ===
-            "loading"
-        ) {
-
-            document.addEventListener(
-                "DOMContentLoaded",
-                startLoadingScreen,
-                {
-                    once: true
-                }
-            );
-
-        } else {
-
-            startLoadingScreen();
-
-        }
-
-    })();
-
-}
+})();
