@@ -185,83 +185,111 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const hook =
             document.getElementById("hook");
 
+   /* =========================================================
+   EXISTING AUDIO
+========================================================= */
 
-        /* =========================================================
-           EXISTING AUDIO
-        ========================================================= */
+const bgMusic =
+    document.getElementById("bgMusic");
 
-        const bgMusic =
-            document.getElementById("bgMusic");
+const collectSound =
+    document.getElementById("collectSound");
 
-        const collectSound =
-            document.getElementById("collectSound");
+const splashSound =
+    document.getElementById("splashSound");
 
-        const splashSound =
-            document.getElementById("splashSound");
+const successSound =
+    document.getElementById("successSound");
 
-        const successSound =
-            document.getElementById("successSound");
-
-        const bearSound =
-            document.getElementById("bearSound");
-
-
-        /* =========================================================
-           MISSION START AUDIO
-        ========================================================= */
-
-        const missionStartSound =
-            new Audio(
-                "assets/audio/mission_start.mp3"
-            );
+const bearSound =
+    document.getElementById("bearSound");
 
 
-        /* =========================================================
-           FISHING AUDIO
-        ========================================================= */
+/* =========================================================
+   MISSION AUDIO
+========================================================= */
 
-        const fishingLakeAudio =
-            new Audio(
-                "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
-            );
-
-        fishingLakeAudio.loop = true;
-        fishingLakeAudio.volume = 0.45;
+/* Background audio for the beginning of the game */
+const missionBackgroundSound =
+    new Audio(
+        "assets/audio/mission.mp3"
+    );
 
 
-        const fishingRodWhooshAudio =
-            new Audio(
-                "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
-            );
-
-        fishingRodWhooshAudio.volume = 0.75;
-
-
-        const fishingWindingAudio =
-            new Audio(
-                "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
-            );
-
-        fishingWindingAudio.loop = true;
-        fishingWindingAudio.volume = 0.70;
+/* Sound played when START MISSION is clicked */
+const missionStartSound =
+    new Audio(
+        "assets/audio/mission_start.mp3"
+    );
 
 
-        const fishPullingAudio =
-            new Audio(
-                "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
-            );
-
-        fishPullingAudio.volume = 0.80;
-
-
-        const missionCompleteAudio =
-            new Audio(
-                "assets/audio/mission-complete.mp3"
-            );
-
-        missionCompleteAudio.volume = 0.90;
+/* Keyboard typing sound during mission briefing */
+const keyboardTypingSound =
+    new Audio(
+        "assets/audio/keyboard_typing.mp3"
+    );
 
 
+/* =========================================================
+   AUDIO SETTINGS
+========================================================= */
+
+missionBackgroundSound.preload = "auto";
+missionBackgroundSound.loop = true;
+missionBackgroundSound.volume = 0.45;
+
+missionStartSound.preload = "auto";
+missionStartSound.volume = 0.90;
+
+keyboardTypingSound.preload = "auto";
+keyboardTypingSound.loop = true;
+keyboardTypingSound.volume = 0.65;
+
+
+/* =========================================================
+   FISHING AUDIO
+========================================================= */
+
+const fishingLakeAudio =
+    new Audio(
+        "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
+    );
+
+fishingLakeAudio.loop = true;
+fishingLakeAudio.volume = 0.45;
+
+
+const fishingRodWhooshAudio =
+    new Audio(
+        "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
+    );
+
+fishingRodWhooshAudio.volume = 0.75;
+
+
+const fishingWindingAudio =
+    new Audio(
+        "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
+    );
+
+fishingWindingAudio.loop = true;
+fishingWindingAudio.volume = 0.70;
+
+
+const fishPullingAudio =
+    new Audio(
+        "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
+    );
+
+fishPullingAudio.volume = 0.80;
+
+
+const missionCompleteAudio =
+    new Audio(
+        "assets/audio/mission-complete.mp3"
+    );
+
+missionCompleteAudio.volume = 0.90;
         /* =========================================================
            IMAGE LOADER
         ========================================================= */
