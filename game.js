@@ -241,7 +241,7 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
             document.getElementById("bearSound");
 
 
- /* =========================================================
+/* =========================================================
    MISSION AUDIO
 ========================================================= */
 
@@ -279,8 +279,10 @@ const keyboardTypingSound =
 let missionTypingTimer =
     null;
 
+
 let missionIntroStarted =
     false;
+
 
 let missionAudioUnlocked =
     false;
@@ -321,13 +323,6 @@ keyboardTypingSound.volume =
    UNLOCK MISSION AUDIO
 ========================================================= */
 
-/*
- * Browsers may block audio until the player
- * interacts with the page.
- *
- * This function uses the first valid user
- * interaction to unlock the mission audio.
- */
 function unlockMissionAudio() {
 
     if (
@@ -340,26 +335,36 @@ function unlockMissionAudio() {
 
 
     /*
-     * Attempt to unlock the mission
-     * background audio.
+     * Unlock mission background audio.
      */
     try {
 
-        missionBackgroundSound
-            .play()
-            .then(
-                () => {
+        const missionPromise =
+            missionBackgroundSound.play();
 
-                    missionBackgroundSound.pause();
 
-                    missionBackgroundSound.currentTime =
-                        0;
+        if (
+            missionPromise &&
+            typeof missionPromise.then ===
+            "function"
+        ) {
 
-                }
-            )
-            .catch(
-                () => {}
-            );
+            missionPromise
+                .then(
+                    () => {
+
+                        missionBackgroundSound.pause();
+
+                        missionBackgroundSound.currentTime =
+                            0;
+
+                    }
+                )
+                .catch(
+                    () => {}
+                );
+
+        }
 
     } catch (error) {
 
@@ -372,26 +377,36 @@ function unlockMissionAudio() {
 
 
     /*
-     * Attempt to unlock the keyboard
-     * typing audio.
+     * Unlock keyboard typing audio.
      */
     try {
 
-        keyboardTypingSound
-            .play()
-            .then(
-                () => {
+        const typingPromise =
+            keyboardTypingSound.play();
 
-                    keyboardTypingSound.pause();
 
-                    keyboardTypingSound.currentTime =
-                        0;
+        if (
+            typingPromise &&
+            typeof typingPromise.then ===
+            "function"
+        ) {
 
-                }
-            )
-            .catch(
-                () => {}
-            );
+            typingPromise
+                .then(
+                    () => {
+
+                        keyboardTypingSound.pause();
+
+                        keyboardTypingSound.currentTime =
+                            0;
+
+                    }
+                )
+                .catch(
+                    () => {}
+                );
+
+        }
 
     } catch (error) {
 
@@ -512,36 +527,30 @@ function startKeyboardTypingSound() {
 
     try {
 
+        keyboardTypingSound.currentTime =
+            0;
+
+
+        const promise =
+            keyboardTypingSound.play();
+
+
         if (
-            keyboardTypingSound.paused
+            promise &&
+            typeof promise.catch ===
+            "function"
         ) {
 
-            keyboardTypingSound.currentTime =
-                0;
+            promise.catch(
+                error => {
 
+                    console.warn(
+                        "Typing audio was blocked:",
+                        error
+                    );
 
-            const promise =
-                keyboardTypingSound.play();
-
-
-            if (
-                promise &&
-                typeof promise.catch ===
-                "function"
-            ) {
-
-                promise.catch(
-                    error => {
-
-                        console.warn(
-                            "Typing audio was blocked:",
-                            error
-                        );
-
-                    }
-                );
-
-            }
+                }
+            );
 
         }
 
@@ -588,6 +597,14 @@ function stopKeyboardTypingSound() {
    FIRST USER INTERACTION
 ========================================================= */
 
+/*
+ * Browsers require a user interaction before
+ * allowing audio playback.
+ *
+ * The first click/tap after the loading screen
+ * finishes will start the mission audio.
+ */
+
 function handleFirstMissionInteraction() {
 
     if (
@@ -600,14 +617,13 @@ function handleFirstMissionInteraction() {
 
 
     /*
-     * Do nothing while the loading screen
-     * is still active.
+     * Do not start the mission while the
+     * loading screen is still visible.
      */
     if (
-        !introScreen ||
-        introScreen.classList.contains(
-            "hidden"
-        )
+        loadingScreen &&
+        loadingScreen.style.display !==
+        "none"
     ) {
 
         return;
@@ -616,36 +632,30 @@ function handleFirstMissionInteraction() {
 
 
     /*
-     * Unlock audio using the player's
+     * Unlock the audio using the player's
      * actual interaction.
      */
     unlockMissionAudio();
 
 
     /*
-     * Start the mission briefing after
-     * audio has been unlocked.
+     * Start mission background music.
      */
-    setTimeout(
-        () => {
+    startMissionBackgroundAudio();
 
-            if (
-                !missionIntroStarted &&
-                introScreen &&
-                !introScreen.classList.contains(
-                    "hidden"
-                )
-            ) {
 
-                startMissionBackgroundAudio();
+    /*
+     * Mark the mission intro as started
+     * so it cannot start repeatedly.
+     */
+    missionIntroStarted =
+        true;
 
-                startTerminal();
 
-            }
-
-        },
-        50
-    );
+    /*
+     * Start the mission briefing.
+     */
+    startTerminal();
 
 }
 
@@ -658,8 +668,6 @@ document.addEventListener(
     "pointerdown",
     handleFirstMissionInteraction
 );
-
-
 /* =========================================================
    IMAGE LOADER
 ========================================================= */
@@ -795,6 +803,91 @@ const assets = {
 };
 
 
+/* =========================================================
+   ADDITIONAL FISHING AUDIO
+========================================================= */
+
+const fishingLakeAudio =
+    new Audio(
+        "assets/audio/mindmist-fishing-on-the-lake-310740.mp3"
+    );
+
+
+fishingLakeAudio.preload =
+    "auto";
+
+fishingLakeAudio.loop =
+    true;
+
+fishingLakeAudio.volume =
+    0.45;
+
+
+const fishingRodWhooshAudio =
+    new Audio(
+        "assets/audio/spinopel-fishing-rod-whoosh-411640.mp3"
+    );
+
+
+fishingRodWhooshAudio.preload =
+    "auto";
+
+fishingRodWhooshAudio.volume =
+    0.75;
+
+
+/* =========================================================
+   FISHING REELING / WINDING AUDIO
+========================================================= */
+
+const fishingWindingAudio =
+    new Audio(
+        "assets/audio/freesound_community-fishingrod-winding-92375.mp3"
+    );
+
+
+fishingWindingAudio.preload =
+    "auto";
+
+fishingWindingAudio.loop =
+    true;
+
+fishingWindingAudio.volume =
+    0.70;
+
+
+/* =========================================================
+   FISH PULLING AUDIO
+========================================================= */
+
+const fishPullingAudio =
+    new Audio(
+        "assets/audio/freesound_community-fly-reel-fish-pulling-saricione-94671.mp3"
+    );
+
+
+fishPullingAudio.preload =
+    "auto";
+
+fishPullingAudio.volume =
+    0.80;
+
+
+/* =========================================================
+   MISSION COMPLETE AUDIO
+========================================================= */
+
+const missionCompleteAudio =
+    new Audio(
+        "assets/audio/mission-complete.mp3"
+    );
+
+
+missionCompleteAudio.preload =
+    "auto";
+
+missionCompleteAudio.volume =
+    0.90;
 /* =========================================================
    GAME INTERVALS
 ========================================================= */
@@ -6825,7 +6918,7 @@ function initialiseIntro() {
         updateFishingHUD();
 
 
-       /* =========================================================
+         /* =========================================================
        START GAME
     ========================================================= */
 
@@ -6850,4 +6943,3 @@ function initialiseIntro() {
 
 
 })();
-}
