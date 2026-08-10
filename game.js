@@ -658,6 +658,37 @@ document.addEventListener(
     "pointerdown",
     handleFirstMissionInteraction
 );
+
+
+/* =========================================================
+   IMAGE LOADER
+========================================================= */
+
+function loadImage(src) {
+
+    const image =
+        new Image();
+
+
+    image.src =
+        src;
+
+
+    image.onerror = () => {
+
+        console.warn(
+            "Unable to load image:",
+            src
+        );
+
+    };
+
+
+    return image;
+
+}
+
+
 /* =========================================================
    ASSETS
 ========================================================= */
@@ -774,7 +805,6 @@ let phase1Interval =
 
 let fishingInterval =
     null;
-
 
         /* =========================================================
            FISHING STATE
