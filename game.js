@@ -240,7 +240,6 @@ if (window.__OPERATION_BIRTHDAY_MISSION_2_LOADED) {
         const bearSound =
             document.getElementById("bearSound");
 
-
 /* =========================================================
    MISSION AUDIO
 ========================================================= */
@@ -284,10 +283,6 @@ let missionIntroStarted =
     false;
 
 
-let missionAudioUnlocked =
-    false;
-
-
 /* =========================================================
    MISSION AUDIO SETTINGS
 ========================================================= */
@@ -320,105 +315,6 @@ keyboardTypingSound.volume =
 
 
 /* =========================================================
-   UNLOCK MISSION AUDIO
-========================================================= */
-
-function unlockMissionAudio() {
-
-    if (
-        missionAudioUnlocked
-    ) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const missionPromise =
-            missionBackgroundSound.play();
-
-
-        if (
-            missionPromise &&
-            typeof missionPromise.then ===
-            "function"
-        ) {
-
-            missionPromise
-                .then(
-                    () => {
-
-                        missionBackgroundSound.pause();
-
-                        missionBackgroundSound.currentTime =
-                            0;
-
-                    }
-                )
-                .catch(
-                    () => {}
-                );
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Unable to unlock mission audio:",
-            error
-        );
-
-    }
-
-
-    try {
-
-        const typingPromise =
-            keyboardTypingSound.play();
-
-
-        if (
-            typingPromise &&
-            typeof typingPromise.then ===
-            "function"
-        ) {
-
-            typingPromise
-                .then(
-                    () => {
-
-                        keyboardTypingSound.pause();
-
-                        keyboardTypingSound.currentTime =
-                            0;
-
-                    }
-                )
-                .catch(
-                    () => {}
-                );
-
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Unable to unlock typing audio:",
-            error
-        );
-
-    }
-
-
-    missionAudioUnlocked =
-        true;
-
-}
-
-
-/* =========================================================
    START MISSION BACKGROUND AUDIO
 ========================================================= */
 
@@ -434,6 +330,8 @@ function startMissionBackgroundAudio() {
 
 
     try {
+
+        missionBackgroundSound.pause();
 
         missionBackgroundSound.currentTime =
             0;
@@ -453,12 +351,9 @@ function startMissionBackgroundAudio() {
                 error => {
 
                     console.warn(
-                        "Mission background audio was blocked:",
+                        "Mission background audio could not play:",
                         error
                     );
-
-                    missionAudioUnlocked =
-                        false;
 
                 }
             );
@@ -521,6 +416,8 @@ function startKeyboardTypingSound() {
 
     try {
 
+        keyboardTypingSound.pause();
+
         keyboardTypingSound.currentTime =
             0;
 
@@ -539,7 +436,7 @@ function startKeyboardTypingSound() {
                 error => {
 
                     console.warn(
-                        "Typing audio was blocked:",
+                        "Keyboard typing audio could not play:",
                         error
                     );
 
@@ -551,7 +448,7 @@ function startKeyboardTypingSound() {
     } catch (error) {
 
         console.warn(
-            "Unable to start typing audio:",
+            "Unable to start keyboard typing audio:",
             error
         );
 
@@ -591,6 +488,10 @@ function stopKeyboardTypingSound() {
    FIRST USER INTERACTION
 ========================================================= */
 
+/*
+ * The first click/tap after the loading screen
+ * is the user gesture that starts the mission.
+ */
 function handleFirstMissionInteraction() {
 
     if (
@@ -603,8 +504,8 @@ function handleFirstMissionInteraction() {
 
 
     /*
-     * Do not start the mission while the
-     * loading screen is still visible.
+     * Do not start while loading screen
+     * is still visible.
      */
     if (
         loadingScreen
@@ -637,28 +538,19 @@ function handleFirstMissionInteraction() {
 
 
     /*
-     * This click/tap is the browser-approved
-     * user interaction for audio playback.
-     */
-    unlockMissionAudio();
-
-
-    /*
-     * Start mission.mp3.
+     * IMPORTANT:
+     *
+     * This is the actual user gesture.
+     * Start the real audio directly here.
      */
     startMissionBackgroundAudio();
 
 
     /*
-     * Prevent the briefing from starting
-     * repeatedly.
-     */
-    missionIntroStarted =
-        true;
-
-
-    /*
      * Start the mission briefing.
+     *
+     * startTerminal() will start
+     * keyboard_typing.mp3.
      */
     startTerminal();
 
