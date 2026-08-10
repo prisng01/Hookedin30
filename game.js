@@ -1036,7 +1036,7 @@ function hide(element) {
         }
 
 
-       unction startMission() {
+       function startMission() {
 
     playSound(
         missionStartSound
