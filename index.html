@@ -1,674 +1,4830 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOOKED IN 30 • MISSION 03</title>
 
-    <meta charset="UTF-8">
+<style>
+:root{
+  --bg:#020506;
+  --panel:#071012;
+  --panel2:#0b171a;
+  --line:#314142;
+  --white:#eef2ed;
+  --muted:#9ca9a5;
+  --teal:#58d1cf;
+  --green:#9bd83f;
+  --gold:#dca253;
+  --orange:#d86b2b;
+  --red:#db604d;
+  --blue:#54a9d6;
+}
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+*{
+  box-sizing:border-box;
+}
 
-    <title>
-        Operation Birthday 30 - Mission 02
-    </title>
+html,
+body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:#010304;
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+}
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+body{
+  overflow-x:hidden;
+}
 
+button{
+  font:inherit;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+  animation:fade .45s ease;
+}
+
+.screen.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.05)}
+}
+
+@keyframes shake{
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
+
+@keyframes rain{
+  to{background-position:0 120px}
+}
+
+@keyframes fireGlow{
+  50%{
+    filter:brightness(1.3);
+    transform:translateX(-50%) scale(1.08);
+  }
+}
+
+.btn{
+  border:1px solid #9bd83f88;
+  background:linear-gradient(#527c2c,#263e19);
+  color:#f3f7ef;
+  padding:13px 22px;
+  border-radius:4px;
+  font-weight:900;
+  letter-spacing:.06em;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.btn:hover{
+  filter:brightness(1.15);
+  transform:translateY(-1px);
+}
+
+.btn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.btn.gold{
+  border-color:#dca25399;
+  background:linear-gradient(#825b2c,#4b3119);
+}
+
+.btn.teal{
+  border-color:#58d1cf88;
+  background:linear-gradient(#205f5d,#123a39);
+}
+
+.topbar{
+  height:55px;
+  padding:12px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#020506e8;
+}
+
+.brand{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.16em;
+  color:var(--teal);
+}
+
+.pills{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.pill{
+  border:1px solid #9dbeb32b;
+  padding:6px 9px;
+  font-size:9px;
+  background:#0008;
+}
+
+.pill b{
+  color:var(--green);
+}
+
+.eyebrow{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.15em;
+  color:var(--orange);
+}
+
+.tag{
+  border:1px solid #58d1cf66;
+  color:var(--teal);
+  padding:5px 8px;
+  margin-left:7px;
+}
+
+.panel{
+  border-right:1px solid var(--line);
+}
+
+.title{
+  font-size:clamp(44px,6vw,82px);
+  line-height:.88;
+  margin:16px 0;
+  text-shadow:0 5px 25px #000;
+}
+
+.sub{
+  color:var(--teal);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+
+.copy{
+  font-size:13px;
+  color:#c6cfca;
+  line-height:1.6;
+}
+
+.section-title{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.13em;
+  color:#d9e0dc;
+}
+
+/* =========================================================
+   MISSION INTRO
+========================================================= */
+
+#intro{
+  background:linear-gradient(#07141b,#020607 75%);
+}
+
+.introScene{
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+}
+
+.introScene:before{
+  content:"";
+  position:absolute;
+  inset:45% -5% 0;
+  background:
+    repeating-linear-gradient(
+      175deg,
+      #67aebc18 0 2px,
+      transparent 2px 13px
+    );
+  transform:skewY(-4deg);
+}
+
+.introMoon{
+  position:absolute;
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  right:14%;
+  top:11%;
+  background:#e9e7c9;
+  box-shadow:0 0 55px #eeeec955;
+}
+
+.introTrees{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:25%;
+  height:22%;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 44%,
+      #020405 45% 56%,
+      transparent 57%
+    ) 0/120px 120px;
+  opacity:.75;
+}
+
+.introCard{
+  position:relative;
+  z-index:2;
+  width:min(850px,90%);
+  text-align:center;
+}
+
+.introCard h1{
+  font-size:clamp(52px,9vw,110px);
+  line-height:.82;
+  margin:17px 0;
+}
+
+.introCard h2{
+  color:var(--teal);
+  letter-spacing:.12em;
+  font-size:20px;
+}
+
+.introCard p{
+  max-width:620px;
+  margin:20px auto;
+  color:#c8d0cc;
+  line-height:1.75;
+}
+
+.objectives{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:25px 0;
+}
+
+.objective{
+  border:1px solid #9dbeb32b;
+  background:#020607aa;
+  padding:12px 16px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.objective span{
+  display:block;
+  font-size:23px;
+  margin-bottom:5px;
+}
+
+/* =========================================================
+   GAME 01 — READ THE WATER
+========================================================= */
+
+#game1{
+  background:#020607;
+}
+
+.g1grid{
+  display:grid;
+  grid-template-columns:1.05fr 1fr .9fr;
+}
+
+.g1intro{
+  min-height:330px;
+  padding:24px;
+  background:
+    radial-gradient(circle at 55% 80%,#d68c3c25,transparent 18%),
+    linear-gradient(155deg,#122a32,#061014);
+}
+
+.g1how,
+.scanner{
+  padding:24px;
+}
+
+.howgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:16px;
+}
+
+.how{
+  border:1px solid #9dbeb326;
+  padding:12px;
+  background:#02070866;
+  text-align:center;
+}
+
+.how .ico{
+  font-size:27px;
+}
+
+.how b{
+  display:block;
+  color:#c8e45b;
+  font-size:9px;
+  margin:7px 0;
+}
+
+.how span{
+  color:#aebbb6;
+  font-size:8px;
+  line-height:1.4;
+}
+
+.tip{
+  margin-top:12px;
+  padding:10px;
+  border:1px solid #58d1cf44;
+  color:#b8cbc6;
+  font-size:9px;
+  text-align:center;
+}
+
+.scannerBox{
+  margin-top:15px;
+  border:1px solid #9dbeb333;
+  background:#020708c9;
+  padding:12px;
+}
+
+.scanrow{
+  display:grid;
+  grid-template-columns:82px 1fr;
+  gap:8px;
+  padding:8px 0;
+  border-bottom:1px solid #9dbeb312;
+  font-size:9px;
+}
+
+.scanrow b{
+  color:#6fd0bd;
+}
+
+.scanrow span{
+  color:#c7e76c;
+  font-weight:900;
+}
+
+.charges{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:8px;
+}
+
+.charge{
+  display:inline-grid;
+  place-items:center;
+  width:25px;
+  height:25px;
+  border:1px solid #dca25355;
+  color:#f1c54d;
+  margin-left:4px;
+  font-style:normal;
+}
+
+.charge.off{
+  opacity:.15;
+}
+
+.scanBtn{
+  width:100%;
+  margin-top:10px;
+  padding:9px;
+  background:#1c55521d;
+  border:1px solid #58d1cf55;
+  color:#bde3da;
+  font-size:9px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.scanBtn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.rounds{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+
+.round{
+  padding:13px;
+  border-right:1px solid var(--line);
+  background:linear-gradient(#071114,#030809);
+}
+
+.round:last-child{
+  border-right:0;
+}
+
+.round.locked{
+  opacity:.55;
+}
+
+.roundHead{
+  display:flex;
+  justify-content:space-between;
+  font-size:9px;
+  font-weight:900;
+}
+
+.roundHead small{
+  color:var(--teal);
+}
+
+.roundMeta{
+  display:flex;
+  justify-content:space-between;
+  color:#84938e;
+  font-size:8px;
+  margin:7px 0;
+}
+
+.choices{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+}
+
+.choice{
+  position:relative;
+  border:1px solid #9dbeb326;
+  background:#081113;
+  color:var(--white);
+  padding:0;
+  cursor:pointer;
+  text-align:left;
+  overflow:hidden;
+}
+
+.choice:hover:not(:disabled){
+  border-color:#58d1cf99;
+}
+
+.choice.selected{
+  border-color:var(--teal);
+}
+
+.choice.correct{
+  border-color:var(--green);
+  box-shadow:0 0 20px #9bd83f22;
+}
+
+.choice.wrong{
+  border-color:var(--red);
+  animation:shake .3s;
+}
+
+.choice:disabled{
+  cursor:not-allowed;
+}
+
+.scene{
+  height:110px;
+  position:relative;
+  background:linear-gradient(#173640,#061114 65%,#02080a);
+  overflow:hidden;
+}
+
+.scene:after{
+  content:"";
+  position:absolute;
+  left:-10%;
+  right:-10%;
+  bottom:5%;
+  height:45%;
+  background:
+    repeating-linear-gradient(
+      175deg,
+      #7fbac018 0 2px,
+      transparent 2px 11px
+    );
+}
+
+.rock{
+  position:absolute;
+  bottom:22%;
+  width:58px;
+  height:28px;
+  border-radius:60% 45% 25%;
+  background:linear-gradient(135deg,#151e20,#45514d);
+  z-index:2;
+}
+
+.r1{left:4%}
+.r2{right:4%;transform:scale(.7)}
+
+.bird{
+  position:absolute;
+  z-index:3;
+  font-size:16px;
+  font-style:normal;
+}
+
+.b1{left:30%;top:18%}
+.b2{left:47%;top:24%}
+.b3{left:60%;top:15%}
+
+.ripple{
+  position:absolute;
+  z-index:3;
+  width:38px;
+  height:12px;
+  border:1px solid #b7ded577;
+  border-radius:50%;
+}
+
+.ri1{
+  left:36%;
+  bottom:39%;
+}
+
+.ri2{
+  left:54%;
+  bottom:28%;
+}
+
+.moon{
+  position:absolute;
+  right:12%;
+  top:10%;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#e9e7c9;
+  box-shadow:0 0 18px #eeeec966;
+  z-index:3;
+}
+
+.choiceText{
+  padding:8px;
+}
+
+.choiceText b{
+  font-size:8px;
+}
+
+.choiceText ul{
+  padding-left:12px;
+  margin:5px 0;
+  color:#aebbb6;
+  font-size:7px;
+  line-height:1.45;
+}
+
+.roundBottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+}
+
+.look{
+  font-size:7px;
+  color:#9daaa6;
+  line-height:1.4;
+}
+
+.cast{
+  padding:8px 9px;
+  background:#405f251f;
+  border:1px solid #9bd83f55;
+  color:#d8edc4;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.cast:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.result{
+  min-height:38px;
+  margin-top:8px;
+  border:1px solid #9dbeb31c;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-size:8px;
+}
+
+.result.ok{
+  border-color:#9bd83f88;
+  color:#c9eb84;
+}
+
+.result.bad{
+  border-color:#dc604d66;
+  color:#e8aaa1;
+}
+
+.g1bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.5fr;
+}
+
+.feedback{
+  padding:15px;
+  border-right:1px solid var(--line);
+}
+
+.reaction{
+  height:125px;
+  margin-top:8px;
+  background:linear-gradient(#10272e,#031013);
+  position:relative;
+  overflow:hidden;
+}
+
+.reaction:after{
+  content:"";
+  position:absolute;
+  left:-5%;
+  right:-5%;
+  bottom:0;
+  height:50%;
+  background:
+    repeating-linear-gradient(
+      175deg,
+      #6ba2ad18 0 2px,
+      transparent 2px 12px
+    );
+}
+
+.splash{
+  position:absolute;
+  left:50%;
+  top:55%;
+  width:80px;
+  height:30px;
+  border:3px solid #dbeae5aa;
+  border-color:#dbeae5aa transparent transparent;
+  border-radius:50%;
+  animation:pulse 1.1s infinite;
+}
+
+.feedback h3{
+  font-size:11px;
+  color:var(--gold);
+}
+
+.feedback p{
+  font-size:9px;
+  color:#bdc9c4;
+  line-height:1.4;
+}
+
+.xp{
+  color:var(--green);
+  font-weight:900;
+}
+
+.completion{
+  padding:15px;
+}
+
+.completeTitle{
+  color:var(--teal);
+  font-size:20px;
+  font-weight:900;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-top:12px;
+}
+
+.sum{
+  border:1px solid #9dbeb31c;
+  padding:9px;
+  text-align:center;
+  font-size:8px;
+}
+
+.sum .check{
+  font-size:20px;
+  color:var(--green);
+  margin:4px;
+}
+
+.score{
+  font-size:30px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.score small{
+  display:block;
+  font-size:8px;
+  color:#9ca9a5;
+}
+
+.continue{
+  width:100%;
+  margin-top:10px;
+  padding:11px;
+  border:1px solid #9bd83f88;
+  background:linear-gradient(#466f26,#283f1b);
+  color:#eef7e9;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.continue:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+/* =========================================================
+   GAME 02 — FINAL CATCH
+========================================================= */
+
+#game2{
+  background:radial-gradient(circle at 50% 35%,#172f3e,#020608 65%);
+}
+
+.g2{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:290px 1fr 290px;
+}
+
+.g2side{
+  padding:20px;
+  background:#020607d9;
+  border-right:1px solid var(--line);
+}
+
+.g2side.right{
+  border-right:0;
+  border-left:1px solid var(--line);
+}
+
+.g2side h1{
+  font-size:44px;
+  line-height:.88;
+  margin:15px 0;
+}
+
+.orange{
+  color:var(--orange);
+}
+
+.target{
+  border:1px solid #dca25366;
+  background:#05090a;
+  padding:14px;
+  margin-top:20px;
+  text-align:center;
+}
+
+.fish{
+  font-size:72px;
+}
+
+.g2center{
+  position:relative;
+  overflow:hidden;
+  min-height:700px;
+  background:linear-gradient(#071522,#02080d 72%);
+}
+
+.g2center:before{
+  content:"";
+  position:absolute;
+  inset:55% -5% 0;
+  background:
+    repeating-linear-gradient(
+      175deg,
+      #76aebc1a 0 2px,
+      transparent 2px 14px
+    );
+}
+
+.g2moon{
+  position:absolute;
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  left:33%;
+  top:10%;
+  background:#e6e5cf;
+  box-shadow:0 0 50px #eeeec955;
+}
+
+.rod{
+  position:absolute;
+  width:7px;
+  height:65%;
+  right:23%;
+  top:3%;
+  background:linear-gradient(#5d655f,#c3995c,#222c2a);
+  transform:rotate(14deg);
+  border-radius:5px;
+}
+
+.line{
+  position:absolute;
+  width:2px;
+  height:49%;
+  right:33%;
+  top:25%;
+  background:#e9e9d8bb;
+  transform:rotate(17deg);
+  transform-origin:top;
+}
+
+.splash2{
+  position:absolute;
+  width:115px;
+  height:50px;
+  border:4px solid #dbeae5aa;
+  border-color:#dbeae5aa transparent transparent;
+  border-radius:50%;
+  left:42%;
+  top:50%;
+  animation:pulse 1.4s infinite;
+}
+
+.hud{
+  position:absolute;
+  left:20px;
+  right:20px;
+  top:18px;
+  display:flex;
+  justify-content:space-between;
+  font-size:9px;
+  z-index:2;
+}
+
+.g2main{
+  position:absolute;
+  left:22px;
+  right:22px;
+  bottom:22px;
+  padding:15px;
+  border:1px solid #9dbeb33b;
+  background:#020608dd;
+  z-index:2;
+}
+
+.phase{
+  text-align:center;
+  color:var(--teal);
+  font-size:13px;
+  letter-spacing:.1em;
+}
+
+.phaseDesc{
+  text-align:center;
+  color:#c3cfca;
+  font-size:10px;
+  margin:7px 0 13px;
+}
+
+.tension{
+  height:54px;
+  position:relative;
+  background:
+    linear-gradient(
+      90deg,
+      #bc342c,
+      #d9952f 25%,
+      #92bd3a 42%,
+      #9bd83f 50%,
+      #92bd3a 58%,
+      #d9952f 75%,
+      #bc342c
+    );
+  border:1px solid #9b765566;
+}
+
+.greenzone{
+  position:absolute;
+  left:43%;
+  width:14%;
+  inset-block:0;
+  border-left:2px solid #fff8;
+  border-right:2px solid #fff8;
+}
+
+.marker{
+  position:absolute;
+  top:-6px;
+  width:4px;
+  height:66px;
+  background:#fff;
+  left:50%;
+  box-shadow:0 0 12px #fff;
+  transition:left .08s linear;
+}
+
+.labels{
+  display:flex;
+  justify-content:space-between;
+  font-size:8px;
+  margin-top:5px;
+}
+
+.controls{
+  text-align:center;
+  margin-top:12px;
+}
+
+.reel,
+.release{
+  padding:11px 18px;
+  margin:0 4px;
+  border:1px solid #9bd83f66;
+  background:#3b5e2528;
+  color:#dff0ce;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.reel:disabled,
+.release:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.phases{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:5px;
+  margin-top:12px;
+}
+
+.pbox{
+  border:1px solid #9dbeb326;
+  padding:8px 3px;
+  text-align:center;
+  font-size:7px;
+  color:#9aa8a3;
+}
+
+.pbox.active{
+  border-color:var(--teal);
+  color:var(--teal);
+}
+
+.pbox.done{
+  border-color:var(--green);
+  color:var(--green);
+}
+
+.bar{
+  height:8px;
+  background:#111b1d;
+  border:1px solid #556260;
+  margin-top:5px;
+}
+
+.fill{
+  height:100%;
+  width:100%;
+  background:var(--green);
+  transition:.15s;
+}
+
+.rule{
+  display:flex;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #9dbeb31c;
+}
+
+.rule .ico{
+  font-size:23px;
+}
+
+.rule b{
+  display:block;
+  color:#c8e45b;
+  font-size:9px;
+  margin-bottom:4px;
+}
+
+.rule span{
+  font-size:8px;
+  color:#b8c3bf;
+  line-height:1.4;
+}
+
+.catch{
+  margin-top:18px;
+  padding:16px;
+  border:1px solid #dca25388;
+  background:#0b0b08;
+  text-align:center;
+}
+
+.catch strong{
+  color:var(--gold);
+  font-size:18px;
+}
+
+/* =========================================================
+   GAME 03 — CAMP AFTER DARK
+========================================================= */
+
+#game3{
+  background:#020403;
+}
+
+.campHero{
+  min-height:520px;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 70%,#e68d302f,transparent 12%),
+    linear-gradient(#06111b,#040707 70%);
+}
+
+.stars{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 10% 15%,#fff 0 1px,transparent 2px),
+    radial-gradient(circle at 30% 12%,#fff 0 1px,transparent 2px),
+    radial-gradient(circle at 60% 18%,#fff 0 1px,transparent 2px),
+    radial-gradient(circle at 80% 10%,#fff 0 1px,transparent 2px),
+    radial-gradient(circle at 72% 35%,#fff 0 1px,transparent 2px);
+}
+
+.campMoon{
+  position:absolute;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  right:14%;
+  top:12%;
+  background:#e8e6c7;
+  box-shadow:0 0 50px #e8e6c766;
+}
+
+.trees{
+  position:absolute;
+  bottom:21%;
+  left:0;
+  right:0;
+  height:38%;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 40%,
+      #020403 41% 48%,
+      transparent 49%
+    ) 0/130px 130px;
+}
+
+.tent{
+  position:absolute;
+  width:285px;
+  height:175px;
+  bottom:18%;
+  left:50%;
+  transform:translateX(-50%);
+  background:
+    linear-gradient(
+      130deg,
+      transparent 49%,
+      #956f3d 50% 51%,
+      transparent 52%
+    ),
+    linear-gradient(50deg,#8c693b,#392d1c);
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+  filter:drop-shadow(0 12px 18px #000);
+}
+
+.tentDoor{
+  position:absolute;
+  width:72px;
+  height:100px;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  background:#1d1a12;
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+.fire{
+  position:absolute;
+  left:50%;
+  bottom:8%;
+  transform:translateX(-50%);
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      #fff5a8 0 8%,
+      #ff9d32 30%,
+      #d4491f 55%,
+      transparent 70%
+    );
+  box-shadow:0 0 55px #ed782c88;
+  animation:fireGlow 1.3s infinite;
+}
+
+.lantern{
+  position:absolute;
+  right:27%;
+  bottom:18%;
+  width:38px;
+  height:55px;
+  border:2px solid #d7ad67aa;
+  box-shadow:0 0 28px #e8a44a55;
+}
+
+.lantern:before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  background:
+    radial-gradient(
+      circle,
+      #ffe9ad,
+      #c98339 45%,
+      transparent 72%
+    );
+}
+
+.campTitle{
+  position:absolute;
+  z-index:5;
+  left:30px;
+  top:28px;
+  width:350px;
+}
+
+.campTitle h1{
+  font-size:52px;
+  line-height:.88;
+  margin:12px 0;
+}
+
+.campTitle p{
+  color:#c6cfcb;
+  line-height:1.5;
+  font-size:11px;
+}
+
+.statusBox{
+  position:absolute;
+  right:25px;
+  top:25px;
+  z-index:6;
+  width:245px;
+  padding:14px;
+  border:1px solid #9dbeb33b;
+  background:#020608dd;
+}
+
+.srow{
+  font-size:8px;
+  margin-bottom:12px;
+}
+
+.srow span{
+  float:right;
+}
+
+.tasks{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);
+}
+
+.task{
+  padding:18px;
+  border-right:1px solid var(--line);
+  min-height:390px;
+  background:#050909;
+}
+
+.task:last-child{
+  border-right:0;
+}
+
+.task h2{
+  font-size:18px;
+  color:var(--gold);
+}
+
+.task p{
+  font-size:9px;
+  color:#bfcac5;
+  line-height:1.5;
+}
+
+.items{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:15px;
+}
+
+.item{
+  flex:1 1 40%;
+  min-height:70px;
+  border:1px solid #9dbeb32b;
+  background:#0a1112;
+  padding:8px;
+  color:#e0e7e3;
+  font-size:8px;
+  cursor:pointer;
+}
+
+.item:hover{
+  border-color:var(--teal);
+}
+
+.item.selected{
+  border-color:var(--green);
+  box-shadow:0 0 12px #9bd83f22;
+}
+
+.item.wrong{
+  border-color:var(--red);
+  animation:shake .3s;
+}
+
+.item:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.item .ico{
+  display:block;
+  font-size:25px;
+  margin-bottom:4px;
+}
+
+.order{
+  display:flex;
+  gap:5px;
+  margin-top:10px;
+}
+
+.slot{
+  flex:1;
+  height:32px;
+  border:1px dashed #9dbeb344;
+  display:grid;
+  place-items:center;
+  color:#778681;
+  font-size:7px;
+}
+
+.slot.filled{
+  border-color:var(--green);
+  color:var(--green);
+}
+
+.hotspots{
+  height:205px;
+  position:relative;
+  margin-top:10px;
+  border:1px solid #9dbeb326;
+  background:linear-gradient(#071117,#020607);
+}
+
+.hot{
+  position:absolute;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:2px solid #d8c574;
+  background:#070a09dd;
+  color:#fff;
+  cursor:pointer;
+}
+
+.hot:hover{
+  transform:scale(1.1);
+}
+
+.ht{
+  left:47%;
+  top:25%;
+}
+
+.hf{
+  left:20%;
+  bottom:18%;
+}
+
+.hg{
+  right:17%;
+  bottom:18%;
+}
+
+.weather{
+  margin-top:10px;
+  padding:12px;
+  border:1px solid #9dbeb326;
+  background:#050a0c;
+}
+
+.time{
+  font-size:25px;
+  color:var(--red);
+  font-weight:900;
+}
+
+.weatherItems{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  margin-top:10px;
+}
+
+.weatherItem{
+  min-height:90px;
+}
+
+.storm{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:50;
+  opacity:0;
+  background:
+    repeating-linear-gradient(
+      105deg,
+      transparent 0 18px,
+      #b7d4e044 19px 20px
+    );
+}
+
+.storm.on{
+  opacity:.6;
+  animation:rain .6s linear infinite;
+}
+
+.campComplete{
+  padding:38px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 40%,#d9883125,transparent 30%),
+    #020605;
+}
+
+.campComplete h1{
+  color:var(--green);
+  font-size:50px;
+}
+
+.peaceScene{
+  width:min(700px,90%);
+  height:280px;
+  margin:0 auto 30px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #9dbeb333;
+  background:
+    radial-gradient(circle at 50% 70%,#e8903b33,transparent 15%),
+    linear-gradient(#071522,#020708 70%);
+}
+
+.peaceScene .peaceMoon{
+  position:absolute;
+  right:15%;
+  top:12%;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#eeecca;
+  box-shadow:0 0 35px #eeecca88;
+}
+
+.peaceScene .peaceTent{
+  position:absolute;
+  width:210px;
+  height:130px;
+  left:50%;
+  bottom:20%;
+  transform:translateX(-50%);
+  background:linear-gradient(50deg,#73572f,#302519);
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+.peaceScene .peaceFire{
+  position:absolute;
+  left:50%;
+  bottom:7%;
+  transform:translateX(-50%);
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      #fff3a0 0 8%,
+      #ff9d32 30%,
+      #d4491f 55%,
+      transparent 70%
+    );
+  box-shadow:0 0 35px #ed782c88;
+}
+
+.peaceText{
+  color:#9dc8c1;
+  font-size:10px;
+  letter-spacing:.14em;
+  font-weight:900;
+}
+
+/* =========================================================
+   FINAL REPORT
+========================================================= */
+
+#final{
+  background:
+    radial-gradient(circle at 50% 40%,#28423a55,transparent 25%),
+    linear-gradient(#06100e,#010403);
+}
+
+.finalWrap{
+  width:min(1050px,92%);
+  margin:auto;
+  padding:65px 0;
+  text-align:center;
+}
+
+.finalEyebrow{
+  color:var(--orange);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.2em;
+}
+
+.finalWrap h1{
+  font-size:clamp(50px,8vw,100px);
+  line-height:.85;
+  margin:18px 0;
+}
+
+.finalSub{
+  color:var(--teal);
+  letter-spacing:.12em;
+  font-weight:900;
+}
+
+.finalGames{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:42px 0 20px;
+}
+
+.fg{
+  padding:20px;
+  border:1px solid #9dbeb33a;
+  background:#030807aa;
+}
+
+.fg .ico{
+  font-size:38px;
+}
+
+.fg h3{
+  font-size:10px;
+}
+
+.fg .xp{
+  font-size:24px;
+}
+
+.total{
+  border-top:1px solid #9dbeb333;
+  border-bottom:1px solid #9dbeb333;
+  padding:22px;
+}
+
+.total small{
+  display:block;
+  color:#9aa7a2;
+  font-size:9px;
+  letter-spacing:.15em;
+}
+
+.total strong{
+  display:block;
+  font-size:64px;
+  color:#e6ddc4;
+}
+
+.rank{
+  margin:25px auto;
+  padding:20px;
+  width:min(470px,100%);
+  border:2px solid #b99d53;
+  background:#050908;
+}
+
+.rank .badge{
+  font-size:55px;
+}
+
+.rank h2{
+  color:var(--gold);
+  letter-spacing:.1em;
+}
+
+.achievements{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:25px 0 45px;
+}
+
+.achievement{
+  border:1px solid #9dbeb333;
+  padding:8px 11px;
+  background:#030807;
+  font-size:8px;
+}
+
+.message{
+  max-width:700px;
+  margin:auto;
+  color:#cbd4d0;
+  font-size:15px;
+  line-height:1.9;
+}
+
+.message .highlight{
+  font-weight:900;
+  color:#fff;
+}
+
+.real{
+  margin:35px auto;
+  width:min(620px,100%);
+  padding:24px;
+  border:1px solid #d89b4c66;
+  background:
+    radial-gradient(circle,#bd762b18,transparent 60%),
+    #050807;
+}
+
+.real h2{
+  color:var(--orange);
+  letter-spacing:.12em;
+}
+
+.date{
+  font-size:26px;
+  font-weight:900;
+  color:#e8dfc8;
+}
+
+.endNote{
+  color:#73c9c3;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1050px){
+
+  .g1grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .scanner{
+    grid-column:1/-1;
+    border-top:1px solid var(--line);
+  }
+
+  .g2{
+    grid-template-columns:240px 1fr;
+  }
+
+  .g2side.right{
+    grid-column:1/-1;
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+
+  .tasks{
+    grid-template-columns:1fr;
+  }
+
+  .task{
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+}
+
+@media(max-width:700px){
+
+  .g1grid,
+  .rounds,
+  .g1bottom,
+  .finalGames{
+    display:block;
+  }
+
+  .panel,
+  .round,
+  .feedback{
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .howgrid,
+  .choices{
+    grid-template-columns:1fr;
+  }
+
+  .g2{
+    display:block;
+  }
+
+  .g2side{
+    border:0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .g2center{
+    min-height:620px;
+  }
+
+  .campTitle{
+    left:18px;
+    top:18px;
+    width:270px;
+  }
+
+  .campTitle h1{
+    font-size:39px;
+  }
+
+  .statusBox{
+    position:relative;
+    top:auto;
+    right:auto;
+    margin:20px;
+    width:auto;
+  }
+
+  .campHero{
+    min-height:600px;
+  }
+
+  .finalWrap{
+    padding:40px 0;
+  }
+
+  .total strong{
+    font-size:50px;
+  }
+}
+</style>
 </head>
-
 
 <body>
 
+<!-- =========================================================
+     MISSION 03 INTRO
+========================================================= -->
 
-<!-- =====================================================
-     LOADING SCREEN
-===================================================== -->
+<section id="intro" class="screen active">
 
-<div id="loadingScreen">
+  <div class="introScene">
 
-    <div class="loadingContent">
+    <div class="introMoon"></div>
+    <div class="introTrees"></div>
 
-        <h1>
-            OPERATION BIRTHDAY 30
-        </h1>
+    <div class="introCard">
 
-        <h2>
-            MISSION 02
-        </h2>
+      <div class="eyebrow">
+        MISSION 03 • THE FINAL EXPEDITION
+      </div>
 
-        <p id="loadingText">
-            Connecting to Mission Control...
-        </p>
+      <h1>
+        THE FINAL<br>
+        EXPEDITION
+      </h1>
 
-        <div class="loadingBar">
+      <h2>
+        🎣 ONE LAST ADVENTURE.
+      </h2>
 
-            <div id="loadingFill"></div>
+      <p>
+        You've made it this far, Master Angler.<br>
+        Now comes the final test.<br><br>
 
+        Read the water. Land the legendary catch.<br>
+        Set up camp. Survive the night.
+      </p>
+
+      <div class="objectives">
+
+        <div class="objective">
+          <span>🌊</span>
+          READ THE WATER
         </div>
 
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     INTRO SCREEN
-===================================================== -->
-
-<div
-    id="introScreen"
-    class="hidden"
->
-
-    <div class="introContent">
-
-        <div class="missionLabel">
-            CLASSIFIED MISSION
+        <div class="objective">
+          <span>🎣</span>
+          LAND THE BIG ONE
         </div>
 
-        <h1>
-            OPERATION BIRTHDAY 30
-        </h1>
-
-        <h2>
-            MISSION 02
-        </h2>
-
-        <div id="terminal"></div>
-
-        <button
-            id="startMission"
-            class="btn"
-        >
-            ▶ START MISSION
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     GAME HUD
-===================================================== -->
-
-<header
-    id="gameHUD"
-    class="hidden"
->
-
-    <div class="hudLeft">
-
-        <div class="timerBox">
-
-            ⏱
-
-            <span id="timer">
-                01:00
-            </span>
-
+        <div class="objective">
+          <span>🏕️</span>
+          SURVIVE THE NIGHT
         </div>
 
+      </div>
 
-        <div class="xpBox">
-
-            ⭐
-
-            <span id="xp">
-                0
-            </span>
-
-            XP
-
-        </div>
-
-
-        <div class="scoreBox">
-
-            🏆
-
-            <span id="score">
-                0
-            </span>
-
-        </div>
+      <button class="btn gold" id="begin">
+        BEGIN FINAL EXPEDITION
+      </button>
 
     </div>
 
-
-    <div class="hudCenter">
-
-        <div class="bearContainer">
-
-            <span class="bearIcon">
-                🐻
-            </span>
-
-            <div class="bearTrack">
-
-                <div id="bearProgress"></div>
-
-            </div>
-
-            <span class="campIcon">
-                ⛺
-            </span>
-
-        </div>
-
-
-        <p id="bearProximityText">
-            95m
-        </p>
-
-
-        <p id="objectiveText">
-            Recover all hidden camping equipment.
-        </p>
-
-
-        <p id="itemsFoundText">
-            0 / 10
-        </p>
-
-    </div>
-
-
-    <div class="hudRight">
-
-        <button
-            id="hintButton"
-            class="btn"
-        >
-            ? HINT 3
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- =====================================================
-     MAIN GAME CONTAINER
-===================================================== -->
-
-<main id="gameContainer">
-
-
-    <!-- =================================================
-         PHASE 1 CAMPSITE
-    ================================================= -->
-
-    <div
-        id="phase1"
-        class="hidden"
-    >
-
-        <canvas
-            id="gameCanvas"
-        ></canvas>
-
-    </div>
-
-
-    <!-- =================================================
-         PHASE 2 FISHING
-    ================================================= -->
-
-    <div
-        id="phase2"
-        class="hidden"
-    >
-
-        <canvas
-            id="fishingCanvas"
-        ></canvas>
-
-
-        <div class="fishingHeader">
-
-            <h1>
-                🎣 FISHING CHALLENGE
-            </h1>
-
-            <p>
-                Catch
-                <strong>6 Special Fish</strong>
-                before time runs out.
-            </p>
-
-        </div>
-
-
-        <div class="fishingStats">
-
-            <div class="fishCounter">
-
-                🐟
-
-                <span id="fishCaught">
-                    0
-                </span>
-
-                / 6
-
-            </div>
-
-
-            <div class="fishTimer">
-
-                ⏱
-
-                <span id="fishingTimer">
-                    01:00
-                </span>
-
-            </div>
-
-
-            <div class="fishScore">
-
-                ⭐ Score
-
-                <span id="fishScore">
-                    0
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="powerContainer">
-
-            <p>
-                Casting Power
-            </p>
-
-            <div class="powerBar">
-
-                <div id="powerFill"></div>
-
-            </div>
-
-        </div>
-
-
-        <div class="reelContainer">
-
-            <p>
-                Reel Strength
-            </p>
-
-            <div class="reelBar">
-
-                <div id="reelFill"></div>
-
-            </div>
-
-        </div>
-
-
-        <div class="fishingControls">
-
-            <button
-                id="castRod"
-                class="btn"
-            >
-                🎣 CAST ROD
-            </button>
-
-
-            <div
-                id="bite"
-                class="hidden"
-            >
-                ❗ BITE!
-            </div>
-
-
-            <div
-                id="hook"
-                class="hidden"
-            >
-                🎣 HOOKED!
-            </div>
-
-        </div>
-
-    </div>
-
-</main>
-
-
-<!-- =====================================================
-     PHASE 1 COMPLETE
-===================================================== -->
-
-<div
-    id="phase1Complete"
-    class="hidden"
->
-
-    <div class="missionResult">
-
-        <div class="missionLabel">
-            MISSION OBJECTIVE COMPLETE
-        </div>
-
-
-        <h1>
-            🏕 CAMP SUCCESSFULLY SECURED
-        </h1>
-
-
-        <p>
-            Excellent work, Chief.
-            You recovered every item before
-            the bear arrived.
-        </p>
-
-
-        <p>
-            ⭐ XP Earned:
-
-            <span id="phase1XP">
-                0
-            </span>
-
-        </p>
-
-
-        <button
-            id="continueFishing"
-            class="btn"
-        >
-            🎣 CONTINUE TO FISHING CHALLENGE
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     MISSION COMPLETE
-===================================================== -->
-
-<div
-    id="missionComplete"
-    class="hidden"
->
-
-    <div class="missionResult">
-
-        <div class="missionLabel">
-            OPERATION BIRTHDAY 30
-        </div>
-
-
-        <h1>
-            🏆 MISSION COMPLETE
-        </h1>
-
-
-        <div class="reportGrid">
-
-
-            <div class="reportCard">
-
-                <h3>
-                    ⭐ TOTAL XP
-                </h3>
-
-                <p id="finalXP">
-                    0
-                </p>
-
-            </div>
-
-
-            <div class="reportCard">
-
-                <h3>
-                    🎒 ITEMS FOUND
-                </h3>
-
-                <p>
-                    10 / 10
-                </p>
-
-            </div>
-
-
-            <div class="reportCard">
-
-                <h3>
-                    🐟 SPECIAL FISH
-                </h3>
-
-                <p>
-                    6 / 6
-                </p>
-
-            </div>
-
-
-            <div class="reportCard">
-
-                <h3>
-                    🏅 COMPLETION
-                </h3>
-
-                <p>
-                    100%
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-        <div class="badges">
-
-            <div class="badge">
-                🏕 Camp Survivor
-            </div>
-
-
-            <div class="badge">
-                🎣 Master Angler
-            </div>
-
-        </div>
-
-
-        <div class="endingMessage">
-
-            <h2>
-                Amazing work, Chief. ❤️
-            </h2>
-
-
-            <p>
-                You've completed another mission
-                and uncovered another piece of
-                our secret adventure.
-            </p>
-
-
-            <p>
-                The next mission remains encrypted...
-                Mission 3 will unlock next week.
-                Stay sharp. 🫡
-            </p>
-
-        </div>
-
-
-        <button
-            id="replayMission"
-            class="btn"
-        >
-            🔄 PLAY AGAIN
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     INVENTORY
-===================================================== -->
-
-<section
-    id="inventoryPanel"
-    class="hidden"
->
-
-
-    <div class="inventorySlot">
-
-        <p>
-            ⛺ Tent
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🎒 Backpack
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🔦 Torchlight
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🧭 Compass
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            👢 Boots
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🍼 Bottle
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🎣 Fishing Rod
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🗺 Map
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            📷 Camera
-        </p>
-
-    </div>
-
-
-    <div class="inventorySlot">
-
-        <p>
-            🔑 Key
-        </p>
-
-    </div>
-
+  </div>
 
 </section>
 
 
-<!-- =====================================================
-     AUDIO
-===================================================== -->
+<!-- =========================================================
+     GAME 01
+========================================================= -->
 
-<audio
-    id="bgMusic"
-    loop
-    src="assets/audio/background.mp3"
-></audio>
+<section id="game1" class="screen">
 
+  <div class="topbar">
 
-<audio
-    id="collectSound"
-    src="assets/audio/collect.mp3"
-></audio>
+    <div class="brand">
+      HOOKED IN 30 • MISSION 03
+    </div>
 
+    <div class="pills">
 
-<audio
-    id="splashSound"
-    src="assets/audio/splash.mp3"
-></audio>
+      <div class="pill">
+        GAME <b>01</b>
+      </div>
 
+      <div class="pill">
+        XP <b id="g1xpTop">0</b>
+      </div>
 
-<audio
-    id="successSound"
-    src="assets/audio/success.mp3"
-></audio>
+    </div>
+
+  </div>
 
 
-<audio
-    id="bearSound"
-    src="assets/audio/bear.mp3"
-></audio>
+  <div class="g1grid">
+
+    <div class="panel g1intro">
+
+      <div class="eyebrow">
+        MISSION 03
+        <span class="tag">GAME 01</span>
+      </div>
+
+      <div class="title">
+        READ<br>
+        THE WATER
+      </div>
+
+      <div class="sub">
+        A MASTER ANGLER KNOWS WHERE TO CAST.
+      </div>
+
+      <p class="copy">
+        Study the water carefully.
+        Read the current, structure and signs
+        of fish activity. Choose the best spot.
+      </p>
+
+      <div class="pills">
+
+        <div class="pill">
+          🎯 3 ROUNDS
+        </div>
+
+        <div class="pill">
+          🎣 3 CASTS
+        </div>
+
+        <div class="pill">
+          MAX <b>550 XP</b>
+        </div>
+
+      </div>
+
+      <br>
+
+      <button class="btn" id="startWater">
+        START WATER READING
+      </button>
+
+    </div>
 
 
-<!-- =====================================================
-     GAME JAVASCRIPT
-===================================================== -->
+    <div class="panel g1how">
 
-<script src="game.js"></script>
+      <div class="section-title">
+        HOW TO PLAY
+      </div>
 
+      <div class="howgrid">
+
+        <div class="how">
+          <div class="ico">👁️</div>
+          <b>OBSERVE</b>
+          <span>
+            Study current, structure,
+            surface activity and fish signs.
+          </span>
+        </div>
+
+        <div class="how">
+          <div class="ico">🧠</div>
+          <b>ANALYSE</b>
+          <span>
+            Use the Angler Scanner
+            and your instincts.
+          </span>
+        </div>
+
+        <div class="how">
+          <div class="ico">🎣</div>
+          <b>DECIDE</b>
+          <span>
+            Choose the best spot.
+            One cast per round.
+          </span>
+        </div>
+
+      </div>
+
+      <div class="tip">
+        <b>MASTER ANGLER TIP</b><br>
+        Fish go where food is,
+        and stay where it feels safe.
+      </div>
+
+      <br>
+
+      <button class="btn teal" id="startWater2">
+        GOT IT, LET'S GO!
+      </button>
+
+    </div>
+
+
+    <div class="scanner">
+
+      <div class="section-title">
+        ANGLER SCANNER
+      </div>
+
+      <div class="scannerBox">
+
+        <div class="scanrow">
+          <b>CURRENT</b>
+          <span id="scanCurrent">—</span>
+        </div>
+
+        <div class="scanrow">
+          <b>DEPTH</b>
+          <span id="scanDepth">—</span>
+        </div>
+
+        <div class="scanrow">
+          <b>WATER TEMP</b>
+          <span id="scanTemp">—</span>
+        </div>
+
+        <div class="scanrow">
+          <b>SURFACE</b>
+          <span id="scanSurface">—</span>
+        </div>
+
+        <div class="scanrow">
+          <b>BAIT</b>
+          <span id="scanBait">—</span>
+        </div>
+
+        <div class="scanrow">
+          <b>STRUCTURE</b>
+          <span id="scanStructure">—</span>
+        </div>
+
+        <div class="charges">
+
+          SCANNER CHARGES
+
+          <span>
+            <i class="charge">⚡</i>
+            <i class="charge">⚡</i>
+            <i class="charge">⚡</i>
+          </span>
+
+        </div>
+
+        <button class="scanBtn" id="scanBtn" disabled>
+          USE SCANNER — 1 CHARGE
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="rounds" id="rounds"></div>
+
+
+  <div class="g1bottom">
+
+    <div class="feedback">
+
+      <div class="section-title">
+        CORRECT CHOICE REACTION
+      </div>
+
+      <div class="reaction">
+        <div class="splash"></div>
+      </div>
+
+      <h3 id="goodTitle">
+        PERFECT READ!
+      </h3>
+
+      <p id="goodText">
+        You found the right spot.
+      </p>
+
+      <div class="xp" id="goodXP">
+        +100 XP
+      </div>
+
+    </div>
+
+
+    <div class="feedback">
+
+      <div class="section-title">
+        WRONG CHOICE REACTION
+      </div>
+
+      <div class="reaction"></div>
+
+      <h3 id="badTitle">
+        NO BITE.
+      </h3>
+
+      <p id="badText">
+        Read the clues and trust your instincts.
+      </p>
+
+      <div class="xp">
+        +0 XP
+      </div>
+
+    </div>
+
+
+    <div class="completion">
+
+      <div class="completeTitle">
+        🌊 WATER READING COMPLETE!
+      </div>
+
+      <div class="summary">
+
+        <div class="sum">
+          ROUND 1
+          <div class="check" id="s1">—</div>
+          <div class="xp">+100 XP</div>
+        </div>
+
+        <div class="sum">
+          ROUND 2
+          <div class="check" id="s2">—</div>
+          <div class="xp">+150 XP</div>
+        </div>
+
+        <div class="sum">
+          ROUND 3
+          <div class="check" id="s3">—</div>
+          <div class="xp">+300 XP</div>
+        </div>
+
+      </div>
+
+      <div class="score">
+
+        <span id="g1score">
+          0 / 550
+        </span>
+
+        <small>
+          FINAL SCORE
+        </small>
+
+      </div>
+
+      <p id="g1message" class="copy">
+        You didn't just see the water.
+        You understood it.
+      </p>
+
+      <button
+        class="continue"
+        id="toG2"
+        disabled
+      >
+        CONTINUE TO GAME 02 →
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     GAME 02
+========================================================= -->
+
+<section id="game2" class="screen">
+
+  <div class="g2">
+
+    <aside class="g2side">
+
+      <div class="eyebrow">
+        GAME 02
+      </div>
+
+      <h1>
+        THE<br>
+        <span class="orange">FINAL</span><br>
+        CATCH
+      </h1>
+
+      <p class="copy">
+        ONE LEGENDARY FISH.<br>
+        ONE CHANCE.
+      </p>
+
+      <div class="target">
+
+        <div class="section-title">
+          LEGENDARY TARGET
+        </div>
+
+        <div class="fish">
+          🐟
+        </div>
+
+        <div style="font-size:8px;line-height:1.8">
+
+          SPECIES: UNKNOWN<br>
+          SIZE: HUGE<br>
+
+          DIFFICULTY:
+          <span class="orange">
+            ★★★★★
+          </span>
+
+        </div>
+
+      </div>
+
+      <p style="
+        color:var(--green);
+        font-weight:900;
+        font-size:10px;
+        margin-top:20px;
+      ">
+        OBJECTIVE
+      </p>
+
+      <p class="copy" style="font-size:9px">
+        Hook and land the legendary fish.
+        Keep the line tension in the green zone.
+        Don't lose the fish.
+      </p>
+
+    </aside>
+
+
+    <main class="g2center">
+
+      <div class="hud">
+
+        <div>
+          LOCATION:
+          <b>DEEP ROCK SHELF</b><br>
+          🌙 TIME:
+          <b>20:47</b>
+        </div>
+
+        <div>
+          LINE HEALTH
+          <b
+            id="lineText"
+            style="
+              color:var(--green);
+              font-size:20px;
+            "
+          >
+            100%
+          </b>
+        </div>
+
+      </div>
+
+      <div class="g2moon"></div>
+
+      <div class="rod"></div>
+
+      <div class="line"></div>
+
+      <div class="splash2"></div>
+
+
+      <div class="g2main">
+
+        <div
+          class="phase"
+          id="phaseTitle"
+        >
+          1. THE BITE
+        </div>
+
+        <div
+          class="phaseDesc"
+          id="phaseDesc"
+        >
+          The fish is interested...
+          Be ready!
+        </div>
+
+        <div class="tension">
+
+          <div class="greenzone"></div>
+
+          <div
+            class="marker"
+            id="marker"
+          ></div>
+
+        </div>
+
+        <div class="labels">
+
+          <span style="color:#ef6253">
+            TOO LOOSE
+          </span>
+
+          <span style="color:var(--green)">
+            PERFECT
+          </span>
+
+          <span style="color:#ef6253">
+            TOO TIGHT
+          </span>
+
+        </div>
+
+
+        <div class="controls">
+
+          <button
+            class="reel"
+            id="reel"
+          >
+            🎣 HOLD / REEL IN
+          </button>
+
+          <button
+            class="release"
+            id="release"
+          >
+            RELEASE
+          </button>
+
+        </div>
+
+
+        <div class="phases">
+
+          <div class="pbox active" id="p1">
+            1<br>BITE
+          </div>
+
+          <div class="pbox" id="p2">
+            2<br>RUN
+          </div>
+
+          <div class="pbox" id="p3">
+            3<br>FIGHT
+          </div>
+
+          <div class="pbox" id="p4">
+            4<br>WEAR DOWN
+          </div>
+
+          <div class="pbox" id="p5">
+            5<br>LAND
+          </div>
+
+        </div>
+
+
+        <div style="
+          text-align:center;
+          margin-top:11px;
+          font-size:8px;
+        ">
+
+          🐟 FISH STAMINA
+
+          <div
+            class="bar"
+            style="max-width:400px;margin:5px auto"
+          >
+            <div
+              class="fill"
+              id="stamina"
+              style="
+                width:100%;
+                background:var(--gold);
+              "
+            ></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <aside class="g2side right">
+
+      <h2 style="
+        color:var(--teal);
+        font-size:17px;
+      ">
+        HOW TO PLAY
+      </h2>
+
+      <div class="rule">
+
+        <div class="ico">🪝</div>
+
+        <div>
+          <b>HOOK THE FISH</b>
+
+          <span>
+            Wait for a bite
+            and set the hook.
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="ico">🎯</div>
+
+        <div>
+          <b>MANAGE THE TENSION</b>
+
+          <span>
+            Keep the line
+            in the green zone.
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="ico">🐟</div>
+
+        <div>
+          <b>WEAR THE FISH DOWN</b>
+
+          <span>
+            Be patient.
+            Don't force it.
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="ico">🥅</div>
+
+        <div>
+          <b>LAND THE FISH</b>
+
+          <span>
+            Once tired,
+            reel it in and land your catch.
+          </span>
+        </div>
+
+      </div>
+
+
+      <div style="
+        margin-top:18px;
+        padding:11px;
+        border:1px solid #9dbeb328;
+        font-size:8px;
+      ">
+
+        LINE HEALTH
+
+        <span
+          id="lineSide"
+          style="float:right"
+        >
+          100%
+        </span>
+
+        <div class="bar">
+
+          <div
+            class="fill"
+            id="lineBar"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="catch hidden"
+        id="catch"
+      >
+
+        <strong>
+          🐟 LEGENDARY CATCH!
+        </strong>
+
+        <p style="
+          font-size:9px;
+          line-height:1.7;
+        ">
+
+          WEIGHT:
+          <b>30.0 KG</b><br>
+
+          LENGTH:
+          <b>112 CM</b><br>
+
+          DIFFICULTY:
+          ⭐⭐⭐⭐⭐
+
+        </p>
+
+        <div
+          class="xp"
+          style="font-size:24px"
+        >
+          +500 XP
+        </div>
+
+        <button
+          class="btn"
+          style="
+            width:100%;
+            margin-top:12px;
+          "
+          id="toG3"
+        >
+          CONTINUE TO GAME 03 →
+        </button>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     GAME 03
+========================================================= -->
+
+<section id="game3" class="screen">
+
+  <div class="campHero">
+
+    <div class="stars"></div>
+
+    <div class="campMoon"></div>
+
+    <div class="trees"></div>
+
+
+    <div class="campTitle">
+
+      <div class="eyebrow">
+        MISSION 03 • GAME 03
+      </div>
+
+      <h1>
+        CAMP<br>
+        AFTER DARK
+      </h1>
+
+      <p>
+        THE FINAL CAMPING CHALLENGE.<br><br>
+
+        The sun has set.
+        Your catch is secured.
+        Now make camp.
+
+        Build the fire.
+        Secure the campsite.
+        Prepare for whatever
+        the night brings.
+      </p>
+
+      <div style="
+        color:var(--orange);
+        font-size:12px;
+        font-weight:900;
+      ">
+        BE PREPARED.<br>
+        STAY ALERT.
+      </div>
+
+    </div>
+
+
+    <div class="tent">
+      <div class="tentDoor"></div>
+    </div>
+
+    <div class="fire"></div>
+
+    <div class="lantern"></div>
+
+
+    <div class="statusBox">
+
+      <div class="section-title">
+        YOUR STATUS
+      </div>
+
+
+      <div class="srow">
+
+        ❤️ HEALTH
+
+        <span id="healthT">
+          100%
+        </span>
+
+        <div class="bar">
+          <div
+            class="fill"
+            id="health"
+            style="width:100%"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="srow">
+
+        ⚡ ENERGY
+
+        <span id="energyT">
+          85%
+        </span>
+
+        <div class="bar">
+          <div
+            class="fill"
+            id="energy"
+            style="
+              width:85%;
+              background:var(--gold);
+            "
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div class="srow">
+
+        🛡️ PREPAREDNESS
+
+        <span id="readyT">
+          90%
+        </span>
+
+        <div class="bar">
+          <div
+            class="fill"
+            id="ready"
+            style="
+              width:90%;
+              background:var(--blue);
+            "
+          ></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="tasks">
+
+    <!-- TASK 1 -->
+
+    <article class="task">
+
+      <div class="section-title">
+        TASK 1 OF 3
+      </div>
+
+      <h2>
+        🔥 START THE FIRE
+      </h2>
+
+      <p>
+        Choose the right materials
+        in the correct order.
+      </p>
+
+
+      <div class="items">
+
+        <button
+          class="item fireItem"
+          data-fire="tinder"
+        >
+          <span class="ico">🍂</span>
+          DRY LEAVES
+        </button>
+
+        <button
+          class="item fireItem"
+          data-fire="kindling"
+        >
+          <span class="ico">🪵</span>
+          KINDLING
+        </button>
+
+        <button
+          class="item fireItem"
+          data-fire="wood"
+        >
+          <span class="ico">🪵</span>
+          DRY WOOD
+        </button>
+
+        <button
+          class="item fireItem"
+          data-fire="starter"
+        >
+          <span class="ico">🔥</span>
+          FIRE STARTER
+        </button>
+
+        <button
+          class="item fireItem"
+          data-fire="water"
+        >
+          <span class="ico">💧</span>
+          WATER
+        </button>
+
+      </div>
+
+
+      <div class="order">
+
+        <div
+          class="slot"
+          id="slot1"
+        >
+          1st
+        </div>
+
+        <div
+          class="slot"
+          id="slot2"
+        >
+          2nd
+        </div>
+
+        <div
+          class="slot"
+          id="slot3"
+        >
+          3rd
+        </div>
+
+        <div
+          class="slot"
+          id="slot4"
+        >
+          4th
+        </div>
+
+      </div>
+
+
+      <p id="fireMsg">
+        Start small,
+        then build bigger.
+      </p>
+
+
+      <button
+        class="btn"
+        id="lightFire"
+        disabled
+      >
+        🔥 LIGHT FIRE
+      </button>
+
+    </article>
+
+
+    <!-- TASK 2 -->
+
+    <article class="task">
+
+      <div class="section-title">
+        TASK 2 OF 3
+      </div>
+
+      <h2>
+        🏕️ SECURE THE CAMP
+      </h2>
+
+      <p>
+        Tap the areas to secure
+        your campsite.
+      </p>
+
+
+      <div class="hotspots">
+
+        <button
+          class="hot ht"
+          data-hot="tent"
+        >
+          ⛺
+        </button>
+
+        <button
+          class="hot hf"
+          data-hot="food"
+        >
+          📦
+        </button>
+
+        <button
+          class="hot hg"
+          data-hot="gear"
+        >
+          🎣
+        </button>
+
+      </div>
+
+
+      <div
+        id="campMsg"
+        style="
+          margin-top:10px;
+          min-height:45px;
+          padding:10px;
+          border:1px solid #9dbeb31c;
+          font-size:8px;
+        "
+      >
+        Secure everything
+        before the weather turns.
+      </div>
+
+    </article>
+
+
+    <!-- TASK 3 -->
+
+    <article class="task">
+
+      <div class="section-title">
+        TASK 3 OF 3
+      </div>
+
+      <h2>
+        🌧️ WEATHER ALERT
+      </h2>
+
+      <p>
+        Rain is coming.
+        Secure your campsite
+        before the storm hits.
+      </p>
+
+
+      <div class="weather">
+
+        <div style="font-size:8px">
+          TIME LEFT
+        </div>
+
+        <div
+          class="time"
+          id="weatherTime"
+        >
+          00:30
+        </div>
+
+        <div class="bar">
+
+          <div
+            class="fill"
+            id="weatherBar"
+            style="
+              width:100%;
+              background:var(--red);
+            "
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="weatherItems">
+
+        <button
+          class="item weatherItem"
+          data-weather="tent"
+        >
+          <span class="ico">⛺</span>
+          TENT
+        </button>
+
+        <button
+          class="item weatherItem"
+          data-weather="food"
+        >
+          <span class="ico">📦</span>
+          FOOD & GEAR
+        </button>
+
+        <button
+          class="item weatherItem"
+          data-weather="fishing"
+        >
+          <span class="ico">🎣</span>
+          FISHING GEAR
+        </button>
+
+      </div>
+
+
+      <p id="weatherMsg">
+        Focus on the essentials.
+        Don't get caught in the rain!
+      </p>
+
+    </article>
+
+  </div>
+
+
+  <!-- PEACEFUL ENDING -->
+
+  <section
+    id="campComplete"
+    class="campComplete hidden"
+  >
+
+    <div class="peaceScene">
+
+      <div class="peaceMoon"></div>
+
+      <div class="peaceTent"></div>
+
+      <div class="peaceFire"></div>
+
+    </div>
+
+    <div class="peaceText">
+      THE STORM HAS PASSED.
+    </div>
+
+    <h1>
+      CAMP SECURED!
+    </h1>
+
+    <p class="copy">
+      The storm came.<br>
+      You were ready.<br><br>
+
+      The tent is safe.<br>
+      The gear is protected.<br>
+      The fire is still glowing.
+    </p>
+
+    <div
+      class="xp"
+      style="font-size:30px"
+    >
+      +400 XP
+    </div>
+
+    <p
+      style="
+        color:#c7d1cc;
+        font-size:11px;
+        margin-top:20px;
+      "
+    >
+      Night survived.
+    </p>
+
+    <button
+      class="btn"
+      style="margin-top:18px"
+      id="toFinal"
+    >
+      🏆 VIEW FINAL EXPEDITION REPORT →
+    </button>
+
+  </section>
+
+</section>
+
+
+<div
+  class="storm"
+  id="storm"
+></div>
+
+
+<!-- =========================================================
+     FINAL EXPEDITION REPORT
+========================================================= -->
+
+<section id="final" class="screen">
+
+  <div class="finalWrap">
+
+    <div class="finalEyebrow">
+      MISSION 03 • FINAL EXPEDITION REPORT
+    </div>
+
+    <h1>
+      EXPEDITION<br>
+      COMPLETE
+    </h1>
+
+    <div class="finalSub">
+      MASTER ANGLER STATUS CONFIRMED
+    </div>
+
+
+    <div class="finalGames">
+
+      <div class="fg">
+
+        <div class="ico">
+          🌊
+        </div>
+
+        <h3>
+          READ THE WATER
+        </h3>
+
+        <div
+          class="xp"
+          id="finalWater"
+        >
+          +550 XP
+        </div>
+
+      </div>
+
+
+      <div class="fg">
+
+        <div class="ico">
+          🎣
+        </div>
+
+        <h3>
+          THE FINAL CATCH
+        </h3>
+
+        <div class="xp">
+          +500 XP
+        </div>
+
+      </div>
+
+
+      <div class="fg">
+
+        <div class="ico">
+          🏕️
+        </div>
+
+        <h3>
+          CAMP AFTER DARK
+        </h3>
+
+        <div class="xp">
+          +400 XP
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="total">
+
+      <small>
+        TOTAL EXPEDITION SCORE
+      </small>
+
+      <strong id="totalXP">
+        1,450 XP
+      </strong>
+
+    </div>
+
+
+    <div class="rank">
+
+      <div class="badge">
+        🏆
+      </div>
+
+      <h2>
+        MASTER ANGLER
+      </h2>
+
+      <div class="xp">
+        LEVEL 30
+      </div>
+
+    </div>
+
+
+    <div class="achievements">
+
+      <div class="achievement">
+        🌊 WATER READER ✓
+      </div>
+
+      <div class="achievement">
+        🐟 LEGENDARY CATCH ✓
+      </div>
+
+      <div class="achievement">
+        🔥 FIRESTARTER ✓
+      </div>
+
+      <div class="achievement">
+        🏕️ CAMP MASTER ✓
+      </div>
+
+      <div class="achievement">
+        🌧️ STORM SURVIVOR ✓
+      </div>
+
+      <div class="achievement">
+        🎂 LEVEL 30 ✓
+      </div>
+
+    </div>
+
+
+    <div class="message">
+
+      <p>
+        <b class="highlight">
+          Master Angler,
+        </b>
+      </p>
+
+      <p>
+        You started this adventure
+        with a simple mission.
+      </p>
+
+      <p>
+        Find the gear.<br>
+        Read the water.<br>
+        Catch the fish.<br>
+        Survive the night.
+      </p>
+
+      <p>
+        And somehow...
+      </p>
+
+      <p>
+        <b class="highlight">
+          you made it all the way to Level 30.
+        </b>
+      </p>
+
+      <p>
+        Your training is complete.<br>
+        Your rank has been earned.
+      </p>
+
+      <p>
+        And now there's only one thing left...
+      </p>
+
+      <div style="
+        font-size:24px;
+        font-weight:900;
+        color:#fff;
+        margin:32px 0;
+      ">
+        TAKE THIS ADVENTURE OFF THE SCREEN.
+      </div>
+
+    </div>
+
+
+    <div class="real">
+
+      <div style="font-size:42px">
+        🏕️
+      </div>
+
+      <h2>
+        REAL-LIFE EXPEDITION
+      </h2>
+
+      <div class="date">
+        21 — 22 AUGUST 2026
+      </div>
+
+      <div style="
+        color:#bfcac5;
+        margin-top:8px;
+      ">
+        EAST COAST PARK
+      </div>
+
+      <p
+        class="copy"
+        style="margin-top:20px"
+      >
+        Pack your bags, birthday boy. 🤭
+        <br><br>
+        <b>
+          The final adventure starts soon.
+        </b>
+      </p>
+
+      <div style="font-size:32px">
+        ❤️
+      </div>
+
+    </div>
+
+
+    <div class="endNote">
+      QUEST COMPLETE • HAPPY BIRTHDAY, MY LOVE ❤️
+    </div>
+
+  </div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL HELPERS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function show(id){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen =>
+      screen.classList.remove("active")
+    );
+
+  $(id).classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================================================
+   MISSION INTRO
+========================================================= */
+
+$("begin").onclick = () => {
+  show("game1");
+};
+
+
+/* =========================================================
+   GAME 01 — READ THE WATER
+========================================================= */
+
+const rounds = [
+
+  {
+    title:"ROUND 1 — FIND THE FEEDING ZONE",
+    diff:"EASY",
+    xp:100,
+    correct:"B",
+
+    scan:{
+      current:"→ Moderate",
+      depth:"4–6 m",
+      temp:"25.8°C • OPTIMAL",
+      surface:"HIGH",
+      bait:"🐟 HIGH",
+      structure:"Rocky / submerged rocks"
+    },
+
+    choices:[
+
+      [
+        "A",
+        "CALM WATER",
+        [
+          "Smooth surface",
+          "No activity"
+        ],
+        "calm"
+      ],
+
+      [
+        "B",
+        "SURFACE ACTIVITY",
+        [
+          "Ripples on surface",
+          "Birds feeding",
+          "Baitfish around"
+        ],
+        "feed"
+      ],
+
+      [
+        "C",
+        "STRONG CURRENT",
+        [
+          "Heavy current",
+          "Waves crashing"
+        ],
+        "surf"
+      ]
+
+    ]
+
+  },
+
+
+  {
+    title:"ROUND 2 — READ THE CURRENT",
+    diff:"MEDIUM",
+    xp:150,
+    correct:"B",
+
+    scan:{
+      current:"→ Moderate → Strong",
+      depth:"5–6 m",
+      temp:"24.9°C",
+      surface:"MODERATE",
+      bait:"🐟 MODERATE",
+      structure:"HIGH"
+    },
+
+    choices:[
+
+      [
+        "A",
+        "FAST CURRENT",
+        [
+          "Water moving fast",
+          "Hard to hold"
+        ],
+        "fast"
+      ],
+
+      [
+        "B",
+        "CURRENT BREAK",
+        [
+          "Fast meets slow",
+          "Fish can rest",
+          "Food flows in"
+        ],
+        "break"
+      ],
+
+      [
+        "C",
+        "DEAD WATER",
+        [
+          "Very little flow",
+          "Less food"
+        ],
+        "dead"
+      ]
+
+    ]
+
+  },
+
+
+  {
+    title:"ROUND 3 — THE FINAL READ",
+    diff:"HARD",
+    xp:300,
+    correct:"B",
+
+    scan:{
+      current:"→ Moderate",
+      depth:"6–9 m",
+      temp:"24.3°C",
+      surface:"LOW",
+      bait:"🐟 MODERATE",
+      structure:"HIGH"
+    },
+
+    choices:[
+
+      [
+        "A",
+        "OPEN WATER",
+        [
+          "Deep and dark",
+          "No structure"
+        ],
+        "open"
+      ],
+
+      [
+        "B",
+        "ROCKY EDGE",
+        [
+          "Structure nearby",
+          "Subtle current",
+          "Occasional ripples"
+        ],
+        "rocky"
+      ],
+
+      [
+        "C",
+        "HEAVY SURF",
+        [
+          "Too much noise",
+          "Chaotic water"
+        ],
+        "heavy"
+      ]
+
+    ]
+
+  }
+
+];
+
+
+let totalWaterXP = 0;
+
+let g1 = {
+  started:false,
+  round:0,
+  choice:null,
+  charges:3,
+  scanned:false,
+  scores:[0,0,0],
+  timer:null,
+  time:0,
+  done:false
+};
+
+
+function scene(type,night){
+
+  let x = "";
+
+  if(type === "feed"){
+
+    x += `
+      <i class="bird b1">⌁</i>
+      <i class="bird b2">⌁</i>
+      <i class="bird b3">⌁</i>
+      <i class="ripple ri1"></i>
+      <i class="ripple ri2"></i>
+    `;
+
+  }
+
+  if(
+    [
+      "surf",
+      "fast",
+      "break",
+      "rocky",
+      "heavy"
+    ].includes(type)
+  ){
+
+    x += `
+      <i class="rock r1"></i>
+      <i class="rock r2"></i>
+    `;
+
+  }
+
+  if(
+    type === "break" ||
+    type === "rocky"
+  ){
+
+    x += `
+      <i class="ripple ri1"></i>
+      <i class="ripple ri2"></i>
+    `;
+
+  }
+
+  if(night){
+
+    x += `
+      <i class="moon"></i>
+    `;
+
+  }
+
+  return `
+    <div class="scene">
+      ${x}
+    </div>
+  `;
+
+}
+
+
+function renderRounds(){
+
+  $("rounds").innerHTML =
+    rounds.map((r,i) => {
+
+      const active =
+        g1.started &&
+        i === g1.round;
+
+      return `
+
+        <article class="round ${active ? "" : "locked"}">
+
+          <div class="roundHead">
+
+            <span>
+              ${r.title}
+            </span>
+
+            <small>
+              ${r.diff}
+            </small>
+
+          </div>
+
+
+          <div class="roundMeta">
+
+            <span>
+              WHERE WOULD YOU CAST?
+            </span>
+
+            <span>
+              CAST ${i+1} / 3
+            </span>
+
+          </div>
+
+
+          <div style="
+            text-align:center;
+            font-size:9px;
+            font-weight:900;
+            margin:10px 0;
+          ">
+            CHOOSE THE BEST SPOT
+          </div>
+
+
+          <div class="choices">
+
+            ${r.choices.map(c => `
+
+              <button
+                class="choice"
+                data-r="${i}"
+                data-c="${c[0]}"
+                ${active ? "" : "disabled"}
+              >
+
+                <b style="
+                  position:absolute;
+                  z-index:5;
+                  margin:6px;
+                  width:21px;
+                  height:21px;
+                  border-radius:50%;
+                  background:#000b;
+                  text-align:center;
+                  padding-top:3px;
+                  font-size:9px;
+                ">
+                  ${c[0]}
+                </b>
+
+                ${scene(c[3],i===2)}
+
+                <div class="choiceText">
+
+                  <b>
+                    ${c[1]}
+                  </b>
+
+                  <ul>
+                    ${c[2]
+                      .map(v => `<li>${v}</li>`)
+                      .join("")
+                    }
+                  </ul>
+
+                </div>
+
+              </button>
+
+            `).join("")}
+
+          </div>
+
+
+          <div class="roundBottom">
+
+            <div class="look">
+              LOOK FOR:<br>
+              ⌁ CURRENT • ◇ STRUCTURE
+              • 🐟 BAIT • BIRDS
+            </div>
+
+            <button
+              class="cast"
+              data-cast="${i}"
+              disabled
+            >
+              CAST HERE
+            </button>
+
+          </div>
+
+
+          <div
+            class="result"
+            id="result${i}"
+          >
+            Awaiting your read...
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+
+  document
+    .querySelectorAll("[data-c]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        selectWater(
+          Number(button.dataset.r),
+          button.dataset.c
+        );
+
+    });
+
+
+  document
+    .querySelectorAll("[data-cast]")
+    .forEach(button => {
+
+      button.onclick = () =>
+        castWater(
+          Number(button.dataset.cast)
+        );
+
+    });
+
+}
+
+
+function updateScanner(data=null){
+
+  const ids = [
+    "scanCurrent",
+    "scanDepth",
+    "scanTemp",
+    "scanSurface",
+    "scanBait",
+    "scanStructure"
+  ];
+
+  ids.forEach((id,i) => {
+
+    $(id).textContent =
+      data
+        ? Object.values(data)[i]
+        : "—";
+
+  });
+
+
+  document
+    .querySelectorAll(".charge")
+    .forEach((charge,i) => {
+
+      charge.classList.toggle(
+        "off",
+        i >= g1.charges
+      );
+
+    });
+
+
+  $("scanBtn").disabled =
+    !g1.started ||
+    g1.scanned ||
+    g1.charges < 1;
+
+
+  if(g1.scanned){
+
+    $("scanBtn").textContent =
+      "SCANNER USED THIS ROUND";
+
+  }else if(g1.charges){
+
+    $("scanBtn").textContent =
+      "USE SCANNER — 1 CHARGE";
+
+  }else{
+
+    $("scanBtn").textContent =
+      "NO CHARGES LEFT";
+
+  }
+
+}
+
+
+function startWater(){
+
+  if(g1.started){
+    return;
+  }
+
+  g1.started = true;
+  g1.round = 0;
+  g1.charges = 3;
+  g1.scores = [0,0,0];
+  g1.done = false;
+
+  $("startWater").disabled = true;
+  $("startWater2").disabled = true;
+
+  activateRound(0);
+
+}
+
+
+function activateRound(i){
+
+  clearInterval(g1.timer);
+
+  g1.round = i;
+  g1.choice = null;
+  g1.scanned = false;
+
+  g1.time =
+    rounds[i].diff === "EASY"
+      ? 30
+      : rounds[i].diff === "MEDIUM"
+        ? 40
+        : 45;
+
+  renderRounds();
+  updateScanner();
+
+
+  g1.timer = setInterval(() => {
+
+    g1.time--;
+
+    if(g1.time <= 0){
+
+      clearInterval(g1.timer);
+
+      resolveWater(
+        i,
+        null,
+        true
+      );
+
+    }
+
+  },1000);
+
+}
+
+
+function selectWater(i,c){
+
+  if(i !== g1.round){
+    return;
+  }
+
+  g1.choice = c;
+
+  document
+    .querySelectorAll(`[data-r="${i}"]`)
+    .forEach(button => {
+
+      button.classList.toggle(
+        "selected",
+        button.dataset.c === c
+      );
+
+    });
+
+
+  const cast =
+    document.querySelector(
+      `[data-cast="${i}"]`
+    );
+
+  cast.disabled = false;
+
+  cast.textContent =
+    `CAST ${c} HERE`;
+
+}
+
+
+function resolveWater(
+  i,
+  c,
+  timeout=false
+){
+
+  const r = rounds[i];
+
+  const correct =
+    c === r.correct;
+
+  g1.scores[i] =
+    correct
+      ? r.xp
+      : 0;
+
+  totalWaterXP =
+    g1.scores.reduce(
+      (a,b) => a+b,
+      0
+    );
+
+
+  $("g1xpTop").textContent =
+    totalWaterXP;
+
+  $("g1score").textContent =
+    `${totalWaterXP} / 550`;
+
+  $(`s${i+1}`).textContent =
+    correct
+      ? "✓"
+      : "×";
+
+
+  const result =
+    $(`result${i}`);
+
+  result.className =
+    "result " +
+    (
+      correct
+        ? "ok"
+        : "bad"
+    );
+
+
+  result.innerHTML =
+    correct
+
+      ? `
+        <b>
+          ${i===2
+            ? "PERFECT READ!"
+            : "GOOD READ!"
+          }
+        </b>
+        <span>
+          +${r.xp} XP
+        </span>
+      `
+
+      : `
+        <b>
+          ${
+            timeout
+              ? "TIME'S UP"
+              : "NO BITE."
+          }
+        </b>
+        <span>
+          +0 XP
+        </span>
+      `;
+
+
+  document
+    .querySelectorAll(`[data-r="${i}"]`)
+    .forEach(button => {
+
+      button.disabled = true;
+
+      if(
+        correct &&
+        button.dataset.c === r.correct
+      ){
+
+        button.classList.add(
+          "correct"
+        );
+
+      }
+
+      if(
+        !correct &&
+        button.dataset.c === c
+      ){
+
+        button.classList.add(
+          "wrong"
+        );
+
+      }
+
+    });
+
+
+  if(correct){
+
+    $("goodTitle").textContent =
+      i === 2
+        ? "PERFECT READ!"
+        : "GOOD READ!";
+
+    $("goodText").textContent =
+      i === 1
+        ? "You understood the current break."
+
+        : i === 2
+          ? "You found the right holding spot."
+
+          : "You found the feeding zone.";
+
+    $("goodXP").textContent =
+      `+${r.xp} XP`;
+
+  }else{
+
+    $("badTitle").textContent =
+      timeout
+        ? "TIME'S UP."
+        : "NO BITE.";
+
+    $("badText").textContent =
+      timeout
+        ? "Trust your instincts next time."
+        : "Read the clues and look for the strongest signs.";
+
+  }
+
+
+  updateScanner();
+
+
+  setTimeout(() => {
+
+    if(i < 2){
+
+      activateRound(i+1);
+
+    }else{
+
+      finishWater();
+
+    }
+
+  },950);
+
+}
+
+
+function castWater(i){
+
+  if(g1.choice){
+
+    clearInterval(g1.timer);
+
+    resolveWater(
+      i,
+      g1.choice
+    );
+
+  }
+
+}
+
+
+function finishWater(){
+
+  g1.done = true;
+
+  updateScanner();
+
+  $("g1message").innerHTML =
+    totalWaterXP === 550
+
+      ? `
+        You didn't just see the water.
+        <br>
+        <b>You understood it.</b>
+      `
+
+      : `
+        Water reading complete.
+        <br>
+        <b>Instincts confirmed.</b>
+      `;
+
+
+  $("toG2").disabled = false;
+
+  renderRounds();
+
+}
+
+
+$("startWater").onclick =
+  startWater;
+
+$("startWater2").onclick =
+  startWater;
+
+
+$("scanBtn").onclick = () => {
+
+  if(
+    g1.charges > 0 &&
+    !g1.scanned
+  ){
+
+    g1.charges--;
+
+    g1.scanned = true;
+
+    updateScanner(
+      rounds[g1.round].scan
+    );
+
+  }
+
+};
+
+
+$("toG2").onclick = () => {
+
+  show("game2");
+
+  startG2();
+
+};
+
+
+renderRounds();
+updateScanner();
+
+
+/* =========================================================
+   GAME 02 — THE FINAL CATCH
+========================================================= */
+
+const phases = [
+
+  [
+    "1. THE BITE",
+    "The fish is interested... Be ready!"
+  ],
+
+  [
+    "2. THE RUN",
+    "It's making a run! Don't panic."
+  ],
+
+  [
+    "3. THE FIGHT",
+    "Keep the tension steady!"
+  ],
+
+  [
+    "4. WEAR IT DOWN",
+    "It's getting tired. Don't give up!"
+  ],
+
+  [
+    "5. THE LANDING",
+    "One last push. You've got this!"
+  ]
+
+];
+
+
+let g2 = {
+
+  started:false,
+  phase:0,
+  line:100,
+  stamina:100,
+  pos:50,
+  hold:false,
+  ticks:0,
+  timer:null
+
+};
+
+
+function startG2(){
+
+  if(g2.started){
+    return;
+  }
+
+  g2.started = true;
+  g2.phase = 0;
+  g2.line = 100;
+  g2.stamina = 100;
+  g2.pos = 50;
+  g2.ticks = 0;
+
+  $("reel").disabled = false;
+  $("release").disabled = false;
+
+  updateG2();
+  g2Loop();
+
+}
+
+
+function updateG2(){
+
+  $("phaseTitle").textContent =
+    phases[g2.phase][0];
+
+  $("phaseDesc").textContent =
+    phases[g2.phase][1];
+
+
+  $("marker").style.left =
+    Math.max(
+      2,
+      Math.min(
+        98,
+        g2.pos
+      )
+    ) + "%";
+
+
+  $("lineText").textContent =
+    Math.round(g2.line) + "%";
+
+  $("lineSide").textContent =
+    Math.round(g2.line) + "%";
+
+  $("lineBar").style.width =
+    Math.max(
+      0,
+      g2.line
+    ) + "%";
+
+  $("stamina").style.width =
+    Math.max(
+      0,
+      g2.stamina
+    ) + "%";
+
+
+  for(let i=1;i<=5;i++){
+
+    $("p"+i).className =
+      "pbox " +
+
+      (
+        i-1 < g2.phase
+          ? "done "
+          : ""
+      ) +
+
+      (
+        i-1 === g2.phase
+          ? "active"
+          : ""
+      );
+
+  }
+
+}
+
+
+function g2Loop(){
+
+  clearInterval(g2.timer);
+
+  g2.timer =
+    setInterval(() => {
+
+      if(!g2.started){
+        return;
+      }
+
+
+      g2.pos +=
+        Math.sin(
+          Date.now()/400
+        ) * 2.8
+
+        +
+
+        (
+          g2.hold
+            ? (50-g2.pos)*.18
+            : 0
+        );
+
+
+      g2.pos =
+        Math.max(
+          2,
+          Math.min(
+            98,
+            g2.pos
+          )
+        );
+
+
+      if(
+        g2.pos >= 43 &&
+        g2.pos <= 57
+      ){
+
+        g2.ticks++;
+
+        g2.stamina -= .7;
+
+      }else{
+
+        g2.line -=
+          Math.max(
+            .2,
+            Math.abs(50-g2.pos)/18
+          );
+
+      }
+
+
+      if(
+        g2.pos < 18 ||
+        g2.pos > 82
+      ){
+
+        g2.line -= 1.5;
+
+      }
+
+
+      if(g2.line <= 0){
+
+        g2.started = false;
+
+        clearInterval(g2.timer);
+
+        $("phaseDesc").innerHTML =
+          `
+          <b style="color:var(--red)">
+            THE LINE SNAPPED.
+          </b>
+          <br>
+          That fish got away.
+          `;
+
+        $("reel").disabled = true;
+        $("release").disabled = true;
+
+        return;
+
+      }
+
+
+      const need =
+        [
+          20,
+          24,
+          28,
+          32,
+          20
+        ][g2.phase];
+
+
+      if(
+        g2.ticks >= need ||
+        g2.stamina <= 0
+      ){
+
+        if(g2.phase < 4){
+
+          g2.phase++;
+
+          g2.ticks = 0;
+
+        }else{
+
+          finishG2();
+
+          return;
+
+        }
+
+      }
+
+
+      updateG2();
+
+    },100);
+
+}
+
+
+function finishG2(){
+
+  clearInterval(g2.timer);
+
+  g2.started = false;
+
+  g2.stamina = 0;
+
+  $("phaseDesc").innerHTML =
+    `
+    <b style="color:var(--green)">
+      LEGENDARY FISH LANDED!
+    </b>
+    <br>
+    Well fought, Master Angler.
+    `;
+
+  $("reel").disabled = true;
+  $("release").disabled = true;
+
+  $("catch").classList.remove("hidden");
+
+}
+
+
+$("reel").onmousedown = () => {
+  g2.hold = true;
+};
+
+$("reel").onmouseup = () => {
+  g2.hold = false;
+};
+
+$("release").onmousedown = () => {
+  g2.hold = false;
+};
+
+document.onmouseup = () => {
+  g2.hold = false;
+};
+
+
+$("reel").ontouchstart = event => {
+  event.preventDefault();
+  g2.hold = true;
+};
+
+$("reel").ontouchend = event => {
+  event.preventDefault();
+  g2.hold = false;
+};
+
+$("release").ontouchstart = event => {
+  event.preventDefault();
+  g2.hold = false;
+};
+
+
+$("toG3").onclick = () => {
+
+  show("game3");
+
+  startG3();
+
+};
+
+
+/* =========================================================
+   GAME 03 — CAMP AFTER DARK
+========================================================= */
+
+let camp = {
+
+  started:false,
+
+  fireStep:0,
+  fireDone:false,
+
+  secure:{
+    tent:false,
+    food:false,
+    gear:false
+  },
+
+  weather:{
+    tent:false,
+    food:false,
+    fishing:false
+  },
+
+  weatherStarted:false,
+  weatherTime:30,
+  weatherTimer:null
+
+};
+
+
+function startG3(){
+
+  if(camp.started){
+    return;
+  }
+
+  camp.started = true;
+
+  document
+    .querySelectorAll(".fireItem")
+    .forEach(button => {
+
+      button.disabled = false;
+
+    });
+
+}
+
+
+function updatePreparedness(){
+
+  let value = 90;
+
+  if(camp.fireDone){
+    value += 3;
+  }
+
+  value +=
+    Object
+      .values(camp.secure)
+      .filter(Boolean)
+      .length * 2;
+
+  value =
+    Math.min(
+      100,
+      value
+    );
+
+  $("ready").style.width =
+    value + "%";
+
+  $("readyT").textContent =
+    value + "%";
+
+}
+
+
+/* -------------------------
+   FIRE
+------------------------- */
+
+document
+  .querySelectorAll(".fireItem")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      const item =
+        button.dataset.fire;
+
+      const order = [
+        "tinder",
+        "kindling",
+        "wood",
+        "starter"
+      ];
+
+
+      if(item === "water"){
+
+        button.classList.add("wrong");
+
+        $("fireMsg").innerHTML =
+          `
+          <span style="color:var(--red)">
+            💧 REALLY?
+          </span>
+          <br>
+          We were trying to START the fire. 😂
+          `;
+
+        setTimeout(() => {
+
+          button.classList.remove(
+            "wrong"
+          );
+
+        },350);
+
+        return;
+
+      }
+
+
+      if(
+        item !== order[camp.fireStep]
+      ){
+
+        button.classList.add("wrong");
+
+        $("fireMsg").innerHTML =
+          `
+          <span style="color:var(--red)">
+            ⚠️ NOT YET.
+          </span>
+          <br>
+          Think: small → medium → large.
+          `;
+
+        setTimeout(() => {
+
+          button.classList.remove(
+            "wrong"
+          );
+
+        },350);
+
+        return;
+
+      }
+
+
+      button.classList.add(
+        "selected"
+      );
+
+
+      $("slot"+(camp.fireStep+1))
+        .classList.add(
+          "filled"
+        );
+
+
+      $("slot"+(camp.fireStep+1))
+        .textContent =
+          [
+            "TINDER",
+            "KINDLING",
+            "WOOD",
+            "IGNITE"
+          ][camp.fireStep];
+
+
+      camp.fireStep++;
+
+
+      if(camp.fireStep === 4){
+
+        camp.fireDone = true;
+
+        $("lightFire").disabled = false;
+
+        $("fireMsg").innerHTML =
+          `
+          <span style="color:var(--green)">
+            ✓ FIRE BUILD READY
+          </span>
+          <br>
+          Now light it.
+          `;
+
+        updatePreparedness();
+
+      }
+
+    };
+
+  });
+
+
+$("lightFire").onclick = () => {
+
+  if(!camp.fireDone){
+    return;
+  }
+
+  $("lightFire").disabled = true;
+
+  $("fireMsg").innerHTML =
+    `
+    <span style="color:var(--green)">
+      🔥 FIRE LIT!
+    </span>
+    <br>
+    Warm. Safe. Ready for the night.
+    `;
+
+
+  document
+    .querySelector(".fire")
+    .style.transform =
+      "translateX(-50%) scale(1.2)";
+
+
+  updatePreparedness();
+
+};
+
+
+/* -------------------------
+   CAMP SECURITY
+------------------------- */
+
+document
+  .querySelectorAll("[data-hot]")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      const key =
+        button.dataset.hot;
+
+      if(camp.secure[key]){
+        return;
+      }
+
+
+      camp.secure[key] = true;
+
+      button.textContent = "✓";
+
+      button.style.borderColor =
+        "var(--green)";
+
+
+      $("campMsg").innerHTML =
+        `
+        <span style="color:var(--green)">
+          ✓ ${key.toUpperCase()} SECURED
+        </span>
+        <br>
+        Good campsite management.
+        `;
+
+
+      updatePreparedness();
+
+    };
+
+  });
+
+
+/* -------------------------
+   WEATHER
+------------------------- */
+
+function startWeather(){
+
+  if(camp.weatherStarted){
+    return;
+  }
+
+  camp.weatherStarted = true;
+  camp.weatherTime = 30;
+
+  $("storm")
+    .classList.add("on");
+
+
+  camp.weatherTimer =
+    setInterval(() => {
+
+      camp.weatherTime--;
+
+      $("weatherTime").textContent =
+        "00:" +
+        String(
+          Math.max(
+            0,
+            camp.weatherTime
+          )
+        ).padStart(2,"0");
+
+
+      $("weatherBar").style.width =
+        (
+          camp.weatherTime / 30 * 100
+        ) + "%";
+
+
+      const energy =
+        Math.max(
+          55,
+          85-camp.weatherTime
+        );
+
+
+      $("energy").style.width =
+        energy + "%";
+
+      $("energyT").textContent =
+        energy + "%";
+
+
+      if(camp.weatherTime <= 10){
+
+        $("weatherMsg").innerHTML =
+          `
+          <span style="color:var(--red)">
+            ⚠️ STORM APPROACHING
+          </span>
+          <br>
+          Secure the remaining essentials!
+          `;
+
+      }
+
+
+      if(camp.weatherTime <= 0){
+
+        clearInterval(
+          camp.weatherTimer
+        );
+
+        checkWeather();
+
+      }
+
+    },1000);
+
+}
+
+
+document
+  .querySelectorAll(".weatherItem")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      startWeather();
+
+      const key =
+        button.dataset.weather;
+
+
+      if(camp.weather[key]){
+        return;
+      }
+
+
+      camp.weather[key] = true;
+
+      button.classList.add(
+        "selected"
+      );
+
+      button.innerHTML =
+        `
+        <span class="ico">✓</span>
+        SECURED
+        `;
+
+
+      checkWeather();
+
+    };
+
+  });
+
+
+function checkWeather(){
+
+  if(
+    camp.weather.tent &&
+    camp.weather.food &&
+    camp.weather.fishing
+  ){
+
+    clearInterval(
+      camp.weatherTimer
+    );
+
+    $("storm")
+      .classList.remove("on");
+
+
+    $("weatherMsg").innerHTML =
+      `
+      <span style="color:var(--green)">
+        ✓ WEATHER PREP COMPLETE
+      </span>
+      <br>
+      The camp is ready for the storm.
+      `;
+
+
+    setTimeout(
+      finishCamp,
+      900
+    );
+
+  }
+
+}
+
+
+/* -------------------------
+   PEACEFUL CAMP ENDING
+------------------------- */
+
+function finishCamp(){
+
+  $("campComplete")
+    .classList.remove("hidden");
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:"smooth"
+  });
+
+
+  /*
+    The peaceful campsite stays visible
+    before the final report appears.
+  */
+
+  setTimeout(() => {
+
+    $("campComplete").classList.add(
+      "peaceful"
+    );
+
+  },500);
+
+}
+
+
+$("toFinal").onclick = () => {
+
+  show("final");
+
+  $("finalWater").textContent =
+    "+" + totalWaterXP + " XP";
+
+
+  const finalTotal =
+    totalWaterXP + 500 + 400;
+
+
+  $("totalXP").textContent =
+    finalTotal.toLocaleString() +
+    " XP";
+
+};
+
+
+/* =========================================================
+   INITIALISE GAME 03 STATE
+========================================================= */
+
+document
+  .querySelectorAll(".fireItem")
+  .forEach(button => {
+    button.disabled = true;
+  });
+
+
+/*
+   Game 03 is initialised when the player
+   enters the screen.
+*/
+
+</script>
 
 </body>
-
 </html>
