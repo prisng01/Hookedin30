@@ -1508,7 +1508,7 @@ button{
     );
 }
 
-.storm.on{
+.storm.active{
   opacity:.6;
   animation:rain .6s linear infinite;
 }
