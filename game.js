@@ -1,954 +1,1614 @@
 /* =========================================================
    HOOKED IN 30
-   MISSION 3 — COMPLETE GAME CONTROLLER
-   ========================================================= */
+   MISSION 3 — COMPLETE GAME.JS
 
-document.addEventListener("DOMContentLoaded", () => {
+   FLOW:
+   MISSION 3 FRONT PAGE
+          ↓
+   BEGIN MISSION 3
+          ↓
+        GAME 1
+          ↓
+     GAME 1 COMPLETE
+          ↓
+        GAME 2
+          ↓
+   LEGENDARY CATCH
+          ↓
+        GAME 3
+          ↓
+    CAMP COMPLETE
+          ↓
+   FINAL EXPEDITION REPORT
+          ↓
+     TAP TO REVEAL
+          ↓
+   BIRTHDAY ADVENTURE
+========================================================= */
 
-    /* =====================================================
-       CONFIGURATION
-       ===================================================== */
 
-    const ASSET = {
-        mission3Front: "assets/Mission3frontpage.png",
+document.addEventListener("DOMContentLoaded", function () {
 
-        /* ---------------- GAME 1 ---------------- */
-        game1: {
-            intro: "assets/game-01/01_intro_screen.png",
-            howToPlay: "assets/game-01/02_how_to_play.png",
-            scanner: "assets/game-01/03_angler_scanner.png",
-            scannerTip: "assets/game-01/04_scanner_tip.png",
-
-            round1: [
-                "assets/game-01/07_round1_A_calm_water.png",
-                "assets/game-01/08_round1_B_surface_activity.png",
-                "assets/game-01/09_round1_C_strong_current.png"
-            ],
-
-            round2: [
-                "assets/game-01/10_round2_A_fast_current.png",
-                "assets/game-01/11_round2_B_current_break.png",
-                "assets/game-01/12_round2_C_dead_water.png"
-            ],
-
-            round3: [
-                "assets/game-01/13_round3_A_open_water.png",
-                "assets/game-01/15_round3_C_heavy_surf.png"
-            ],
-
-            correct: "assets/game-01/16_correct_reaction.png",
-            wrong: "assets/game-01/17_wrong_reaction.png",
-            completion: "assets/game-01/18_completion_panel.png",
-            badge: "assets/game-01/19_master_angler_badge.png",
-            message: "assets/game-01/20_master_angler_message.png",
-            continue: "assets/game-01/21_continue_game2_button.png",
-
-            /* Correct answers:
-               Round 1 = B
-               Round 2 = B
-               Round 3 = not used because B asset is missing
-            */
-            answers: ["B", "B", "A"]
-        },
-
-        /* ---------------- GAME 2 ---------------- */
-        game2: {
-            title: "assets/game-02/g2_title.png",
-            howToPlay: "assets/game-02/g2_how_to_play.png",
-            hud: "assets/game-02/g2_hud.png",
-
-            phase1: "assets/game-02/g2_phase1_bite.png",
-            phase2: "assets/game-02/g2_phase2_run.png",
-            phase3: "assets/game-02/g2_phase3_fight.png",
-            phase4: "assets/game-02/g2_phase4_wear_down.png",
-            phase5: "assets/game-02/g2_phase5_landing.png",
-
-            reelButton: "assets/game-02/g2_reel_button.png",
-            reelIcon: "assets/game-02/g2_reel_icon.png",
-
-            releaseButton: "assets/game-02/g2_release_button.png",
-            releaseIcon: "assets/game-02/g2_release_icon.png",
-
-            staminaIcon: "assets/game-02/g2_stamina_icon.png",
-
-            statusLegend: "assets/game-02/g2_status_legend.png",
-
-            tensionLow: "assets/game-02/g2_tension_bar_low_line.png",
-            tensionNormal: "assets/game-02/g2_tension_bar_normal.png",
-            tensionIcon: "assets/game-02/g2_tension_icon.png",
-            tensionMeter: "assets/game-02/g2_tension_zone_meter.png",
-
-            greenZone: "assets/game-02/g2_green_zone_icon.png",
-            fishIcon: "assets/game-02/g2_fish_icon.png",
-            lineStamina: "assets/game-02/g2_line_stamina.png",
-
-            landButton: "assets/game-02/g2_land_it_button.png",
-
-            legendaryCatch: "assets/game-02/g2_legendary_catch_panel.png",
-            failure: "assets/game-02/g2_failure_panel.png",
-
-            masterBadge: "assets/game-02/g2_master_angler_badge.png",
-            masterMessage: "assets/game-02/g2_master_angler_message.png",
-            continueGame3: "assets/game-02/g2_continue_game3_button.png"
-        },
-
-        /* ---------------- GAME 3 ---------------- */
-        game3: {
-            intro: "assets/game-03/game3_intro_page.png",
-
-            campComplete: "assets/game-03/g3_camp_complete.png",
-            dryWood: "assets/game-03/g3_dry_wood.png",
-            energyBar: "assets/game-03/g3_energy_bar.png",
-
-            fireLit: "assets/game-03/g3_fire_lit.png",
-            fireStarter: "assets/game-03/g3_fire_starter.png",
-            fireUnlit: "assets/game-03/g3_fire_unlit.png",
-
-            fishingWeather: "assets/game-03/g3_fishing_weather_icon.png",
-            foodHotspot: "assets/game-03/g3_food_hotspot_icon.png",
-            foodSupplies: "assets/game-03/g3_food_supplies.png",
-            foodWeather: "assets/game-03/g3_food_weather_icon.png",
-
-            gearHotspot: "assets/game-03/g3_gear_hotspot_icon.png",
-            healthBar: "assets/game-03/g3_health_bar.png",
-            kindling: "assets/game-03/g3_kindling.png",
-
-            lightFire: "assets/game-03/g3_light_fire_button.png",
-            preparednessBar: "assets/game-03/g3_preparedness_bar.png",
-
-            slot1: "assets/game-03/g3_slot_1st.png",
-            slot2: "assets/game-03/g3_slot_2nd.png",
-            slot3: "assets/game-03/g3_slot_3rd.png",
-            slot4: "assets/game-03/g3_slot_4th.png",
-
-            stormWarning: "assets/game-03/g3_storm_warning.png",
-
-            tent: "assets/game-03/g3_tent.png",
-            tentHotspot: "assets/game-03/g3_tent_hotspot_icon.png",
-            tentWeather: "assets/game-03/g3_tent_weather_icon.png",
-
-            tinder: "assets/game-03/g3_tinder.png",
-
-            finalButton: "assets/game-03/g3_to_final_button.png",
-
-            waterBucket: "assets/game-03/g3_water_bucket.png",
-            weatherTimer: "assets/game-03/g3_weather_timer.png"
-        }
-    };
+    "use strict";
 
 
     /* =====================================================
-       BASIC ELEMENTS
-       ===================================================== */
+       HTML ELEMENTS
+    ===================================================== */
 
-    const container = document.getElementById("game-container");
+    const mission3Intro =
+        document.getElementById("mission3-intro");
 
-    if (!container) {
-        console.error("Game container not found.");
-        return;
+    const game1 =
+        document.getElementById("game1");
+
+    const game2 =
+        document.getElementById("game2");
+
+    const game3 =
+        document.getElementById("game3");
+
+    const beginMission3 =
+        document.getElementById("beginMission3");
+
+
+    /* =====================================================
+       CHECK HTML
+    ===================================================== */
+
+    if (!mission3Intro) {
+        console.error("Missing #mission3-intro");
     }
 
-    /*
-       We build the screens dynamically so the game.js
-       remains independent of the old HTML structure.
-    */
+    if (!game1) {
+        console.error("Missing #game1");
+    }
 
-    container.innerHTML = "";
+    if (!game2) {
+        console.error("Missing #game2");
+    }
+
+    if (!game3) {
+        console.error("Missing #game3");
+    }
+
+    if (!beginMission3) {
+        console.error("Missing #beginMission3");
+    }
 
 
     /* =====================================================
-       HELPER FUNCTIONS
-       ===================================================== */
+       SCREEN CONTROL
+    ===================================================== */
 
-    function createScreen(id) {
-        const screen = document.createElement("section");
-        screen.id = id;
-        screen.className = "game-screen hidden";
-        container.appendChild(screen);
-        return screen;
+    function hideAllScreens() {
+
+        if (mission3Intro) {
+            mission3Intro.classList.add("hidden");
+        }
+
+        if (game1) {
+            game1.classList.add("hidden");
+        }
+
+        if (game2) {
+            game2.classList.add("hidden");
+        }
+
+        if (game3) {
+            game3.classList.add("hidden");
+        }
     }
 
 
     function showScreen(screen) {
-        document.querySelectorAll(".game-screen").forEach(s => {
-            s.classList.add("hidden");
-        });
 
-        screen.classList.remove("hidden");
+        hideAllScreens();
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        if (screen) {
+            screen.classList.remove("hidden");
+        }
+
+        window.scrollTo(0, 0);
     }
 
 
-    function createImage(src, alt = "") {
-        const img = document.createElement("img");
+    /* =====================================================
+       GAME VARIABLES
+    ===================================================== */
 
-        img.src = src;
-        img.alt = alt;
-        img.className = "game-image";
+    let game1Round = 0;
+    let game1Score = 0;
 
-        img.onerror = () => {
-            console.warn("Asset not found:", src);
-            img.style.display = "none";
-        };
+    let game2Phase = 0;
+
+    let game3Step = 0;
+
+
+    /* =====================================================
+       GAME 1 ASSETS
+    ===================================================== */
+
+    const GAME1 = {
+
+        intro:
+            "assets/game-01/01_intro_screen.png",
+
+        howToPlay:
+            "assets/game-01/02_how_to_play.png",
+
+        scanner:
+            "assets/game-01/03_angler_scanner.png",
+
+        scannerTip:
+            "assets/game-01/04_scanner_tip.png",
+
+        round1: [
+            "assets/game-01/07_round1_A_calm_water.png",
+            "assets/game-01/08_round1_B_surface_activity.png",
+            "assets/game-01/09_round1_C_strong_current.png"
+        ],
+
+        round2: [
+            "assets/game-01/10_round2_A_fast_current.png",
+            "assets/game-01/11_round2_B_current_break.png",
+            "assets/game-01/12_round2_C_dead_water.png"
+        ],
+
+        round3: [
+            "assets/game-01/13_round3_A_open_water.png",
+            null,
+            "assets/game-01/15_round3_C_heavy_surf.png"
+        ],
+
+        correct:
+            "assets/game-01/16_correct_reaction.png",
+
+        wrong:
+            "assets/game-01/17_wrong_reaction.png",
+
+        completion:
+            "assets/game-01/18_completion_panel.png",
+
+        badge:
+            "assets/game-01/19_master_angler_badge.png",
+
+        message:
+            "assets/game-01/20_master_angler_message.png",
+
+        continueGame2:
+            "assets/game-01/21_continue_game2_button.png"
+    };
+
+
+    /* =====================================================
+       GAME 2 ASSETS
+    ===================================================== */
+
+    const GAME2 = {
+
+        title:
+            "assets/game-02/g2_title.png",
+
+        howToPlay:
+            "assets/game-02/g2_how_to_play.png",
+
+        hud:
+            "assets/game-02/g2_hud.png",
+
+        phase1:
+            "assets/game-02/g2_phase1_bite.png",
+
+        phase2:
+            "assets/game-02/g2_phase2_run.png",
+
+        phase3:
+            "assets/game-02/g2_phase3_fight.png",
+
+        phase4:
+            "assets/game-02/g2_phase4_wear_down.png",
+
+        phase5:
+            "assets/game-02/g2_phase5_landing.png",
+
+        reelButton:
+            "assets/game-02/g2_reel_button.png",
+
+        reelIcon:
+            "assets/game-02/g2_reel_icon.png",
+
+        releaseButton:
+            "assets/game-02/g2_release_button.png",
+
+        releaseIcon:
+            "assets/game-02/g2_release_icon.png",
+
+        staminaIcon:
+            "assets/game-02/g2_stamina_icon.png",
+
+        statusLegend:
+            "assets/game-02/g2_status_legend.png",
+
+        tensionLow:
+            "assets/game-02/g2_tension_bar_low_line.png",
+
+        tensionNormal:
+            "assets/game-02/g2_tension_bar_normal.png",
+
+        tensionIcon:
+            "assets/game-02/g2_tension_icon.png",
+
+        tensionMeter:
+            "assets/game-02/g2_tension_zone_meter.png",
+
+        greenZone:
+            "assets/game-02/g2_green_zone_icon.png",
+
+        fishIcon:
+            "assets/game-02/g2_fish_icon.png",
+
+        lineStamina:
+            "assets/game-02/g2_line_stamina.png",
+
+        landButton:
+            "assets/game-02/g2_land_it_button.png",
+
+        legendaryCatch:
+            "assets/game-02/g2_legendary_catch_panel.png",
+
+        failure:
+            "assets/game-02/g2_failure_panel.png",
+
+        masterBadge:
+            "assets/game-02/g2_master_angler_badge.png",
+
+        masterMessage:
+            "assets/game-02/g2_master_angler_message.png",
+
+        continueGame3:
+            "assets/game-02/g2_continue_game3_button.png"
+    };
+
+
+    /* =====================================================
+       GAME 3 ASSETS
+    ===================================================== */
+
+    const GAME3 = {
+
+        intro:
+            "assets/game-03/game3_intro_page.png",
+
+        campComplete:
+            "assets/game-03/g3_camp_complete.png",
+
+        dryWood:
+            "assets/game-03/g3_dry_wood.png",
+
+        energyBar:
+            "assets/game-03/g3_energy_bar.png",
+
+        fireLit:
+            "assets/game-03/g3_fire_lit.png",
+
+        fireStarter:
+            "assets/game-03/g3_fire_starter.png",
+
+        fireUnlit:
+            "assets/game-03/g3_fire_unlit.png",
+
+        fishingWeather:
+            "assets/game-03/g3_fishing_weather_icon.png",
+
+        foodHotspot:
+            "assets/game-03/g3_food_hotspot_icon.png",
+
+        foodSupplies:
+            "assets/game-03/g3_food_supplies.png",
+
+        foodWeather:
+            "assets/game-03/g3_food_weather_icon.png",
+
+        gearHotspot:
+            "assets/game-03/g3_gear_hotspot_icon.png",
+
+        healthBar:
+            "assets/game-03/g3_health_bar.png",
+
+        kindling:
+            "assets/game-03/g3_kindling.png",
+
+        lightFire:
+            "assets/game-03/g3_light_fire_button.png",
+
+        preparednessBar:
+            "assets/game-03/g3_preparedness_bar.png",
+
+        slot1:
+            "assets/game-03/g3_slot_1st.png",
+
+        slot2:
+            "assets/game-03/g3_slot_2nd.png",
+
+        slot3:
+            "assets/game-03/g3_slot_3rd.png",
+
+        slot4:
+            "assets/game-03/g3_slot_4th.png",
+
+        stormWarning:
+            "assets/game-03/g3_storm_warning.png",
+
+        tent:
+            "assets/game-03/g3_tent.png",
+
+        tentHotspot:
+            "assets/game-03/g3_tent_hotspot_icon.png",
+
+        tentWeather:
+            "assets/game-03/g3_tent_weather_icon.png",
+
+        tinder:
+            "assets/game-03/g3_tinder.png",
+
+        finalButton:
+            "assets/game-03/g3_to_final_button.png",
+
+        waterBucket:
+            "assets/game-03/g3_water_bucket.png",
+
+        weatherTimer:
+            "assets/game-03/g3_weather_timer.png"
+    };
+
+
+    /* =====================================================
+       IMAGE CREATOR
+    ===================================================== */
+
+    function createImage(src, alt) {
+
+        const img =
+            document.createElement("img");
+
+        img.className =
+            "game-image";
+
+        img.alt =
+            alt || "";
+
+        img.draggable =
+            false;
+
+        if (src) {
+
+            img.src =
+                src;
+
+            img.onerror =
+                function () {
+
+                    console.warn(
+                        "Asset not found:",
+                        src
+                    );
+
+                    img.style.display =
+                        "none";
+                };
+        }
 
         return img;
     }
 
 
-    function createButton(text, callback, className = "game-button") {
-        const button = document.createElement("button");
+    /* =====================================================
+       BUTTON CREATOR
+    ===================================================== */
 
-        button.type = "button";
-        button.textContent = text;
-        button.className = className;
+    function createButton(
+        text,
+        callback
+    ) {
 
-        button.addEventListener("click", callback);
+        const button =
+            document.createElement("button");
+
+        button.type =
+            "button";
+
+        button.className =
+            "game-button";
+
+        button.textContent =
+            text;
+
+        button.addEventListener(
+            "click",
+            callback
+        );
 
         return button;
     }
 
 
-    function imageButton(src, alt, callback) {
-        const button = document.createElement("button");
+    /* =====================================================
+       IMAGE BUTTON
+    ===================================================== */
 
-        button.type = "button";
-        button.className = "image-button";
+    function createImageButton(
+        src,
+        alt,
+        callback
+    ) {
 
-        const img = createImage(src, alt);
+        const button =
+            document.createElement("button");
 
-        button.appendChild(img);
+        button.type =
+            "button";
 
-        button.addEventListener("click", callback);
+        button.className =
+            "image-button";
+
+        const img =
+            createImage(
+                src,
+                alt
+            );
+
+        button.appendChild(
+            img
+        );
+
+        button.addEventListener(
+            "click",
+            callback
+        );
 
         return button;
     }
 
 
-    function addTitle(screen, text) {
-        const title = document.createElement("h1");
-        title.textContent = text;
-        title.className = "game-title";
-        screen.appendChild(title);
+    /* =====================================================
+       CLEAR SCREEN
+    ===================================================== */
+
+    function clearScreen(screen) {
+
+        if (screen) {
+            screen.innerHTML = "";
+        }
     }
 
 
-    function addInstruction(screen, text) {
-        const instruction = document.createElement("p");
-        instruction.textContent = text;
-        instruction.className = "game-instruction";
-        screen.appendChild(instruction);
-    }
+    /* =====================================================
+       ADD BUTTON
+    ===================================================== */
 
+    function addButton(
+        screen,
+        text,
+        callback
+    ) {
 
-    function addImage(screen, src, alt = "") {
-        screen.appendChild(createImage(src, alt));
-    }
+        const wrapper =
+            document.createElement("div");
 
-
-    function addNextButton(screen, text, callback) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "button-area";
+        wrapper.className =
+            "button-area";
 
         wrapper.appendChild(
-            createButton(text, callback)
+            createButton(
+                text,
+                callback
+            )
         );
 
-        screen.appendChild(wrapper);
+        screen.appendChild(
+            wrapper
+        );
     }
 
 
     /* =====================================================
-       CREATE ALL SCREENS
-       ===================================================== */
+       MISSION 3 FRONT PAGE → GAME 1
+    ===================================================== */
 
-    const missionScreen = createScreen("mission3-front");
+    function startMission3() {
 
-    const game1Screen = createScreen("game1-screen");
+        game1Round =
+            0;
 
-    const game1HowToScreen = createScreen("game1-howto");
+        game1Score =
+            0;
 
-    const game1ScannerScreen = createScreen("game1-scanner");
-
-    const game1ScannerTipScreen = createScreen("game1-scanner-tip");
-
-    const game1RoundScreen = createScreen("game1-round");
-
-    const game1ReactionScreen = createScreen("game1-reaction");
-
-    const game1CompleteScreen = createScreen("game1-complete");
-
-
-    const game2TitleScreen = createScreen("game2-title");
-
-    const game2HowToScreen = createScreen("game2-howto");
-
-    const game2PlayScreen = createScreen("game2-play");
-
-    const game2ResultScreen = createScreen("game2-result");
-
-
-    const game3IntroScreen = createScreen("game3-intro");
-
-    const game3PlayScreen = createScreen("game3-play");
-
-    const game3ResultScreen = createScreen("game3-result");
+        showGame1Intro();
+    }
 
 
     /* =====================================================
-       MISSION 3 FRONT PAGE
-       ===================================================== */
+       BEGIN MISSION 3
+    ===================================================== */
 
-    addImage(
-        missionScreen,
-        ASSET.mission3Front,
-        "Welcome to Mission 3"
-    );
+    if (beginMission3) {
 
-    addNextButton(
-        missionScreen,
-        "BEGIN MISSION 3 →",
-        () => {
-            startGame1();
-        }
-    );
+        beginMission3.addEventListener(
+            "click",
+            function (event) {
 
+                event.preventDefault();
 
-    /* =====================================================
-       GAME 1
-       ===================================================== */
+                event.stopPropagation();
 
-    let game1Round = 0;
-    let game1Score = 0;
+                console.log(
+                    "BEGIN MISSION 3 clicked"
+                );
 
-
-    function startGame1() {
-
-        game1Round = 0;
-        game1Score = 0;
-
-        game1Screen.innerHTML = "";
-
-        addImage(
-            game1Screen,
-            ASSET.game1.intro,
-            "Game 1 Introduction"
-        );
-
-        addNextButton(
-            game1Screen,
-            "CONTINUE →",
-            () => {
-                showGame1HowTo();
+                startMission3();
             }
         );
-
-        showScreen(game1Screen);
     }
 
+
+    /* =====================================================
+       GAME 1 INTRO
+    ===================================================== */
+
+    function showGame1Intro() {
+
+        clearScreen(game1);
+
+        game1.appendChild(
+            createImage(
+                GAME1.intro,
+                "Game 1 Introduction"
+            )
+        );
+
+        addButton(
+            game1,
+            "CONTINUE →",
+            showGame1HowTo
+        );
+
+        showScreen(game1);
+    }
+
+
+    /* =====================================================
+       GAME 1 HOW TO PLAY
+    ===================================================== */
 
     function showGame1HowTo() {
 
-        game1HowToScreen.innerHTML = "";
+        clearScreen(game1);
 
-        addImage(
-            game1HowToScreen,
-            ASSET.game1.howToPlay,
-            "How to Play"
+        game1.appendChild(
+            createImage(
+                GAME1.howToPlay,
+                "How to Play"
+            )
         );
 
-        addNextButton(
-            game1HowToScreen,
+        addButton(
+            game1,
             "CONTINUE →",
-            () => {
-                showGame1Scanner();
-            }
+            showGame1Scanner
         );
 
-        showScreen(game1HowToScreen);
+        showScreen(game1);
     }
 
+
+    /* =====================================================
+       GAME 1 SCANNER
+    ===================================================== */
 
     function showGame1Scanner() {
 
-        game1ScannerScreen.innerHTML = "";
+        clearScreen(game1);
 
-        addImage(
-            game1ScannerScreen,
-            ASSET.game1.scanner,
-            "Angler Scanner"
+        game1.appendChild(
+            createImage(
+                GAME1.scanner,
+                "Angler Scanner"
+            )
         );
 
-        addNextButton(
-            game1ScannerScreen,
+        addButton(
+            game1,
             "SCAN THE WATER →",
-            () => {
-                showGame1ScannerTip();
-            }
+            showGame1ScannerTip
         );
 
-        showScreen(game1ScannerScreen);
+        showScreen(game1);
     }
 
 
+    /* =====================================================
+       GAME 1 SCANNER TIP
+    ===================================================== */
+
     function showGame1ScannerTip() {
 
-        game1ScannerTipScreen.innerHTML = "";
+        clearScreen(game1);
 
-        addImage(
-            game1ScannerTipScreen,
-            ASSET.game1.scannerTip,
-            "Scanner Tip"
+        game1.appendChild(
+            createImage(
+                GAME1.scannerTip,
+                "Scanner Tip"
+            )
         );
 
-        addNextButton(
-            game1ScannerTipScreen,
-            "START ROUND 1 →",
-            () => {
-                game1Round = 0;
+        addButton(
+            game1,
+            "START WATER READING →",
+            function () {
+
+                game1Round =
+                    0;
+
+                game1Score =
+                    0;
+
                 showGame1Round();
             }
         );
 
-        showScreen(game1ScannerTipScreen);
+        showScreen(game1);
     }
 
+
+    /* =====================================================
+       GAME 1 — THREE WATER READING ROUNDS
+    ===================================================== */
 
     function showGame1Round() {
 
-        game1RoundScreen.innerHTML = "";
+        clearScreen(game1);
 
-        const roundNumber = game1Round + 1;
+        const roundNumber =
+            game1Round + 1;
 
-        addTitle(
-            game1RoundScreen,
-            `ROUND ${roundNumber}`
+        const roundAssets =
+            GAME1[
+                "round" +
+                roundNumber
+            ];
+
+
+        const title =
+            document.createElement("h2");
+
+        title.className =
+            "game-title";
+
+        title.textContent =
+            "WATER READING — ROUND " +
+            roundNumber;
+
+        game1.appendChild(
+            title
         );
 
-        addInstruction(
-            game1RoundScreen,
-            "Choose the best fishing location."
+
+        const instruction =
+            document.createElement("p");
+
+        instruction.className =
+            "game-instruction";
+
+        instruction.textContent =
+            "Choose the water condition you would fish.";
+
+        game1.appendChild(
+            instruction
         );
 
-        const cards = ASSET.game1[`round${roundNumber}`];
 
-        const choices = ["A", "B", "C"];
+        const grid =
+            document.createElement("div");
 
-        const cardContainer = document.createElement("div");
-        cardContainer.className = "choice-grid";
+        grid.className =
+            "choice-grid";
 
 
-        cards.forEach((src, index) => {
+        roundAssets.forEach(
+            function (src, index) {
 
-            const letter = choices[index];
-
-            const button = imageButton(
-                src,
-                `Round ${roundNumber} Choice ${letter}`,
-                () => {
-                    handleGame1Answer(letter);
+                if (!src) {
+                    return;
                 }
-            );
 
-            cardContainer.appendChild(button);
-        });
+                const letter =
+                    String.fromCharCode(
+                        65 + index
+                    );
+
+                const button =
+                    createImageButton(
+                        src,
+                        "Round " +
+                        roundNumber +
+                        " Choice " +
+                        letter,
+                        function () {
+
+                            handleGame1Answer(
+                                letter
+                            );
+                        }
+                    );
+
+                grid.appendChild(
+                    button
+                );
+            }
+        );
 
 
-        /*
-           Round 3 currently only has A and C in your GitHub
-           folder. We intentionally do NOT request the missing
-           14_round3_B file because that would create a 404.
-        */
+        game1.appendChild(
+            grid
+        );
 
-        game1RoundScreen.appendChild(cardContainer);
-
-        showScreen(game1RoundScreen);
+        showScreen(game1);
     }
 
 
-    function handleGame1Answer(answer) {
+    /* =====================================================
+       GAME 1 ANSWERS
+    ===================================================== */
 
-        const correctAnswer = ASSET.game1.answers[game1Round];
+    const GAME1_ANSWERS = [
 
-        const isCorrect = answer === correctAnswer;
+        "B",
+
+        "B",
+
+        "A"
+
+    ];
+
+
+    function handleGame1Answer(
+        answer
+    ) {
+
+        const correct =
+            GAME1_ANSWERS[
+                game1Round
+            ];
+
+        const isCorrect =
+            answer === correct;
+
 
         if (isCorrect) {
             game1Score++;
         }
 
-        showGame1Reaction(isCorrect);
-    }
 
-
-    function showGame1Reaction(isCorrect) {
-
-        game1ReactionScreen.innerHTML = "";
-
-        if (isCorrect) {
-
-            addImage(
-                game1ReactionScreen,
-                ASSET.game1.correct,
-                "Correct Reaction"
-            );
-
-        } else {
-
-            addImage(
-                game1ReactionScreen,
-                ASSET.game1.wrong,
-                "Wrong Reaction"
-            );
-        }
-
-
-        addNextButton(
-            game1ReactionScreen,
-            "CONTINUE →",
-            () => {
-
-                game1Round++;
-
-                /*
-                   Your current files contain:
-                   Round 1
-                   Round 2
-                   Round 3 A + C
-
-                   We finish Game 1 after Round 3.
-                */
-
-                if (game1Round < 3) {
-                    showGame1Round();
-                } else {
-                    showGame1Completion();
-                }
-            }
+        showGame1Reaction(
+            isCorrect
         );
-
-        showScreen(game1ReactionScreen);
-    }
-
-
-    function showGame1Completion() {
-
-        game1CompleteScreen.innerHTML = "";
-
-        addImage(
-            game1CompleteScreen,
-            ASSET.game1.completion,
-            "Game 1 Completion"
-        );
-
-        addImage(
-            game1CompleteScreen,
-            ASSET.game1.badge,
-            "Master Angler Badge"
-        );
-
-        addImage(
-            game1CompleteScreen,
-            ASSET.game1.message,
-            "Master Angler Message"
-        );
-
-        addNextButton(
-            game1CompleteScreen,
-            "CONTINUE TO GAME 2 →",
-            () => {
-                startGame2();
-            }
-        );
-
-        showScreen(game1CompleteScreen);
     }
 
 
     /* =====================================================
-       GAME 2
-       ===================================================== */
+       GAME 1 CORRECT / WRONG SCREEN
+    ===================================================== */
+
+    function showGame1Reaction(
+        isCorrect
+    ) {
+
+        clearScreen(game1);
+
+
+        game1.appendChild(
+            createImage(
+                isCorrect
+                    ? GAME1.correct
+                    : GAME1.wrong,
+
+                isCorrect
+                    ? "Correct"
+                    : "Wrong"
+            )
+        );
+
+
+        const scoreText =
+            document.createElement("p");
+
+        scoreText.className =
+            "score-display";
+
+        scoreText.textContent =
+            "XP: " +
+            game1Score;
+
+
+        game1.appendChild(
+            scoreText
+        );
+
+
+        addButton(
+            game1,
+            "CONTINUE →",
+            function () {
+
+                game1Round++;
+
+
+                if (
+                    game1Round < 3
+                ) {
+
+                    showGame1Round();
+
+                } else {
+
+                    showGame1Complete();
+                }
+            }
+        );
+
+
+        showScreen(game1);
+    }
+
+
+    /* =====================================================
+       GAME 1 COMPLETE
+    ===================================================== */
+
+    function showGame1Complete() {
+
+        clearScreen(game1);
+
+
+        game1.appendChild(
+            createImage(
+                GAME1.completion,
+                "Game 1 Complete"
+            )
+        );
+
+
+        game1.appendChild(
+            createImage(
+                GAME1.badge,
+                "Master Angler Badge"
+            )
+        );
+
+
+        game1.appendChild(
+            createImage(
+                GAME1.message,
+                "Master Angler Message"
+            )
+        );
+
+
+        const score =
+            document.createElement("p");
+
+        score.className =
+            "score-display";
+
+        score.textContent =
+            "FINAL XP: " +
+            game1Score;
+
+
+        game1.appendChild(
+            score
+        );
+
+
+        addButton(
+            game1,
+            "CONTINUE TO GAME 2 →",
+            startGame2
+        );
+
+
+        showScreen(game1);
+    }
+
+
+    /* =====================================================
+       GAME 2 START
+    ===================================================== */
 
     function startGame2() {
 
-        game2TitleScreen.innerHTML = "";
+        game2Phase =
+            0;
 
-        addImage(
-            game2TitleScreen,
-            ASSET.game2.title,
-            "Game 2"
-        );
-
-        addNextButton(
-            game2TitleScreen,
-            "START GAME 2 →",
-            () => {
-                showGame2HowTo();
-            }
-        );
-
-        showScreen(game2TitleScreen);
+        showGame2Title();
     }
 
+
+    /* =====================================================
+       GAME 2 TITLE
+    ===================================================== */
+
+    function showGame2Title() {
+
+        clearScreen(game2);
+
+
+        game2.appendChild(
+            createImage(
+                GAME2.title,
+                "Game 2"
+            )
+        );
+
+
+        addButton(
+            game2,
+            "CONTINUE →",
+            showGame2HowTo
+        );
+
+
+        showScreen(game2);
+    }
+
+
+    /* =====================================================
+       GAME 2 HOW TO PLAY
+    ===================================================== */
 
     function showGame2HowTo() {
 
-        game2HowToScreen.innerHTML = "";
+        clearScreen(game2);
 
-        addImage(
-            game2HowToScreen,
-            ASSET.game2.howToPlay,
-            "Game 2 How to Play"
+
+        game2.appendChild(
+            createImage(
+                GAME2.howToPlay,
+                "Game 2 How to Play"
+            )
         );
 
-        addNextButton(
-            game2HowToScreen,
-            "START FIGHT →",
-            () => {
-                startGame2Play();
+
+        addButton(
+            game2,
+            "START THE FIGHT →",
+            function () {
+
+                game2Phase =
+                    0;
+
+                showGame2Phase();
             }
         );
 
-        showScreen(game2HowToScreen);
+
+        showScreen(game2);
     }
 
 
-    let game2Phase = 0;
-
-
-    function startGame2Play() {
-
-        game2Phase = 0;
-
-        showGame2Phase();
-    }
-
+    /* =====================================================
+       GAME 2 — FISH FIGHT
+    ===================================================== */
 
     function showGame2Phase() {
 
-        game2PlayScreen.innerHTML = "";
-
-        addImage(
-            game2PlayScreen,
-            ASSET.game2.hud,
-            "Game 2 HUD"
-        );
+        clearScreen(game2);
 
 
         const phases = [
-            ASSET.game2.phase1,
-            ASSET.game2.phase2,
-            ASSET.game2.phase3,
-            ASSET.game2.phase4,
-            ASSET.game2.phase5
+
+            GAME2.phase1,
+
+            GAME2.phase2,
+
+            GAME2.phase3,
+
+            GAME2.phase4,
+
+            GAME2.phase5
+
         ];
 
 
         const phaseNames = [
+
             "BITE",
+
             "RUN",
+
             "FIGHT",
+
             "WEAR DOWN",
+
             "LANDING"
+
         ];
 
 
-        addImage(
-            game2PlayScreen,
-            phases[game2Phase],
-            `Game 2 Phase ${game2Phase + 1}`
+        if (GAME2.hud) {
+
+            game2.appendChild(
+                createImage(
+                    GAME2.hud,
+                    "Game 2 HUD"
+                )
+            );
+        }
+
+
+        game2.appendChild(
+            createImage(
+                phases[game2Phase],
+                "Game 2 " +
+                phaseNames[game2Phase]
+            )
         );
 
 
-        /*
-           Add the relevant controls from your assets.
-        */
+        if (
+            game2Phase <
+            phases.length - 1
+        ) {
 
-        if (game2Phase === 0) {
+            addButton(
+                game2,
+                phaseNames[
+                    game2Phase
+                ] +
+                " →",
+                function () {
 
-            addNextButton(
-                game2PlayScreen,
-                "REEL IN →",
-                () => {
                     game2Phase++;
-                    showGame2Phase();
-                }
-            );
 
-        } else if (game2Phase === 1) {
-
-            addNextButton(
-                game2PlayScreen,
-                "REEL →",
-                () => {
-                    game2Phase++;
-                    showGame2Phase();
-                }
-            );
-
-        } else if (game2Phase === 2) {
-
-            addNextButton(
-                game2PlayScreen,
-                "FIGHT →",
-                () => {
-                    game2Phase++;
-                    showGame2Phase();
-                }
-            );
-
-        } else if (game2Phase === 3) {
-
-            addNextButton(
-                game2PlayScreen,
-                "WEAR IT DOWN →",
-                () => {
-                    game2Phase++;
                     showGame2Phase();
                 }
             );
 
         } else {
 
-            addNextButton(
-                game2PlayScreen,
-                "LAND THE FISH →",
-                () => {
-                    showGame2Success();
-                }
+            addButton(
+                game2,
+                "LAND THE LEGENDARY CATCH →",
+                showGame2Success
             );
         }
 
 
-        showScreen(game2PlayScreen);
-    }
-
-
-    function showGame2Success() {
-
-        game2ResultScreen.innerHTML = "";
-
-        addImage(
-            game2ResultScreen,
-            ASSET.game2.legendaryCatch,
-            "Legendary Catch"
-        );
-
-        addImage(
-            game2ResultScreen,
-            ASSET.game2.masterBadge,
-            "Master Angler Badge"
-        );
-
-        addImage(
-            game2ResultScreen,
-            ASSET.game2.masterMessage,
-            "Master Angler Message"
-        );
-
-        addNextButton(
-            game2ResultScreen,
-            "CONTINUE TO GAME 3 →",
-            () => {
-                startGame3();
-            }
-        );
-
-        showScreen(game2ResultScreen);
+        showScreen(game2);
     }
 
 
     /* =====================================================
-       GAME 3
-       ===================================================== */
+       GAME 2 LEGENDARY CATCH
+    ===================================================== */
+
+    function showGame2Success() {
+
+        clearScreen(game2);
+
+
+        game2.appendChild(
+            createImage(
+                GAME2.legendaryCatch,
+                "Legendary Catch"
+            )
+        );
+
+
+        game2.appendChild(
+            createImage(
+                GAME2.masterBadge,
+                "Master Angler Badge"
+            )
+        );
+
+
+        game2.appendChild(
+            createImage(
+                GAME2.masterMessage,
+                "Master Angler Message"
+            )
+        );
+
+
+        addButton(
+            game2,
+            "CONTINUE TO GAME 3 →",
+            startGame3
+        );
+
+
+        showScreen(game2);
+    }
+
+
+    /* =====================================================
+       GAME 3 START
+    ===================================================== */
 
     function startGame3() {
 
-        game3IntroScreen.innerHTML = "";
+        game3Step =
+            0;
 
-        addImage(
-            game3IntroScreen,
-            ASSET.game3.intro,
-            "Game 3 Camp After Dark"
+        showGame3Intro();
+    }
+
+
+    /* =====================================================
+       GAME 3 INTRO
+    ===================================================== */
+
+    function showGame3Intro() {
+
+        clearScreen(game3);
+
+
+        game3.appendChild(
+            createImage(
+                GAME3.intro,
+                "Game 3 Camp After Dark"
+            )
         );
 
-        addNextButton(
-            game3IntroScreen,
-            "START FINAL MISSION →",
-            () => {
-                startGame3Play();
+
+        addButton(
+            game3,
+            "START GAME 3 →",
+            function () {
+
+                game3Step =
+                    0;
+
+                showGame3Step();
             }
         );
 
-        showScreen(game3IntroScreen);
+
+        showScreen(game3);
     }
 
 
-    let game3Step = 0;
+    /* =====================================================
+       GAME 3 CAMP STEPS
+    ===================================================== */
 
+    const GAME3_STEPS = [
 
-    function startGame3Play() {
+        {
+            image:
+                GAME3.tent,
 
-        game3Step = 0;
+            title:
+                "SET UP CAMP",
 
-        showGame3Step();
-    }
+            button:
+                "SET UP TENT →"
+        },
+
+        {
+            image:
+                GAME3.dryWood,
+
+            title:
+                "GATHER DRY WOOD",
+
+            button:
+                "GATHER WOOD →"
+        },
+
+        {
+            image:
+                GAME3.kindling,
+
+            title:
+                "PREPARE KINDLING",
+
+            button:
+                "PREPARE KINDLING →"
+        },
+
+        {
+            image:
+                GAME3.tinder,
+
+            title:
+                "PREPARE TINDER",
+
+            button:
+                "PREPARE TINDER →"
+        },
+
+        {
+            image:
+                GAME3.fireStarter,
+
+            title:
+                "PREPARE THE FIRE",
+
+            button:
+                "LIGHT THE FIRE →"
+        },
+
+        {
+            image:
+                GAME3.fishingWeather,
+
+            title:
+                "CHECK FISHING WEATHER",
+
+            button:
+                "CHECK WEATHER →"
+        },
+
+        {
+            image:
+                GAME3.foodSupplies,
+
+            title:
+                "CHECK FOOD SUPPLIES",
+
+            button:
+                "CHECK SUPPLIES →"
+        },
+
+        {
+            image:
+                GAME3.waterBucket,
+
+            title:
+                "SECURE WATER",
+
+            button:
+                "SECURE WATER →"
+        }
+
+    ];
 
 
     function showGame3Step() {
 
-        game3PlayScreen.innerHTML = "";
-
-        const steps = [
-
-            {
-                image: ASSET.game3.tent,
-                title: "SET UP CAMP",
-                button: "SET UP TENT →"
-            },
-
-            {
-                image: ASSET.game3.dryWood,
-                title: "GATHER DRY WOOD",
-                button: "GATHER WOOD →"
-            },
-
-            {
-                image: ASSET.game3.kindling,
-                title: "PREPARE KINDLING",
-                button: "PREPARE KINDLING →"
-            },
-
-            {
-                image: ASSET.game3.tinder,
-                title: "PREPARE TINDER",
-                button: "PREPARE TINDER →"
-            },
-
-            {
-                image: ASSET.game3.fireStarter,
-                title: "GET THE FIRE STARTER",
-                button: "LIGHT THE FIRE →"
-            },
-
-            {
-                image: ASSET.game3.fishingWeather,
-                title: "CHECK THE WEATHER",
-                button: "CHECK WEATHER →"
-            },
-
-            {
-                image: ASSET.game3.foodSupplies,
-                title: "CHECK FOOD SUPPLIES",
-                button: "CHECK SUPPLIES →"
-            },
-
-            {
-                image: ASSET.game3.waterBucket,
-                title: "SECURE WATER",
-                button: "SECURE WATER →"
-            },
-
-            {
-                image: ASSET.game3.campComplete,
-                title: "CAMP COMPLETE",
-                button: "COMPLETE FINAL MISSION →"
-            }
-        ];
+        clearScreen(game3);
 
 
-        const step = steps[game3Step];
+        const step =
+            GAME3_STEPS[
+                game3Step
+            ];
 
 
-        addTitle(
-            game3PlayScreen,
-            step.title
+        if (!step) {
+
+            showGame3Complete();
+
+            return;
+        }
+
+
+        const title =
+            document.createElement("h2");
+
+        title.className =
+            "game-title";
+
+        title.textContent =
+            step.title;
+
+        game3.appendChild(
+            title
         );
 
 
-        addImage(
-            game3PlayScreen,
-            step.image,
-            step.title
+        game3.appendChild(
+            createImage(
+                step.image,
+                step.title
+            )
         );
 
 
-        addNextButton(
-            game3PlayScreen,
+        addButton(
+            game3,
             step.button,
-            () => {
+            function () {
 
                 game3Step++;
 
-                if (game3Step >= steps.length) {
-                    showGame3Final();
+
+                if (
+                    game3Step >=
+                    GAME3_STEPS.length
+                ) {
+
+                    showGame3Complete();
+
                 } else {
+
                     showGame3Step();
                 }
-
             }
         );
 
 
-        showScreen(game3PlayScreen);
-    }
-
-
-    function showGame3Final() {
-
-        game3ResultScreen.innerHTML = "";
-
-        addImage(
-            game3ResultScreen,
-            ASSET.game3.campComplete,
-            "Camp Complete"
-        );
-
-        addImage(
-            game3ResultScreen,
-            ASSET.game3.finalButton,
-            "Final Mission"
-        );
-
-
-        addNextButton(
-            game3ResultScreen,
-            "FINISH MISSION 3 ★",
-            () => {
-
-                game3ResultScreen.innerHTML = "";
-
-                addTitle(
-                    game3ResultScreen,
-                    "MISSION 3 COMPLETE"
-                );
-
-                addInstruction(
-                    game3ResultScreen,
-                    "You completed the final mission and proved yourself a true Master Angler."
-                );
-
-                addImage(
-                    game3ResultScreen,
-                    ASSET.game3.campComplete,
-                    "Mission Complete"
-                );
-
-                showScreen(game3ResultScreen);
-            }
-        );
-
-
-        showScreen(game3ResultScreen);
+        showScreen(game3);
     }
 
 
     /* =====================================================
-       START
-       ===================================================== */
+       GAME 3 COMPLETE
+    ===================================================== */
 
-    showScreen(missionScreen);
+    function showGame3Complete() {
+
+        clearScreen(game3);
+
+
+        game3.appendChild(
+            createImage(
+                GAME3.campComplete,
+                "Camp Complete"
+            )
+        );
+
+
+        addButton(
+            game3,
+            "CONTINUE TO FINAL EXPEDITION →",
+            showFinalReport
+        );
+
+
+        showScreen(game3);
+    }
+
+
+    /* =====================================================
+       FINAL EXPEDITION REPORT
+    ===================================================== */
+
+    function showFinalReport() {
+
+        clearScreen(game3);
+
+
+        const finalScreen =
+            document.createElement("div");
+
+        finalScreen.className =
+            "final-expedition-report";
+
+
+        /* -------------------------------------------------
+           TITLE
+        ------------------------------------------------- */
+
+        const title =
+            document.createElement("h1");
+
+        title.textContent =
+            "🏆 MISSION COMPLETE!";
+
+        finalScreen.appendChild(
+            title
+        );
+
+
+        /* -------------------------------------------------
+           BIRTHDAY MESSAGE
+        ------------------------------------------------- */
+
+        const birthdayMessage =
+            document.createElement("p");
+
+        birthdayMessage.innerHTML =
+            "<strong>You did it, birthday boy. ❤️</strong><br>" +
+            "Your final surprise has been unlocked…";
+
+        finalScreen.appendChild(
+            birthdayMessage
+        );
+
+
+        /* -------------------------------------------------
+           REVEAL BUTTON
+        ------------------------------------------------- */
+
+        const revealButton =
+            document.createElement("button");
+
+        revealButton.type =
+            "button";
+
+        revealButton.className =
+            "game-button";
+
+        revealButton.textContent =
+            "🔓 TAP TO REVEAL";
+
+        finalScreen.appendChild(
+            revealButton
+        );
+
+
+        /* -------------------------------------------------
+           HIDDEN SURPRISE
+        ------------------------------------------------- */
+
+        const surprise =
+            document.createElement("div");
+
+        surprise.className =
+            "birthday-surprise";
+
+        surprise.style.display =
+            "none";
+
+
+        /* -------------------------------------------------
+           ADVENTURE TITLE
+        ------------------------------------------------- */
+
+        const adventureTitle =
+            document.createElement("h2");
+
+        adventureTitle.textContent =
+            "🏕️ YOUR BIRTHDAY ADVENTURE AWAITS";
+
+        surprise.appendChild(
+            adventureTitle
+        );
+
+
+        /* -------------------------------------------------
+           LOCATION / DATE / TIME
+        ------------------------------------------------- */
+
+        const adventureDetails =
+            document.createElement("div");
+
+        adventureDetails.className =
+            "adventure-details";
+
+        adventureDetails.innerHTML =
+            "<p>📍 <strong>EAST COAST PARK</strong></p>" +
+            "<p>📅 <strong>21–22 AUGUST 2026</strong></p>" +
+            "<p>⏰ <strong>3:00 PM</strong></p>";
+
+        surprise.appendChild(
+            adventureDetails
+        );
+
+
+        /* -------------------------------------------------
+           PERSONAL MESSAGE
+        ------------------------------------------------- */
+
+        const personalMessage =
+            document.createElement("div");
+
+        personalMessage.className =
+            "personal-message";
+
+        personalMessage.innerHTML =
+            "<p><strong>Pack your bags.</strong></p>" +
+            "<p><strong>Bring your fishing gear.</strong></p>" +
+            "<p><strong>And come ready for an adventure with me. ❤️</strong></p>";
+
+        surprise.appendChild(
+            personalMessage
+        );
+
+
+        /* -------------------------------------------------
+           FINAL LINE
+        ------------------------------------------------- */
+
+        const countdown =
+            document.createElement("h2");
+
+        countdown.className =
+            "final-countdown";
+
+        countdown.textContent =
+            "THE COUNTDOWN BEGINS… ⏳";
+
+        surprise.appendChild(
+            countdown
+        );
+
+
+        /* -------------------------------------------------
+           ADD SURPRISE
+        ------------------------------------------------- */
+
+        finalScreen.appendChild(
+            surprise
+        );
+
+
+        /* -------------------------------------------------
+           REVEAL ACTION
+        ------------------------------------------------- */
+
+        revealButton.addEventListener(
+            "click",
+            function () {
+
+                revealButton.style.display =
+                    "none";
+
+                surprise.style.display =
+                    "block";
+
+                setTimeout(
+                    function () {
+
+                        surprise.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                    },
+                    100
+                );
+            }
+        );
+
+
+        /* -------------------------------------------------
+           SHOW FINAL SCREEN
+        ------------------------------------------------- */
+
+        game3.appendChild(
+            finalScreen
+        );
+
+
+        showScreen(game3);
+    }
+
+
+    /* =====================================================
+       START ON MISSION 3 FRONT PAGE
+    ===================================================== */
+
+    showScreen(
+        mission3Intro
+    );
+
+
+    /* =====================================================
+       DEBUG
+    ===================================================== */
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "HOOKED IN 30 — MISSION 3 LOADED"
+    );
+
+    console.log(
+        "Flow:"
+    );
+
+    console.log(
+        "Mission 3 Front Page → Game 1 → Game 2 → Game 3 → Final Reveal"
+    );
+
+    console.log(
+        "================================="
+    );
 
 });
