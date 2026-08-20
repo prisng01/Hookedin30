@@ -4,794 +4,1163 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#061410">
+<meta name="theme-color" content="#050b09">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>MISSION 3 — The Final Adventure</title>
+<title>Mission 3 — The Final Adventure</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    min-height:100%;
-    background:#061410;
-    color:#fff;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    overflow-x:hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #050b09;
+    color: #fff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
 }
 
-body{
-    min-height:100dvh;
+body {
+    overflow-x: hidden;
+    min-height: 100dvh;
 }
 
-button{
-    font:inherit;
-    border:0;
-    outline:0;
-    touch-action:manipulation;
+button {
+    font-family: inherit;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    touch-action: manipulation;
 }
 
-.screen{
-    display:none;
-    position:relative;
-    min-height:100dvh;
-    width:100%;
-    overflow:hidden;
+.screen {
+    display: none;
+    position: relative;
+    width: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
 }
 
-.screen.active{
-    display:flex;
+.screen.active {
+    display: flex;
 }
 
-/* =========================
-   GENERAL
-========================= */
-
-.content{
-    position:relative;
-    z-index:10;
-    width:100%;
-    max-width:560px;
-    margin:auto;
+.content {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    max-width: 560px;
+    margin: auto;
     padding:
-        max(28px,env(safe-area-inset-top))
-        18px
-        max(28px,env(safe-area-inset-bottom));
+        max(24px, env(safe-area-inset-top))
+        17px
+        max(28px, env(safe-area-inset-bottom));
 }
 
-.panel{
-    background:rgba(6,20,16,.78);
-    border:1px solid rgba(255,255,255,.13);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-radius:28px;
-    padding:28px 20px;
+.panel {
+    width: 100%;
+    padding: 26px 19px;
+    border-radius: 27px;
+    background: rgba(5, 17, 13, 0.84);
+    border: 1px solid rgba(255,255,255,0.13);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     box-shadow:
-        0 25px 70px rgba(0,0,0,.5),
-        inset 0 1px 0 rgba(255,255,255,.05);
+        0 25px 70px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-.badge{
-    display:inline-block;
-    padding:7px 12px;
-    border:1px solid rgba(224,183,91,.4);
-    border-radius:50px;
-    color:#e5bb68;
-    background:rgba(229,187,104,.08);
-    font-size:11px;
-    font-weight:800;
-    letter-spacing:1.8px;
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
 }
 
-h1,h2,h3,p{
-    margin-top:0;
+h1 {
+    font-size: clamp(36px, 10vw, 57px);
+    line-height: 0.98;
+    letter-spacing: -1.7px;
+    margin: 18px 0;
 }
 
-h1{
-    font-size:clamp(35px,10vw,58px);
-    line-height:1;
-    margin:18px 0;
-    letter-spacing:-1.5px;
+h2 {
+    font-size: clamp(28px, 7.5vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.8px;
+    margin: 15px 0 13px;
 }
 
-h2{
-    font-size:clamp(27px,7vw,39px);
-    line-height:1.08;
-    margin:15px 0 12px;
+p {
+    color: #d6e3de;
+    font-size: 16px;
+    line-height: 1.65;
+    margin-bottom: 14px;
 }
 
-p{
-    color:#d6e4de;
-    line-height:1.65;
-    font-size:16px;
+.gold {
+    color: #e5bb68;
 }
 
-.gold{
-    color:#e5bb68;
+.heart {
+    color: #ff9cac;
 }
 
-.heart{
-    color:#ff9eaf;
+.muted {
+    color: #91aaa2;
 }
 
-.small{
-    color:#8ea9a0;
-    font-size:12px;
+.small {
+    font-size: 12px;
+    color: #839c94;
 }
 
-.main-btn{
-    width:100%;
-    min-height:56px;
-    margin-top:18px;
-    padding:15px 18px;
-    border-radius:18px;
-    background:linear-gradient(135deg,#f0ca76,#dca94f);
-    color:#162017;
-    font-weight:900;
-    font-size:16px;
-    box-shadow:0 10px 28px rgba(221,170,74,.22);
+.badge {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 50px;
+    background: rgba(229,187,104,0.08);
+    border: 1px solid rgba(229,187,104,0.38);
+    color: #e5bb68;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
 }
 
-.main-btn:active{
-    transform:scale(.97);
+.main-btn {
+    width: 100%;
+    min-height: 56px;
+    margin-top: 17px;
+    padding: 15px 18px;
+    border-radius: 17px;
+    background: linear-gradient(135deg, #f1cb79, #dca94f);
+    color: #172017;
+    font-size: 16px;
+    font-weight: 900;
+    box-shadow: 0 10px 28px rgba(220,169,79,0.22);
 }
 
-.secondary-btn{
-    width:100%;
-    min-height:48px;
-    margin-top:10px;
-    border-radius:16px;
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.1);
-    color:#fff;
+.main-btn:active {
+    transform: scale(0.97);
 }
 
-/* =========================
-   CINEMATIC BACKGROUND
-========================= */
+.secondary-btn {
+    width: 100%;
+    min-height: 49px;
+    margin-top: 10px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #fff;
+    font-weight: 600;
+}
 
-.sky{
-    position:absolute;
-    inset:0;
-    overflow:hidden;
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   AUDIO BUTTON
+========================================================= */
+
+#audioButton {
+    position: fixed;
+    z-index: 1000;
+    top: max(12px, env(safe-area-inset-top));
+    right: 13px;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.48);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 18px;
+}
+
+#audioButton.visible {
+    display: flex;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.progress-dot {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 12px;
+}
+
+.progress-dot.active {
+    background: #e5bb68;
+    color: #172017;
+    border-color: #e5bb68;
+}
+
+.progress-dot.complete {
+    background: #4f9c71;
+    border-color: #4f9c71;
+}
+
+.progress-line {
+    width: 30px;
+    height: 2px;
+    background: rgba(255,255,255,0.12);
+}
+
+.progress-line.complete {
+    background: #4f9c71;
+}
+
+/* =========================================================
+   CINEMATIC NIGHT BACKGROUND
+========================================================= */
+
+.night-sky {
+    position: absolute;
+    inset: 0;
     background:
         linear-gradient(
             to bottom,
-            #030914 0%,
-            #071722 35%,
-            #0b2d2b 62%,
-            #061713 100%
+            #020711 0%,
+            #061522 33%,
+            #0b2c2b 64%,
+            #071a12 100%
         );
 }
 
-.sky:after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        radial-gradient(
-            ellipse at 50% 65%,
-            rgba(41,111,87,.25),
-            transparent 48%
-        );
-}
-
-.stars{
-    position:absolute;
-    inset:0;
+.stars {
+    position: absolute;
+    inset: 0;
+    opacity: 0.58;
     background-image:
-        radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1.5px),
-        radial-gradient(circle,rgba(255,255,255,.5) 1px,transparent 1.5px);
-    background-size:73px 71px,121px 127px;
-    background-position:8px 12px,44px 33px;
-    opacity:.55;
-    animation:starsMove 18s linear infinite;
+        radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1.5px);
+    background-size: 77px 73px, 131px 121px;
+    background-position: 11px 17px, 48px 39px;
+    animation: starsDrift 18s linear infinite;
 }
 
-@keyframes starsMove{
-    from{transform:translateY(0)}
-    to{transform:translateY(15px)}
+@keyframes starsDrift {
+    from { transform: translateY(0); }
+    to { transform: translateY(13px); }
 }
 
-.moon{
-    position:absolute;
-    top:8%;
-    right:13%;
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    background:#fff2c6;
+.moon {
+    position: absolute;
+    top: 8%;
+    right: 13%;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #fff0c2;
     box-shadow:
-        0 0 20px rgba(255,237,188,.55),
-        0 0 70px rgba(255,237,188,.2);
+        0 0 24px rgba(255,239,194,0.48),
+        0 0 80px rgba(255,239,194,0.15);
 }
 
-.moon:after{
-    content:"";
-    position:absolute;
-    width:62px;
-    height:62px;
-    border-radius:50%;
-    background:#071722;
-    left:18px;
-    top:-5px;
+.moon::after {
+    content: "";
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    left: 18px;
+    top: -5px;
+    background: #071522;
 }
 
-.horizon{
-    position:absolute;
-    left:-10%;
-    right:-10%;
-    bottom:18%;
-    height:130px;
-    background:#071511;
-    clip-path:polygon(
-        0 75%,8% 52%,16% 67%,24% 38%,31% 61%,
-        40% 29%,48% 57%,56% 34%,66% 62%,
-        75% 43%,84% 63%,92% 38%,100% 67%,
-        100% 100%,0 100%
+.mountain {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    bottom: 19%;
+    height: 150px;
+    background: #06120e;
+    clip-path: polygon(
+        0 72%,
+        8% 55%,
+        17% 67%,
+        27% 40%,
+        35% 60%,
+        45% 29%,
+        53% 56%,
+        62% 35%,
+        70% 61%,
+        81% 42%,
+        89% 60%,
+        100% 39%,
+        100% 100%,
+        0 100%
     );
 }
 
-.ground{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:24%;
+.ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
     background:
-        radial-gradient(ellipse at 20% 40%,#163326 0,transparent 30%),
-        radial-gradient(ellipse at 80% 20%,#173b29 0,transparent 28%),
-        linear-gradient(#0b2118,#040d09);
+        radial-gradient(
+            ellipse at 25% 35%,
+            #18382a 0,
+            transparent 29%
+        ),
+        radial-gradient(
+            ellipse at 80% 25%,
+            #153426 0,
+            transparent 28%
+        ),
+        linear-gradient(#0b2117, #040c08);
 }
 
-/* =========================
-   TREES
-========================= */
-
-.trees{
-    position:absolute;
-    bottom:17%;
-    left:0;
-    width:100%;
-    height:180px;
+.tree {
+    position: absolute;
+    bottom: 18%;
+    width: 0;
+    height: 0;
+    border-left: 37px solid transparent;
+    border-right: 37px solid transparent;
+    border-bottom: 120px solid #06120e;
 }
 
-.tree{
-    position:absolute;
-    bottom:0;
-    width:0;
-    height:0;
-    border-left:38px solid transparent;
-    border-right:38px solid transparent;
-    border-bottom:115px solid #06130e;
+.tree::before {
+    content: "";
+    position: absolute;
+    left: -30px;
+    top: 40px;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 88px solid #071711;
 }
 
-.tree:before{
-    content:"";
-    position:absolute;
-    left:-31px;
-    top:38px;
-    border-left:31px solid transparent;
-    border-right:31px solid transparent;
-    border-bottom:90px solid #071912;
+.tree::after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 105px;
+    width: 10px;
+    height: 45px;
+    background: #080d09;
 }
 
-.tree:after{
-    content:"";
-    position:absolute;
-    left:-5px;
-    top:105px;
-    width:10px;
-    height:45px;
-    background:#080d09;
-}
+.tree.one { left: 4%; transform: scale(.8); }
+.tree.two { left: 20%; transform: scale(1.05); }
+.tree.three { right: 18%; transform: scale(.9); }
+.tree.four { right: 2%; transform: scale(1.2); }
 
-.tree.t1{left:4%;transform:scale(.8)}
-.tree.t2{left:20%;transform:scale(1.1)}
-.tree.t3{right:18%;transform:scale(.9)}
-.tree.t4{right:3%;transform:scale(1.2)}
-
-/* =========================
+/* =========================================================
    INTRO
-========================= */
+========================================================= */
 
-#intro{
-    background:#061410;
+#intro {
+    background: #050d0a;
 }
 
-.intro-panel{
-    text-align:center;
+.intro-panel {
+    text-align: center;
 }
 
-.tent{
-    font-size:72px;
-    filter:drop-shadow(0 8px 15px rgba(0,0,0,.5));
-    animation:tentFloat 4s ease-in-out infinite;
+.tent {
+    font-size: 70px;
+    margin-bottom: 8px;
+    animation: tentFloat 4s ease-in-out infinite;
 }
 
-@keyframes tentFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-5px)}
+@keyframes tentFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
-.fire-mini{
-    margin-top:15px;
-    font-size:35px;
-    animation:fireGlow 1.2s infinite alternate;
+.fire-icon {
+    font-size: 35px;
+    margin-top: 13px;
+    animation: firePulse 1.1s ease-in-out infinite alternate;
 }
 
-@keyframes fireGlow{
-    from{filter:brightness(.85)}
-    to{filter:brightness(1.25)}
+@keyframes firePulse {
+    from {
+        transform: scale(.92);
+        filter: brightness(.85);
+    }
+    to {
+        transform: scale(1.08);
+        filter: brightness(1.18);
+    }
 }
 
-/* =========================
-   WATER SCENE
-========================= */
+/* =========================================================
+   CHALLENGE 1 — WATER
+========================================================= */
 
-#waterGame{
-    background:#051713;
+#waterGame {
+    background: #051411;
 }
 
-.water-wrap{
-    position:relative;
-    z-index:5;
-    width:100%;
-}
-
-.water-panel{
-    padding:22px 17px;
-}
-
-.water-scene{
-    position:relative;
-    width:100%;
-    height:205px;
-    margin:18px 0;
-    overflow:hidden;
-    border-radius:23px;
+.water-scene {
+    position: relative;
+    width: 100%;
+    height: 215px;
+    margin: 17px 0 19px;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.10);
     background:
         linear-gradient(
             to bottom,
-            #102e3c 0%,
-            #0c5360 45%,
-            #063e4b 100%
+            #0b2734 0%,
+            #14515b 46%,
+            #063f4b 100%
         );
-    border:1px solid rgba(255,255,255,.1);
 }
 
-.water-sky{
-    position:absolute;
-    inset:0 0 48%;
-    background:linear-gradient(#06131f,#173b43);
+.water-sky {
+    position: absolute;
+    inset: 0 0 49%;
+    background:
+        linear-gradient(
+            #06131f,
+            #17383f
+        );
 }
 
-.water-moon{
-    position:absolute;
-    right:25px;
-    top:15px;
-    width:37px;
-    height:37px;
-    border-radius:50%;
-    background:#f4e7b5;
-    box-shadow:0 0 25px rgba(255,235,175,.45);
+.water-moon {
+    position: absolute;
+    right: 27px;
+    top: 15px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f5e7b5;
+    box-shadow: 0 0 26px rgba(255,235,175,0.45);
 }
 
-.water-surface{
-    position:absolute;
-    left:-10%;
-    width:120%;
-    height:55%;
-    bottom:0;
+.water-surface {
+    position: absolute;
+    left: -12%;
+    bottom: 0;
+    width: 124%;
+    height: 57%;
     background:
         repeating-linear-gradient(
             174deg,
-            rgba(255,255,255,.13) 0 2px,
+            rgba(255,255,255,0.13) 0 2px,
             transparent 2px 17px
         );
-    animation:waterFlow 3s linear infinite;
+    animation: waterMove 4.5s linear infinite;
 }
 
-@keyframes waterFlow{
-    from{transform:translateX(-25px)}
-    to{transform:translateX(25px)}
+@keyframes waterMove {
+    from { transform: translateX(-28px); }
+    to { transform: translateX(28px); }
 }
 
-.water-surface.rough{
-    animation-duration:1s;
-    transform:skewY(-3deg) scale(1.08);
-    opacity:1;
+.wave {
+    position: absolute;
+    width: 145%;
+    height: 34px;
+    left: -22%;
+    border-top: 3px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
 }
 
-.water-surface.choppy{
-    animation-duration:1.7s;
-    transform:rotate(-1deg);
+.wave.a {
+    bottom: 63px;
+    animation: waveMove 3s ease-in-out infinite;
 }
 
-.water-surface.calm{
-    animation-duration:5s;
-    opacity:.45;
+.wave.b {
+    bottom: 28px;
+    animation: waveMove 4s ease-in-out infinite reverse;
 }
 
-.water-surface.dark{
-    animation-duration:4s;
-    opacity:.22;
+@keyframes waveMove {
+    0%,100% { transform: translateX(-17px); }
+    50% { transform: translateX(17px); }
 }
 
-.wave{
-    position:absolute;
-    width:140%;
-    height:35px;
-    left:-20%;
-    border-radius:50%;
-    border-top:3px solid rgba(255,255,255,.16);
+.rock {
+    position: absolute;
+    bottom: -8px;
+    width: 88px;
+    height: 57px;
+    border-radius: 55% 45% 10% 10%;
+    background: linear-gradient(145deg,#354845,#172523);
+    box-shadow: inset -7px -7px 11px rgba(0,0,0,.35);
 }
 
-.wave.w1{
-    bottom:58px;
-    animation:wave 3s ease-in-out infinite;
+.rock.left {
+    left: -7px;
 }
 
-.wave.w2{
-    bottom:27px;
-    animation:wave 4s ease-in-out infinite reverse;
+.rock.right {
+    right: 15px;
+    width: 115px;
+    height: 67px;
 }
 
-@keyframes wave{
-    0%,100%{transform:translateX(-15px)}
-    50%{transform:translateX(15px)}
+.boat {
+    position: absolute;
+    left: 50%;
+    bottom: 62px;
+    font-size: 43px;
+    transform: translateX(-50%);
+    animation: boatFloat 3.1s ease-in-out infinite;
 }
 
-.rock{
-    position:absolute;
-    bottom:-7px;
-    width:80px;
-    height:55px;
-    border-radius:55% 45% 10% 10%;
-    background:linear-gradient(145deg,#354744,#172523);
-    box-shadow:inset -7px -7px 10px rgba(0,0,0,.35);
+@keyframes boatFloat {
+    0%,100% {
+        transform: translate(-50%,0) rotate(-1deg);
+    }
+    50% {
+        transform: translate(-50%,-7px) rotate(1deg);
+    }
 }
 
-.rock.r1{left:-5px}
-.rock.r2{right:20px;width:110px;height:65px}
-
-.boat{
-    position:absolute;
-    left:50%;
-    bottom:58px;
-    transform:translateX(-50%);
-    font-size:42px;
-    animation:boat 3.2s ease-in-out infinite;
-    z-index:4;
+.water-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
-@keyframes boat{
-    0%,100%{transform:translate(-50%,0) rotate(-1deg)}
-    50%{transform:translate(-50%,-7px) rotate(1deg)}
+.water-choice {
+    min-height: 111px;
+    padding: 12px 7px;
+    border-radius: 17px;
+    background: rgba(255,255,255,0.055);
+    border: 1.5px solid rgba(255,255,255,0.10);
+    color: #fff;
 }
 
-.water-options{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+.water-choice:active {
+    transform: scale(.97);
 }
 
-.water-choice{
-    min-height:112px;
-    padding:12px 7px;
-    border-radius:17px;
-    background:rgba(255,255,255,.06);
-    border:1.5px solid rgba(255,255,255,.1);
-    color:#fff;
+.water-choice .icon {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 5px;
 }
 
-.water-choice:active{
-    transform:scale(.97);
+.water-choice strong {
+    font-size: 14px;
 }
 
-.water-choice .icon{
-    font-size:30px;
+.water-choice small {
+    display: block;
+    margin-top: 5px;
+    color: #8da9a0;
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.water-choice.correct {
+    border-color: #67d99b;
+    background: rgba(103,217,155,.14);
+}
+
+.water-choice.wrong {
+    border-color: #e77979;
+    background: rgba(231,121,121,.10);
+}
+
+.feedback {
+    min-height: 55px;
+    margin-top: 13px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   CHALLENGE 2 — LOST TRAIL
+========================================================= */
+
+#trailGame {
+    background: #050e0b;
+}
+
+.trail-scene {
+    position: relative;
+    height: 300px;
+    margin: 16px 0;
+    overflow: hidden;
+    border-radius: 23px;
+    border: 1px solid rgba(255,255,255,.10);
+    background:
+        linear-gradient(
+            to bottom,
+            #08151c 0%,
+            #102923 45%,
+            #142e20 100%
+        );
+}
+
+.trail-moon {
+    position: absolute;
+    top: 18px;
+    right: 25px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f1e4b4;
+    box-shadow: 0 0 20px rgba(255,238,190,.35);
+}
+
+.trail-path {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    width: 150px;
+    height: 280px;
+    transform: translateX(-50%);
+    background:
+        linear-gradient(
+            to right,
+            #594b3a,
+            #75614a,
+            #594b3a
+        );
+    clip-path: polygon(
+        37% 0,
+        63% 0,
+        88% 100%,
+        12% 100%
+    );
+    opacity: .9;
+}
+
+.trail-path.left-path {
+    transform: translateX(-138%) rotate(-8deg);
+    width: 115px;
+}
+
+.trail-path.right-path {
+    transform: translateX(38%) rotate(8deg);
+    width: 115px;
+}
+
+.bush {
+    position: absolute;
+    width: 70px;
+    height: 80px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%,#315b3e,#0a2117 65%);
+}
+
+.bush.b1 { left: 4%; bottom: 30px; }
+.bush.b2 { left: 17%; bottom: 85px; transform:scale(.75); }
+.bush.b3 { right: 4%; bottom: 25px; }
+.bush.b4 { right: 18%; bottom: 90px; transform:scale(.8); }
+
+.trail-tree {
+    position: absolute;
+    bottom: 55px;
+    width: 0;
+    height: 0;
+    border-left: 29px solid transparent;
+    border-right: 29px solid transparent;
+    border-bottom: 105px solid #07150f;
+}
+
+.trail-tree.t1 { left: 4%; }
+.trail-tree.t2 { left: 25%; transform:scale(.75); }
+.trail-tree.t3 { right: 5%; }
+.trail-tree.t4 { right: 27%; transform:scale(.8); }
+
+.clue {
+    position: absolute;
+    z-index: 5;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(229,187,104,.15);
+    border: 1px solid rgba(229,187,104,.55);
+    box-shadow: 0 0 18px rgba(229,187,104,.18);
+    font-size: 22px;
+    animation: cluePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cluePulse {
+    0%,100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(229,187,104,.12);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 24px rgba(229,187,104,.30);
+    }
+}
+
+.clue.footprints {
+    left: 38%;
+    bottom: 76px;
+}
+
+.clue.branch {
+    left: 13%;
+    bottom: 142px;
+}
+
+.clue.marker {
+    right: 12%;
+    bottom: 145px;
+}
+
+.clue.light {
+    right: 37%;
+    top: 62px;
+}
+
+.clue.found {
+    background: rgba(101,217,154,.18);
+    border-color: #65d99a;
+    animation:none;
+}
+
+.clue-info {
+    min-height: 52px;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.055);
+    color: #cddbd6;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.route-title {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #9db4ad;
+}
+
+.route-options {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 9px;
+}
+
+.route-choice {
+    min-height: 83px;
+    padding: 8px 5px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.10);
+    color: white;
+    font-size: 12px;
+}
+
+.route-choice span {
     display:block;
-    margin-bottom:5px;
+    font-size:24px;
+    margin-bottom:4px;
 }
 
-.water-choice strong{
-    font-size:14px;
-}
-
-.water-choice small{
-    display:block;
-    margin-top:5px;
-    color:#8da9a0;
-    font-size:11px;
-    line-height:1.3;
-}
-
-.water-choice.correct{
+.route-choice.correct {
     border-color:#65d99a;
-    background:rgba(101,217,154,.13);
+    background:rgba(101,217,154,.14);
 }
 
-.water-choice.wrong{
+.route-choice.wrong {
     border-color:#e77979;
-    background:rgba(231,121,121,.1);
+    background:rgba(231,121,121,.10);
 }
 
-.feedback{
-    min-height:55px;
-    margin:13px 0 0;
-    font-size:14px;
-    line-height:1.5;
+/* =========================================================
+   CHALLENGE 3 — STORM
+========================================================= */
+
+#stormGame {
+    background:#03090b;
 }
 
-/* =========================
-   CAMP MEMORY
-========================= */
-
-#memoryGame{
-    background:#061410;
+.storm-scene {
+    position: relative;
+    height: 260px;
+    margin: 0 -19px 20px;
+    overflow: hidden;
+    border-radius: 27px 27px 0 0;
+    background:
+        linear-gradient(
+            to bottom,
+            #101d28,
+            #182c2b 48%,
+            #0b1912
+        );
 }
 
-.fire-scene{
-    position:relative;
-    height:210px;
-    margin:-22px -17px 20px;
-    overflow:hidden;
-    border-radius:27px 27px 0 0;
+.storm-clouds {
+    position:absolute;
+    inset:0 0 48%;
     background:
         radial-gradient(
-            circle at 50% 78%,
-            rgba(244,148,54,.32),
-            transparent 27%
+            ellipse at 20% 45%,
+            #111a1e 0 17%,
+            transparent 18%
         ),
-        linear-gradient(#06131a,#10271e 70%,#07110c);
+        radial-gradient(
+            ellipse at 47% 32%,
+            #0d171c 0 22%,
+            transparent 23%
+        ),
+        radial-gradient(
+            ellipse at 78% 46%,
+            #111a1d 0 20%,
+            transparent 21%
+        ),
+        linear-gradient(#071018,#172529);
 }
 
-.fire-stars{
+.rain {
     position:absolute;
     inset:0;
+    opacity:0;
     background-image:
-        radial-gradient(circle,rgba(255,255,255,.65) 1px,transparent 1px);
-    background-size:70px 62px;
-    opacity:.45;
+        linear-gradient(
+            105deg,
+            transparent 0 48%,
+            rgba(190,220,225,.35) 49%,
+            transparent 51%
+        );
+    background-size:17px 31px;
 }
 
-.campfire{
+.rain.active {
+    opacity:.65;
+    animation:rainFall .45s linear infinite;
+}
+
+@keyframes rainFall {
+    from { background-position:0 0; }
+    to { background-position:17px 31px; }
+}
+
+.lightning {
+    position:absolute;
+    inset:0;
+    background:rgba(210,235,255,0);
+    pointer-events:none;
+}
+
+.lightning.flash {
+    animation:lightningFlash .65s ease-out;
+}
+
+@keyframes lightningFlash {
+    0%,100%{background:rgba(210,235,255,0)}
+    15%{background:rgba(210,235,255,.22)}
+    20%{background:rgba(210,235,255,0)}
+    31%{background:rgba(210,235,255,.12)}
+    37%{background:rgba(210,235,255,0)}
+}
+
+.tent-shape {
     position:absolute;
     bottom:25px;
     left:50%;
     transform:translateX(-50%);
-    font-size:67px;
-    animation:fire 1s ease-in-out infinite alternate;
-    filter:drop-shadow(0 0 18px rgba(255,136,38,.45));
-}
-
-@keyframes fire{
-    from{transform:translateX(-50%) scale(.95) rotate(-2deg)}
-    to{transform:translateX(-50%) scale(1.06) rotate(2deg)}
-}
-
-.fire-glow{
-    position:absolute;
-    width:140px;
-    height:80px;
-    left:50%;
-    bottom:20px;
-    transform:translateX(-50%);
-    background:radial-gradient(ellipse,rgba(255,140,50,.4),transparent 70%);
-    animation:glow 1.2s infinite alternate;
-}
-
-@keyframes glow{
-    from{opacity:.5}
-    to{opacity:1}
-}
-
-.log{
-    position:absolute;
-    bottom:18px;
-    left:50%;
-    width:90px;
-    height:13px;
-    border-radius:10px;
-    background:#53372a;
-}
-
-.log.a{transform:translateX(-50%) rotate(12deg)}
-.log.b{transform:translateX(-50%) rotate(-12deg)}
-
-.memory-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:15px;
-}
-
-.memory-card{
-    aspect-ratio:1;
-    border-radius:18px;
+    width:145px;
+    height:95px;
     background:
-        linear-gradient(145deg,#183c2e,#0c241c);
+        linear-gradient(
+            135deg,
+            #7d704f,
+            #413c2c
+        );
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+    box-shadow:0 8px 20px rgba(0,0,0,.5);
+}
+
+.tent-door {
+    position:absolute;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
+    width:37px;
+    height:56px;
+    background:#161a14;
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+.storm-ground {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:30%;
+    background:
+        linear-gradient(#132a1d,#06100b);
+}
+
+.storm-status {
+    padding:12px;
+    border-radius:15px;
+    background:rgba(255,255,255,.055);
+    margin-bottom:14px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.prep-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.prep-choice {
+    min-height:93px;
+    padding:10px 7px;
+    border-radius:16px;
+    background:rgba(255,255,255,.055);
     border:1px solid rgba(255,255,255,.1);
-    color:#fff;
-    font-size:30px;
-    box-shadow:0 7px 15px rgba(0,0,0,.2);
-    transition:transform .2s,background .2s;
+    color:white;
 }
 
-.memory-card:active{
-    transform:scale(.94);
+.prep-choice span {
+    display:block;
+    font-size:27px;
+    margin-bottom:5px;
 }
 
-.memory-card.flipped{
-    background:linear-gradient(145deg,#e9c36f,#b88637);
-    color:#172017;
+.prep-choice strong {
+    font-size:12px;
 }
 
-.memory-card.matched{
-    background:linear-gradient(145deg,#4c9b70,#286246);
+.prep-choice.correct {
+    border-color:#65d99a;
+    background:rgba(101,217,154,.14);
 }
 
-/* =========================
+.prep-choice.wrong {
+    border-color:#e77979;
+    background:rgba(231,121,121,.1);
+}
+
+/* =========================================================
    FINAL
-========================= */
+========================================================= */
 
-#final{
+#final {
     background:#030b08;
 }
 
-.final-background{
+.final-bg {
     position:absolute;
     inset:0;
     background:
         radial-gradient(
-            circle at 50% 40%,
-            rgba(60,125,87,.4),
-            transparent 38%
+            circle at 50% 38%,
+            rgba(65,135,92,.38),
+            transparent 40%
         ),
-        linear-gradient(#061712,#0b2519 55%,#030a07);
+        linear-gradient(
+            #061711,
+            #0a2418 55%,
+            #030906
+        );
 }
 
-.final-fireflies{
+.fireflies {
     position:absolute;
     inset:0;
-    background-image:
-        radial-gradient(circle,rgba(227,197,101,.9) 0 2px,transparent 3px);
-    background-size:97px 113px;
     opacity:.55;
-    animation:fireflies 5s ease-in-out infinite alternate;
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(230,198,102,.95) 0 2px,
+            transparent 3px
+        );
+    background-size:93px 117px;
+    animation:fireflyDrift 5s ease-in-out infinite alternate;
 }
 
-@keyframes fireflies{
-    from{transform:translate(0,0);opacity:.3}
-    to{transform:translate(12px,-15px);opacity:.7}
+@keyframes fireflyDrift {
+    from {
+        transform:translate(0,0);
+        opacity:.25;
+    }
+    to {
+        transform:translate(12px,-15px);
+        opacity:.7;
+    }
 }
 
-.final-panel{
+.final-panel {
     text-align:center;
-    background:rgba(5,17,12,.78);
 }
 
-.trophy{
-    font-size:70px;
-    animation:trophy 2s ease-in-out infinite;
+.trophy {
+    font-size:72px;
+    animation:trophyFloat 2.2s ease-in-out infinite;
 }
 
-@keyframes trophy{
-    0%,100%{transform:translateY(0) rotate(0)}
-    50%{transform:translateY(-8px) rotate(2deg)}
+@keyframes trophyFloat {
+    0%,100% {
+        transform:translateY(0) rotate(0);
+    }
+    50% {
+        transform:translateY(-8px) rotate(2deg);
+    }
 }
 
-.location{
+.location {
     margin:23px 0;
-    padding:18px 15px;
+    padding:16px 13px;
     border-radius:20px;
-    background:rgba(224,181,88,.08);
-    border:1px solid rgba(224,181,88,.35);
+    background:rgba(229,187,104,.08);
+    border:1px solid rgba(229,187,104,.35);
 }
 
-.location-row{
+.location-row {
     padding:8px 0;
     font-size:16px;
 }
 
-.final-message{
+.final-message {
     font-size:17px;
     line-height:1.8;
 }
 
-.countdown{
+.countdown {
     margin-top:27px;
-    color:#e8bf68;
+    color:#e5bb68;
+    font-size:15px;
     font-weight:900;
     letter-spacing:2px;
-    font-size:15px;
 }
 
-.fade{
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+.fade-in {
     animation:fadeIn .7s ease both;
 }
 
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(12px)}
-    to{opacity:1;transform:translateY(0)}
+@keyframes fadeIn {
+    from {
+        opacity:0;
+        transform:translateY(14px);
+    }
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-/* =========================
-   AUDIO BUTTON
-========================= */
-
-.audio-button{
-    position:fixed;
-    z-index:100;
-    top:max(14px,env(safe-area-inset-top));
-    right:14px;
-    width:43px;
-    height:43px;
-    border-radius:50%;
-    background:rgba(0,0,0,.45);
-    border:1px solid rgba(255,255,255,.18);
-    color:white;
-    font-size:19px;
-    display:none;
+.shake {
+    animation:shake .35s ease;
 }
 
-.audio-button.visible{
-    display:block;
+@keyframes shake {
+    0%,100% { transform:translateX(0); }
+    25% { transform:translateX(-5px); }
+    75% { transform:translateX(5px); }
 }
 
-@media(max-width:380px){
+/* =========================================================
+   SMALL PHONES
+========================================================= */
 
-    .panel{
-        padding:24px 15px;
+@media(max-width:380px) {
+
+    .panel {
+        padding:23px 14px;
     }
 
-    .water-choice{
-        min-height:103px;
+    .water-scene {
+        height:190px;
     }
 
-    .water-scene{
-        height:185px;
+    .trail-scene {
+        height:270px;
+    }
+
+    .prep-choice {
+        min-height:86px;
     }
 
 }
 </style>
 </head>
 
+
 <body>
 
-<button id="audioButton" class="audio-button" onclick="toggleAudio()">🔊</button>
+<button id="audioButton" onclick="toggleAudio()">🔊</button>
 
 
-<!-- =========================
+<!-- =====================================================
      INTRO
-========================= -->
+===================================================== -->
 
 <section id="intro" class="screen active">
 
-    <div class="sky">
+    <div class="night-sky">
         <div class="stars"></div>
         <div class="moon"></div>
-        <div class="trees">
-            <div class="tree t1"></div>
-            <div class="tree t2"></div>
-            <div class="tree t3"></div>
-            <div class="tree t4"></div>
-        </div>
-        <div class="horizon"></div>
+
+        <div class="tree one"></div>
+        <div class="tree two"></div>
+        <div class="tree three"></div>
+        <div class="tree four"></div>
+
+        <div class="mountain"></div>
         <div class="ground"></div>
     </div>
 
     <div class="content">
 
-        <div class="panel intro-panel fade">
+        <div class="panel intro-panel fade-in">
 
-            <div class="tent">🏕️</div>
+            <div class="tent">
+                🏕️
+            </div>
 
             <div class="badge">
                 MISSION 3 • FINAL MISSION
@@ -803,26 +1172,35 @@ p{
             </h1>
 
             <p>
-                You've made it this far, birthday boy.
+                You've made it this far,
+                birthday boy.
             </p>
 
             <p>
-                The final mission takes you
-                somewhere a little closer to nature...
+                The final mission is waiting.
+                Three challenges stand between you
+                and your final surprise.
             </p>
 
             <p class="heart">
-                But first, you have two final challenges to complete. ❤️
+                Think carefully. Stay sharp.
+                And enjoy the adventure. ❤️
             </p>
 
-            <div class="fire-mini">🔥</div>
+            <div class="fire-icon">
+                🔥
+            </div>
 
-            <button class="main-btn" onclick="startMission()">
+            <button
+                class="main-btn"
+                onclick="startMission()">
+
                 START FINAL MISSION
+
             </button>
 
-            <p class="small" style="margin-bottom:0;">
-                🔊 Tap Start to activate the adventure sounds
+            <p class="small">
+                🔊 Sound starts when you begin
             </p>
 
         </div>
@@ -832,42 +1210,69 @@ p{
 </section>
 
 
-<!-- =========================
-     WATER GAME
-========================= -->
+<!-- =====================================================
+     CHALLENGE 1 — READ THE WATER
+===================================================== -->
 
 <section id="waterGame" class="screen">
 
-    <div class="sky">
+    <div class="night-sky">
         <div class="stars"></div>
         <div class="moon"></div>
-        <div class="trees">
-            <div class="tree t1"></div>
-            <div class="tree t2"></div>
-            <div class="tree t3"></div>
-            <div class="tree t4"></div>
-        </div>
-        <div class="horizon"></div>
+
+        <div class="tree one"></div>
+        <div class="tree two"></div>
+        <div class="tree three"></div>
+        <div class="tree four"></div>
+
+        <div class="mountain"></div>
         <div class="ground"></div>
     </div>
 
-    <div class="content water-wrap">
+    <div class="content">
 
-        <div class="panel water-panel fade">
+        <div class="progress">
+
+            <div class="progress-step">
+                <div class="progress-dot active">1</div>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <div class="progress-dot">2</div>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step">
+                <div class="progress-dot">3</div>
+            </div>
+
+        </div>
+
+
+        <div class="panel fade-in">
 
             <div class="badge">
-                CHALLENGE 1
+                CHALLENGE 1 • READ THE WATER
             </div>
 
             <h2>
-                Read the Water
+                Study the Shoreline
             </h2>
 
             <p>
-                The night is getting darker.
-                You're standing beside the water,
-                deciding where it is safest to make your next move.
+                The tide is moving and the light is fading.
+                Before heading further along the coast,
+                study the water carefully.
             </p>
+
+            <p>
+                Which condition would give you
+                the safest and most predictable area?
+            </p>
+
 
             <div class="water-scene">
 
@@ -875,13 +1280,16 @@ p{
 
                 <div class="water-moon"></div>
 
-                <div id="waterSurface" class="water-surface calm"></div>
+                <div
+                    id="waterSurface"
+                    class="water-surface">
+                </div>
 
-                <div class="wave w1"></div>
-                <div class="wave w2"></div>
+                <div class="wave a"></div>
+                <div class="wave b"></div>
 
-                <div class="rock r1"></div>
-                <div class="rock r2"></div>
+                <div class="rock left"></div>
+                <div class="rock right"></div>
 
                 <div class="boat">
                     🛶
@@ -889,58 +1297,57 @@ p{
 
             </div>
 
-            <p>
-                Study the movement of the water.
-                <br>
-                <strong>Which one would you choose?</strong>
-            </p>
 
             <div class="water-options">
 
-                <button class="water-choice"
-                        onclick="chooseWater(this,'rough')">
+                <button
+                    class="water-choice"
+                    onclick="chooseWater(this,'rough')">
 
                     <span class="icon">🌊</span>
 
-                    <strong>Rough Waves</strong>
+                    <strong>Breaking Waves</strong>
 
                     <small>
-                        Large waves breaking strongly
+                        Strong waves hitting the shoreline
                     </small>
 
                 </button>
 
 
-                <button class="water-choice"
-                        onclick="chooseWater(this,'calm')">
+                <button
+                    class="water-choice"
+                    onclick="chooseWater(this,'calm')">
 
                     <span class="icon">🌤️</span>
 
                     <strong>Calm Water</strong>
 
                     <small>
-                        Gentle and predictable movement
+                        Gentle, steady and predictable movement
                     </small>
 
                 </button>
 
 
-                <button class="water-choice"
-                        onclick="chooseWater(this,'choppy')">
+                <button
+                    class="water-choice"
+                    onclick="chooseWater(this,'choppy')">
 
                     <span class="icon">💨</span>
 
                     <strong>Choppy Water</strong>
 
                     <small>
-                        Short, irregular waves
+                        Short, irregular surface movement
                     </small>
 
                 </button>
 
 
-                <button class="water-choice"
-                        onclick="chooseWater(this,'dark')">
+                <button
+                    class="water-choice"
+                    onclick="chooseWater(this,'deep')">
 
                     <span class="icon">🌑</span>
 
@@ -954,16 +1361,19 @@ p{
 
             </div>
 
-            <div id="waterFeedback" class="feedback"></div>
+
+            <div
+                id="waterFeedback"
+                class="feedback">
+            </div>
+
 
             <button
                 id="waterNext"
-                class="main-btn"
-                style="display:none;"
-                onclick="startMemory()">
+                class="main-btn hidden"
+                onclick="startTrail()">
 
-                CONTINUE TO THE CAMPFIRE →
-
+                CONTINUE →
             </button>
 
         </div>
@@ -973,65 +1383,311 @@ p{
 </section>
 
 
-<!-- =========================
-     MEMORY GAME
-========================= -->
+<!-- =====================================================
+     CHALLENGE 2 — LOST TRAIL
+===================================================== -->
 
-<section id="memoryGame" class="screen">
+<section id="trailGame" class="screen">
+
+    <div class="night-sky">
+        <div class="stars"></div>
+        <div class="moon"></div>
+        <div class="ground"></div>
+    </div>
 
     <div class="content">
 
-        <div class="panel fade">
+        <div class="progress">
 
-            <div class="fire-scene">
+            <div class="progress-dot complete">✓</div>
 
-                <div class="fire-stars"></div>
+            <div class="progress-line complete"></div>
 
-                <div class="fire-glow"></div>
+            <div class="progress-dot active">2</div>
 
-                <div class="log a"></div>
-                <div class="log b"></div>
+            <div class="progress-line"></div>
 
-                <div class="campfire">
-                    🔥
+            <div class="progress-dot">3</div>
+
+        </div>
+
+
+        <div class="panel fade-in">
+
+            <div class="badge">
+                CHALLENGE 2 • THE LOST TRAIL
+            </div>
+
+            <h2>
+                Find the Way
+            </h2>
+
+            <p>
+                The shoreline trail splits ahead.
+                Before choosing a route, look around
+                and investigate the clues.
+            </p>
+
+
+            <div class="trail-scene">
+
+                <div class="trail-moon"></div>
+
+                <div class="trail-tree t1"></div>
+                <div class="trail-tree t2"></div>
+                <div class="trail-tree t3"></div>
+                <div class="trail-tree t4"></div>
+
+                <div class="bush b1"></div>
+                <div class="bush b2"></div>
+                <div class="bush b3"></div>
+                <div class="bush b4"></div>
+
+                <div class="trail-path"></div>
+                <div class="trail-path left-path"></div>
+                <div class="trail-path right-path"></div>
+
+
+                <button
+                    id="clueFootprints"
+                    class="clue footprints"
+                    onclick="inspectClue('footprints')">
+                    👣
+                </button>
+
+
+                <button
+                    id="clueBranch"
+                    class="clue branch"
+                    onclick="inspectClue('branch')">
+                    🌿
+                </button>
+
+
+                <button
+                    id="clueMarker"
+                    class="clue marker"
+                    onclick="inspectClue('marker')">
+                    🪧
+                </button>
+
+
+                <button
+                    id="clueLight"
+                    class="clue light"
+                    onclick="inspectClue('light')">
+                    🔦
+                </button>
+
+            </div>
+
+
+            <div
+                id="clueInfo"
+                class="clue-info">
+
+                Tap the highlighted clues
+                to investigate the area.
+
+            </div>
+
+
+            <div class="route-title">
+                Once you've investigated enough clues,
+                choose your route:
+            </div>
+
+
+            <div class="route-options">
+
+                <button
+                    class="route-choice"
+                    onclick="chooseRoute(this,'forest')">
+
+                    <span>🌲</span>
+                    Forest Trail
+
+                </button>
+
+
+                <button
+                    class="route-choice"
+                    onclick="chooseRoute(this,'rocky')">
+
+                    <span>🪨</span>
+                    Rocky Shore
+
+                </button>
+
+
+                <button
+                    class="route-choice"
+                    onclick="chooseRoute(this,'coastal')">
+
+                    <span>🌊</span>
+                    Coastal Trail
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="routeFeedback"
+                class="feedback">
+            </div>
+
+
+            <button
+                id="trailNext"
+                class="main-btn hidden"
+                onclick="startStorm()">
+
+                CONTINUE →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CHALLENGE 3 — SURVIVE THE STORM
+===================================================== -->
+
+<section id="stormGame" class="screen">
+
+    <div class="content">
+
+        <div class="progress">
+
+            <div class="progress-dot complete">✓</div>
+
+            <div class="progress-line complete"></div>
+
+            <div class="progress-dot complete">✓</div>
+
+            <div class="progress-line complete"></div>
+
+            <div class="progress-dot active">3</div>
+
+        </div>
+
+
+        <div class="panel fade-in">
+
+            <div
+                id="stormScene"
+                class="storm-scene">
+
+                <div class="storm-clouds"></div>
+
+                <div
+                    id="rain"
+                    class="rain">
+                </div>
+
+                <div
+                    id="lightning"
+                    class="lightning">
+                </div>
+
+                <div class="storm-ground"></div>
+
+                <div class="tent-shape">
+                    <div class="tent-door"></div>
                 </div>
 
             </div>
 
+
             <div class="badge">
-                CHALLENGE 2
+                CHALLENGE 3 • SURVIVE THE STORM
             </div>
 
             <h2>
-                The Campfire
+                Secure the Camp
             </h2>
 
             <p>
-                The night is getting quiet.
-                The fire is slowly fading.
+                The weather is changing quickly.
+                You have limited time before the storm reaches camp.
             </p>
 
-            <p>
-                Before you leave camp,
-                remember the symbols around you.
-                Match all the hidden pairs.
-            </p>
 
-            <div id="memoryGrid" class="memory-grid"></div>
+            <div
+                id="stormStatus"
+                class="storm-status">
 
-            <div id="memoryStatus"
-                 class="feedback">
+                <strong>Weather:</strong>
+                Calm for now.
 
-                Find all 3 pairs.
+                <br><br>
+
+                Secure the campsite by making
+                the right preparations.
+
             </div>
+
+
+            <div class="prep-grid">
+
+                <button
+                    class="prep-choice"
+                    onclick="prepareCamp(this,'tent')">
+
+                    <span>🏕️</span>
+                    <strong>Secure the tent</strong>
+
+                </button>
+
+
+                <button
+                    class="prep-choice"
+                    onclick="prepareCamp(this,'gear')">
+
+                    <span>🎒</span>
+                    <strong>Protect your gear</strong>
+
+                </button>
+
+
+                <button
+                    class="prep-choice"
+                    onclick="prepareCamp(this,'shelter')">
+
+                    <span>🌲</span>
+                    <strong>Choose shelter</strong>
+
+                </button>
+
+
+                <button
+                    class="prep-choice"
+                    onclick="prepareCamp(this,'fire')">
+
+                    <span>🔥</span>
+                    <strong>Protect the fire</strong>
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="stormFeedback"
+                class="feedback">
+            </div>
+
 
             <button
                 id="finalButton"
-                class="main-btn"
-                style="display:none;"
+                class="main-btn hidden"
                 onclick="showFinal()">
 
-                🔓 UNLOCK FINAL SURPRISE
+                COMPLETE FINAL MISSION 🏆
 
             </button>
 
@@ -1042,19 +1698,19 @@ p{
 </section>
 
 
-<!-- =========================
-     FINAL REVEAL
-========================= -->
+<!-- =====================================================
+     FINAL
+===================================================== -->
 
 <section id="final" class="screen">
 
-    <div class="final-background"></div>
+    <div class="final-bg"></div>
 
-    <div class="final-fireflies"></div>
+    <div class="fireflies"></div>
 
     <div class="content">
 
-        <div class="panel final-panel fade">
+        <div class="panel final-panel fade-in">
 
             <div class="trophy">
                 🏆
@@ -1065,13 +1721,22 @@ p{
             </div>
 
             <h1>
-                You did it,<br>
-                <span class="heart">birthday boy. ❤️</span>
+                YOU DID IT,<br>
+                <span class="gold">MASTER ANGLER!</span>
             </h1>
 
             <p>
-                Your final surprise has been unlocked…
+                You read the water.
+                <br>
+                You found the trail.
+                <br>
+                And you survived the storm.
             </p>
+
+            <p class="heart">
+                Your final surprise has been unlocked… 🔓
+            </p>
+
 
             <div class="location">
 
@@ -1089,13 +1754,17 @@ p{
 
             </div>
 
+
             <p class="final-message">
+
                 Pack your bags.
                 <br>
                 Bring your fishing gear.
                 <br>
                 And come ready for an adventure with me. ❤️
+
             </p>
+
 
             <div class="countdown">
                 THE COUNTDOWN BEGINS… ⏳
@@ -1112,33 +1781,45 @@ p{
 
 /* =========================================================
    AUDIO ENGINE
-   No external audio files required.
+   All audio is generated in-browser.
+   No MP3/WAV assets required.
 ========================================================= */
 
 let audioCtx = null;
 let masterGain = null;
-
 let musicGain = null;
 let ambienceGain = null;
 
-let musicTimer = null;
-let ambienceTimer = null;
-
-let audioStarted = false;
 let audioMuted = false;
 
+let musicTimer = null;
+let ambienceTimer = null;
+let currentScene = "intro";
 
-/* ---------------------------------------------------------
+let audioStarted = false;
+
+
+/* =========================================================
    INITIALISE AUDIO
---------------------------------------------------------- */
+========================================================= */
 
-function initAudio(){
+function initAudio() {
 
-    if(audioCtx) return;
+    if (audioCtx) {
 
-    try{
+        if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
 
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return;
+
+    }
+
+    try {
+
+        audioCtx =
+            new (window.AudioContext ||
+                 window.webkitAudioContext)();
 
         masterGain = audioCtx.createGain();
         masterGain.gain.value = 0.42;
@@ -1149,63 +1830,91 @@ function initAudio(){
         musicGain.connect(masterGain);
 
         ambienceGain = audioCtx.createGain();
-        ambienceGain.gain.value = 0.13;
+        ambienceGain.gain.value = 0.12;
         ambienceGain.connect(masterGain);
 
         audioStarted = true;
 
-        document.getElementById("audioButton")
+        document
+            .getElementById("audioButton")
             .classList.add("visible");
 
-        startMusic();
+        startBackgroundMusic();
 
-    }catch(e){
+        startAmbientLoop();
 
-        console.log("Audio unavailable.");
+    } catch (error) {
+
+        console.log("Audio unavailable.", error);
 
     }
+
 }
 
 
-/* ---------------------------------------------------------
-   PLAY NOTE
---------------------------------------------------------- */
+/* =========================================================
+   SIMPLE TONE
+========================================================= */
 
-function note(freq,duration,type="sine",volume=.08){
+function playTone(
+    frequency,
+    duration,
+    type = "sine",
+    volume = 0.05,
+    destination = musicGain
+) {
 
-    if(!audioCtx || audioMuted) return;
+    if (
+        !audioCtx ||
+        audioMuted ||
+        !destination
+    ) return;
 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    const oscillator =
+        audioCtx.createOscillator();
 
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq,audioCtx.currentTime);
+    const gain =
+        audioCtx.createGain();
 
-    gain.gain.setValueAtTime(.001,audioCtx.currentTime);
+    oscillator.type = type;
+
+    oscillator.frequency.setValueAtTime(
+        frequency,
+        audioCtx.currentTime
+    );
+
+    gain.gain.setValueAtTime(
+        0.001,
+        audioCtx.currentTime
+    );
 
     gain.gain.exponentialRampToValueAtTime(
         volume,
-        audioCtx.currentTime+.04
+        audioCtx.currentTime + 0.04
     );
 
     gain.gain.exponentialRampToValueAtTime(
-        .001,
-        audioCtx.currentTime+duration
+        0.001,
+        audioCtx.currentTime + duration
     );
 
-    osc.connect(gain);
-    gain.connect(musicGain);
+    oscillator.connect(gain);
+    gain.connect(destination);
 
-    osc.start();
-    osc.stop(audioCtx.currentTime+duration+.05);
+    oscillator.start();
+
+    oscillator.stop(
+        audioCtx.currentTime + duration + 0.05
+    );
+
 }
 
 
-/* ---------------------------------------------------------
-   CINEMATIC BACKGROUND MUSIC
---------------------------------------------------------- */
+/* =========================================================
+   BACKGROUND MUSIC
+========================================================= */
 
-const melody = [
+const introMelody = [
     196,
     220,
     261.63,
@@ -1218,69 +1927,118 @@ const melody = [
 
 let melodyIndex = 0;
 
-function startMusic(){
+function startBackgroundMusic() {
 
-    if(musicTimer) return;
+    if (musicTimer) return;
 
-    musicTimer = setInterval(function(){
+    musicTimer = setInterval(function() {
 
-        if(!audioCtx || audioMuted) return;
+        if (!audioCtx || audioMuted) return;
 
-        const freq = melody[melodyIndex];
+        let frequency =
+            introMelody[melodyIndex];
 
-        note(freq,1.9,"sine",.045);
+        let volume = 0.045;
 
-        setTimeout(function(){
-            note(freq*1.5,1.2,"triangle",.018);
-        },180);
+        if (currentScene === "storm") {
+            volume = 0.065;
+        }
+
+        if (currentScene === "final") {
+            volume = 0.08;
+        }
+
+        playTone(
+            frequency,
+            1.8,
+            "sine",
+            volume
+        );
+
+        setTimeout(function() {
+
+            if (
+                !audioCtx ||
+                audioMuted
+            ) return;
+
+            playTone(
+                frequency * 1.5,
+                1.1,
+                "triangle",
+                volume * 0.38
+            );
+
+        }, 180);
 
         melodyIndex++;
 
-        if(melodyIndex >= melody.length){
-            melodyIndex=0;
+        if (
+            melodyIndex >=
+            introMelody.length
+        ) {
+            melodyIndex = 0;
         }
 
-    },1800);
+    }, 1800);
 
 }
 
 
-/* ---------------------------------------------------------
-   AMBIENT WATER
---------------------------------------------------------- */
+/* =========================================================
+   AMBIENT NOISE
+========================================================= */
 
-function waterNoise(){
+function createNoise(
+    volume = 0.04,
+    filterFrequency = 1000
+) {
 
-    if(!audioCtx || audioMuted) return;
+    if (
+        !audioCtx ||
+        audioMuted ||
+        !ambienceGain
+    ) return;
 
-    const bufferSize = audioCtx.sampleRate * 1.5;
+    const duration = 1.4;
 
-    const buffer = audioCtx.createBuffer(
-        1,
-        bufferSize,
-        audioCtx.sampleRate
-    );
+    const buffer =
+        audioCtx.createBuffer(
+            1,
+            audioCtx.sampleRate * duration,
+            audioCtx.sampleRate
+        );
 
-    const data = buffer.getChannelData(0);
+    const data =
+        buffer.getChannelData(0);
 
-    for(let i=0;i<bufferSize;i++){
+    for (
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
 
-        data[i]=(Math.random()*2-1);
+        data[i] =
+            (Math.random() * 2 - 1);
 
     }
 
-    const source = audioCtx.createBufferSource();
+    const source =
+        audioCtx.createBufferSource();
 
-    const filter = audioCtx.createBiquadFilter();
+    const filter =
+        audioCtx.createBiquadFilter();
 
-    filter.type="lowpass";
-    filter.frequency.value=1000;
+    filter.type = "lowpass";
+    filter.frequency.value =
+        filterFrequency;
 
-    const gain=audioCtx.createGain();
+    const gain =
+        audioCtx.createGain();
 
-    gain.gain.value=.055;
+    gain.gain.value = volume;
 
-    source.buffer=buffer;
+    source.buffer = buffer;
 
     source.connect(filter);
     filter.connect(gain);
@@ -1291,158 +2049,273 @@ function waterNoise(){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
+   AMBIENT LOOP
+========================================================= */
+
+function startAmbientLoop() {
+
+    if (ambienceTimer) return;
+
+    ambienceTimer =
+        setInterval(function() {
+
+            if (!audioCtx || audioMuted)
+                return;
+
+            if (
+                currentScene === "water"
+            ) {
+
+                createNoise(
+                    0.065,
+                    900
+                );
+
+            }
+
+            else if (
+                currentScene === "trail"
+            ) {
+
+                createNoise(
+                    0.035,
+                    650
+                );
+
+            }
+
+            else if (
+                currentScene === "storm"
+            ) {
+
+                createNoise(
+                    0.11,
+                    550
+                );
+
+            }
+
+            else if (
+                currentScene === "final"
+            ) {
+
+                createNoise(
+                    0.035,
+                    800
+                );
+
+            }
+
+            else {
+
+                createNoise(
+                    0.025,
+                    500
+                );
+
+            }
+
+        }, 1500);
+
+}
+
+
+/* =========================================================
    WIND
---------------------------------------------------------- */
+========================================================= */
 
-function wind(){
+function windSound() {
 
-    if(!audioCtx || audioMuted) return;
-
-    const bufferSize=audioCtx.sampleRate*2;
-
-    const buffer=audioCtx.createBuffer(
-        1,
-        bufferSize,
-        audioCtx.sampleRate
-    );
-
-    const data=buffer.getChannelData(0);
-
-    for(let i=0;i<bufferSize;i++){
-
-        data[i]=(Math.random()*2-1)*.35;
-
-    }
-
-    const source=audioCtx.createBufferSource();
-
-    const filter=audioCtx.createBiquadFilter();
-
-    filter.type="bandpass";
-    filter.frequency.value=450;
-    filter.Q.value=.5;
-
-    const gain=audioCtx.createGain();
-
-    gain.gain.value=.035;
-
-    source.buffer=buffer;
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(ambienceGain);
-
-    source.start();
-
-}
-
-
-/* ---------------------------------------------------------
-   CAMPFIRE SOUND
---------------------------------------------------------- */
-
-function fireCrackle(){
-
-    if(!audioCtx || audioMuted) return;
-
-    const osc=audioCtx.createOscillator();
-    const gain=audioCtx.createGain();
-
-    osc.type="square";
-
-    osc.frequency.value=
-        100+Math.random()*100;
-
-    gain.gain.setValueAtTime(
-        .001,
-        audioCtx.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .035,
-        audioCtx.currentTime+.01
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .001,
-        audioCtx.currentTime+.08
-    );
-
-    osc.connect(gain);
-    gain.connect(ambienceGain);
-
-    osc.start();
-
-    osc.stop(
-        audioCtx.currentTime+.1
+    createNoise(
+        0.035,
+        450
     );
 
 }
 
 
-/* ---------------------------------------------------------
-   GENERAL SOUND EFFECT
---------------------------------------------------------- */
+/* =========================================================
+   WATER SOUND
+========================================================= */
 
-function effect(type){
+function waterSound() {
 
-    if(!audioCtx || audioMuted) return;
-
-    if(type==="correct"){
-
-        note(523,.25,"sine",.12);
-
-        setTimeout(()=>{
-            note(659,.35,"sine",.1);
-        },120);
-
-        setTimeout(()=>{
-            note(784,.45,"sine",.08);
-        },240);
-
-    }
-
-    else if(type==="wrong"){
-
-        note(170,.25,"sawtooth",.06);
-
-    }
-
-    else if(type==="click"){
-
-        note(440,.12,"sine",.055);
-
-    }
-
-    else if(type==="reveal"){
-
-        note(392,.6,"sine",.08);
-
-        setTimeout(()=>{
-            note(523,.7,"sine",.1);
-        },250);
-
-        setTimeout(()=>{
-            note(659,1,"sine",.12);
-        },500);
-
-    }
+    createNoise(
+        0.07,
+        1000
+    );
 
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
+   FOOTSTEP
+========================================================= */
+
+function footstepSound() {
+
+    if (!audioCtx || audioMuted) return;
+
+    playTone(
+        90 + Math.random() * 20,
+        0.09,
+        "triangle",
+        0.055,
+        ambienceGain
+    );
+
+}
+
+
+/* =========================================================
+   THUNDER
+========================================================= */
+
+function thunderSound() {
+
+    if (!audioCtx || audioMuted) return;
+
+    createNoise(
+        0.18,
+        250
+    );
+
+    playTone(
+        55,
+        1.2,
+        "sine",
+        0.10,
+        ambienceGain
+    );
+
+}
+
+
+/* =========================================================
+   CORRECT SOUND
+========================================================= */
+
+function correctSound() {
+
+    if (!audioCtx || audioMuted) return;
+
+    playTone(
+        523.25,
+        0.25,
+        "sine",
+        0.10
+    );
+
+    setTimeout(function() {
+
+        playTone(
+            659.25,
+            0.30,
+            "sine",
+            0.09
+        );
+
+    },120);
+
+    setTimeout(function() {
+
+        playTone(
+            783.99,
+            0.45,
+            "sine",
+            0.08
+        );
+
+    },240);
+
+}
+
+
+/* =========================================================
+   WRONG SOUND
+========================================================= */
+
+function wrongSound() {
+
+    if (!audioCtx || audioMuted) return;
+
+    playTone(
+        165,
+        0.25,
+        "sawtooth",
+        0.055
+    );
+
+}
+
+
+/* =========================================================
+   CLICK SOUND
+========================================================= */
+
+function clickSound() {
+
+    playTone(
+        440,
+        0.10,
+        "sine",
+        0.045
+    );
+
+}
+
+
+/* =========================================================
+   FINAL REVEAL MUSIC
+========================================================= */
+
+function finalMusic() {
+
+    if (!audioCtx || audioMuted)
+        return;
+
+    const notes = [
+        392,
+        493.88,
+        587.33,
+        659.25
+    ];
+
+    notes.forEach(function(
+        frequency,
+        index
+    ) {
+
+        setTimeout(function() {
+
+            playTone(
+                frequency,
+                0.8,
+                "sine",
+                0.11
+            );
+
+        }, index * 240);
+
+    });
+
+}
+
+
+/* =========================================================
    AUDIO TOGGLE
---------------------------------------------------------- */
+========================================================= */
 
-function toggleAudio(){
+function toggleAudio() {
 
-    if(!audioCtx) return;
+    if (!audioCtx) return;
 
-    audioMuted=!audioMuted;
+    audioMuted = !audioMuted;
 
-    document.getElementById("audioButton").textContent =
+    document
+        .getElementById("audioButton")
+        .textContent =
         audioMuted ? "🔇" : "🔊";
 
 }
@@ -1452,16 +2325,18 @@ function toggleAudio(){
    SCREEN CONTROL
 ========================================================= */
 
-function showScreen(id){
+function showScreen(id) {
 
-    document.querySelectorAll(".screen")
-        .forEach(function(screen){
+    document
+        .querySelectorAll(".screen")
+        .forEach(function(screen) {
 
             screen.classList.remove("active");
 
         });
 
-    const target=document.getElementById(id);
+    const target =
+        document.getElementById(id);
 
     target.classList.add("active");
 
@@ -1471,101 +2346,118 @@ function showScreen(id){
 
 
 /* =========================================================
-   START
+   START MISSION
 ========================================================= */
 
-function startMission(){
+function startMission() {
 
     initAudio();
 
-    if(audioCtx && audioCtx.state==="suspended"){
-        audioCtx.resume();
-    }
+    currentScene = "water";
 
-    effect("click");
+    waterSound();
+    windSound();
+
+    clickSound();
 
     showScreen("waterGame");
-
-    waterNoise();
-    wind();
 
 }
 
 
 /* =========================================================
-   WATER GAME
+   CHALLENGE 1 — WATER
 ========================================================= */
 
-let waterComplete=false;
+let waterComplete = false;
 
-function chooseWater(button,type){
+function chooseWater(button,type) {
 
-    if(waterComplete) return;
+    if (waterComplete) return;
 
-    document.querySelectorAll(".water-choice")
-        .forEach(function(btn){
+    document
+        .querySelectorAll(".water-choice")
+        .forEach(function(btn) {
 
             btn.classList.remove("correct");
             btn.classList.remove("wrong");
 
         });
 
-    const surface=document.getElementById("waterSurface");
-    const feedback=document.getElementById("waterFeedback");
-    const next=document.getElementById("waterNext");
+    const surface =
+        document.getElementById(
+            "waterSurface"
+        );
 
-    surface.className="water-surface "+type;
+    const feedback =
+        document.getElementById(
+            "waterFeedback"
+        );
 
-    if(type==="calm"){
+    const next =
+        document.getElementById(
+            "waterNext"
+        );
+
+    surface.className =
+        "water-surface " + type;
+
+
+    if (type === "calm") {
 
         button.classList.add("correct");
 
-        feedback.innerHTML=
-            "✨ <strong>That's it.</strong><br>" +
-            "The surface is gentle and predictable. " +
-            "You picked the safest option.";
+        feedback.innerHTML =
+            "✨ <strong>Good choice.</strong><br>" +
+            "The water is moving gently and " +
+            "predictably. This is the safest condition.";
 
-        feedback.style.color="#70dca0";
+        feedback.style.color =
+            "#6edc9d";
 
-        waterComplete=true;
+        waterComplete = true;
 
-        next.style.display="block";
+        next.classList.remove("hidden");
 
-        effect("correct");
+        correctSound();
 
     }
 
-    else{
+    else {
 
         button.classList.add("wrong");
 
-        if(type==="rough"){
+        if (type === "rough") {
 
-            feedback.innerHTML=
-                "🌊 Too dangerous. " +
-                "Those breaking waves are carrying too much energy.";
-
-        }
-
-        else if(type==="choppy"){
-
-            feedback.innerHTML=
-                "💨 Not quite. " +
-                "The irregular short waves make movement less predictable.";
+            feedback.innerHTML =
+                "🌊 <strong>Too exposed.</strong><br>" +
+                "The breaking waves are too powerful " +
+                "and unpredictable.";
 
         }
 
-        else{
+        else if (type === "choppy") {
 
-            feedback.innerHTML=
-                "🌑 Hard to judge. " +
-                "Dark water can hide depth and movement.";
+            feedback.innerHTML =
+                "💨 <strong>Not ideal.</strong><br>" +
+                "Short irregular waves make the " +
+                "conditions harder to predict.";
 
         }
 
-        feedback.style.color="#f0a4a0";
+        else {
 
-        effect("wrong");
+            feedback.innerHTML =
+                "🌑 <strong>Hard to judge.</strong><br>" +
+                "Dark water makes depth and movement " +
+                "difficult to assess.";
+
+        }
+
+        feedback.style.color =
+            "#eda19e";
+
+        wrongSound();
 
     }
 
@@ -1573,183 +2465,198 @@ function chooseWater(button,type){
 
 
 /* =========================================================
-   MEMORY GAME
+   CHALLENGE 2 — LOST TRAIL
 ========================================================= */
 
-const symbols=[
-    "🔥","🌲","☕",
-    "🔥","🌲","☕"
-];
+let cluesFound = 0;
+let routeComplete = false;
 
-let firstCard=null;
-let secondCard=null;
-let locked=false;
-let matches=0;
+const clueMessages = {
 
+    footprints:
+        "👣 Fresh footprints. Someone has recently used this section of trail.",
 
-function shuffle(array){
+    branch:
+        "🌿 A broken branch. The vegetation has been disturbed recently.",
 
-    for(let i=array.length-1;i>0;i--){
+    marker:
+        "🪧 An old trail marker points toward the sheltered side of the coast.",
 
-        const j=Math.floor(Math.random()*(i+1));
-
-        [array[i],array[j]]=
-        [array[j],array[i]];
-
-    }
-
-    return array;
-
-}
+    light:
+        "🔦 A faint campsite light can be seen through the trees."
+};
 
 
-function startMemory(){
+function startTrail() {
 
-    showScreen("memoryGame");
+    currentScene = "trail";
 
-    buildMemory();
+    showScreen("trailGame");
 
-    fireCrackle();
+    cluesFound = 0;
+    routeComplete = false;
 
-    if(ambienceTimer){
-        clearInterval(ambienceTimer);
-    }
+    document
+        .querySelectorAll(".clue")
+        .forEach(function(clue) {
 
-    ambienceTimer=setInterval(
-        fireCrackle,
-        650
-    );
-
-}
-
-
-function buildMemory(){
-
-    const grid=document.getElementById("memoryGrid");
-
-    grid.innerHTML="";
-
-    firstCard=null;
-    secondCard=null;
-    locked=false;
-    matches=0;
-
-    document.getElementById("memoryStatus")
-        .innerHTML="Find all 3 pairs.";
-
-    document.getElementById("finalButton")
-        .style.display="none";
-
-    shuffle(symbols.slice())
-        .forEach(function(symbol){
-
-            const card=document.createElement("button");
-
-            card.className="memory-card";
-
-            card.dataset.symbol=symbol;
-
-            card.textContent="❔";
-
-            card.onclick=function(){
-
-                flipCard(card);
-
-            };
-
-            grid.appendChild(card);
+            clue.classList.remove("found");
 
         });
 
+    document
+        .getElementById("clueInfo")
+        .innerHTML =
+        "Tap the highlighted clues to investigate the area.";
+
+    document
+        .getElementById("routeFeedback")
+        .innerHTML = "";
+
+    document
+        .getElementById("trailNext")
+        .classList.add("hidden");
+
+    windSound();
+
 }
 
 
-function flipCard(card){
+function inspectClue(type) {
 
-    if(locked) return;
+    const idMap = {
 
-    if(card===firstCard) return;
+        footprints: "clueFootprints",
+        branch: "clueBranch",
+        marker: "clueMarker",
+        light: "clueLight"
 
-    if(card.classList.contains("matched")) return;
+    };
 
-    card.classList.add("flipped");
+    const clue =
+        document.getElementById(
+            idMap[type]
+        );
 
-    card.textContent=card.dataset.symbol;
+    if (
+        clue.classList.contains("found")
+    ) return;
 
-    effect("click");
+    clue.classList.add("found");
 
-    if(!firstCard){
+    cluesFound++;
 
-        firstCard=card;
+    document
+        .getElementById("clueInfo")
+        .innerHTML =
+        clueMessages[type];
+
+    footstepSound();
+
+    if (cluesFound >= 3) {
+
+        document
+            .getElementById("clueInfo")
+            .innerHTML +=
+            "<br><br><strong>You have enough information to choose a route.</strong>";
+
+        correctSound();
+
+    }
+
+}
+
+
+function chooseRoute(button,type) {
+
+    if (routeComplete) return;
+
+    const feedback =
+        document.getElementById(
+            "routeFeedback"
+        );
+
+    const next =
+        document.getElementById(
+            "trailNext"
+        );
+
+
+    if (cluesFound < 3) {
+
+        feedback.innerHTML =
+            "🔎 Investigate at least three clues first.";
+
+        feedback.style.color =
+            "#e5bb68";
+
+        button.classList.add("shake");
+
+        setTimeout(function() {
+            button.classList.remove("shake");
+        },400);
 
         return;
 
     }
 
-    secondCard=card;
 
-    checkMemory();
+    document
+        .querySelectorAll(".route-choice")
+        .forEach(function(btn) {
 
-}
+            btn.classList.remove("correct");
+            btn.classList.remove("wrong");
+
+        });
 
 
-function checkMemory(){
+    if (type === "coastal") {
 
-    locked=true;
+        button.classList.add("correct");
 
-    if(
-        firstCard.dataset.symbol===
-        secondCard.dataset.symbol
-    ){
+        feedback.innerHTML =
+            "🧭 <strong>Excellent navigation.</strong><br>" +
+            "The coastal trail is sheltered, marked " +
+            "and leads toward the campsite.";
 
-        firstCard.classList.add("matched");
-        secondCard.classList.add("matched");
+        feedback.style.color =
+            "#6edc9d";
 
-        matches++;
+        routeComplete = true;
 
-        effect("correct");
+        next.classList.remove("hidden");
 
-        document.getElementById("memoryStatus")
-            .innerHTML=
-            "🔥 Pair found! " +
-            matches +
-            " / 3";
-
-        firstCard=null;
-        secondCard=null;
-        locked=false;
-
-        if(matches===3){
-
-            document.getElementById("memoryStatus")
-                .innerHTML=
-                "🏕️ All pairs found. The campfire burns brighter.";
-
-            document.getElementById("finalButton")
-                .style.display="block";
-
-        }
+        correctSound();
 
     }
 
-    else{
+    else {
 
-        effect("wrong");
+        button.classList.add("wrong");
 
-        setTimeout(function(){
+        if (type === "forest") {
 
-            firstCard.classList.remove("flipped");
-            secondCard.classList.remove("flipped");
+            feedback.innerHTML =
+                "🌲 Not the best route. " +
+                "The forest section becomes dense and " +
+                "harder to follow after dark.";
 
-            firstCard.textContent="❔";
-            secondCard.textContent="❔";
+        }
 
-            firstCard=null;
-            secondCard=null;
+        else {
 
-            locked=false;
+            feedback.innerHTML =
+                "🪨 Too exposed. " +
+                "The rocky shoreline is more dangerous " +
+                "with the weather changing.";
 
-        },850);
+        }
+
+        feedback.style.color =
+            "#eda19e";
+
+        wrongSound();
 
     }
 
@@ -1757,16 +2664,264 @@ function checkMemory(){
 
 
 /* =========================================================
-   FINAL REVEAL
+   CHALLENGE 3 — STORM
 ========================================================= */
 
-function showFinal(){
+let preparations = {
+    tent:false,
+    gear:false,
+    shelter:false,
+    fire:false
+};
 
-    if(ambienceTimer){
-        clearInterval(ambienceTimer);
+let stormStarted = false;
+
+
+function startStorm() {
+
+    currentScene = "storm";
+
+    showScreen("stormGame");
+
+    preparations = {
+        tent:false,
+        gear:false,
+        shelter:false,
+        fire:false
+    };
+
+    stormStarted = false;
+
+    document
+        .querySelectorAll(".prep-choice")
+        .forEach(function(btn) {
+
+            btn.classList.remove("correct");
+            btn.classList.remove("wrong");
+
+        });
+
+    document
+        .getElementById("stormFeedback")
+        .innerHTML = "";
+
+    document
+        .getElementById("finalButton")
+        .classList.add("hidden");
+
+    document
+        .getElementById("rain")
+        .classList.remove("active");
+
+    startStormSequence();
+
+}
+
+
+function startStormSequence() {
+
+    const status =
+        document.getElementById(
+            "stormStatus"
+        );
+
+    setTimeout(function() {
+
+        status.innerHTML =
+            "<strong>Weather:</strong> " +
+            "Wind is picking up. " +
+            "You should secure camp now.";
+
+        windSound();
+
+    },2500);
+
+
+    setTimeout(function() {
+
+        status.innerHTML =
+            "<strong>Weather:</strong> " +
+            "Rain is approaching. " +
+            "The storm is getting closer.";
+
+        document
+            .getElementById("rain")
+            .classList.add("active");
+
+        currentScene = "storm";
+
+    },6000);
+
+
+    setTimeout(function() {
+
+        if (!stormStarted) {
+
+            status.innerHTML =
+                "<strong>Weather:</strong> " +
+                "Heavy rain. The storm has arrived.";
+
+        }
+
+    },9500);
+
+
+    setTimeout(function() {
+
+        if (!stormStarted) {
+
+            lightningFlash();
+
+        }
+
+    },11000);
+
+}
+
+
+function lightningFlash() {
+
+    const lightning =
+        document.getElementById(
+            "lightning"
+        );
+
+    lightning.classList.remove("flash");
+
+    void lightning.offsetWidth;
+
+    lightning.classList.add("flash");
+
+    thunderSound();
+
+}
+
+
+/* =========================================================
+   STORM PREPARATIONS
+========================================================= */
+
+function prepareCamp(button,type) {
+
+    if (preparations[type]) return;
+
+
+    if (type === "tent") {
+
+        preparations.tent = true;
+
+        button.classList.add("correct");
+
+        document
+            .getElementById("stormFeedback")
+            .innerHTML =
+            "🏕️ Good move. The tent is secured against the wind.";
+
+        correctSound();
+
     }
 
-    effect("reveal");
+
+    else if (type === "gear") {
+
+        preparations.gear = true;
+
+        button.classList.add("correct");
+
+        document
+            .getElementById("stormFeedback")
+            .innerHTML =
+            "🎒 Gear secured. Your equipment is protected from the rain.";
+
+        correctSound();
+
+    }
+
+
+    else if (type === "shelter") {
+
+        preparations.shelter = true;
+
+        button.classList.add("correct");
+
+        document
+            .getElementById("stormFeedback")
+            .innerHTML =
+            "🌲 Good judgement. The sheltered area gives you protection from the exposed shoreline.";
+
+        correctSound();
+
+    }
+
+
+    else if (type === "fire") {
+
+        preparations.fire = true;
+
+        button.classList.add("correct");
+
+        document
+            .getElementById("stormFeedback")
+            .innerHTML =
+            "🔥 Fire protected. Nice touch — you don't want to lose that in the rain.";
+
+        correctSound();
+
+    }
+
+
+    checkStormComplete();
+
+}
+
+
+function checkStormComplete() {
+
+    if (
+        preparations.tent &&
+        preparations.gear &&
+        preparations.shelter &&
+        preparations.fire
+    ) {
+
+        stormStarted = true;
+
+        document
+            .getElementById("stormStatus")
+            .innerHTML =
+            "<strong>Camp secured.</strong><br>" +
+            "The storm passes safely. You made it.";
+
+        document
+            .getElementById("stormFeedback")
+            .innerHTML =
+            "🌧️ <strong>Excellent work, Master Angler.</strong><br>" +
+            "You prepared the campsite before the storm arrived.";
+
+        document
+            .getElementById("finalButton")
+            .classList.remove("hidden");
+
+        correctSound();
+
+        setTimeout(function() {
+            lightningFlash();
+        },800);
+
+    }
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function showFinal() {
+
+    currentScene = "final";
+
+    finalMusic();
 
     showScreen("final");
 
