@@ -7,22 +7,23 @@
       content="width=device-width,
                initial-scale=1,
                maximum-scale=1,
-               viewport-fit=cover,
-               user-scalable=no">
+               user-scalable=no,
+               viewport-fit=cover">
 
-<meta name="theme-color" content="#06110f">
+<meta name="theme-color" content="#06100d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>Mission 3 — The Final Expedition</title>
+<title>MISSION 3 — THE FINAL EXPEDITION</title>
 
 <style>
 /* =========================================================
    MISSION 3
-   MOBILE-FIRST / IPHONE OPTIMISED
-   No external images
-   No external CSS
-   No external JavaScript
+   MOBILE-FIRST
+   SINGLE FILE
+   NO ASSETS
+   NO GAME.JS
+   NO STYLE.CSS
    ========================================================= */
 
 *{
@@ -32,18 +33,19 @@
 
 html,
 body{
-    margin:0;
-    padding:0;
     width:100%;
     height:100%;
+    margin:0;
+    padding:0;
     overflow:hidden;
-    background:#020907;
-    color:#f4f1e6;
-    font-family:-apple-system,
-                 BlinkMacSystemFont,
-                 "Segoe UI",
-                 Arial,
-                 sans-serif;
+    background:#020807;
+    color:#f3efe2;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
 }
 
 body{
@@ -56,13 +58,10 @@ input{
 }
 
 button{
-    -webkit-appearance:none;
     appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
 }
-
-/* =========================================================
-   MAIN WORLD
-   ========================================================= */
 
 #app{
     position:relative;
@@ -70,18 +69,24 @@ button{
     height:100svh;
     min-height:100svh;
     overflow:hidden;
+
     background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(69,99,110,.25),
+            transparent 32%
+        ),
         linear-gradient(
             180deg,
-            #02070c 0%,
-            #06141a 48%,
-            #071c16 76%,
-            #020907 100%
+            #02080d 0%,
+            #07161b 48%,
+            #071d16 78%,
+            #020806 100%
         );
 }
 
 /* =========================================================
-   NIGHT SKY
+   BACKGROUND
    ========================================================= */
 
 .sky{
@@ -92,38 +97,36 @@ button{
 
 .star{
     position:absolute;
-    width:3px;
-    height:3px;
+    width:2px;
+    height:2px;
     border-radius:50%;
-    background:rgba(255,255,255,.72);
+    background:#fff;
+    opacity:.65;
 }
 
-.s1{left:9%;top:12%}
-.s2{left:23%;top:21%}
-.s3{left:42%;top:10%}
-.s4{left:59%;top:18%}
-.s5{left:76%;top:11%}
-.s6{left:90%;top:27%}
-.s7{left:15%;top:36%}
-.s8{left:35%;top:43%}
-.s9{left:54%;top:34%}
-.s10{left:82%;top:42%}
-.s11{left:67%;top:29%}
-.s12{left:31%;top:30%}
-
-/* =========================================================
-   MOON
-   ========================================================= */
+.s1{left:7%;top:13%}
+.s2{left:19%;top:26%}
+.s3{left:31%;top:11%}
+.s4{left:43%;top:20%}
+.s5{left:56%;top:9%}
+.s6{left:70%;top:25%}
+.s7{left:83%;top:12%}
+.s8{left:93%;top:30%}
+.s9{left:12%;top:42%}
+.s10{left:36%;top:36%}
+.s11{left:62%;top:39%}
+.s12{left:79%;top:45%}
 
 .moon{
     position:absolute;
     width:58px;
     height:58px;
-    top:8%;
     right:11%;
+    top:8%;
     border-radius:50%;
-    background:#fff0bb;
-    box-shadow:0 0 28px rgba(255,220,135,.20);
+    background:#f8e9b6;
+    box-shadow:
+        0 0 30px rgba(255,224,147,.16);
 }
 
 .moon:after{
@@ -132,22 +135,17 @@ button{
     width:58px;
     height:58px;
     left:16px;
-    top:-4px;
+    top:-5px;
     border-radius:50%;
-    background:#06141a;
+    background:#07161b;
 }
-
-/* =========================================================
-   MOUNTAINS
-   ========================================================= */
 
 .mountains{
     position:absolute;
     left:0;
     right:0;
     bottom:18%;
-    height:24%;
-    pointer-events:none;
+    height:26%;
 }
 
 .mountain{
@@ -155,45 +153,38 @@ button{
     bottom:0;
     width:0;
     height:0;
+
     border-left:100px solid transparent;
     border-right:100px solid transparent;
     border-bottom:125px solid #03100d;
 }
 
-.m1{
-    left:-60px;
-}
-
+.m1{left:-65px}
 .m2{
     left:18%;
-    transform:scale(1.25);
+    transform:scale(1.22);
 }
-
 .m3{
-    left:49%;
-    transform:scale(.9);
+    left:48%;
+    transform:scale(.88);
 }
-
 .m4{
     right:-65px;
-    transform:scale(1.25);
+    transform:scale(1.3);
 }
-
-/* =========================================================
-   GROUND
-   ========================================================= */
 
 .ground{
     position:absolute;
     left:0;
     right:0;
     bottom:0;
-    height:24%;
+    height:25%;
+
     background:
         linear-gradient(
             180deg,
-            #092119,
-            #020907
+            #0a2118,
+            #020806
         );
 }
 
@@ -203,10 +194,10 @@ button{
 
 .campfire{
     position:absolute;
-    left:7%;
+    left:6%;
     bottom:13%;
-    width:45px;
-    height:58px;
+    width:50px;
+    height:62px;
     pointer-events:none;
 }
 
@@ -214,57 +205,69 @@ button{
     position:absolute;
     left:50%;
     bottom:0;
-    width:75px;
-    height:75px;
+    width:85px;
+    height:85px;
     transform:translateX(-50%);
     border-radius:50%;
-    background:rgba(255,147,45,.07);
+    background:rgba(255,143,40,.08);
 }
 
-.fireFlame{
+.fire{
     position:absolute;
     left:50%;
     bottom:7px;
-    width:24px;
-    height:37px;
+    width:25px;
+    height:39px;
     transform:
         translateX(-50%)
         rotate(45deg);
-    border-radius:5px 70% 5px 70%;
-    background:#ffae37;
-    animation:fireMove 1.2s ease-in-out infinite alternate;
+
+    border-radius:
+        5px 70% 5px 70%;
+
+    background:#ff9e32;
+
+    animation:
+        flame 1.1s
+        ease-in-out
+        infinite alternate;
 }
 
 .fireCore{
     position:absolute;
     left:50%;
-    bottom:6px;
-    width:14px;
-    height:24px;
+    bottom:7px;
+    width:13px;
+    height:23px;
+
     transform:
         translateX(-50%)
         rotate(45deg);
-    border-radius:4px 70% 4px 70%;
-    background:#fff1a8;
+
+    border-radius:
+        4px 70% 4px 70%;
+
+    background:#ffe9a2;
 }
 
-@keyframes fireMove{
+@keyframes flame{
     from{
         transform:
             translateX(-50%)
             rotate(40deg)
-            scale(.92);
+            scale(.9);
     }
+
     to{
         transform:
             translateX(-50%)
-            rotate(50deg)
-            scale(1.06);
+            rotate(51deg)
+            scale(1.08);
     }
 }
 
 /* =========================================================
-   GAME CONTAINER
+   SCREEN
    ========================================================= */
 
 #screen{
@@ -292,12 +295,15 @@ button{
 
     border-radius:22px;
 
-    background:rgba(3,13,11,.96);
+    background:
+        rgba(3,13,11,.97);
 
-    border:1px solid rgba(229,184,79,.20);
+    border:
+        1px solid
+        rgba(224,180,76,.19);
 
     box-shadow:
-        0 15px 45px rgba(0,0,0,.45);
+        0 18px 50px rgba(0,0,0,.5);
 }
 
 .hidden{
@@ -305,7 +311,7 @@ button{
 }
 
 /* =========================================================
-   TYPOGRAPHY
+   TEXT
    ========================================================= */
 
 .eyebrow{
@@ -313,14 +319,17 @@ button{
 
     padding:7px 11px;
 
-    border:1px solid rgba(225,180,76,.45);
+    border:
+        1px solid
+        rgba(225,180,76,.45);
+
     border-radius:999px;
 
     color:#e6b85c;
 
     font-size:10px;
     font-weight:900;
-    letter-spacing:1.8px;
+    letter-spacing:1.7px;
 }
 
 h1{
@@ -335,27 +344,25 @@ h1{
 }
 
 h2{
-    margin:8px 0 10px;
+    margin:8px 0 9px;
 
     font-size:27px;
     line-height:1.05;
-
-    letter-spacing:-.5px;
 }
 
 .gold{
-    color:#e5b64f;
+    color:#e4b453;
 }
 
 .subtitle{
-    color:#c2cdc7;
+    color:#c2cec8;
     font-size:14px;
-    line-height:1.52;
+    line-height:1.5;
 }
 
 .small{
-    color:#83938d;
-    font-size:11px;
+    color:#7e9189;
+    font-size:10px;
     line-height:1.45;
 }
 
@@ -380,63 +387,47 @@ h2{
     font-size:14px;
     font-weight:900;
 
-    letter-spacing:.4px;
+    letter-spacing:.5px;
 
     box-shadow:
         0 5px 0 #8c671f;
-
-    cursor:pointer;
-
-    transition:
-        transform .08s ease,
-        box-shadow .08s ease;
 }
 
 .btn:active{
     transform:translateY(4px);
-    box-shadow:0 1px 0 #8c671f;
-}
-
-.btn.secondary{
-    background:#10251f;
-    color:#e9eee8;
-    border:1px solid rgba(255,255,255,.10);
-    box-shadow:none;
+    box-shadow:
+        0 1px 0 #8c671f;
 }
 
 /* =========================================================
-   AUDIO BUTTON
+   SOUND BUTTON
    ========================================================= */
 
 .soundButton{
     position:fixed;
-    z-index:50;
+    z-index:100;
 
     right:13px;
     top:
         max(13px,env(safe-area-inset-top));
 
-    width:43px;
-    height:43px;
+    width:44px;
+    height:44px;
 
     border-radius:50%;
 
-    border:1px solid rgba(232,187,78,.40);
+    border:
+        1px solid
+        rgba(229,185,79,.45);
 
     background:#071511;
-    color:#e4b958;
+    color:#e4b85c;
 
     font-size:18px;
-
-    box-shadow:0 5px 18px rgba(0,0,0,.35);
-}
-
-.soundButton:active{
-    transform:scale(.94);
 }
 
 /* =========================================================
-   START SCREEN
+   START
    ========================================================= */
 
 .startIntro{
@@ -446,9 +437,7 @@ h2{
 .startLine{
     width:70px;
     height:2px;
-
     margin:18px 0;
-
     background:#d9a941;
 }
 
@@ -460,47 +449,44 @@ h2{
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     margin-bottom:12px;
 }
 
 .missionLabel{
-    color:#e2b451;
+    color:#e3b34f;
     font-size:10px;
     font-weight:900;
     letter-spacing:1.6px;
 }
 
 .audioLabel{
-    color:#7f938b;
+    color:#82958d;
     font-size:9px;
-    letter-spacing:.8px;
 }
 
 .progress{
     width:100%;
     height:5px;
-
-    margin-bottom:20px;
-
-    overflow:hidden;
+    margin-bottom:18px;
 
     border-radius:99px;
+    overflow:hidden;
 
-    background:#14251f;
+    background:#13251e;
 }
 
 .progressBar{
+    width:11%;
     height:100%;
-    width:33.33%;
 
     background:#d9a941;
 
-    transition:width .25s ease;
+    transition:
+        width .35s ease;
 }
 
 /* =========================================================
-   CHALLENGE LABEL
+   LEVEL HEADER
    ========================================================= */
 
 .challengeLabel{
@@ -512,15 +498,46 @@ h2{
     letter-spacing:1.7px;
 }
 
+.levelRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-top:9px;
+}
+
+.levelBadge{
+    padding:5px 8px;
+
+    border-radius:8px;
+
+    background:#10231c;
+
+    color:#d8e2dc;
+
+    font-size:9px;
+    font-weight:900;
+}
+
+.difficulty{
+    font-size:10px;
+    font-weight:900;
+}
+
+.easy{color:#7ec58c}
+.medium{color:#d4bd64}
+.hard{color:#e79650}
+.expert{color:#db6457}
+
 /* =========================================================
-   WATER CHALLENGE
+   WATER
    ========================================================= */
 
 .waterScene{
     position:relative;
 
     width:100%;
-    height:130px;
+    height:150px;
 
     margin:14px 0;
 
@@ -528,81 +545,201 @@ h2{
 
     border-radius:17px;
 
-    border:1px solid rgba(255,255,255,.09);
+    border:
+        1px solid
+        rgba(255,255,255,.09);
 
     background:
         linear-gradient(
             180deg,
-            #78939a 0%,
-            #365f69 34%,
-            #0b3139 100%
+            #7b979d 0%,
+            #3c6872 34%,
+            #092e36 100%
+        );
+}
+
+.waterScene.calm{
+    background:
+        linear-gradient(
+            180deg,
+            #8aa3a5,
+            #497984,
+            #123e46
+        );
+}
+
+.waterScene.rough{
+    background:
+        linear-gradient(
+            180deg,
+            #63777b,
+            #345761,
+            #102a31
+        );
+}
+
+.waterScene.eddy{
+    background:
+        radial-gradient(
+            ellipse at 52% 55%,
+            #6c9ca1,
+            #245763 28%,
+            #0a3038 62%,
+            #061c22
+        );
+}
+
+.waterScene.streak{
+    background:
+        linear-gradient(
+            180deg,
+            #78969c,
+            #275b65 42%,
+            #082d35
         );
 }
 
 .waterLine{
     position:absolute;
 
-    left:-5%;
-    width:110%;
-    height:18px;
+    left:-8%;
+    width:116%;
+    height:20px;
 
     border-top:
         2px solid
-        rgba(226,243,238,.55);
+        rgba(235,247,241,.53);
 
     border-radius:50%;
 }
 
-.w1{
-    top:27px;
-    transform:skewY(-2deg);
-}
+.w1{top:25px}
+.w2{top:58px}
+.w3{top:92px}
+.w4{top:124px}
 
-.w2{
-    top:58px;
-    transform:skewY(2deg);
-}
-
-.w3{
-    top:91px;
-    transform:skewY(-1deg);
-}
-
-.current{
+.waveSmall{
     position:absolute;
 
-    left:15%;
+    width:45px;
+    height:12px;
+
+    border-top:
+        2px solid
+        rgba(255,255,255,.45);
+
+    border-radius:50%;
+}
+
+.waveA{
+    left:13%;
+    top:42%;
+}
+
+.waveB{
+    right:17%;
+    top:62%;
+}
+
+.waveC{
+    left:48%;
+    top:76%;
+}
+
+.currentArrow{
+    position:absolute;
+
+    left:17%;
     top:48%;
 
-    color:rgba(255,255,255,.68);
+    color:
+        rgba(255,255,255,.68);
 
-    font-size:25px;
+    font-size:27px;
+    letter-spacing:4px;
 
     animation:
-        waterDrift 2.1s ease-in-out
+        currentMove
+        2s
+        ease-in-out
         infinite alternate;
 }
 
-@keyframes waterDrift{
+@keyframes currentMove{
     from{
         transform:translateX(0);
     }
+
     to{
-        transform:translateX(45px);
+        transform:translateX(65px);
     }
 }
 
-.waterNote{
+.eddyCircle{
     position:absolute;
 
-    right:12px;
+    left:50%;
+    top:53%;
+
+    width:70px;
+    height:70px;
+
+    transform:translate(-50%,-50%);
+
+    border:
+        2px dashed
+        rgba(230,247,239,.55);
+
+    border-radius:50%;
+
+    animation:
+        spin
+        3s
+        linear
+        infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:
+            translate(-50%,-50%)
+            rotate(360deg);
+    }
+}
+
+.rock{
+    position:absolute;
+
+    width:22px;
+    height:13px;
+
+    border-radius:
+        50% 45% 30% 40%;
+
+    background:#263b39;
+}
+
+.rock.r1{
+    left:22%;
+    bottom:28px;
+}
+
+.rock.r2{
+    right:23%;
+    bottom:40px;
+}
+
+.waterHint{
+    position:absolute;
+
+    right:10px;
     bottom:9px;
 
     padding:5px 8px;
 
     border-radius:8px;
 
-    background:rgba(0,0,0,.22);
+    background:rgba(0,0,0,.25);
 
     color:#e4efeb;
 
@@ -610,7 +747,7 @@ h2{
 }
 
 /* =========================================================
-   CHOICE GRID
+   CHOICES
    ========================================================= */
 
 .choiceGrid{
@@ -625,7 +762,7 @@ h2{
 }
 
 .choice{
-    min-height:94px;
+    min-height:95px;
 
     padding:12px;
 
@@ -641,8 +778,6 @@ h2{
 
     color:#eef1e9;
 
-    cursor:pointer;
-
     transition:
         transform .08s ease,
         background .15s ease,
@@ -655,7 +790,6 @@ h2{
 
 .choice strong{
     display:block;
-
     margin-bottom:5px;
 
     color:#e4b960;
@@ -670,25 +804,21 @@ h2{
 
     font-size:10px;
 
-    line-height:1.4;
+    line-height:1.38;
 }
 
 .choice.correct{
-    border-color:#6fbd89;
-    background:#0b281b;
+    border-color:#72c78b;
+    background:#0b291c;
 }
 
 .choice.wrong{
-    border-color:#b85d50;
-    background:#2a1513;
+    border-color:#c65f52;
+    background:#2b1513;
 }
 
-/* =========================================================
-   FEEDBACK
-   ========================================================= */
-
 .feedback{
-    min-height:48px;
+    min-height:49px;
 
     margin-top:12px;
     padding:11px 12px;
@@ -701,6 +831,57 @@ h2{
 
     font-size:11px;
     line-height:1.45;
+}
+
+/* =========================================================
+   SUCCESS FLASH
+   ========================================================= */
+
+.successFlash{
+    position:fixed;
+    z-index:90;
+
+    left:50%;
+    top:43%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.7);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    background:
+        rgba(14,42,28,.96);
+
+    border:
+        1px solid
+        rgba(117,206,142,.65);
+
+    color:#a9e8b8;
+
+    font-size:13px;
+    font-weight:900;
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.4);
+
+    transition:
+        opacity .18s ease,
+        transform .25s ease;
+}
+
+.successFlash.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
 }
 
 /* =========================================================
@@ -722,8 +903,8 @@ h2{
 
 .setupTitle{
     color:#e5bd69;
-    font-weight:900;
     font-size:13px;
+    font-weight:900;
 }
 
 .setupItems{
@@ -734,11 +915,11 @@ h2{
 
     gap:8px;
 
-    margin-top:10px;
+    margin-top:11px;
 }
 
 .setupItem{
-    min-height:72px;
+    min-height:78px;
 
     border-radius:13px;
 
@@ -750,31 +931,35 @@ h2{
 
     color:#e7ece7;
 
-    cursor:pointer;
-
     font-size:11px;
+
+    transition:
+        transform .08s ease,
+        background .15s ease;
+}
+
+.setupItem:active{
+    transform:scale(.96);
 }
 
 .setupItem.selected{
     border-color:#d9a941;
-    background:#1c2818;
+    background:#24291a;
 }
 
 .setupItem.correct{
-    border-color:#6fbd89;
-    background:#0b281b;
+    border-color:#72c78b;
+    background:#0b291c;
 }
 
 .setupItem.wrong{
-    border-color:#b85d50;
-    background:#2a1513;
+    border-color:#c65f52;
+    background:#2b1513;
 }
 
 .order{
     display:block;
-
-    margin-top:3px;
-
+    margin-top:4px;
     color:#7f918a;
     font-size:9px;
 }
@@ -784,10 +969,10 @@ h2{
    ========================================================= */
 
 .compassWrap{
-    margin:15px auto 8px;
+    width:175px;
+    height:175px;
 
-    width:170px;
-    height:170px;
+    margin:15px auto 9px;
 
     position:relative;
 }
@@ -810,7 +995,7 @@ h2{
         );
 
     box-shadow:
-        0 0 28px rgba(0,0,0,.30);
+        0 0 30px rgba(0,0,0,.3);
 }
 
 .compass .n,
@@ -819,8 +1004,8 @@ h2{
 .compass .w{
     position:absolute;
 
-    font-weight:900;
     font-size:12px;
+    font-weight:900;
 }
 
 .compass .n{
@@ -858,7 +1043,7 @@ h2{
     top:50%;
 
     width:4px;
-    height:112px;
+    height:116px;
 
     transform:
         translate(-50%,-50%)
@@ -867,7 +1052,7 @@ h2{
     transform-origin:center;
 
     transition:
-        transform .12s linear;
+        transform .1s linear;
 }
 
 .compassNeedle:before{
@@ -885,7 +1070,7 @@ h2{
         7px solid transparent;
 
     border-bottom:
-        56px solid #d9a941;
+        58px solid #d9a941;
 }
 
 .compassNeedle:after{
@@ -903,7 +1088,7 @@ h2{
         7px solid transparent;
 
     border-top:
-        56px solid #52665e;
+        58px solid #52665e;
 }
 
 .compassCenter{
@@ -936,7 +1121,8 @@ h2{
     margin-top:6px;
 
     color:#899b93;
-    font-size:10px;
+
+    font-size:9px;
 }
 
 .headingValue{
@@ -953,12 +1139,11 @@ h2{
 }
 
 .finalIcon{
-    font-size:46px;
-    margin-bottom:6px;
+    font-size:48px;
 }
 
 .finalTitle{
-    margin:14px 0 17px;
+    margin:15px 0 17px;
 
     font-size:
         clamp(38px,11vw,62px);
@@ -1005,7 +1190,7 @@ h2{
 }
 
 /* =========================================================
-   VERY SMALL PHONES
+   SMALL PHONES
    ========================================================= */
 
 @media(max-width:380px){
@@ -1023,7 +1208,7 @@ h2{
     }
 
     .choice{
-        min-height:88px;
+        min-height:87px;
         padding:10px;
     }
 
@@ -1033,6 +1218,10 @@ h2{
 
     .choice span{
         font-size:9px;
+    }
+
+    .waterScene{
+        height:135px;
     }
 
     .compassWrap{
@@ -1053,19 +1242,12 @@ h2{
     }
 }
 
-/* =========================================================
-   REDUCE MOTION
-   ========================================================= */
-
 @media(prefers-reduced-motion:reduce){
 
-    .fireFlame,
-    .current{
+    .fire,
+    .currentArrow,
+    .eddyCircle{
         animation:none!important;
-    }
-
-    *{
-        scroll-behavior:auto!important;
     }
 }
 </style>
@@ -1075,8 +1257,6 @@ h2{
 <body>
 
 <div id="app">
-
-    <!-- LIGHTWEIGHT BACKGROUND -->
 
     <div class="sky">
         <span class="star s1"></span>
@@ -1106,34 +1286,14 @@ h2{
 
     <div class="campfire">
         <div class="fireGlow"></div>
-        <div class="fireFlame"></div>
+        <div class="fire"></div>
         <div class="fireCore"></div>
     </div>
 
 
     <!-- =====================================================
-         REAL EMBEDDED AUDIO
-
-         This is an actual MP3 embedded directly into the HTML.
-         It does NOT need an audio.mp3 file in GitHub.
-
-         It starts after the player presses START.
+         UI
          ===================================================== -->
-
-    <audio
-        id="bgMusic"
-        loop
-        preload="auto"
-        playsinline
-        webkit-playsinline>
-
-        <source
-            src="data:audio/mpeg;base64,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"
-            type="audio/mpeg">
-    </audio>
-
-
-    <!-- SOUND CONTROL -->
 
     <button
         class="soundButton"
@@ -1142,14 +1302,19 @@ h2{
         🔊
     </button>
 
+    <div
+        class="successFlash"
+        id="successFlash">
+        ✓ NICE ONE!
+    </div>
 
-    <!-- =====================================================
-         MAIN SCREEN
-         ===================================================== -->
 
     <main id="screen">
 
-        <!-- START -->
+
+        <!-- =================================================
+             START
+             ================================================= -->
 
         <section
             class="panel"
@@ -1187,8 +1352,8 @@ h2{
                 </p>
 
                 <p class="small">
-                    🎵 Sound is part of the experience.<br>
-                    Tap START to begin the music.
+                    🎵 Turn your volume up.<br>
+                    The adventure has its own soundtrack.
                 </p>
 
                 <button
@@ -1219,7 +1384,7 @@ h2{
                 <div
                     class="audioLabel"
                     id="audioLabel">
-                    🎵 NIGHT AMBIENCE
+                    🎵 ADVENTURE MODE
                 </div>
 
             </div>
@@ -1234,6 +1399,8 @@ h2{
 
             <!-- =================================================
                  CHALLENGE 1
+                 READ THE WATER
+                 5 LEVELS
                  ================================================= -->
 
             <div id="challenge1">
@@ -1242,125 +1409,90 @@ h2{
                     CHALLENGE 01 — READ THE WATER
                 </div>
 
-                <h2>
-                    Which water would you trust?
+                <div class="levelRow">
+
+                    <div
+                        class="levelBadge"
+                        id="level1Badge">
+                        LEVEL 1 / 5
+                    </div>
+
+                    <div
+                        class="difficulty"
+                        id="difficulty1">
+                        EASY
+                    </div>
+
+                </div>
+
+                <h2 id="waterTitle">
+                    Read the shoreline.
                 </h2>
 
-                <p class="subtitle">
-                    You're approaching a new stretch
-                    of shoreline at dusk. Read the
-                    surface before choosing where to
-                    approach.
+                <p
+                    class="subtitle"
+                    id="waterDescription">
+                    You're arriving at the water
+                    just before sunset. Which surface
+                    looks safest and most predictable?
                 </p>
 
-                <div class="waterScene">
+                <div
+                    class="waterScene calm"
+                    id="waterScene">
 
                     <div class="waterLine w1"></div>
                     <div class="waterLine w2"></div>
                     <div class="waterLine w3"></div>
+                    <div class="waterLine w4"></div>
 
-                    <div class="current">
+                    <div class="waveSmall waveA"></div>
+                    <div class="waveSmall waveB"></div>
+                    <div class="waveSmall waveC"></div>
+
+                    <div
+                        class="currentArrow"
+                        id="currentArrow">
                         → → →
                     </div>
 
-                    <div class="waterNote">
-                        Observe the current
+                    <div
+                        class="eddyCircle hidden"
+                        id="eddyCircle">
+                    </div>
+
+                    <div class="rock r1"></div>
+                    <div class="rock r2"></div>
+
+                    <div
+                        class="waterHint"
+                        id="waterHint">
+                        WATCH THE SURFACE
                     </div>
 
                 </div>
 
 
-                <div class="choiceGrid">
-
-                    <button
-                        class="choice waterChoice"
-                        data-correct="false">
-
-                        <strong>
-                            🌊 Breaking Surge
-                        </strong>
-
-                        <span>
-                            Repeated waves are hitting
-                            the shoreline with force.
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        class="choice waterChoice"
-                        data-correct="true">
-
-                        <strong>
-                            🌊 Steady Current
-                        </strong>
-
-                        <span>
-                            A predictable flow with a
-                            relatively clean surface.
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        class="choice waterChoice"
-                        data-correct="false">
-
-                        <strong>
-                            🌀 Strong Eddy
-                        </strong>
-
-                        <span>
-                            Water is visibly rotating
-                            back against the main flow.
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        class="choice waterChoice"
-                        data-correct="false">
-
-                        <strong>
-                            ⚡ Whitewater
-                        </strong>
-
-                        <span>
-                            Fast, broken water with
-                            obvious turbulence.
-                        </span>
-
-                    </button>
-
+                <div
+                    class="choiceGrid"
+                    id="waterChoices">
                 </div>
 
 
                 <div
                     class="feedback"
                     id="feedback1">
-
-                    Study the water carefully.
-                    Don't rush the decision.
-
+                    Take your time. Read the water
+                    before committing.
                 </div>
-
-
-                <button
-                    class="btn hidden"
-                    id="next1">
-
-                    CONTINUE
-
-                </button>
 
             </div>
 
 
             <!-- =================================================
                  CHALLENGE 2
+                 CAMPCRAFT
+                 5 LEVELS
                  ================================================= -->
 
             <div
@@ -1368,89 +1500,48 @@ h2{
                 class="hidden">
 
                 <div class="challengeLabel">
-                    CHALLENGE 02 — SECURE THE CAMP
+                    CHALLENGE 02 — CAMPCRAFT
                 </div>
 
-                <h2>
-                    A wind is coming in.
+                <div class="levelRow">
+
+                    <div
+                        class="levelBadge"
+                        id="level2Badge">
+                        LEVEL 1 / 5
+                    </div>
+
+                    <div
+                        class="difficulty"
+                        id="difficulty2">
+                        EASY
+                    </div>
+
+                </div>
+
+                <h2 id="campTitle">
+                    Build a proper camp.
                 </h2>
 
-                <p class="subtitle">
-                    Before darkness settles completely,
-                    secure the important equipment.
-                    Tap the items in the order you would
-                    realistically prepare camp.
+                <p
+                    class="subtitle"
+                    id="campDescription">
+                    The light is fading. Make the
+                    practical choice.
                 </p>
 
 
                 <div class="setupBox">
 
-                    <div class="setupTitle">
-                        CAMP SETUP
+                    <div
+                        class="setupTitle"
+                        id="setupTitle">
+                        WHAT SHOULD YOU DO?
                     </div>
 
-                    <p class="small">
-                        Choose the correct order.
-                    </p>
-
-
-                    <div class="setupItems">
-
-                        <button
-                            class="setupItem"
-                            data-order="2">
-
-                            ⛺<br>
-                            Secure Tent
-
-                            <span class="order">
-                                shelter
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="setupItem"
-                            data-order="4">
-
-                            🎒<br>
-                            Secure Gear
-
-                            <span class="order">
-                                equipment
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="setupItem"
-                            data-order="1">
-
-                            🪵<br>
-                            Prepare Ground
-
-                            <span class="order">
-                                first
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            class="setupItem"
-                            data-order="3">
-
-                            🏮<br>
-                            Place Lantern
-
-                            <span class="order">
-                                lighting
-                            </span>
-
-                        </button>
-
+                    <div
+                        class="setupItems"
+                        id="setupItems">
                     </div>
 
                 </div>
@@ -1459,26 +1550,17 @@ h2{
                 <div
                     class="feedback"
                     id="feedback2">
-
-                    Start with the thing that keeps
-                    everything else stable.
-
+                    Think like someone who has spent
+                    a night outdoors.
                 </div>
-
-
-                <button
-                    class="btn hidden"
-                    id="next2">
-
-                    CONTINUE
-
-                </button>
 
             </div>
 
 
             <!-- =================================================
                  CHALLENGE 3
+                 NAVIGATION
+                 5 LEVELS
                  ================================================= -->
 
             <div
@@ -1486,17 +1568,35 @@ h2{
                 class="hidden">
 
                 <div class="challengeLabel">
-                    CHALLENGE 03 — FIND THE CAMP
+                    CHALLENGE 03 — NIGHT NAVIGATION
                 </div>
 
-                <h2>
-                    Navigate home.
+                <div class="levelRow">
+
+                    <div
+                        class="levelBadge"
+                        id="level3Badge">
+                        LEVEL 1 / 5
+                    </div>
+
+                    <div
+                        class="difficulty"
+                        id="difficulty3">
+                        EASY
+                    </div>
+
+                </div>
+
+                <h2 id="navTitle">
+                    Find your bearing.
                 </h2>
 
-                <p class="subtitle">
-                    It's getting dark. Your campsite is
-                    south-east from your current position.
-                    Use the compass to set your bearing.
+                <p
+                    class="subtitle"
+                    id="navDescription">
+                    The campsite is south-east.
+                    Set the compass to the correct
+                    direction.
                 </p>
 
 
@@ -1504,21 +1604,10 @@ h2{
 
                     <div class="compass">
 
-                        <div class="n">
-                            N
-                        </div>
-
-                        <div class="s">
-                            S
-                        </div>
-
-                        <div class="e">
-                            E
-                        </div>
-
-                        <div class="w">
-                            W
-                        </div>
+                        <div class="n">N</div>
+                        <div class="s">S</div>
+                        <div class="e">E</div>
+                        <div class="w">W</div>
 
                         <div
                             class="compassNeedle"
@@ -1544,11 +1633,11 @@ h2{
                 <div class="headingReadout">
 
                     <span>
-                        NORTH
+                        N
                     </span>
 
                     <span>
-                        Heading:
+                        HEADING:
                         <strong
                             class="headingValue"
                             id="headingValue">
@@ -1557,7 +1646,7 @@ h2{
                     </span>
 
                     <span>
-                        SE = 135°
+                        SE
                     </span>
 
                 </div>
@@ -1566,29 +1655,18 @@ h2{
                 <div
                     class="feedback"
                     id="feedback3">
-
-                    Rotate the compass until your
-                    bearing reaches approximately
-                    135° — south-east.
-
+                    Rotate the compass and find the
+                    requested bearing.
                 </div>
 
-
-                <button
-                    class="btn hidden"
-                    id="finishBtn">
-
-                    COMPLETE MISSION
-
-                </button>
-
             </div>
+
 
         </section>
 
 
         <!-- =================================================
-             FINAL REVEAL
+             FINAL
              ================================================= -->
 
         <section
@@ -1603,7 +1681,6 @@ h2{
                 MISSION COMPLETE
             </div>
 
-
             <div class="finalTitle">
 
                 YOU DID IT,<br>
@@ -1614,11 +1691,12 @@ h2{
 
             </div>
 
-
             <p class="subtitle">
-                Three challenges.<br>
-                One final adventure.<br>
-                And you made it all the way to the end.
+
+                You made it through every challenge.
+                <br><br>
+                And now the real adventure begins.
+
             </p>
 
 
@@ -1674,11 +1752,20 @@ h2{
 <script>
 /* =========================================================
    MISSION 3
-   LIGHTWEIGHT MOBILE GAME LOGIC
+   ALL JAVASCRIPT INSIDE INDEX.HTML
+
+   AUDIO:
+   - adventure rhythm
+   - percussion
+   - night ambience
+   - water ambience
+   - success sounds
+   - mistake sound
+   - final completion sound
 
    IMPORTANT:
-   Music uses HTMLAudio rather than Web Audio.
-   This is much more reliable on iPhone Safari.
+   AudioContext is created/resumed FROM THE START BUTTON.
+   This is intentional for iPhone Safari.
    ========================================================= */
 
 (function(){
@@ -1687,7 +1774,7 @@ h2{
 
 
 /* =========================================================
-   ELEMENTS
+   DOM
    ========================================================= */
 
 const startBtn =
@@ -1702,9 +1789,6 @@ const gameScreen =
 const finalScreen =
     document.getElementById("finalScreen");
 
-const bgMusic =
-    document.getElementById("bgMusic");
-
 const soundButton =
     document.getElementById("soundButton");
 
@@ -1714,104 +1798,742 @@ const audioLabel =
 const progressBar =
     document.getElementById("progressBar");
 
+const successFlash =
+    document.getElementById("successFlash");
+
 
 /* =========================================================
-   AUDIO
+   AUDIO ENGINE
    ========================================================= */
 
-let musicOn = true;
+let audioCtx = null;
+
+let masterGain = null;
+let musicGain = null;
+let ambienceGain = null;
+
+let audioStarted = false;
+let audioEnabled = true;
+
+let musicTimer = null;
+let ambienceTimer = null;
+
+let noiseBuffer = null;
 
 
 /*
- * Keep the music volume moderate.
- * Safari/iPhone will use the normal device volume.
+ * Create the AudioContext only after the user
+ * physically presses START.
  */
 
-bgMusic.volume = 0.48;
+function initAudio(){
 
-
-/*
- * Start music directly from the user's tap.
- *
- * This is important:
- * iPhone Safari normally blocks autoplay.
- */
-
-function startMusic(){
-
-    if(!musicOn){
+    if(audioCtx){
         return;
     }
 
-    const promise = bgMusic.play();
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
 
-    if(promise !== undefined){
+    if(!AudioContext){
+        audioLabel.textContent =
+            "AUDIO UNAVAILABLE";
+        return;
+    }
 
-        promise
-        .then(function(){
+    audioCtx =
+        new AudioContext();
 
-            audioLabel.textContent =
-                "● MUSIC ON";
 
-            soundButton.textContent =
-                "🔊";
+    masterGain =
+        audioCtx.createGain();
 
-        })
-        .catch(function(){
+    musicGain =
+        audioCtx.createGain();
 
-            /*
-             * If Safari refuses the first attempt,
-             * show a very obvious retry state.
-             */
+    ambienceGain =
+        audioCtx.createGain();
 
-            audioLabel.textContent =
-                "TAP 🔊 FOR SOUND";
 
-            soundButton.textContent =
-                "🔇";
+    masterGain.gain.value =
+        0.55;
 
-        });
+    musicGain.gain.value =
+        0.32;
+
+    ambienceGain.gain.value =
+        0.18;
+
+
+    musicGain.connect(
+        masterGain
+    );
+
+    ambienceGain.connect(
+        masterGain
+    );
+
+    masterGain.connect(
+        audioCtx.destination
+    );
+
+
+    createNoiseBuffer();
+
+
+    audioStarted = true;
+
+}
+
+
+/*
+ * Create reusable brown-ish noise buffer.
+ * This is used for subtle wind/water ambience.
+ */
+
+function createNoiseBuffer(){
+
+    if(!audioCtx){
+        return;
+    }
+
+    const length =
+        audioCtx.sampleRate * 2;
+
+    noiseBuffer =
+        audioCtx.createBuffer(
+            1,
+            length,
+            audioCtx.sampleRate
+        );
+
+    const data =
+        noiseBuffer.getChannelData(0);
+
+    let last = 0;
+
+    for(let i=0;i<length;i++){
+
+        const white =
+            Math.random() * 2 - 1;
+
+        last =
+            last * .97 +
+            white * .03;
+
+        data[i] =
+            last * 2.2;
 
     }
 
 }
 
 
-/*
- * Sound toggle.
- */
+/* =========================================================
+   GENERIC TONE
+   ========================================================= */
+
+function tone(
+    frequency,
+    duration,
+    volume,
+    type="sine",
+    destination=null
+){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    const osc =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+    osc.type =
+        type;
+
+    osc.frequency.setValueAtTime(
+        frequency,
+        audioCtx.currentTime
+    );
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        Math.max(volume,.001),
+        audioCtx.currentTime + .025
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        audioCtx.currentTime + duration
+    );
+
+    osc.connect(gain);
+
+    gain.connect(
+        destination || masterGain
+    );
+
+    osc.start();
+
+    osc.stop(
+        audioCtx.currentTime + duration + .03
+    );
+
+}
+
+
+/* =========================================================
+   ADVENTURE CHORD
+   ========================================================= */
+
+function adventureChord(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    const notes =
+        [196,246.94,293.66];
+
+    notes.forEach(function(freq,index){
+
+        setTimeout(
+            function(){
+
+                tone(
+                    freq,
+                    1.2,
+                    .055,
+                    "triangle",
+                    musicGain
+                );
+
+            },
+            index * 110
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   LIGHT PERCUSSION
+   ========================================================= */
+
+function percussion(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    /*
+     * Kick
+     */
+
+    const osc =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+    osc.type =
+        "sine";
+
+    osc.frequency.setValueAtTime(
+        90,
+        audioCtx.currentTime
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        45,
+        audioCtx.currentTime + .16
+    );
+
+    gain.gain.setValueAtTime(
+        .0001,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .13,
+        audioCtx.currentTime + .008
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        audioCtx.currentTime + .18
+    );
+
+    osc.connect(gain);
+    gain.connect(musicGain);
+
+    osc.start();
+    osc.stop(
+        audioCtx.currentTime + .2
+    );
+
+
+    /*
+     * Tiny high click
+     */
+
+    setTimeout(
+        function(){
+
+            tone(
+                1300,
+                .035,
+                .018,
+                "square",
+                musicGain
+            );
+
+        },
+        150
+    );
+
+}
+
+
+/* =========================================================
+   WATER / WIND AMBIENCE
+   ========================================================= */
+
+function startAmbience(){
+
+    if(!audioCtx || !noiseBuffer){
+        return;
+    }
+
+    const source =
+        audioCtx.createBufferSource();
+
+    const filter =
+        audioCtx.createBiquadFilter();
+
+    const gain =
+        audioCtx.createGain();
+
+
+    source.buffer =
+        noiseBuffer;
+
+    source.loop =
+        true;
+
+    filter.type =
+        "lowpass";
+
+    filter.frequency.value =
+        900;
+
+    gain.gain.value =
+        .025;
+
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ambienceGain);
+
+    source.start();
+
+
+    /*
+     * Gentle water-like high tones.
+     */
+
+    ambienceTimer =
+        setInterval(
+            function(){
+
+                if(!audioCtx ||
+                   !audioEnabled){
+                    return;
+                }
+
+                const f =
+                    450 +
+                    Math.random()*350;
+
+                tone(
+                    f,
+                    .35,
+                    .009,
+                    "sine",
+                    ambienceGain
+                );
+
+            },
+            1600
+        );
+
+}
+
+
+/* =========================================================
+   MUSIC LOOP
+   ========================================================= */
+
+function startAdventureMusic(){
+
+    if(!audioCtx){
+        return;
+    }
+
+    /*
+     * Start with a gentle cinematic chord.
+     */
+
+    adventureChord();
+
+
+    let beat = 0;
+
+    musicTimer =
+        setInterval(
+            function(){
+
+                if(!audioEnabled){
+                    return;
+                }
+
+                /*
+                 * 4/4 style adventure pulse.
+                 */
+
+                if(
+                    beat % 4 === 0 ||
+                    beat % 4 === 2
+                ){
+                    percussion();
+                }
+
+
+                /*
+                 * Light melody.
+                 */
+
+                const melody =
+                    [
+                        392,
+                        440,
+                        523.25,
+                        440,
+                        392,
+                        329.63,
+                        392,
+                        493.88
+                    ];
+
+                tone(
+                    melody[beat % melody.length],
+                    .42,
+                    .026,
+                    "triangle",
+                    musicGain
+                );
+
+
+                /*
+                 * Every 16 beats,
+                 * add a cinematic chord.
+                 */
+
+                if(beat % 16 === 0){
+                    adventureChord();
+                }
+
+                beat++;
+
+            },
+            500
+        );
+
+}
+
+
+/* =========================================================
+   SUCCESS SOUND
+   ========================================================= */
+
+function successSound(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    tone(
+        523.25,
+        .16,
+        .08,
+        "triangle",
+        masterGain
+    );
+
+    setTimeout(
+        function(){
+
+            tone(
+                659.25,
+                .18,
+                .08,
+                "triangle",
+                masterGain
+            );
+
+        },
+        100
+    );
+
+    setTimeout(
+        function(){
+
+            tone(
+                783.99,
+                .35,
+                .09,
+                "triangle",
+                masterGain
+            );
+
+        },
+        210
+    );
+
+}
+
+
+/* =========================================================
+   MISTAKE SOUND
+   ========================================================= */
+
+function mistakeSound(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    tone(
+        180,
+        .16,
+        .055,
+        "sawtooth",
+        masterGain
+    );
+
+    setTimeout(
+        function(){
+
+            tone(
+                125,
+                .23,
+                .045,
+                "sawtooth",
+                masterGain
+            );
+
+        },
+        110
+    );
+
+}
+
+
+/* =========================================================
+   LEVEL-UP SOUND
+   ========================================================= */
+
+function levelUpSound(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    [392,523.25,659.25,783.99]
+    .forEach(function(freq,index){
+
+        setTimeout(
+            function(){
+
+                tone(
+                    freq,
+                    .28,
+                    .055,
+                    "triangle",
+                    masterGain
+                );
+
+            },
+            index * 75
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   FINAL COMPLETION SOUND
+   ========================================================= */
+
+function finalSound(){
+
+    if(!audioCtx || !audioEnabled){
+        return;
+    }
+
+    /*
+     * Big cinematic rising sequence.
+     */
+
+    const notes =
+        [
+            261.63,
+            329.63,
+            392,
+            523.25,
+            659.25,
+            783.99,
+            1046.5
+        ];
+
+    notes.forEach(
+        function(freq,index){
+
+            setTimeout(
+                function(){
+
+                    tone(
+                        freq,
+                        .75,
+                        .08,
+                        "triangle",
+                        masterGain
+                    );
+
+                },
+                index * 110
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SUCCESS FLASH
+   ========================================================= */
+
+function showSuccess(text){
+
+    successFlash.textContent =
+        text || "✓ NICE ONE!";
+
+    successFlash.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        function(){
+
+            successFlash.classList.remove(
+                "show"
+            );
+
+        },
+        600
+    );
+
+}
+
+
+/* =========================================================
+   START AUDIO
+   ========================================================= */
+
+function startAudio(){
+
+    initAudio();
+
+    if(!audioCtx){
+        return;
+    }
+
+    if(audioCtx.state === "suspended"){
+
+        audioCtx.resume()
+        .catch(function(){});
+
+    }
+
+    audioEnabled = true;
+
+    soundButton.textContent =
+        "🔊";
+
+    audioLabel.textContent =
+        "● ADVENTURE SOUNDTRACK";
+
+    startAmbience();
+
+    startAdventureMusic();
+
+}
+
+
+/* =========================================================
+   SOUND BUTTON
+   ========================================================= */
 
 soundButton.addEventListener(
     "click",
     function(){
 
-        if(bgMusic.paused){
+        if(!audioCtx){
 
-            musicOn = true;
+            startAudio();
+            return;
 
-            const p = bgMusic.play();
+        }
 
-            if(p && p.catch){
-                p.catch(function(){});
-            }
+        if(audioEnabled){
 
-            soundButton.textContent =
-                "🔊";
+            audioEnabled = false;
 
-            audioLabel.textContent =
-                "● MUSIC ON";
-
-        }else{
-
-            musicOn = false;
-
-            bgMusic.pause();
+            masterGain.gain.value =
+                0;
 
             soundButton.textContent =
                 "🔇";
 
             audioLabel.textContent =
-                "MUSIC OFF";
+                "SOUND OFF";
+
+        }else{
+
+            audioEnabled = true;
+
+            masterGain.gain.value =
+                .55;
+
+            audioCtx.resume()
+            .catch(function(){});
+
+            soundButton.textContent =
+                "🔊";
+
+            audioLabel.textContent =
+                "● ADVENTURE SOUNDTRACK";
 
         }
 
@@ -1819,17 +2541,8 @@ soundButton.addEventListener(
 );
 
 
-/*
- * If Safari suspends or pauses media unexpectedly,
- * the player can tap the sound button.
- *
- * We deliberately do NOT constantly call play(),
- * because Safari can treat that as unwanted autoplay.
- */
-
-
 /* =========================================================
-   START
+   START GAME
    ========================================================= */
 
 startBtn.addEventListener(
@@ -1837,259 +2550,1033 @@ startBtn.addEventListener(
     function(){
 
         /*
-         * This click is the user gesture.
-         * Start audio HERE.
+         * IMPORTANT:
+         * This is the direct iPhone user gesture.
          */
 
-        startMusic();
+        startAudio();
 
-        startScreen.classList.add("hidden");
+        startScreen.classList.add(
+            "hidden"
+        );
 
-        gameScreen.classList.remove("hidden");
+        gameScreen.classList.remove(
+            "hidden"
+        );
 
-        /*
-         * Move page back to top.
-         */
+        document
+            .getElementById("screen")
+            .scrollTop = 0;
 
-        document.getElementById("screen").scrollTop = 0;
+        startChallenge1();
 
-    },
-    {passive:true}
+    }
 );
 
 
 /* =========================================================
-   SMALL GAME SOUND
+   GAME 1
+   READ THE WATER
    ========================================================= */
 
-/*
- * We use the already-playing music for the atmosphere.
- * Challenge feedback is visual to avoid creating lots
- * of WebAudio objects on the phone.
- */
+const waterLevels = [
+
+    /* LEVEL 1 */
+
+    {
+        difficulty:"EASY",
+
+        title:
+            "Calm or rough?",
+
+        description:
+            "You're approaching the shoreline. Which water looks more predictable and manageable?",
+
+        scene:"calm",
+
+        hint:"READ THE SURFACE",
+
+        choices:[
+            {
+                title:"🌊 Smooth Current",
+                text:"Even surface with a steady flow.",
+                correct:true
+            },
+            {
+                title:"🌊 Breaking Surge",
+                text:"Waves repeatedly crashing hard.",
+                correct:false
+            },
+            {
+                title:"⚡ Whitewater",
+                text:"Fast, broken and turbulent.",
+                correct:false
+            },
+            {
+                title:"🌀 Violent Eddy",
+                text:"Water rapidly spinning back.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Correct. Predictable water gives you better control.",
+
+        fail:
+            "Look for the water with the most predictable movement."
+
+    },
+
+    /* LEVEL 2 */
+
+    {
+        difficulty:"EASY+",
+
+        title:
+            "Read the current.",
+
+        description:
+            "The surface is moving from left to right. Which position gives you the most controlled approach?",
+
+        scene:"streak",
+
+        hint:"WATCH THE FLOW",
+
+        choices:[
+            {
+                title:"⬅️ Fight the Current",
+                text:"Stand directly against the strongest flow.",
+                correct:false
+            },
+            {
+                title:"➡️ Work With It",
+                text:"Use the current to naturally present your approach.",
+                correct:true
+            },
+            {
+                title:"🌊 Into the Break",
+                text:"Move directly into the roughest water.",
+                correct:false
+            },
+            {
+                title:"🌀 Behind the Eddy",
+                text:"Choose the visibly unstable reverse flow.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Nice. Experienced anglers work with water instead of fighting it.",
+
+        fail:
+            "Look at the direction the water naturally wants to move."
+
+    },
+
+    /* LEVEL 3 */
+
+    {
+        difficulty:"MEDIUM",
+
+        title:
+            "Find the eddy.",
+
+        description:
+            "An eddy is forming behind an obstruction. Which area shows the most likely reverse circulation?",
+
+        scene:"eddy",
+
+        hint:"FIND THE ROTATION",
+
+        choices:[
+            {
+                title:"🔵 Centre Flow",
+                text:"Fast water continuing downstream.",
+                correct:false
+            },
+            {
+                title:"🌀 Circular Water",
+                text:"Water visibly rotating back on itself.",
+                correct:true
+            },
+            {
+                title:"🌊 Breaking Lip",
+                text:"Water breaking directly over the obstruction.",
+                correct:false
+            },
+            {
+                title:"💨 Wind Ripple",
+                text:"Surface movement caused mainly by wind.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Exactly. That circular reverse movement is the tell-tale sign.",
+
+        fail:
+            "An eddy is about circular or reverse movement — look for rotation."
+
+    },
+
+    /* LEVEL 4 */
+
+    {
+        difficulty:"HARD",
+
+        title:
+            "Choose the fishing position.",
+
+        description:
+            "The current is strongest in the centre. Rocks create slower water near the edge. Where would you position yourself?",
+
+        scene:"streak",
+
+        hint:"READ CURRENT + COVER",
+
+        choices:[
+            {
+                title:"🎯 Current Seam",
+                text:"Where fast and slower water meet.",
+                correct:true
+            },
+            {
+                title:"⚡ Strongest Current",
+                text:"The fastest central flow.",
+                correct:false
+            },
+            {
+                title:"🌊 Breaking Edge",
+                text:"Directly inside the roughest water.",
+                correct:false
+            },
+            {
+                title:"🏞️ Dead Water",
+                text:"Completely stagnant water with little flow.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Excellent. A current seam combines flow with a more manageable holding zone.",
+
+        fail:
+            "Think about where faster and slower water meet — not simply the fastest water."
+
+    },
+
+    /* LEVEL 5 */
+
+    {
+        difficulty:"EXPERT",
+
+        title:
+            "Read EVERYTHING.",
+
+        description:
+            "Final water test. You see a strong central current, calmer water behind rocks, and a visible seam between them. Where is the most promising zone?",
+
+        scene:"eddy",
+
+        hint:"FINAL WATER TEST",
+
+        choices:[
+            {
+                title:"🎯 Current Seam",
+                text:"Where the strong current meets slower water near cover.",
+                correct:true
+            },
+            {
+                title:"⚡ Centre Current",
+                text:"The fastest and deepest-looking flow.",
+                correct:false
+            },
+            {
+                title:"🪨 Behind Rock",
+                text:"Completely sheltered water with almost no movement.",
+                correct:false
+            },
+            {
+                title:"🌊 Breaking Face",
+                text:"The most turbulent surface section.",
+                correct:false
+            }
+        ],
+
+        success:
+            "🏆 PERFECT. You read current, cover, turbulence and water speed together.",
+
+        fail:
+            "This one combines everything. Look for the transition between strong and slow water."
+
+    }
+
+];
 
 
-/* =========================================================
-   CHALLENGE 1
-   ========================================================= */
+let waterLevel = 0;
 
-let waterComplete = false;
+
+const level1Badge =
+    document.getElementById("level1Badge");
+
+const difficulty1 =
+    document.getElementById("difficulty1");
+
+const waterTitle =
+    document.getElementById("waterTitle");
+
+const waterDescription =
+    document.getElementById("waterDescription");
+
+const waterScene =
+    document.getElementById("waterScene");
+
+const waterHint =
+    document.getElementById("waterHint");
 
 const waterChoices =
-    document.querySelectorAll(".waterChoice");
+    document.getElementById("waterChoices");
 
 const feedback1 =
     document.getElementById("feedback1");
 
-const next1 =
-    document.getElementById("next1");
+const currentArrow =
+    document.getElementById("currentArrow");
+
+const eddyCircle =
+    document.getElementById("eddyCircle");
 
 
-waterChoices.forEach(function(button){
+function startChallenge1(){
 
-    button.addEventListener(
-        "click",
-        function(){
+    waterLevel = 0;
 
-            if(waterComplete){
-                return;
-            }
+    renderWaterLevel();
 
-            waterChoices.forEach(function(item){
+}
 
-                item.classList.remove(
-                    "correct",
+
+function renderWaterLevel(){
+
+    const level =
+        waterLevels[waterLevel];
+
+
+    level1Badge.textContent =
+        "LEVEL " +
+        (waterLevel + 1) +
+        " / 5";
+
+
+    difficulty1.textContent =
+        level.difficulty;
+
+
+    difficulty1.className =
+        "difficulty " +
+        (
+            level.difficulty === "EASY" ||
+            level.difficulty === "EASY+"
+                ? "easy"
+                : level.difficulty === "MEDIUM"
+                    ? "medium"
+                    : level.difficulty === "HARD"
+                        ? "hard"
+                        : "expert"
+        );
+
+
+    waterTitle.textContent =
+        level.title;
+
+    waterDescription.textContent =
+        level.description;
+
+    waterHint.textContent =
+        level.hint;
+
+
+    waterScene.className =
+        "waterScene " +
+        level.scene;
+
+
+    if(level.scene === "eddy"){
+
+        eddyCircle.classList.remove(
+            "hidden"
+        );
+
+    }else{
+
+        eddyCircle.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    waterChoices.innerHTML =
+        "";
+
+
+    level.choices.forEach(
+        function(option,index){
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "choice";
+
+            button.innerHTML =
+                "<strong>" +
+                option.title +
+                "</strong>" +
+                "<span>" +
+                option.text +
+                "</span>";
+
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    chooseWater(
+                        button,
+                        option
+                    );
+
+                },
+                {passive:true}
+            );
+
+
+            waterChoices.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    feedback1.textContent =
+        "Read the water carefully.";
+
+}
+
+
+/*
+ * Correct answer automatically moves to the next level.
+ */
+
+function chooseWater(
+    button,
+    option
+){
+
+    if(button.dataset.locked){
+        return;
+    }
+
+
+    if(option.correct){
+
+        button.classList.add(
+            "correct"
+        );
+
+        button.dataset.locked =
+            "true";
+
+        successSound();
+
+        showSuccess(
+            waterLevel === 4
+                ? "🏆 WATER MASTER!"
+                : "✓ CORRECT!"
+        );
+
+        feedback1.textContent =
+            waterLevels[waterLevel].success;
+
+
+        setTimeout(
+            function(){
+
+                waterLevel++;
+
+
+                if(waterLevel >= waterLevels.length){
+
+                    startChallenge2();
+
+                }else{
+
+                    levelUpSound();
+
+                    renderWaterLevel();
+
+                }
+
+            },
+            850
+        );
+
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        mistakeSound();
+
+        feedback1.textContent =
+            waterLevels[waterLevel].fail;
+
+
+        setTimeout(
+            function(){
+
+                button.classList.remove(
                     "wrong"
                 );
 
-            });
-
-
-            const correct =
-                button.dataset.correct === "true";
-
-
-            if(correct){
-
-                waterComplete = true;
-
-                button.classList.add("correct");
-
-                feedback1.innerHTML =
-                    "✓ Good decision. A predictable current gives you better control and fewer surprises. That's the kind of water an experienced angler looks for.";
-
-                next1.classList.remove(
-                    "hidden"
-                );
-
-            }else{
-
-                button.classList.add("wrong");
-
-                feedback1.innerHTML =
-                    "Not quite. Look again. You want predictable movement — not strong turbulence, breaking waves or reverse flow.";
-
-            }
-
-        },
-        {passive:true}
-    );
-
-});
-
-
-next1.addEventListener(
-    "click",
-    function(){
-
-        document
-            .getElementById("challenge1")
-            .classList.add("hidden");
-
-        document
-            .getElementById("challenge2")
-            .classList.remove("hidden");
-
-        progressBar.style.width =
-            "66.66%";
-
-        document
-            .getElementById("screen")
-            .scrollTop = 0;
+            },
+            650
+        );
 
     }
-);
+
+}
 
 
 /* =========================================================
    CHALLENGE 2
+   CAMPCRAFT
+   5 LEVELS
    ========================================================= */
 
-let setupStep = 0;
+const campLevels = [
+
+    {
+        difficulty:"EASY",
+
+        title:
+            "Make camp safely.",
+
+        description:
+            "You're arriving before sunset. What's the first practical move?",
+
+        question:
+            "CHOOSE YOUR FIRST MOVE",
+
+        choices:[
+            {
+                title:"⛺ Check the Ground",
+                text:"Look for a stable, suitable campsite.",
+                correct:true
+            },
+            {
+                title:"🎒 Throw Gear Down",
+                text:"Leave everything wherever you arrive.",
+                correct:false
+            },
+            {
+                title:"🔥 Light Everything",
+                text:"Start a fire before checking the area.",
+                correct:false
+            },
+            {
+                title:"🏃 Explore in the Dark",
+                text:"Leave camp before setting anything up.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Correct. A good campsite starts with a good location."
+    },
+
+    {
+        difficulty:"EASY+",
+
+        title:
+            "Secure the shelter.",
+
+        description:
+            "The wind has picked up. Your shelter needs to be secured before anything else gets worse.",
+
+        question:
+            "WHAT NEEDS ATTENTION?",
+
+        choices:[
+            {
+                title:"⛺ Tent & Pegs",
+                text:"Secure the shelter against the wind.",
+                correct:true
+            },
+            {
+                title:"📱 Phone",
+                text:"Check social media first.",
+                correct:false
+            },
+            {
+                title:"🎣 Fishing Rod",
+                text:"Leave camp unsecured and head to the water.",
+                correct:false
+            },
+            {
+                title:"🍫 Snacks",
+                text:"Sort food before securing shelter.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Good call. Secure shelter before worrying about comfort."
+    },
+
+    {
+        difficulty:"MEDIUM",
+
+        title:
+            "The wind changes.",
+
+        description:
+            "A stronger breeze is moving through the campsite. One loose item could become a problem.",
+
+        question:
+            "WHAT DO YOU SECURE?",
+
+        choices:[
+            {
+                title:"🎒 Loose Equipment",
+                text:"Secure anything lightweight that can move.",
+                correct:true
+            },
+            {
+                title:"🪨 Large Rock",
+                text:"Spend time moving something that isn't going anywhere.",
+                correct:false
+            },
+            {
+                title:"🌳 Tree",
+                text:"Try to secure the tree.",
+                correct:false
+            },
+            {
+                title:"🌙 Moon",
+                text:"Unfortunately, impossible.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Exactly. Wind management is about controlling loose equipment."
+    },
+
+    {
+        difficulty:"HARD",
+
+        title:
+            "Night is coming.",
+
+        description:
+            "Visibility is dropping. You need a reliable setup before moving around the campsite.",
+
+        question:
+            "WHAT SHOULD YOU PRIORITISE?",
+
+        choices:[
+            {
+                title:"🏮 Lighting Route",
+                text:"Make sure you can safely see around camp.",
+                correct:true
+            },
+            {
+                title:"🎣 Cast in Darkness",
+                text:"Go fishing immediately without preparation.",
+                correct:false
+            },
+            {
+                title:"🏃 Run Around",
+                text:"Move quickly and hope for the best.",
+                correct:false
+            },
+            {
+                title:"🎒 Hide the Gear",
+                text:"Put equipment somewhere you can't find it.",
+                correct:false
+            }
+        ],
+
+        success:
+            "✓ Smart. Good lighting makes every later decision safer."
+    },
+
+    {
+        difficulty:"EXPERT",
+
+        title:
+            "Final camp decision.",
+
+        description:
+            "Wind, darkness and equipment are now all factors. Choose the action that shows the best overall camp judgement.",
+
+        question:
+            "MASTER CAMPCRAFT",
+
+        choices:[
+            {
+                title:"🏕️ Secure + Light + Organise",
+                text:"Protect shelter, secure equipment and maintain visibility.",
+                correct:true
+            },
+            {
+                title:"🎣 Fish Immediately",
+                text:"Ignore the changing conditions.",
+                correct:false
+            },
+            {
+                title:"🔥 Bigger Fire",
+                text:"Solve every problem with more fire.",
+                correct:false
+            },
+            {
+                title:"🎒 Pack Nothing",
+                text:"Leave everything exposed overnight.",
+                correct:false
+            }
+        ],
+
+        success:
+            "🏆 Perfect. That's proper camp judgement — shelter, equipment and visibility together."
+    }
+
+];
+
+
+let campLevel = 0;
+
+
+const level2Badge =
+    document.getElementById("level2Badge");
+
+const difficulty2 =
+    document.getElementById("difficulty2");
+
+const campTitle =
+    document.getElementById("campTitle");
+
+const campDescription =
+    document.getElementById("campDescription");
+
+const setupTitle =
+    document.getElementById("setupTitle");
 
 const setupItems =
-    document.querySelectorAll(".setupItem");
+    document.getElementById("setupItems");
 
 const feedback2 =
     document.getElementById("feedback2");
 
-const next2 =
-    document.getElementById("next2");
+
+function startChallenge2(){
+
+    document
+        .getElementById("challenge1")
+        .classList.add("hidden");
+
+    document
+        .getElementById("challenge2")
+        .classList.remove("hidden");
+
+    campLevel = 0;
+
+    progressBar.style.width =
+        "55%";
+
+    document
+        .getElementById("screen")
+        .scrollTop = 0;
+
+    renderCampLevel();
+
+}
 
 
-setupItems.forEach(function(button){
+function renderCampLevel(){
 
-    button.addEventListener(
-        "click",
-        function(){
-
-            if(
-                button.classList.contains("correct") ||
-                button.classList.contains("wrong")
-            ){
-                return;
-            }
+    const level =
+        campLevels[campLevel];
 
 
-            const expected =
-                setupStep + 1;
-
-            const selected =
-                Number(button.dataset.order);
-
-
-            if(selected === expected){
-
-                button.classList.add("correct");
-
-                setupStep++;
+    level2Badge.textContent =
+        "LEVEL " +
+        (campLevel + 1) +
+        " / 5";
 
 
-                if(setupStep === 1){
+    difficulty2.textContent =
+        level.difficulty;
 
-                    feedback2.innerHTML =
-                        "✓ Ground prepared. Good — a stable base comes first.";
 
-                }
+    difficulty2.className =
+        "difficulty " +
+        (
+            level.difficulty === "EASY" ||
+            level.difficulty === "EASY+"
+                ? "easy"
+                : level.difficulty === "MEDIUM"
+                    ? "medium"
+                    : level.difficulty === "HARD"
+                        ? "hard"
+                        : "expert"
+        );
 
-                if(setupStep === 2){
 
-                    feedback2.innerHTML =
-                        "✓ Tent secured. Now protect the camp from the dark.";
+    campTitle.textContent =
+        level.title;
 
-                }
+    campDescription.textContent =
+        level.description;
 
-                if(setupStep === 3){
+    setupTitle.textContent =
+        level.question;
 
-                    feedback2.innerHTML =
-                        "✓ Lantern placed. Now secure anything the wind could move.";
 
-                }
+    setupItems.innerHTML =
+        "";
 
-                if(setupStep === 4){
 
-                    feedback2.innerHTML =
-                        "✓ Camp secure. Nothing important is left exposed.";
+    level.choices.forEach(
+        function(option){
 
-                    next2.classList.remove(
-                        "hidden"
-                    );
-
-                }
-
-            }else{
-
-                button.classList.add("wrong");
-
-                feedback2.innerHTML =
-                    "Not quite. Think practically: establish the base, secure the shelter, set your light, then protect the equipment.";
-
-                setTimeout(
-                    function(){
-
-                        button.classList.remove(
-                            "wrong"
-                        );
-
-                    },
-                    650
+            const button =
+                document.createElement(
+                    "button"
                 );
 
-            }
+            button.className =
+                "setupItem";
 
-        },
-        {passive:true}
+
+            button.innerHTML =
+                option.title +
+                "<span class='order'>" +
+                option.text +
+                "</span>";
+
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    chooseCamp(
+                        button,
+                        option
+                    );
+
+                },
+                {passive:true}
+            );
+
+
+            setupItems.appendChild(
+                button
+            );
+
+        }
     );
 
-});
+
+    feedback2.textContent =
+        "Think practically.";
+
+}
 
 
-next2.addEventListener(
-    "click",
-    function(){
+function chooseCamp(
+    button,
+    option
+){
 
-        document
-            .getElementById("challenge2")
-            .classList.add("hidden");
+    if(button.dataset.locked){
+        return;
+    }
 
-        document
-            .getElementById("challenge3")
-            .classList.remove("hidden");
 
-        progressBar.style.width =
-            "100%";
+    if(option.correct){
 
-        document
-            .getElementById("screen")
-            .scrollTop = 0;
+        button.classList.add(
+            "correct"
+        );
+
+        button.dataset.locked =
+            "true";
+
+        successSound();
+
+        showSuccess(
+            campLevel === 4
+                ? "🏆 CAMP MASTER!"
+                : "✓ GOOD CALL!"
+        );
+
+        feedback2.textContent =
+            campLevels[campLevel].success;
+
+
+        setTimeout(
+            function(){
+
+                campLevel++;
+
+
+                if(campLevel >= campLevels.length){
+
+                    startChallenge3();
+
+                }else{
+
+                    levelUpSound();
+
+                    renderCampLevel();
+
+                }
+
+            },
+            850
+        );
+
+
+    }else{
+
+        button.classList.add(
+            "wrong"
+        );
+
+        mistakeSound();
+
+        feedback2.textContent =
+            "Not quite. Think about safety, shelter, visibility and protecting your equipment.";
+
+        setTimeout(
+            function(){
+
+                button.classList.remove(
+                    "wrong"
+                );
+
+            },
+            650
+        );
 
     }
-);
+
+}
 
 
 /* =========================================================
    CHALLENGE 3
+   NIGHT NAVIGATION
+   5 LEVELS
    ========================================================= */
+
+const navLevels = [
+
+    {
+        difficulty:"EASY",
+
+        title:
+            "Find SOUTH-EAST.",
+
+        description:
+            "The campsite is south-east from your current position.",
+
+        target:135,
+
+        tolerance:12
+    },
+
+    {
+        difficulty:"EASY+",
+
+        title:
+            "Head EAST.",
+
+        description:
+            "A trail marker is directly east. Set your bearing.",
+
+        target:90,
+
+        tolerance:10
+    },
+
+    {
+        difficulty:"MEDIUM",
+
+        title:
+            "Find NORTH-WEST.",
+
+        description:
+            "The next marker is north-west through the trees.",
+
+        target:315,
+
+        tolerance:9
+    },
+
+    {
+        difficulty:"HARD",
+
+        title:
+            "Set 210°.",
+
+        description:
+            "A bearing of 210° will take you around the shoreline.",
+
+        target:210,
+
+        tolerance:7
+    },
+
+    {
+        difficulty:"EXPERT",
+
+        title:
+            "Final bearing: 127°.",
+
+        description:
+            "This is the final navigation check. Set the compass as accurately as you can.",
+
+        target:127,
+
+        tolerance:5
+    }
+
+];
+
+
+let navLevel = 0;
+
+
+const level3Badge =
+    document.getElementById("level3Badge");
+
+const difficulty3 =
+    document.getElementById("difficulty3");
+
+const navTitle =
+    document.getElementById("navTitle");
+
+const navDescription =
+    document.getElementById("navDescription");
 
 const headingControl =
     document.getElementById("headingControl");
@@ -2103,66 +3590,220 @@ const compassNeedle =
 const feedback3 =
     document.getElementById("feedback3");
 
-const finishBtn =
-    document.getElementById("finishBtn");
+
+function startChallenge3(){
+
+    document
+        .getElementById("challenge2")
+        .classList.add("hidden");
+
+    document
+        .getElementById("challenge3")
+        .classList.remove("hidden");
+
+    navLevel = 0;
+
+    progressBar.style.width =
+        "82%";
+
+    document
+        .getElementById("screen")
+        .scrollTop = 0;
+
+    renderNavLevel();
+
+}
 
 
-let navigationComplete = false;
+function renderNavLevel(){
+
+    const level =
+        navLevels[navLevel];
 
 
-function updateHeading(){
+    level3Badge.textContent =
+        "LEVEL " +
+        (navLevel + 1) +
+        " / 5";
 
-    const degrees =
-        Number(headingControl.value);
+
+    difficulty3.textContent =
+        level.difficulty;
+
+
+    difficulty3.className =
+        "difficulty " +
+        (
+            level.difficulty === "EASY" ||
+            level.difficulty === "EASY+"
+                ? "easy"
+                : level.difficulty === "MEDIUM"
+                    ? "medium"
+                    : level.difficulty === "HARD"
+                        ? "hard"
+                        : "expert"
+        );
+
+
+    navTitle.textContent =
+        level.title;
+
+    navDescription.textContent =
+        level.description;
+
+
+    /*
+     * Randomise the starting direction
+     * slightly so every level feels active.
+     */
+
+    const randomStart =
+        Math.floor(
+            Math.random() * 360
+        );
+
+
+    headingControl.value =
+        randomStart;
+
+    updateCompass();
+
+
+    feedback3.textContent =
+        "Set the requested bearing.";
+
+}
+
+
+function updateCompass(){
+
+    const value =
+        Number(
+            headingControl.value
+        );
 
 
     headingValue.textContent =
-        degrees + "°";
+        value + "°";
 
 
     compassNeedle.style.transform =
         "translate(-50%,-50%) rotate(" +
-        degrees +
+        value +
         "deg)";
 
 
+    if(
+        !audioStarted
+    ){
+        return;
+    }
+
+
     /*
-     * Target is 135°.
-     *
-     * Give him a small realistic margin,
-     * rather than requiring an exact pixel-perfect
-     * slider position.
+     * Tiny navigation tick.
+     * Only on meaningful movement.
      */
 
-    const difference =
-        Math.abs(degrees - 135);
+}
 
 
-    if(difference <= 10){
+headingControl.addEventListener(
+    "input",
+    function(){
 
-        navigationComplete = true;
+        updateCompass();
 
-        feedback3.innerHTML =
-            "✓ Bearing locked. 135° — south-east. Through the trees, you can just make out the warm glow of the campsite.";
+    }
+);
 
-        finishBtn.classList.remove(
-            "hidden"
+
+/*
+ * When the slider reaches the correct bearing,
+ * automatically advances after a short delay.
+ */
+
+let navLock = false;
+
+
+function checkNavigation(){
+
+    if(navLock){
+        return;
+    }
+
+
+    const level =
+        navLevels[navLevel];
+
+    const current =
+        Number(
+            headingControl.value
         );
 
-    }else if(difference <= 30){
 
-        feedback3.innerHTML =
-            "You're close. Keep adjusting towards south-east.";
+    let difference =
+        Math.abs(
+            current - level.target
+        );
 
-    }else if(degrees < 135){
 
-        feedback3.innerHTML =
-            "You're still too far north. Continue rotating towards south-east.";
+    /*
+     * Compass is circular.
+     * 359° and 0° are neighbours.
+     */
 
-    }else{
+    difference =
+        Math.min(
+            difference,
+            360 - difference
+        );
 
-        feedback3.innerHTML =
-            "You've passed the bearing. Bring it back towards 135°.";
+
+    if(
+        difference <= level.tolerance
+    ){
+
+        navLock = true;
+
+        successSound();
+
+        showSuccess(
+            navLevel === 4
+                ? "🏆 PERFECT BEARING!"
+                : "✓ BEARING LOCKED!"
+        );
+
+
+        feedback3.textContent =
+            "✓ Bearing locked. Excellent navigation.";
+
+
+        setTimeout(
+            function(){
+
+                navLevel++;
+
+
+                if(
+                    navLevel >= navLevels.length
+                ){
+
+                    finishMission();
+
+                }else{
+
+                    levelUpSound();
+
+                    navLock = false;
+
+                    renderNavLevel();
+
+                }
+
+            },
+            850
+        );
 
     }
 
@@ -2171,50 +3812,50 @@ function updateHeading(){
 
 headingControl.addEventListener(
     "input",
-    updateHeading
+    checkNavigation
 );
 
 
 /* =========================================================
-   FINISH
+   FINAL
    ========================================================= */
 
-finishBtn.addEventListener(
-    "click",
-    function(){
+function finishMission(){
 
-        if(!navigationComplete){
-            return;
-        }
+    progressBar.style.width =
+        "100%";
 
 
-        gameScreen.classList.add(
-            "hidden"
-        );
-
-        finalScreen.classList.remove(
-            "hidden"
-        );
+    finalSound();
 
 
-        document
-            .getElementById("screen")
-            .scrollTop = 0;
+    setTimeout(
+        function(){
 
+            gameScreen.classList.add(
+                "hidden"
+            );
 
-        /*
-         * Let the final music continue.
-         * Slightly raise volume for the reveal.
-         */
+            finalScreen.classList.remove(
+                "hidden"
+            );
 
-        bgMusic.volume = 0.56;
+            document
+                .getElementById("screen")
+                .scrollTop = 0;
 
-    }
-);
+            audioLabel.textContent =
+                "🏆 MISSION COMPLETE";
+
+        },
+        700
+    );
+
+}
 
 
 /* =========================================================
-   SAFETY: KEEP GAME AT TOP WHEN ROTATING PHONE
+   ORIENTATION
    ========================================================= */
 
 window.addEventListener(
@@ -2235,6 +3876,31 @@ window.addEventListener(
     }
 );
 
+
+/* =========================================================
+   PREVENT DOUBLE-TAP ZOOM
+   ========================================================= */
+
+let lastTouch = 0;
+
+document.addEventListener(
+    "touchend",
+    function(event){
+
+        const now =
+            Date.now();
+
+        if(
+            now - lastTouch <= 300
+        ){
+            event.preventDefault();
+        }
+
+        lastTouch = now;
+
+    },
+    {passive:false}
+);
 
 })();
 </script>
