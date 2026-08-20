@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ASSETS = {
 
         mission:
-            "assets/Mission 3 front  page.png",
+            "assets/Mission3frontpage.png",
 
         game1Intro:
             "assets/game-01/01_intro_screen.png",
