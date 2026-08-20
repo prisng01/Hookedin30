@@ -8,9 +8,14 @@
     /* Google Cursive Font */
     @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 
-    /* Global Page Setup */
+    /* Global Page Setup with Floral Background */
     body {
-      background-color: #f7f3f0;
+      background-color: #fcf8f5;
+      /* Soft repeating floral background pattern */
+      background-image: radial-gradient(#e8d5c8 1px, transparent 1px), 
+                        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 25c-2-4-7-6-11-4s-5 7-3 11c-4-2-9 0-11 4s0 9 4 11c-4 2-6 7-4 11s7 5 11 3c-2 4 0 9 4 11s9 0 11-4c2 4 7 6 11 4s5-7 3-11c4 2 9 0 11-4s0-9-4-11c4-2 6-7 4-11s-7-5-11-3c2-4 0-9-4-11s-9 0-11 4z' fill='%20%23f3dfd1' fill-opacity='0.45'/%3E%3Ccircle cx='40' cy='40' r='5' fill='%20%23e0b8a6' fill-opacity='0.6'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: auto, 120px 120px;
       font-family: 'Georgia', serif;
       display: flex;
       justify-content: center;
@@ -349,10 +354,15 @@
       transform: translateY(-50px) scale(1.05);
       z-index: 5;
     }
-
   </style>
 </head>
 <body>
+
+  <!-- Audio Element -->
+  <audio id="romantic-audio" preload="auto">
+    <source src="love-letter.mp3" type="audio/mpeg">
+    <source src="music.ogg" type="audio/ogg">
+  </audio>
 
   <!-- Envelope Wrapper -->
   <div class="envelope-wrapper" onclick="toggleEnvelope(this)">
@@ -524,82 +534,25 @@
         Ready to unlock it?
       </div>
       
-      <a href="index2.html" target="_blank" class="mission-btn">
+      <a href="index2.html" target="_blank" class="mission-btn" onclick="stopAudioAndNavigate(event)">
         [ 🔓 ENTER MISSION 3 ]
       </a>
     </div>
   </div>
 
   <script>
-    let audioCtx = null;
-    let isPlaying = false;
-
-    function playNote(freq, startTime, duration, volume = 0.08) {
-      if (!audioCtx) return;
-
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      // Soft tone combination
-      osc.type = 'triangle'; 
-      osc.frequency.setValueAtTime(freq, startTime);
-
-      // Soft attack and smooth, long decay like dynamic acoustic strings/piano
-      gain.gain.setValueAtTime(0, startTime);
-      gain.gain.linearRampToValueAtTime(volume, startTime + 0.15);
-      gain.gain.exponentialRampToValueAtTime(0.00001, startTime + duration);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start(startTime);
-      osc.stop(startTime + duration);
-    }
-
-    function playMelody() {
-      if (isPlaying) return;
-      isPlaying = true;
-
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContext();
-
-      // Soft romantic arpeggios (Cadd9 -> Am7 -> Fmaj7 -> G6)
-      const arpeggios = [
-        // C Major (warm & comforting)
-        [261.63, 329.63, 392.00, 523.25, 587.33],
-        // A Minor (gentle & romantic)
-        [220.00, 261.63, 329.63, 440.00, 523.25],
-        // F Major (dreamy)
-        [174.61, 261.63, 329.63, 392.00, 440.00],
-        // G Major (warm resolution)
-        [196.00, 246.94, 293.66, 392.00, 493.88]
-      ];
-
-      let chordIndex = 0;
-
-      function playNextArpeggio() {
-        if (!audioCtx) return;
-
-        const chord = arpeggios[chordIndex];
-        const now = audioCtx.currentTime;
-
-        // Play notes sequentially within the chord for a soft, rolling effect
-        chord.forEach((freq, idx) => {
-          const noteStart = now + (idx * 0.35);
-          playNote(freq, noteStart, 2.5, 0.07);
-        });
-
-        chordIndex = (chordIndex + 1) % arpeggios.length;
-        // Repeat arpeggiated loop every 2.4 seconds
-        setTimeout(playNextArpeggio, 2400);
-      }
-
-      playNextArpeggio();
-    }
-
     function toggleEnvelope(wrapper) {
-      wrapper.classList.add('open');
-      playMelody();
+      if (!wrapper.classList.contains('open')) {
+        wrapper.classList.add('open');
+        
+        const audio = document.getElementById('romantic-audio');
+        if (audio) {
+          audio.volume = 0.5;
+          audio.play().catch(error => {
+            console.log("Audio playback error:", error);
+          });
+        }
+      }
     }
 
     function nextCard(event, currentNum) {
@@ -620,6 +573,16 @@
 
     function preventClose(event) {
       event.stopPropagation();
+    }
+
+    function stopAudioAndNavigate(event) {
+      event.stopPropagation();
+      
+      const audio = document.getElementById('romantic-audio');
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     }
   </script>
 
