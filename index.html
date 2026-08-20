@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Invitation</title>
+  <style>
+    /* Google Cursive Font */
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
+    /* Global Page Setup */
+    body {
+      background-color: #f7f3f0;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* Outer Wrapper & Envelope Container */
+    .envelope-wrapper {
+      position: relative;
+      width: 320px;
+      height: 220px;
+      background-color: #e0d5c1;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    /* Top Flap */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 120px solid #d4c5ab;
+      transform-origin: top;
+      transition: transform 0.4s ease 0.2s, z-index 0.2s ease 0.4s;
+      z-index: 3;
+    }
+
+    /* Front Pocket Cover */
+    .pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 110px;
+      border-left: 160px solid #c8b89d;
+      border-right: 160px solid #c8b89d;
+      border-bottom: 110px solid #beae92;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      z-index: 2;
+    }
+
+    /* Wax Seal Stamp */
+    .wax-seal {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px;
+      height: 42px;
+      background: radial-gradient(circle, #8b0000 0%, #5d0000 100%);
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      z-index: 4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #dfb15b;
+      font-size: 1.2rem;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Card / Letter Inside */
+    .card {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      width: 290px;
+      background: #ffffff;
+      padding: 16px 20px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(0) scale(0.95);
+      
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, 
+                  opacity 0.4s ease 0.2s, 
+                  z-index 0.1s ease 0.4s;
+      z-index: 1;
+    }
+
+    .card.hidden {
+      display: none !important;
+    }
+
+    /* Styling for image inside cards */
+    .card-img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin: 6px 0;
+    }
+
+    /* Tap Hint Text */
+    .click-hint {
+      font-size: 0.65rem;
+      color: #aaa;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* Card Text Styling */
+    .subtitle {
+      font-size: 0.8rem;
+      color: #e07a5f;
+      margin-bottom: 4px;
+    }
+
+    .invitation-text {
+      font-size: 0.75rem;
+      color: #666;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 1.4rem;
+      color: #d64045;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 6px 0;
+    }
+
+    .date, .location {
+      font-size: 0.75rem;
+      color: #777;
+      margin: 2px 0;
+    }
+
+    /* Decorative Cursive Font Header */
+    .cursive-title {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      color: #b54a32;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    /* Badges & Pill Tags */
+    .mission-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fbf7f2;
+      border: 1px solid #e2d7c5;
+      border-radius: 12px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #b54a32;
+      margin: 2px 0;
+      width: 140px;
+    }
+
+    .check-icon {
+      background: #536b44;
+      color: white;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px dashed #536b44;
+      border-radius: 8px;
+      padding: 6px 12px;
+      background: #f7f9f5;
+      margin: 6px 0;
+    }
+
+    .status-badge-text {
+      font-family: 'Impact', sans-serif;
+      font-size: 0.9rem;
+      color: #2a3a27;
+      letter-spacing: 1px;
+    }
+
+    .surprise-badge {
+      background: #fbeee9;
+      border: 1px dashed #b54a32;
+      border-radius: 12px;
+      padding: 6px 12px;
+      display: inline-block;
+      margin: 6px 0;
+    }
+
+    .dashed-divider {
+      border-bottom: 1px dashed #d5ccba;
+      margin: 8px auto;
+      width: 80%;
+    }
+
+    /* Card 4 - Custom Schedule Layout */
+    .schedule-header {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      color: #3b5336;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .card4-title {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 1.25rem;
+      color: #2a3a27;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 2px 0 6px 0;
+    }
+
+    .card4-footer-title {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 0.7rem;
+      color: #2a3a27;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 4px 0 2px 0;
+    }
+
+    .schedule-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .schedule-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #d5ccba;
+    }
+
+    .schedule-row:last-child {
+      border-bottom: none;
+    }
+
+    .row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .bg-red { background-color: #a34832; }
+    .bg-green { background-color: #536b44; }
+
+    .schedule-code {
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #a34832;
+    }
+
+    .schedule-label {
+      font-size: 0.8rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .doodle-icon {
+      font-size: 0.85rem;
+    }
+
+    /* Mission Button Styling for Card 5 */
+    .mission-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 18px;
+      background-color: #d64045;
+      color: #ffffff;
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(214, 64, 69, 0.3);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .mission-btn:hover {
+      background-color: #b53237;
+      transform: scale(1.03);
+    }
+
+    /* ==================================
+       OPEN STATE (ANIMATION SEQUENCE)
+       ================================== */
+
+    .envelope-wrapper.open .wax-seal {
+      opacity: 0;
+    }
+
+    .envelope-wrapper.open .flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+      transition: transform 0.4s ease 0s, z-index 0.1s ease 0.2s;
+    }
+
+    .envelope-wrapper.open .card {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-50px) scale(1.05);
+      z-index: 5;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Envelope Wrapper -->
+  <div class="envelope-wrapper" onclick="toggleEnvelope(this)">
+    <div class="flap"></div>
+    <div class="pocket"></div>
+    <div class="wax-seal">💌</div>
+
+    <!-- First Card -->
+    <div class="card" id="card1" onclick="nextCard(event, 1)">
+      <div class="cursive-title">Happy Birthday<br>Birthday Boy! ❤️</div>
+      
+      <div class="invitation-text" style="margin-top: 6px;">
+        I’ve decided you deserve something a little more exciting than just cake…<br><br>
+        So pack your bags, birthday boy. 😗
+      </div>
+      
+      <div class="title" style="color: #b54a32; font-size: 1.1rem; margin: 2px 0 0 0;">⛺ YOU’RE GOING</div>
+      <div class="title" style="color: #2a3a27; font-size: 1.5rem; margin-top: 0;">CAMPING WITH ME!</div>
+      
+      <div class="dashed-divider"></div>
+      
+      <div class="date" style="font-weight: bold; color: #333;">📅 21 — 22 AUGUST 2026</div>
+      <div class="location" style="font-weight: bold; color: #333;">📍 EAST COAST PARK</div>
+      
+      <div class="invitation-text" style="font-size: 0.68rem; margin-top: 4px;">2 days • 1 adventure • just us ❤️</div>
+      
+      <div class="status-badge">
+        <span style="font-size: 1rem;">🔒</span>
+        <div style="text-align: center;">
+          <div style="font-size: 0.55rem; color: #536b44; font-weight: bold; letter-spacing: 0.5px;">ADVENTURE STATUS:</div>
+          <div class="status-badge-text">UNLOCKED</div>
+        </div>
+      </div>
+      
+      <div class="click-hint">➔ Tap to begin your adventure ↵</div>
+    </div>
+
+    <!-- Second Card -->
+    <div class="card hidden" id="card2" onclick="nextCard(event, 2)">
+      <div class="invitation-text" style="color: #b54a32; margin-bottom: 0;">To my favourite</div>
+      <div class="cursive-title" style="font-size: 2rem;">Master Angler ❤️🎣</div>
+      
+      <img src="photo.jpg" alt="Master Angler Picture" class="card-img" style="border: 2px solid #f2dfd3;" />
+      
+      <div class="invitation-text" style="font-weight: bold; margin: 4px 0;">You’ve made it this far… ♡</div>
+      
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <div class="mission-pill">
+          <span>Mission 1</span>
+          <span class="check-icon">✓</span>
+        </div>
+        <div class="mission-pill">
+          <span>Mission 2</span>
+          <span class="check-icon">✓</span>
+        </div>
+      </div>
+
+      <div class="dashed-divider"></div>
+
+      <div class="invitation-text" style="font-size: 0.7rem; line-height: 1.2;">
+        And now… we’re getting close to the end. 👀<br>
+        But before we get there,<br>
+        there’s something I want you to see…
+      </div>
+
+      <div class="cursive-title" style="font-size: 1.3rem; margin-top: 2px;">I just wanted to say… ❤️</div>
+      <div class="click-hint">( Tap to continue )</div>
+    </div>
+
+    <!-- Third Card -->
+    <div class="card hidden" id="card3" onclick="nextCard(event, 3)">
+      <div class="cursive-title" style="font-size: 1.8rem;">Happy Birthday,<br>my love. ❤️</div>
+      
+      <div class="invitation-text" style="margin-top: 6px; line-height: 1.2;">
+        I know this little birthday adventure may be a little silly, but I had so much fun putting it together for you. 🥺
+      </div>
+      
+      <div class="dashed-divider"></div>
+      
+      <div class="invitation-text" style="line-height: 1.2;">
+        I wanted to give you something more than just a present —<br>
+        I wanted to create a few little moments for us to remember. ❤️
+      </div>
+
+      <div class="dashed-divider"></div>
+
+      <div class="invitation-text" style="font-weight: bold; margin-bottom: 2px;">And now… you’re almost there. 👀</div>
+
+      <div class="surprise-badge">
+        <div style="font-family: 'Impact', sans-serif; color: #b54a32; font-size: 0.85rem; letter-spacing: 0.5px;">ONE LAST SURPRISE</div>
+        <div class="cursive-title" style="font-size: 1rem; color: #b54a32;">is waiting for you… 🎁</div>
+      </div>
+
+      <div class="invitation-text" style="margin-top: 2px;">
+        So take a deep breath,<br>birthday boy… ♡
+      </div>
+
+      <div class="title" style="color: #2a3a27; font-size: 1.1rem; margin: 2px 0;">YOUR ADVENTURE AWAITS. ❤️</div>
+      <div class="click-hint">✦ Tap to see what’s waiting for you ✦</div>
+    </div>
+
+    <!-- Fourth Card -->
+    <div class="card hidden" id="card4" onclick="nextCard(event, 4)">
+      <div class="schedule-header">🌲• THE ADVENTURE CONTINUES •🌲</div>
+      <div class="card4-title">SCHEDULE & ACTIVITIES</div>
+      
+      <img src="photo2.jpg" alt="Schedule Picture" class="card-img" />
+      
+      <div class="schedule-container">
+        <!-- Item 01 -->
+        <div class="schedule-row">
+          <div class="row-left">
+            <div class="icon-circle bg-red">🔥</div>
+            <span class="schedule-code">01</span>
+            <span class="schedule-label">Eat good food</span>
+          </div>
+          <span class="doodle-icon">🍴</span>
+        </div>
+
+        <!-- Item 02 -->
+        <div class="schedule-row">
+          <div class="row-left">
+            <div class="icon-circle bg-green">🎣</div>
+            <span class="schedule-code">02</span>
+            <span class="schedule-label">Fishing</span>
+          </div>
+          <span class="doodle-icon">🐟</span>
+        </div>
+
+        <!-- Item 03 -->
+        <div class="schedule-row">
+          <div class="row-left">
+            <div class="icon-circle bg-red">📷</div>
+            <span class="schedule-code">03</span>
+            <span class="schedule-label">Take photos</span>
+          </div>
+          <span class="doodle-icon">📸</span>
+        </div>
+
+        <!-- Item 04 -->
+        <div class="schedule-row">
+          <div class="row-left">
+            <div class="icon-circle bg-green">🎁</div>
+            <span class="schedule-code">04</span>
+            <span class="schedule-label">Open your gifts</span>
+          </div>
+          <span class="doodle-icon">✨</span>
+        </div>
+      </div>
+
+      <div class="dashed-divider"></div>
+
+      <div class="card4-footer-title">Ready for the final Adventure? ❤️</div>
+      <div class="click-hint">✦ Tap for next ✦</div>
+    </div>
+
+    <!-- Fifth Card -->
+    <div class="card hidden" id="card5" onclick="preventClose(event)">
+      <div class="subtitle">YOU’VE BEEN INVITED.</div>
+      <div class="invitation-text" style="color: #444; margin-top: 4px;">
+        But before you pack your bags…
+      </div>
+      
+      <div class="title" style="font-size: 1.1rem; color: #d64045; margin: 8px 0;">
+        🔐 FINAL MISSION AWAITS 🔐
+      </div>
+      
+      <div class="invitation-text" style="color: #666;">
+        Ready to unlock it?
+      </div>
+      
+      <a href="index2.html" target="_blank" class="mission-btn">
+        [ 🔓 ENTER MISSION 3 ]
+      </a>
+    </div>
+  </div>
+
+  <script>
+    let audioCtx = null;
+    let isPlaying = false;
+
+    function playNote(freq, startTime, duration, volume = 0.08) {
+      if (!audioCtx) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      // Soft tone combination
+      osc.type = 'triangle'; 
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      // Soft attack and smooth, long decay like dynamic acoustic strings/piano
+      gain.gain.setValueAtTime(0, startTime);
+      gain.gain.linearRampToValueAtTime(volume, startTime + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.00001, startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    }
+
+    function playMelody() {
+      if (isPlaying) return;
+      isPlaying = true;
+
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      // Soft romantic arpeggios (Cadd9 -> Am7 -> Fmaj7 -> G6)
+      const arpeggios = [
+        // C Major (warm & comforting)
+        [261.63, 329.63, 392.00, 523.25, 587.33],
+        // A Minor (gentle & romantic)
+        [220.00, 261.63, 329.63, 440.00, 523.25],
+        // F Major (dreamy)
+        [174.61, 261.63, 329.63, 392.00, 440.00],
+        // G Major (warm resolution)
+        [196.00, 246.94, 293.66, 392.00, 493.88]
+      ];
+
+      let chordIndex = 0;
+
+      function playNextArpeggio() {
+        if (!audioCtx) return;
+
+        const chord = arpeggios[chordIndex];
+        const now = audioCtx.currentTime;
+
+        // Play notes sequentially within the chord for a soft, rolling effect
+        chord.forEach((freq, idx) => {
+          const noteStart = now + (idx * 0.35);
+          playNote(freq, noteStart, 2.5, 0.07);
+        });
+
+        chordIndex = (chordIndex + 1) % arpeggios.length;
+        // Repeat arpeggiated loop every 2.4 seconds
+        setTimeout(playNextArpeggio, 2400);
+      }
+
+      playNextArpeggio();
+    }
+
+    function toggleEnvelope(wrapper) {
+      wrapper.classList.add('open');
+      playMelody();
+    }
+
+    function nextCard(event, currentNum) {
+      const wrapper = event.target.closest('.envelope-wrapper');
+
+      if (wrapper && wrapper.classList.contains('open')) {
+        event.stopPropagation();
+        
+        const currentCard = document.getElementById(`card${currentNum}`);
+        const nextCard = document.getElementById(`card${currentNum + 1}`);
+        
+        if (currentCard && nextCard) {
+          currentCard.classList.add('hidden');
+          nextCard.classList.remove('hidden');
+        }
+      }
+    }
+
+    function preventClose(event) {
+      event.stopPropagation();
+    }
+  </script>
+
+</body>
+</html>
