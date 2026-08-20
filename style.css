@@ -1,7 +1,6 @@
 /* =========================================================
    HOOKED IN 30
-   MISSION 03 — THE FINAL EXPEDITION
-   COMPLETE STYLE SHEET
+   MAIN STYLESHEET
 ========================================================= */
 
 
@@ -11,24 +10,26 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
+
+/* =========================================================
+   BODY
+========================================================= */
+
 body {
-    background: #050b0e;
-    color: #f2f4ef;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-    overflow-x: hidden;
+    background: #050b12;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
 }
 
 
@@ -37,893 +38,50 @@ body {
 ========================================================= */
 
 #game-container {
-    width: 100%;
-    min-height: 100vh;
     position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    min-width: 320px;
+    min-height: 480px;
+
     overflow: hidden;
-}
-
-
-/* =========================================================
-   ORIGINAL HTML GAME SCREENS
-========================================================= */
-
-.game-screen {
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-}
-
-.game-screen.hidden {
-    display: none !important;
-}
-
-.game-image {
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-    object-fit: cover;
-    display: block;
-}
-
-
-/* =========================================================
-   JAVASCRIPT-GENERATED SCREENS
-========================================================= */
-
-.hook-screen {
-    width: 100%;
-    min-height: 100vh;
-
-    position: relative;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    overflow-x: hidden;
-    overflow-y: auto;
 
     background:
         radial-gradient(
-            circle at top,
-            #17333b 0%,
-            #081419 45%,
-            #03080a 100%
+            circle at center,
+            #12283a 0%,
+            #07131f 55%,
+            #03080d 100%
         );
 }
 
-.hook-screen.active {
-    display: flex;
-}
-
 
 /* =========================================================
-   FULL-SCREEN IMAGE
+   GAME SCREENS
 ========================================================= */
 
-.hook-bg {
-    width: 100%;
-    height: 100vh;
-
-    min-height: 100vh;
-
-    object-fit: cover;
-
-    display: block;
-
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-
-/* =========================================================
-   IMAGE SCREEN BUTTON OVERLAY
-========================================================= */
-
-.hook-overlay {
+.game-screen {
     position: absolute;
 
     inset: 0;
 
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: flex-end;
-
-    padding: 40px;
-
-    pointer-events: none;
-
-    z-index: 10;
-}
-
-
-/*
-   Only the buttons themselves are clickable.
-   This prevents the overlay from blocking the image
-   while keeping the button active.
-*/
-
-.hook-overlay .hook-button {
-    pointer-events: auto;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.hook-button {
-    position: relative;
-
-    z-index: 100;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    min-width: 300px;
-
-    padding: 17px 35px;
-
-    border: 2px solid #d8a928;
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #6de522 0%,
-            #439e0d 50%,
-            #2f7909 100%
-        );
-
-    color: #ffffff;
-
-    font-size: 21px;
-
-    font-weight: 900;
-
-    letter-spacing: 0.8px;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 0 0 3px rgba(5, 10, 12, 0.95),
-        0 8px 25px rgba(0, 0, 0, 0.65);
-
-    text-shadow:
-        0 2px 3px rgba(0, 0, 0, 0.85);
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.hook-button:hover {
-    transform: translateY(-2px) scale(1.02);
-
-    filter: brightness(1.12);
-
-    box-shadow:
-        0 0 0 3px rgba(5, 10, 12, 0.95),
-        0 12px 30px rgba(0, 0, 0, 0.75);
-}
-
-.hook-button:active {
-    transform: scale(0.98);
-}
-
-.hook-button:focus-visible {
-    outline: 3px solid #ffffff;
-    outline-offset: 4px;
-}
-
-
-/* =========================================================
-   GENERAL GAME PANEL
-========================================================= */
-
-.hook-panel {
-    width: min(1100px, 92%);
-
-    max-height: 92vh;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    margin: 30px auto;
-
-    padding: 35px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(8, 22, 27, 0.98),
-            rgba(2, 9, 12, 0.98)
-        );
-
-    border: 1px solid #3d5960;
-
-    border-radius: 20px;
-
-    color: #f2f4ef;
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.85);
-
-    text-align: center;
-
-    position: relative;
-
-    z-index: 20;
-}
-
-
-/* =========================================================
-   HEADINGS
-========================================================= */
-
-.hook-panel h1 {
-    margin: 0 0 15px;
-
-    font-size:
-        clamp(32px, 5vw, 60px);
-
-    line-height: 1.05;
-
-    font-weight: 950;
-
-    letter-spacing: 1px;
-}
-
-.hook-panel h2 {
-    margin: 18px 0 10px;
-
-    font-size:
-        clamp(22px, 3vw, 36px);
-
-    font-weight: 900;
-}
-
-.hook-panel p {
-    color: #c7d0ce;
-
-    line-height: 1.65;
-
-    font-size: 16px;
-}
-
-
-/* =========================================================
-   GAME LABEL
-========================================================= */
-
-.hook-game-label {
-    color: #62d9d5;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 12px;
-
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   XP
-========================================================= */
-
-.hook-xp {
-    margin: 22px 0;
-
-    color: #9bd83f;
-
-    font-size:
-        clamp(38px, 7vw, 64px);
-
-    line-height: 1;
-
-    font-weight: 950;
-
-    text-shadow:
-        0 0 20px rgba(155, 216, 63, 0.2);
-}
-
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.hook-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 16px;
-
-    margin: 25px 0;
-}
-
-.hook-card {
-    background:
-        linear-gradient(
-            145deg,
-            #102026,
-            #091418
-        );
-
-    border: 1px solid #294047;
-
-    border-radius: 14px;
-
-    padding: 20px;
-
-    color: #dfe8e5;
-
-    line-height: 1.55;
-}
-
-.hook-card strong {
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: #9bd83f;
-
-    font-size: 16px;
-
-    font-weight: 900;
-}
-
-
-/* =========================================================
-   STATUS BOX
-========================================================= */
-
-.hook-status {
-    padding: 16px;
-
-    margin: 16px 0;
-
-    background:
-        rgba(5, 15, 18, 0.9);
-
-    border: 1px solid #294047;
-
-    border-radius: 10px;
-
-    color: #d3dcda;
-
-    line-height: 1.6;
-}
-
-.hook-status strong {
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   SCANNER
-========================================================= */
-
-.hook-scanner {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 12px;
-
-    margin: 20px 0;
-}
-
-.hook-reading {
-    min-height: 75px;
+    width: 100%;
+    height: 100%;
 
     display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
     justify-content: center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0d1c21,
-            #071115
-        );
-
-    border: 1px solid #294047;
-
-    border-radius: 10px;
-
-    padding: 12px;
-}
-
-.hook-reading span {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #8fa19e;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    letter-spacing: 0.7px;
-}
-
-.hook-reading strong {
-    color: #ffffff;
-
-    font-size: 18px;
-
-    font-weight: 900;
-}
-
-
-/* =========================================================
-   BIG GAME BUTTON
-========================================================= */
-
-.hook-big-button {
-    display: block;
-
-    width: min(500px, 100%);
-
-    margin: 15px auto;
-
-    padding: 17px 20px;
-
-    border: 1px solid #7cae35;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #3c7418,
-            #294d11
-        );
-
-    color: #ffffff;
-
-    font-size: 18px;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease,
-        background 0.15s ease;
-
-    position: relative;
-
-    z-index: 100;
-}
-
-.hook-big-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-
-    filter: brightness(1.15);
-
-    background:
-        linear-gradient(
-            180deg,
-            #4d8b20,
-            #356516
-        );
-}
-
-.hook-big-button:active:not(:disabled) {
-    transform: scale(0.98);
-}
-
-.hook-big-button:focus-visible {
-    outline: 3px solid #ffffff;
-
-    outline-offset: 3px;
-}
-
-.hook-big-button:disabled {
-    opacity: 0.38;
-
-    cursor: not-allowed;
-
-    transform: none;
-
-    filter: grayscale(0.5);
-}
-
-
-/* =========================================================
-   WATER READING CHOICES
-========================================================= */
-
-.hook-choices {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 15px;
-
-    margin: 22px 0;
-}
-
-.hook-choice {
-    display: block;
-
-    width: 100%;
-
-    min-width: 0;
-
-    padding: 10px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0b181d,
-            #061014
-        );
-
-    color: #ffffff;
-
-    border: 2px solid #294047;
-
-    border-radius: 14px;
-
-    cursor: pointer;
-
-    transition:
-        border-color 0.15s ease,
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
-
-    position: relative;
-
-    z-index: 50;
-}
-
-.hook-choice:hover {
-    border-color: #9bd83f;
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.45);
-}
-
-.hook-choice:active {
-    transform: scale(0.98);
-}
-
-.hook-choice.selected {
-    border-color: #9bd83f;
-
-    background:
-        linear-gradient(
-            145deg,
-            #162b1c,
-            #0b1810
-        );
-
-    box-shadow:
-        0 0 0 2px rgba(155, 216, 63, 0.25),
-        0 0 25px rgba(155, 216, 63, 0.25);
-}
-
-.hook-choice:focus-visible {
-    outline: 3px solid #ffffff;
-
-    outline-offset: 3px;
-}
-
-
-/* =========================================================
-   CHOICE IMAGES
-========================================================= */
-
-.hook-choice img {
-    display: block;
-
-    width: 100%;
-
-    height: 150px;
-
-    object-fit: contain;
-
-    margin: 0 auto;
-
-    pointer-events: none;
-
-    user-select: none;
-}
-
-.hook-choice span {
-    display: block;
-
-    margin-top: 9px;
-
-    color: #ffffff;
-
-    font-size: 15px;
-
-    font-weight: 900;
-
-    letter-spacing: 0.5px;
-}
-
-
-/* =========================================================
-   PROGRESS BAR
-========================================================= */
-
-.hook-progress {
-    width: 100%;
-
-    height: 20px;
-
-    margin: 18px 0;
+    align-items: center;
 
     overflow: hidden;
 
-    background: #101d21;
-
-    border: 1px solid #294047;
-
-    border-radius: 20px;
-
-    box-shadow:
-        inset 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.hook-progress-fill {
-    height: 100%;
-
-    width: 0%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #4e8d1c,
-            #9bd83f
-        );
-
-    border-radius: 20px;
-
-    transition:
-        width 0.25s ease;
-
-    box-shadow:
-        0 0 12px rgba(155, 216, 63, 0.25);
+    background: #050b12;
 }
 
 
 /* =========================================================
-   SUCCESS / FAILURE
-========================================================= */
-
-.hook-success {
-    color: #9bd83f;
-
-    font-weight: 900;
-
-    font-size: 22px;
-}
-
-.hook-danger {
-    color: #e1a153;
-
-    font-weight: 900;
-
-    font-size: 22px;
-}
-
-
-/* =========================================================
-   FINAL SCORE
-========================================================= */
-
-.hook-final-score {
-    margin: 15px 0;
-
-    color: #9bd83f;
-
-    font-size:
-        clamp(55px, 10vw, 110px);
-
-    line-height: 1;
-
-    font-weight: 950;
-
-    text-shadow:
-        0 0 25px rgba(155, 216, 63, 0.25);
-}
-
-
-/* =========================================================
-   FINAL RANK
-========================================================= */
-
-.hook-rank {
-    margin: 15px 0;
-
-    color: #e1a153;
-
-    font-size:
-        clamp(22px, 4vw, 30px);
-
-    font-weight: 900;
-
-    letter-spacing: 1px;
-}
-
-
-/* =========================================================
-   IMAGE INSIDE GAME PANELS
-========================================================= */
-
-.hook-panel img {
-    max-width: 100%;
-}
-
-.hook-panel img:not(.hook-bg) {
-    display: block;
-
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-/* =========================================================
-   PREVENT ACCIDENTAL SELECTION
-========================================================= */
-
-.hook-button,
-.hook-big-button,
-.hook-choice {
-    -webkit-tap-highlight-color: transparent;
-
-    user-select: none;
-
-    -webkit-user-select: none;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 800px) {
-
-    .hook-panel {
-        width: 94%;
-
-        max-height: 94vh;
-
-        padding: 22px;
-
-        border-radius: 16px;
-    }
-
-    .hook-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hook-scanner {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .hook-choices {
-        grid-template-columns: 1fr;
-    }
-
-    .hook-choice img {
-        height: 180px;
-    }
-
-    .hook-overlay {
-        padding: 20px;
-    }
-
-    .hook-button {
-        width: 92%;
-
-        min-width: 0;
-
-        padding: 15px 20px;
-
-        font-size: 17px;
-    }
-
-    .hook-big-button {
-        font-size: 16px;
-
-        padding: 15px;
-    }
-
-}
-
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .hook-panel {
-        width: 96%;
-
-        padding: 17px;
-    }
-
-    .hook-scanner {
-        grid-template-columns: 1fr;
-    }
-
-    .hook-panel h1 {
-        font-size: 31px;
-    }
-
-    .hook-panel h2 {
-        font-size: 23px;
-    }
-
-    .hook-panel p {
-        font-size: 14px;
-    }
-
-    .hook-choice img {
-        height: 150px;
-    }
-
-    .hook-button {
-        font-size: 16px;
-
-        padding: 14px 17px;
-    }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
-
-button {
-    font-family: inherit;
-}
-
-button:disabled {
-    pointer-events: none;
-}
-
-
-/* =========================================================
-   DO NOT LET HIDDEN SCREENS BLOCK CLICKS
+   HIDDEN SCREEN
 ========================================================= */
 
 .hidden {
@@ -932,5 +90,278 @@ button:disabled {
 
 
 /* =========================================================
-   END
+   STANDARD GAME IMAGE
+========================================================= */
+
+.game-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
+/* =========================================================
+   MISSION 3 FRONT PAGE
+========================================================= */
+
+.mission3-frontpage {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MISSION 3 FRONT PAGE IMAGE
+========================================================= */
+
+.mission3-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
+/* =========================================================
+   BEGIN MISSION 3 BUTTON
+========================================================= */
+
+.mission3-start-button {
+    position: absolute;
+
+    left: 50%;
+    bottom: 8%;
+
+    transform: translateX(-50%);
+
+    min-width: 240px;
+    padding: 16px 30px;
+
+    border: 2px solid #7eeaff;
+    border-radius: 14px;
+
+    background: rgba(3, 18, 28, 0.92);
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 10px rgba(0, 220, 255, 0.35),
+        0 0 25px rgba(0, 220, 255, 0.15);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+.mission3-start-button:hover {
+    transform: translateX(-50%) scale(1.05);
+
+    background: rgba(0, 55, 75, 0.95);
+
+    box-shadow:
+        0 0 15px rgba(0, 220, 255, 0.55),
+        0 0 35px rgba(0, 220, 255, 0.25);
+}
+
+
+/* =========================================================
+   BUTTON ACTIVE
+========================================================= */
+
+.mission3-start-button:active {
+    transform: translateX(-50%) scale(0.98);
+}
+
+
+/* =========================================================
+   GENERAL BUTTONS
+   Used by game.js for gameplay controls
+========================================================= */
+
+button {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   GAMEPLAY BUTTON
+========================================================= */
+
+.game-button {
+    position: absolute;
+
+    border: 2px solid #72e8ff;
+    border-radius: 12px;
+
+    padding: 12px 22px;
+
+    background: rgba(5, 20, 30, 0.92);
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 12px rgba(0, 220, 255, 0.25);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.game-button:hover {
+    transform: scale(1.04);
+
+    background: rgba(8, 52, 68, 0.95);
+
+    box-shadow:
+        0 0 18px rgba(0, 220, 255, 0.45);
+}
+
+
+.game-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   DISABLED BUTTON
+========================================================= */
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    transform: none !important;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   IMAGE / BUTTON INTERACTION
+========================================================= */
+
+img {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* =========================================================
+   MOBILE / SMALL SCREENS
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .mission3-start-button {
+        min-width: 200px;
+
+        padding: 13px 22px;
+
+        font-size: 15px;
+
+        bottom: 6%;
+    }
+
+    .game-button {
+        padding: 10px 16px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .mission3-start-button {
+        min-width: 220px;
+
+        padding: 15px 26px;
+
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1025px) {
+
+    .mission3-start-button {
+        min-width: 260px;
+
+        padding: 17px 34px;
+
+        font-size: 19px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   PREVENT TEXT SELECTION DURING GAMEPLAY
+========================================================= */
+
+#game-container {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* =========================================================
+   END OF STYLE.CSS
 ========================================================= */
