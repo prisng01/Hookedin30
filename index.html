@@ -2,92 +2,150 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 
-<meta name="theme-color" content="#061412">
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1,
+               maximum-scale=1,
+               user-scalable=no,
+               viewport-fit=cover">
+
+<meta name="theme-color" content="#06100d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>Mission 3 — The Final Adventure</title>
+<title>MISSION 3 — THE FINAL EXPEDITION</title>
 
 <style>
+/* =========================================================
+   MISSION 3
+   MOBILE-FIRST
+   SINGLE FILE
+   NO ASSETS
+   NO GAME.JS
+   NO STYLE.CSS
+   ========================================================= */
+
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
+    width:100%;
+    height:100%;
     margin:0;
     padding:0;
-    width:100%;
-    min-height:100%;
-    background:#030b0b;
-    color:#f4f0df;
+    overflow:hidden;
+    background:#020807;
+    color:#f3efe2;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
+        Arial,
         sans-serif;
-    overflow:hidden;
 }
 
 body{
-    min-height:100dvh;
+    overscroll-behavior:none;
+}
+
+button,
+input{
+    font:inherit;
 }
 
 button{
-    font:inherit;
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
 }
 
 #app{
     position:relative;
     width:100%;
-    height:100dvh;
-    min-height:100dvh;
+    height:100svh;
+    min-height:100svh;
     overflow:hidden;
+
     background:
-        radial-gradient(circle at 75% 14%,rgba(245,210,123,.08),transparent 22%),
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(69,99,110,.25),
+            transparent 32%
+        ),
         linear-gradient(
             180deg,
-            #02070d 0%,
-            #06151b 45%,
-            #071c17 72%,
-            #020b09 100%
+            #02070b 0%,
+            #06141a 45%,
+            #071a16 72%,
+            #020907 100%
         );
 }
 
-/* ---------------- STARS ---------------- */
+/* =========================================================
+   ATMOSPHERE
+   ========================================================= */
 
 .stars{
     position:absolute;
     inset:0;
     pointer-events:none;
-    opacity:.65;
-    background-image:
-        radial-gradient(circle at 10% 13%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 26% 23%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 43% 11%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 61% 20%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 79% 10%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 91% 29%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 16% 40%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 35% 48%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 57% 40%,#fff 0 1px,transparent 2px),
-        radial-gradient(circle at 82% 48%,#fff 0 1px,transparent 2px);
+    opacity:.7;
 }
 
-/* ---------------- MOON ---------------- */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:#fff7d0;
+    box-shadow:0 0 6px rgba(255,247,208,.45);
+    animation:twinkle 3s ease-in-out infinite;
+}
+
+.star:nth-child(1){left:8%;top:12%;animation-delay:.2s}
+.star:nth-child(2){left:18%;top:23%;animation-delay:1s}
+.star:nth-child(3){left:31%;top:9%;animation-delay:1.8s}
+.star:nth-child(4){left:43%;top:17%;animation-delay:.7s}
+.star:nth-child(5){left:57%;top:8%;animation-delay:2s}
+.star:nth-child(6){left:68%;top:21%;animation-delay:1.3s}
+.star:nth-child(7){left:78%;top:12%;animation-delay:.4s}
+.star:nth-child(8){left:90%;top:27%;animation-delay:2.2s}
+.star:nth-child(9){left:14%;top:37%;animation-delay:1.5s}
+.star:nth-child(10){left:37%;top:32%;animation-delay:.9s}
+.star:nth-child(11){left:61%;top:34%;animation-delay:2.4s}
+.star:nth-child(12){left:84%;top:40%;animation-delay:.6s}
+
+@keyframes twinkle{
+    0%,100%{
+        opacity:.25;
+        transform:scale(.7);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.25);
+    }
+}
 
 .moon{
     position:absolute;
-    width:72px;
-    height:72px;
+    width:78px;
+    height:78px;
     right:12%;
-    top:8%;
+    top:7%;
     border-radius:50%;
-    background:#fff1bd;
-    box-shadow:0 0 35px rgba(255,227,151,.22);
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fffdf0,
+            #f1e6b6 62%,
+            #c8b979 100%
+        );
+    box-shadow:
+        0 0 40px rgba(242,229,174,.18);
 }
 
 .moon:after{
@@ -95,20 +153,22 @@ button{
     position:absolute;
     width:72px;
     height:72px;
-    left:18px;
+    left:21px;
     top:-5px;
     border-radius:50%;
-    background:#06151b;
+    background:#06141a;
 }
 
-/* ---------------- MOUNTAINS ---------------- */
+/* =========================================================
+   DISTANT MOUNTAINS
+   ========================================================= */
 
 .mountains{
     position:absolute;
-    bottom:14%;
     left:0;
-    width:100%;
-    height:28%;
+    right:0;
+    bottom:19%;
+    height:32%;
     pointer-events:none;
 }
 
@@ -117,465 +177,1144 @@ button{
     bottom:0;
     width:0;
     height:0;
-    border-left:90px solid transparent;
-    border-right:90px solid transparent;
-    border-bottom:120px solid #04110e;
+    border-left:95px solid transparent;
+    border-right:95px solid transparent;
+    border-bottom:145px solid #04100d;
 }
 
-.m1{left:-35px;}
-.m2{left:18%;transform:scale(1.25);}
-.m3{left:50%;transform:scale(.9);}
-.m4{right:-30px;transform:scale(1.3);}
+.m1{
+    left:-55px;
+    transform:scale(1.15);
+}
 
-/* ---------------- GROUND ---------------- */
+.m2{
+    left:15%;
+    transform:scale(1.55);
+}
+
+.m3{
+    left:45%;
+    transform:scale(1.1);
+}
+
+.m4{
+    right:-60px;
+    transform:scale(1.5);
+}
+
+/* =========================================================
+   TREE SILHOUETTES
+   ========================================================= */
+
+.trees{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:13%;
+    height:28%;
+    pointer-events:none;
+}
+
+.tree{
+    position:absolute;
+    bottom:0;
+    width:0;
+    height:0;
+    border-left:24px solid transparent;
+    border-right:24px solid transparent;
+    border-bottom:80px solid #03100c;
+}
+
+.tree:after{
+    content:"";
+    position:absolute;
+    left:-20px;
+    top:28px;
+    width:40px;
+    height:60px;
+    border-left:20px solid transparent;
+    border-right:20px solid transparent;
+    border-bottom:68px solid #03100c;
+}
+
+.t1{left:3%;transform:scale(.7)}
+.t2{left:12%;transform:scale(1)}
+.t3{left:24%;transform:scale(.65)}
+.t4{left:72%;transform:scale(.9)}
+.t5{left:83%;transform:scale(.7)}
+.t6{right:2%;transform:scale(1.2)}
+
+/* =========================================================
+   GROUND
+   ========================================================= */
 
 .ground{
     position:absolute;
     left:0;
     right:0;
     bottom:0;
-    height:25%;
+    height:23%;
     background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(24,65,48,.55),
+            transparent 62%
+        ),
         linear-gradient(
             180deg,
-            #092119,
-            #020b08
+            #092118,
+            #020907
         );
-    pointer-events:none;
 }
 
-/* ---------------- CAMP FIRE ---------------- */
+/* =========================================================
+   CAMPFIRE
+   ========================================================= */
 
 .fire{
     position:absolute;
     left:8%;
-    bottom:14%;
-    width:42px;
-    height:52px;
+    bottom:13%;
+    width:60px;
+    height:65px;
     pointer-events:none;
+    filter:drop-shadow(
+        0 0 15px rgba(255,150,42,.15)
+    );
+}
+
+.fireGlow{
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:72px;
+    height:45px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:rgba(255,128,24,.13);
+    filter:blur(12px);
 }
 
 .flame{
     position:absolute;
     left:50%;
-    bottom:5px;
-    width:22px;
-    height:34px;
+    bottom:7px;
+    width:27px;
+    height:43px;
     transform:translateX(-50%) rotate(45deg);
-    border-radius:4px 70% 4px 70%;
-    background:#ffb43d;
-    box-shadow:0 0 22px rgba(255,143,30,.45);
-    animation:flame 1.5s ease-in-out infinite alternate;
+    border-radius:5px 70% 5px 70%;
+    background:
+        linear-gradient(
+            135deg,
+            #fff4aa,
+            #ffbd42 45%,
+            #f06a23
+        );
+    box-shadow:
+        0 0 25px rgba(255,143,30,.45);
+    animation:flameMove 1.25s ease-in-out infinite alternate;
 }
 
-.flame2{
+.flameInner{
     position:absolute;
     left:50%;
-    bottom:3px;
-    width:13px;
-    height:23px;
+    bottom:8px;
+    width:15px;
+    height:28px;
     transform:translateX(-50%) rotate(45deg);
-    border-radius:4px 70% 4px 70%;
-    background:#fff0a6;
+    border-radius:5px 70% 5px 70%;
+    background:#fff2ad;
 }
 
-@keyframes flame{
-    from{transform:translateX(-50%) rotate(42deg) scale(.9);}
-    to{transform:translateX(-50%) rotate(49deg) scale(1.08);}
+.log{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:52px;
+    height:9px;
+    border-radius:10px;
+    background:#3d2617;
+    transform:translateX(-50%) rotate(12deg);
 }
 
-/* ---------------- UI ---------------- */
+.log2{
+    transform:translateX(-50%) rotate(-12deg);
+}
+
+@keyframes flameMove{
+    from{
+        transform:translateX(-50%) rotate(42deg) scale(.92);
+    }
+    to{
+        transform:translateX(-50%) rotate(49deg) scale(1.08);
+    }
+}
+
+/* =========================================================
+   SCREEN
+   ========================================================= */
 
 #screen{
     position:absolute;
     inset:0;
-    z-index:10;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
+    z-index:20;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+
     padding:
         max(18px,env(safe-area-inset-top))
         14px
-        max(18px,env(safe-area-inset-bottom));
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
+        max(24px,env(safe-area-inset-bottom));
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .panel{
     width:min(100%,520px);
-    margin:auto 0;
+    margin:auto;
     padding:24px 20px;
-    border-radius:24px;
-    border:1px solid rgba(255,213,119,.18);
-    background:rgba(3,13,12,.90);
+
+    border-radius:25px;
+
+    border:1px solid
+        rgba(225,183,91,.19);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(8,22,19,.95),
+            rgba(3,12,11,.94)
+        );
+
     box-shadow:
-        0 20px 60px rgba(0,0,0,.5),
-        inset 0 1px rgba(255,255,255,.04);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+        0 24px 70px rgba(0,0,0,.58),
+        inset 0 1px rgba(255,255,255,.035);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
 }
 
 .hidden{
     display:none!important;
 }
 
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
 .eyebrow{
     display:inline-block;
+
     padding:8px 12px;
-    border:1px solid rgba(238,190,77,.45);
+
     border-radius:999px;
-    color:#e9bd59;
-    font-size:11px;
-    font-weight:800;
+
+    border:1px solid
+        rgba(225,181,77,.42);
+
+    color:#e5b84f;
+
+    font-size:10px;
+    font-weight:900;
+
     letter-spacing:2px;
-    margin-bottom:18px;
+
+    margin-bottom:17px;
 }
 
 h1{
     margin:0;
-    font-size:clamp(34px,10vw,58px);
-    line-height:.95;
-    letter-spacing:-2px;
+
+    font-size:
+        clamp(38px,11vw,60px);
+
+    line-height:.9;
+
+    letter-spacing:-2.5px;
 }
 
 h2{
-    margin:8px 0 12px;
-    font-size:28px;
-    line-height:1.05;
+    margin:7px 0 13px;
+
+    font-size:
+        clamp(26px,7vw,34px);
+
+    line-height:1.02;
+
+    letter-spacing:-.7px;
 }
 
 .gold{
-    color:#e6b84e;
+    color:#e3b44b;
 }
 
 .subtitle{
-    color:#c8d0ca;
+    color:#c5d0ca;
+    font-size:14px;
     line-height:1.55;
-    font-size:15px;
 }
 
 .small{
-    font-size:12px;
-    color:#8e9d97;
+    color:#81918a;
+    font-size:11px;
     line-height:1.5;
 }
 
-/* ---------------- BUTTONS ---------------- */
-
-.btn{
-    width:100%;
-    min-height:54px;
-    margin-top:12px;
-    border:0;
-    border-radius:15px;
-    padding:14px 16px;
-    background:#d9a941;
-    color:#07100d;
-    font-weight:900;
-    font-size:15px;
-    letter-spacing:.3px;
-    box-shadow:0 7px 0 #8b6620;
-    transition:transform .12s ease,box-shadow .12s ease;
-    cursor:pointer;
-}
-
-.btn:active{
-    transform:translateY(5px);
-    box-shadow:0 2px 0 #8b6620;
-}
-
-.btn.secondary{
-    background:#152a25;
-    color:#edf0e6;
-    border:1px solid rgba(255,255,255,.09);
-    box-shadow:none;
-}
-
-/* ---------------- STATUS ---------------- */
+/* =========================================================
+   TOP BAR
+   ========================================================= */
 
 .topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:8px;
-    margin-bottom:18px;
+    gap:10px;
+    margin-bottom:14px;
 }
 
 .badge{
+    color:#d9af52;
     font-size:10px;
-    letter-spacing:1.4px;
-    color:#e5bb63;
+    letter-spacing:1.5px;
+    font-weight:900;
 }
 
-.audioStatus{
-    font-size:10px;
-    color:#81958c;
+.audioLabel{
+    color:#82918b;
+    font-size:9px;
+    letter-spacing:.8px;
+    white-space:nowrap;
 }
 
-/* ---------------- CHALLENGE ---------------- */
+/* =========================================================
+   SOUND BUTTON
+   ========================================================= */
 
-.challengeNumber{
-    color:#dcae47;
-    font-size:12px;
-    letter-spacing:2px;
-    font-weight:800;
+.soundButton{
+    position:fixed;
+    z-index:100;
+
+    right:
+        max(14px,env(safe-area-inset-right));
+
+    top:
+        max(14px,env(safe-area-inset-top));
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    border:1px solid
+        rgba(231,188,83,.28);
+
+    background:rgba(4,16,13,.86);
+
+    color:#f0d486;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.28);
 }
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
 
 .progress{
     width:100%;
     height:5px;
-    background:#162823;
-    border-radius:99px;
-    margin:16px 0 22px;
+
+    border-radius:999px;
+
+    background:#13251f;
+
     overflow:hidden;
+
+    margin:
+        0 0 22px;
 }
 
-.progressFill{
+.progressBar{
     height:100%;
-    width:33.333%;
-    background:#d9aa45;
-    transition:width .35s ease;
+    width:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #b98730,
+            #e7bd58
+        );
+
+    border-radius:999px;
+
+    transition:
+        width .45s ease;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn{
+    width:100%;
+
+    min-height:54px;
+
+    border:0;
+    border-radius:16px;
+
+    padding:14px 16px;
+
+    margin-top:12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #e6bd58,
+            #c99632
+        );
+
+    color:#07100d;
+
+    font-size:14px;
+    font-weight:900;
+
+    letter-spacing:.4px;
+
+    box-shadow:
+        0 7px 0 #815d1e;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+}
+
+.btn:active{
+    transform:translateY(5px);
+    box-shadow:
+        0 2px 0 #815d1e;
+}
+
+.btn.secondary{
+    background:#132a24;
+    color:#edf0e5;
+
+    border:1px solid
+        rgba(255,255,255,.08);
+
+    box-shadow:none;
+}
+
+/* =========================================================
+   CHALLENGE
+   ========================================================= */
+
+.challengeNumber{
+    color:#dcae4b;
+
+    font-size:10px;
+    font-weight:900;
+
+    letter-spacing:1.8px;
 }
 
 .choiceGrid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:10px;
-    margin-top:18px;
+
+    margin-top:16px;
 }
 
 .choice{
-    min-height:105px;
-    border-radius:17px;
-    border:1px solid rgba(255,255,255,.09);
-    background:#0b1b17;
-    color:#edf0e6;
-    padding:14px;
+    min-height:102px;
+
+    padding:13px;
+
     text-align:left;
-    cursor:pointer;
-    transition:.15s ease;
+
+    border-radius:16px;
+
+    border:1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            180deg,
+            #0c201a,
+            #081712
+        );
+
+    color:#eef1e8;
+
+    transition:
+        transform .12s ease,
+        border-color .15s ease,
+        background .15s ease;
 }
 
 .choice:active{
-    transform:scale(.97);
+    transform:scale(.975);
 }
 
 .choice strong{
     display:block;
-    margin-bottom:7px;
-    color:#e5bd6b;
+
+    color:#e4bd68;
+
+    font-size:13px;
+
+    margin-bottom:6px;
 }
 
 .choice span{
     display:block;
-    font-size:12px;
-    line-height:1.4;
-    color:#aebbb5;
+
+    color:#9eafa7;
+
+    font-size:11px;
+
+    line-height:1.42;
 }
 
 .choice.correct{
-    border-color:#74bd8b;
-    background:#0d281c;
-}
+    border-color:#68b786;
 
-.choice.wrong{
-    border-color:#b85c50;
-    background:#2a1513;
-}
-
-.feedback{
-    min-height:48px;
-    margin-top:16px;
-    padding:12px;
-    border-radius:13px;
-    background:#071511;
-    color:#bac7c0;
-    font-size:13px;
-    line-height:1.45;
-}
-
-/* ---------------- WATER ---------------- */
-
-.waterScene{
-    position:relative;
-    height:135px;
-    margin:16px 0;
-    border-radius:17px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.08);
     background:
         linear-gradient(
             180deg,
-            #6d8e96 0%,
-            #315c67 35%,
-            #0a3039 100%
+            #102d1f,
+            #0a2117
         );
 }
 
-.waterScene:before,
-.waterScene:after{
-    content:"";
-    position:absolute;
-    left:-10%;
-    width:120%;
-    height:22px;
-    border-top:2px solid rgba(221,242,235,.5);
-    border-radius:50%;
+.choice.wrong{
+    border-color:#ad5b4f;
+
+    background:
+        linear-gradient(
+            180deg,
+            #2a1714,
+            #1d0e0d
+        );
+}
+
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
+.feedback{
+    min-height:48px;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:13px;
+
+    background:#061511;
+
+    border:1px solid
+        rgba(255,255,255,.045);
+
+    color:#b7c5bd;
+
+    font-size:12px;
+
+    line-height:1.45;
+}
+
+/* =========================================================
+   WATER
+   ========================================================= */
+
+.waterScene{
+    position:relative;
+
+    height:138px;
+
+    margin:16px 0;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    border:1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            180deg,
+            #718e96 0%,
+            #396773 33%,
+            #103e48 65%,
+            #06232d 100%
+        );
+
+    box-shadow:
+        inset 0 0 35px rgba(0,0,0,.22);
 }
 
 .waterScene:before{
-    top:37px;
-    transform:skewY(-2deg);
+    content:"";
+
+    position:absolute;
+
+    left:-10%;
+    top:27px;
+
+    width:120%;
+    height:25px;
+
+    border-top:
+        2px solid
+        rgba(231,246,239,.54);
+
+    border-radius:50%;
+
+    transform:
+        rotate(-2deg);
+
+    animation:
+        waterWave 2.7s ease-in-out infinite;
 }
 
 .waterScene:after{
-    top:82px;
-    transform:skewY(2deg);
+    content:"";
+
+    position:absolute;
+
+    left:-10%;
+    top:77px;
+
+    width:120%;
+    height:28px;
+
+    border-top:
+        2px solid
+        rgba(214,238,234,.42);
+
+    border-radius:50%;
+
+    transform:
+        rotate(2deg);
+
+    animation:
+        waterWave 3.3s ease-in-out infinite reverse;
+}
+
+@keyframes waterWave{
+    0%,100%{
+        transform:
+            translateX(-10px)
+            rotate(-2deg);
+    }
+
+    50%{
+        transform:
+            translateX(12px)
+            rotate(2deg);
+    }
 }
 
 .currentArrow{
     position:absolute;
+
     left:20%;
-    top:55%;
-    font-size:28px;
-    color:rgba(255,255,255,.65);
-    animation:drift 2s ease-in-out infinite alternate;
+    top:53%;
+
+    z-index:3;
+
+    color:
+        rgba(255,255,255,.68);
+
+    font-size:26px;
+
+    letter-spacing:5px;
+
+    animation:
+        currentMove 2s ease-in-out infinite alternate;
 }
 
-@keyframes drift{
-    from{transform:translateX(0);}
-    to{transform:translateX(35px);}
+@keyframes currentMove{
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(48px);
+    }
 }
 
-/* ---------------- GEAR ---------------- */
+.waterLevel{
+    position:absolute;
+    right:12px;
+    bottom:10px;
+
+    z-index:4;
+
+    padding:6px 9px;
+
+    border-radius:8px;
+
+    background:
+        rgba(2,14,18,.52);
+
+    color:#dce8e2;
+
+    font-size:9px;
+    letter-spacing:1px;
+}
+
+/* =========================================================
+   SCENES
+   ========================================================= */
+
+.sceneCard{
+    position:relative;
+
+    width:100%;
+
+    height:150px;
+
+    margin:15px 0;
+
+    overflow:hidden;
+
+    border-radius:17px;
+
+    border:1px solid
+        rgba(255,255,255,.07);
+
+    background:
+        linear-gradient(
+            180deg,
+            #07141a,
+            #0b211a
+        );
+}
+
+.sceneMoon{
+    position:absolute;
+
+    width:48px;
+    height:48px;
+
+    right:13%;
+    top:12%;
+
+    border-radius:50%;
+
+    background:#e9dfb0;
+
+    box-shadow:
+        0 0 22px
+        rgba(234,223,176,.18);
+}
+
+.sceneHorizon{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:45%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #092019,
+            #04100c
+        );
+}
+
+.sceneTent{
+    position:absolute;
+
+    left:50%;
+    bottom:20px;
+
+    width:0;
+    height:0;
+
+    transform:translateX(-50%);
+
+    border-left:
+        58px solid transparent;
+
+    border-right:
+        58px solid transparent;
+
+    border-bottom:
+        75px solid #122c24;
+}
+
+.sceneTent:after{
+    content:"";
+
+    position:absolute;
+
+    left:-5px;
+    top:26px;
+
+    width:10px;
+    height:48px;
+
+    background:#07130f;
+}
+
+.sceneTree{
+    position:absolute;
+
+    bottom:15px;
+
+    width:0;
+    height:0;
+
+    border-left:
+        25px solid transparent;
+
+    border-right:
+        25px solid transparent;
+
+    border-bottom:
+        80px solid #04110d;
+}
+
+.sceneTree.tleft{
+    left:9%;
+}
+
+.sceneTree.tright{
+    right:8%;
+    transform:scale(1.25);
+}
+
+/* =========================================================
+   SLIDER
+   ========================================================= */
 
 .gearCard{
-    margin-top:16px;
+    margin-top:14px;
+
     padding:15px;
+
     border-radius:16px;
-    background:#0a1b16;
-    border:1px solid rgba(255,255,255,.07);
+
+    border:1px solid
+        rgba(255,255,255,.07);
+
+    background:#081913;
 }
 
 .slider{
     width:100%;
-    accent-color:#d8aa46;
-    margin-top:12px;
+
+    margin-top:11px;
+
+    accent-color:#d9ad4c;
 }
 
 .readout{
     display:flex;
+
     justify-content:space-between;
-    margin-top:8px;
-    font-size:12px;
-    color:#aab9b2;
+
+    margin-top:7px;
+
+    color:#93a49c;
+
+    font-size:10px;
 }
 
-/* ---------------- NAVIGATION ---------------- */
+.readout strong{
+    color:#e1b65a;
+}
+
+/* =========================================================
+   COMPASS
+   ========================================================= */
 
 .compass{
-    width:170px;
-    height:170px;
-    margin:20px auto;
-    border-radius:50%;
-    border:2px solid rgba(218,181,91,.45);
-    background:
-        radial-gradient(circle,#0c211c 0 52%,#071510 53% 100%);
     position:relative;
-    box-shadow:0 0 35px rgba(0,0,0,.35);
+
+    width:166px;
+    height:166px;
+
+    margin:20px auto;
+
+    border-radius:50%;
+
+    border:
+        2px solid
+        rgba(222,181,83,.43);
+
+    background:
+        radial-gradient(
+            circle,
+            #102820 0 47%,
+            #081812 48% 100%
+        );
+
+    box-shadow:
+        0 0 35px
+        rgba(0,0,0,.4),
+        inset 0 0 25px
+        rgba(255,255,255,.025);
 }
 
 .compass:before{
     content:"N";
+
     position:absolute;
+
     top:8px;
     left:50%;
-    transform:translateX(-50%);
-    color:#dfb552;
+
+    transform:
+        translateX(-50%);
+
+    color:#e0b653;
+
     font-weight:900;
 }
 
 .compass:after{
     content:"S";
+
     position:absolute;
+
     bottom:8px;
     left:50%;
-    transform:translateX(-50%);
-    color:#8d9a94;
+
+    transform:
+        translateX(-50%);
+
+    color:#7c8d86;
+
+    font-weight:900;
+}
+
+.compassE{
+    position:absolute;
+
+    right:10px;
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    color:#7c8d86;
+
+    font-weight:900;
+}
+
+.compassW{
+    position:absolute;
+
+    left:10px;
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    color:#7c8d86;
+
     font-weight:900;
 }
 
 .needle{
     position:absolute;
+
     left:50%;
     top:50%;
+
     width:3px;
-    height:112px;
+    height:110px;
+
+    transform:
+        translate(-50%,-50%)
+        rotate(0deg);
+
     transform-origin:center;
-    transform:translate(-50%,-50%) rotate(0deg);
+
+    transition:
+        transform .6s ease;
 }
 
 .needle:before{
     content:"";
+
     position:absolute;
+
     left:-5px;
     top:0;
-    border-left:6px solid transparent;
-    border-right:6px solid transparent;
-    border-bottom:55px solid #d7a842;
+
+    border-left:
+        6px solid transparent;
+
+    border-right:
+        6px solid transparent;
+
+    border-bottom:
+        55px solid #d6a840;
 }
 
 .needle:after{
     content:"";
+
     position:absolute;
+
     left:-5px;
     bottom:0;
-    border-left:6px solid transparent;
-    border-right:6px solid transparent;
-    border-top:55px solid #586a64;
+
+    border-left:
+        6px solid transparent;
+
+    border-right:
+        6px solid transparent;
+
+    border-top:
+        55px solid #596962;
 }
 
 .directions{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:9px;
 }
 
-/* ---------------- RESULT ---------------- */
+/* =========================================================
+   SUCCESS FLASH
+   ========================================================= */
 
-.resultIcon{
-    font-size:48px;
-    margin-bottom:8px;
+.successFlash{
+    position:fixed;
+
+    left:50%;
+    top:50%;
+
+    z-index:200;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.8);
+
+    padding:15px 21px;
+
+    border-radius:999px;
+
+    background:
+        rgba(218,176,72,.96);
+
+    color:#07100c;
+
+    font-size:13px;
+    font-weight:900;
+
+    box-shadow:
+        0 14px 45px rgba(0,0,0,.42);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:
+        opacity .18s ease,
+        transform .18s ease;
 }
 
-.finalTitle{
-    font-size:clamp(38px,11vw,64px);
-    line-height:.9;
-    margin:10px 0 18px;
+.successFlash.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(1);
 }
+
+/* =========================================================
+   FINAL
+   ========================================================= */
 
 .finalCard{
     text-align:center;
 }
 
+.finalIcon{
+    font-size:45px;
+
+    margin-bottom:5px;
+
+    filter:
+        drop-shadow(
+            0 4px 12px
+            rgba(255,166,48,.18)
+        );
+}
+
+.finalTitle{
+    margin:10px 0 18px;
+
+    font-size:
+        clamp(38px,10.5vw,62px);
+
+    line-height:.9;
+
+    letter-spacing:-2px;
+
+    font-weight:950;
+}
+
 .finalDetails{
-    margin:22px 0;
-    padding:18px;
+    margin:20px 0;
+
+    padding:16px;
+
     border-radius:17px;
-    background:#081914;
-    border:1px solid rgba(226,181,77,.18);
+
+    border:1px solid
+        rgba(224,180,76,.16);
+
+    background:#071712;
 }
 
 .finalDetails div{
-    margin:8px 0;
-    color:#b9c5bf;
+    margin:9px 0;
+
+    color:#b9c7c0;
+
+    font-size:13px;
 }
 
 .finalDetails strong{
-    color:#e5bb61;
+    color:#e3b75c;
 }
 
-/* ---------------- MOBILE ---------------- */
+.countdown{
+    margin-top:25px;
+
+    color:#e2b452;
+
+    font-size:12px;
+
+    letter-spacing:2px;
+
+    font-weight:900;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media(max-width:380px){
 
@@ -596,12 +1335,17 @@ h2{
     }
 
     .choice{
-        min-height:98px;
+        min-height:95px;
         padding:11px;
     }
 
     .choice span{
-        font-size:11px;
+        font-size:10px;
+    }
+
+    .compass{
+        width:145px;
+        height:145px;
     }
 }
 
@@ -612,15 +1356,15 @@ h2{
     }
 
     .panel{
-        padding:32px;
+        padding:30px;
     }
 }
 
 @media(prefers-reduced-motion:reduce){
 
     *,
-    *:before,
-    *:after{
+    *::before,
+    *::after{
         animation:none!important;
         transition:none!important;
     }
@@ -632,7 +1376,21 @@ h2{
 
 <div id="app">
 
-    <div class="stars"></div>
+    <div class="stars">
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+    </div>
+
     <div class="moon"></div>
 
     <div class="mountains">
@@ -642,1564 +1400,3304 @@ h2{
         <div class="mountain m4"></div>
     </div>
 
+    <div class="trees">
+        <div class="tree t1"></div>
+        <div class="tree t2"></div>
+        <div class="tree t3"></div>
+        <div class="tree t4"></div>
+        <div class="tree t5"></div>
+        <div class="tree t6"></div>
+    </div>
+
     <div class="ground"></div>
 
     <div class="fire">
+        <div class="fireGlow"></div>
         <div class="flame"></div>
-        <div class="flame2"></div>
+        <div class="flameInner"></div>
+        <div class="log"></div>
+        <div class="log log2"></div>
     </div>
+
+    <button
+        class="soundButton"
+        id="soundButton"
+        aria-label="Toggle sound">
+        🔊
+    </button>
+
+    <div
+        class="successFlash"
+        id="successFlash">
+        ✓ NICE ONE!
+    </div>
+
 
     <main id="screen">
 
-        <!-- START -->
-        <section class="panel" id="startScreen">
+        <!-- =================================================
+             START SCREEN
+             ================================================= -->
 
-            <div class="eyebrow">MISSION 3 • FINAL ADVENTURE</div>
+        <section
+            class="panel"
+            id="startScreen">
+
+            <div class="eyebrow">
+                MISSION 3 • FINAL EXPEDITION
+            </div>
 
             <h1>
-                THE LAST<br>
-                <span class="gold">EXPEDITION</span>
+                THE FINAL<br>
+                <span class="gold">
+                    ADVENTURE
+                </span>
             </h1>
 
             <p class="subtitle">
-                You've made it this far, Master Angler.
-                Tonight, the campsite is quiet, the water is moving,
-                and three final challenges stand between you and the finish.
+                Three final challenges stand between
+                you and the end of the mission.
             </p>
 
             <p class="small">
-                Best played with sound on.
-                Designed for iPhone.
+                Read the environment.
+                Trust your instincts.
+                Finish the expedition.
             </p>
 
-            <button class="btn" id="startBtn">
+            <button
+                class="btn"
+                id="startBtn">
+
                 START THE FINAL MISSION
+
             </button>
 
         </section>
 
 
-        <!-- GAME -->
-        <section class="panel hidden" id="gameScreen">
+        <!-- =================================================
+             GAME SCREEN
+             ================================================= -->
+
+        <section
+            class="panel hidden"
+            id="gameScreen">
 
             <div class="topbar">
-                <div class="badge">MISSION 3 / FINAL</div>
-                <div class="audioStatus" id="audioStatus">
-                    AMBIENCE READY
+
+                <div class="badge">
+                    MISSION 3 / FINAL
                 </div>
+
+                <div
+                    class="audioLabel"
+                    id="audioLabel">
+                    AUDIO READY
+                </div>
+
             </div>
+
 
             <div class="progress">
-                <div class="progressFill" id="progressFill"></div>
+
+                <div
+                    class="progressBar"
+                    id="progressBar">
+                </div>
+
             </div>
 
-            <!-- CHALLENGE 1 -->
-            <div id="challenge1">
+
+            <!-- =================================================
+                 CHALLENGE 1
+                 ================================================= -->
+
+            <div
+                id="challenge1">
 
                 <div class="challengeNumber">
                     CHALLENGE 01 — READ THE WATER
                 </div>
 
                 <h2>
-                    Pick the safest water condition
+                    READ THE WATER
                 </h2>
 
                 <p class="subtitle">
-                    You're approaching an unfamiliar stretch of water.
-                    Look at the surface and choose the condition that
-                    would give you the best chance of a controlled approach.
+                    The water looks calm from a distance.
+                    But a good angler knows there is more
+                    to read beneath the surface.
                 </p>
 
-                <div class="waterScene">
-                    <div class="currentArrow">→ →</div>
-                </div>
 
-                <div class="choiceGrid">
+                <!-- LEVEL 1 -->
 
-                    <button class="choice waterChoice" data-correct="false">
-                        <strong>Whitewater</strong>
-                        <span>
-                            Fast broken water and obvious turbulence.
-                        </span>
-                    </button>
+                <div
+                    class="waterScene"
+                    id="waterScene1">
 
-                    <button class="choice waterChoice" data-correct="true">
-                        <strong>Steady Current</strong>
-                        <span>
-                            Consistent flow with a clean surface and
-                            manageable movement.
-                        </span>
-                    </button>
+                    <div class="currentArrow">
+                        → →
+                    </div>
 
-                    <button class="choice waterChoice" data-correct="false">
-                        <strong>Strong Eddy</strong>
-                        <span>
-                            Water is visibly rotating back against the flow.
-                        </span>
-                    </button>
-
-                    <button class="choice waterChoice" data-correct="false">
-                        <strong>Breaking Surge</strong>
-                        <span>
-                            Repeated waves are crashing against the edge.
-                        </span>
-                    </button>
+                    <div class="waterLevel">
+                        LEVEL 1
+                    </div>
 
                 </div>
 
-                <div class="feedback" id="feedback1">
-                    Study the water before making your decision.
+                <div
+                    class="choiceGrid"
+                    id="waterChoices1">
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="1"
+                        data-correct="true">
+
+                        <strong>
+                            🟢 CALM WATER
+                        </strong>
+
+                        <span>
+                            Smooth surface with
+                            controlled movement.
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="1"
+                        data-correct="false">
+
+                        <strong>
+                            🌊 ROUGH WATER
+                        </strong>
+
+                        <span>
+                            Heavy surface disturbance
+                            and unpredictable movement.
+                        </span>
+
+                    </button>
+
                 </div>
 
-                <button class="btn hidden" id="next1">
-                    CONTINUE
-                </button>
+
+                <!-- LEVEL 2 -->
+
+                <div
+                    class="waterScene hidden"
+                    id="waterScene2">
+
+                    <div class="currentArrow">
+                        → → →
+                    </div>
+
+                    <div class="waterLevel">
+                        LEVEL 2
+                    </div>
+
+                </div>
+
+                <div
+                    class="choiceGrid hidden"
+                    id="waterChoices2">
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="2"
+                        data-correct="true">
+
+                        <strong>
+                            ➡️ CURRENT LEFT → RIGHT
+                        </strong>
+
+                        <span>
+                            Surface movement is
+                            travelling consistently
+                            toward the right.
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="2"
+                        data-correct="false">
+
+                        <strong>
+                            ⬅️ CURRENT RIGHT → LEFT
+                        </strong>
+
+                        <span>
+                            Water movement is travelling
+                            in the opposite direction.
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- LEVEL 3 -->
+
+                <div
+                    class="waterScene hidden"
+                    id="waterScene3">
+
+                    <div
+                        class="currentArrow"
+                        style="animation-direction:reverse">
+
+                        ↻
+
+                    </div>
+
+                    <div class="waterLevel">
+                        LEVEL 3
+                    </div>
+
+                </div>
+
+                <div
+                    class="choiceGrid hidden"
+                    id="waterChoices3">
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="3"
+                        data-correct="true">
+
+                        <strong>
+                            🌀 EDDY
+                        </strong>
+
+                        <span>
+                            Water is rotating back
+                            against the main flow.
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="3"
+                        data-correct="false">
+
+                        <strong>
+                            ➡️ STRAIGHT CURRENT
+                        </strong>
+
+                        <span>
+                            Water is moving consistently
+                            in one direction.
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- LEVEL 4 -->
+
+                <div
+                    class="waterScene hidden"
+                    id="waterScene4">
+
+                    <div class="currentArrow">
+                        → ~ →
+                    </div>
+
+                    <div class="waterLevel">
+                        LEVEL 4
+                    </div>
+
+                </div>
+
+                <div
+                    class="choiceGrid hidden"
+                    id="waterChoices4">
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="4"
+                        data-correct="false">
+
+                        <strong>
+                            🔴 EXPOSED EDGE
+                        </strong>
+
+                        <span>
+                            Directly exposed to
+                            the strongest movement.
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="4"
+                        data-correct="true">
+
+                        <strong>
+                            🟢 SHELTERED EDGE
+                        </strong>
+
+                        <span>
+                            Protected area beside
+                            the main flow.
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- LEVEL 5 -->
+
+                <div
+                    class="waterScene hidden"
+                    id="waterScene5">
+
+                    <div
+                        class="currentArrow"
+                        style="font-size:22px">
+
+                        → ↻ → ~ →
+
+                    </div>
+
+                    <div class="waterLevel">
+                        LEVEL 5
+                    </div>
+
+                </div>
+
+                <div
+                    class="choiceGrid hidden"
+                    id="waterChoices5">
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="5"
+                        data-correct="true">
+
+                        <strong>
+                            🏆 MULTIPLE CLUES
+                        </strong>
+
+                        <span>
+                            Moderate current + protected
+                            edge + visible feeding zone.
+                        </span>
+
+                    </button>
+
+                    <button
+                        class="choice waterChoice"
+                        data-level="5"
+                        data-correct="false">
+
+                        <strong>
+                            ⚠️ STRONGEST FLOW
+                        </strong>
+
+                        <span>
+                            Choose the most turbulent
+                            section because it looks active.
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="feedback"
+                    id="feedback1">
+
+                    Study the water before
+                    making your decision.
+
+                </div>
 
             </div>
 
 
-            <!-- CHALLENGE 2 -->
-            <div id="challenge2" class="hidden">
+            <!-- =================================================
+                 CHALLENGE 2
+                 ================================================= -->
+
+            <div
+                id="challenge2"
+                class="hidden">
 
                 <div class="challengeNumber">
                     CHALLENGE 02 — BUILD THE RIGHT SETUP
                 </div>
 
                 <h2>
-                    The weather is changing.
+                    BUILD THE RIGHT SETUP
                 </h2>
 
                 <p class="subtitle">
-                    A breeze is picking up at camp. You have one chance
-                    to prepare your setup properly before nightfall.
+                    The conditions are changing.
+                    Your setup has to change with them.
                 </p>
 
-                <div class="gearCard">
 
-                    <strong>Wind protection</strong>
+                <!-- LEVEL 1 -->
 
-                    <p class="small">
-                        How much shelter would you choose?
-                    </p>
+                <div
+                    class="gearCard"
+                    id="gearLevel1">
 
-                    <input
-                        id="shelterSlider"
-                        class="slider"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value="50"
-                    >
-
-                    <div class="readout">
-                        <span>Minimal</span>
-                        <strong id="shelterValue">50%</strong>
-                        <span>Heavy</span>
-                    </div>
-
-                </div>
-
-                <div class="gearCard">
-
-                    <strong>Equipment priority</strong>
+                    <strong>
+                        LEVEL 1 — EASY
+                    </strong>
 
                     <p class="small">
-                        Choose what matters most before the weather gets worse.
+                        The evening is calm.
+                        What should you prioritise?
                     </p>
 
-                    <div class="choiceGrid">
+                    <div
+                        class="choiceGrid">
 
-                        <button class="choice gearChoice" data-value="comfort">
-                            <strong>Comfort</strong>
+                        <button
+                            class="choice gearChoice"
+                            data-level="1"
+                            data-correct="true">
+
+                            <strong>
+                                🟢 BASIC SETUP
+                            </strong>
+
                             <span>
-                                Extra camp luxuries.
+                                Keep the essential gear
+                                organised and accessible.
                             </span>
+
                         </button>
 
-                        <button class="choice gearChoice" data-value="stability">
-                            <strong>Stability</strong>
-                            <span>
-                                Secure shelter and essential equipment.
-                            </span>
-                        </button>
+                        <button
+                            class="choice gearChoice"
+                            data-level="1"
+                            data-correct="false">
 
-                        <button class="choice gearChoice" data-value="speed">
-                            <strong>Speed</strong>
-                            <span>
-                                Pack light and move quickly.
-                            </span>
-                        </button>
+                            <strong>
+                                🎒 PACK EVERYTHING
+                            </strong>
 
-                        <button class="choice gearChoice" data-value="appearance">
-                            <strong>Appearance</strong>
                             <span>
-                                Keep everything looking perfect.
+                                Bring every item just
+                                in case you need it.
                             </span>
+
                         </button>
 
                     </div>
 
                 </div>
 
-                <div class="feedback" id="feedback2">
-                    Prepare for the conditions, not the appearance.
+
+                <!-- LEVEL 2 -->
+
+                <div
+                    class="gearCard hidden"
+                    id="gearLevel2">
+
+                    <strong>
+                        LEVEL 2 — EASY+
+                    </strong>
+
+                    <p class="small">
+                        A light breeze begins.
+                        How should you secure your setup?
+                    </p>
+
+                    <div
+                        class="choiceGrid">
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="2"
+                            data-correct="false">
+
+                            <strong>
+                                🟡 LEAVE IT LOOSE
+                            </strong>
+
+                            <span>
+                                It is only a light breeze,
+                                so there is no need to adjust.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="2"
+                            data-correct="true">
+
+                            <strong>
+                                🟢 SECURE THE ESSENTIALS
+                            </strong>
+
+                            <span>
+                                Secure loose items and
+                                keep important gear stable.
+                            </span>
+
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <button class="btn hidden" id="next2">
-                    CONTINUE
-                </button>
+
+                <!-- LEVEL 3 -->
+
+                <div
+                    class="gearCard hidden"
+                    id="gearLevel3">
+
+                    <strong>
+                        LEVEL 3 — MEDIUM
+                    </strong>
+
+                    <p class="small">
+                        The wind is increasing.
+                        Choose the better shelter position.
+                    </p>
+
+                    <div
+                        class="choiceGrid">
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="3"
+                            data-correct="true">
+
+                            <strong>
+                                🟢 BEHIND NATURAL COVER
+                            </strong>
+
+                            <span>
+                                Use the surrounding terrain
+                                to reduce direct wind exposure.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="3"
+                            data-correct="false">
+
+                            <strong>
+                                🔴 OPEN RIDGE
+                            </strong>
+
+                            <span>
+                                Stay exposed so you can
+                                see everything around camp.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LEVEL 4 -->
+
+                <div
+                    class="gearCard hidden"
+                    id="gearLevel4">
+
+                    <strong>
+                        LEVEL 4 — HARD
+                    </strong>
+
+                    <p class="small">
+                        Your equipment needs extra protection.
+                        Choose the correct priority.
+                    </p>
+
+                    <div
+                        class="choiceGrid">
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="4"
+                            data-correct="false">
+
+                            <strong>
+                                🎒 COMFORT
+                            </strong>
+
+                            <span>
+                                Add more comfort items
+                                before securing the camp.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="4"
+                            data-correct="true">
+
+                            <strong>
+                                🛡️ STABILITY
+                            </strong>
+
+                            <span>
+                                Secure the shelter,
+                                equipment and essentials first.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LEVEL 5 -->
+
+                <div
+                    class="gearCard hidden"
+                    id="gearLevel5">
+
+                    <strong>
+                        LEVEL 5 — EXPERT
+                    </strong>
+
+                    <p class="small">
+                        Wind, darkness and damp conditions
+                        are arriving together.
+                    </p>
+
+                    <div
+                        class="choiceGrid">
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="5"
+                            data-correct="true">
+
+                            <strong>
+                                🏆 SECURE + PROTECT + ORGANISE
+                            </strong>
+
+                            <span>
+                                Stabilise the shelter,
+                                protect equipment and
+                                keep essentials accessible.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice gearChoice"
+                            data-level="5"
+                            data-correct="false">
+
+                            <strong>
+                                ⚠️ MOVE FAST
+                            </strong>
+
+                            <span>
+                                Ignore the conditions and
+                                focus on speed.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="feedback"
+                    id="feedback2">
+
+                    Prepare for the conditions,
+                    not the appearance.
+
+                </div>
 
             </div>
 
 
-            <!-- CHALLENGE 3 -->
-            <div id="challenge3" class="hidden">
+            <!-- =================================================
+                 CHALLENGE 3
+                 ================================================= -->
+
+            <div
+                id="challenge3"
+                class="hidden">
 
                 <div class="challengeNumber">
                     CHALLENGE 03 — NIGHT NAVIGATION
                 </div>
 
                 <h2>
-                    Find your way back to camp.
+                    NIGHT NAVIGATION
                 </h2>
 
                 <p class="subtitle">
-                    Darkness has settled in. Your phone battery is low,
-                    so you're relying on the compass and the landmarks
-                    around you.
+                    Darkness has settled over camp.
+                    Trust the clues around you.
                 </p>
 
-                <div class="compass">
 
-                    <div class="needle" id="needle"></div>
+                <!-- LEVEL 1 -->
+
+                <div
+                    class="sceneCard"
+                    id="navScene1">
+
+                    <div class="sceneMoon"></div>
+                    <div class="sceneHorizon"></div>
+                    <div class="sceneTent"></div>
+
+                    <div class="sceneTree tleft"></div>
+                    <div class="sceneTree tright"></div>
 
                 </div>
 
-                <p class="small" style="text-align:center;">
-                    The campsite is approximately SOUTH-EAST.
+                <div
+                    class="compass">
+
+                    <div
+                        class="needle"
+                        id="needle">
+                    </div>
+
+                    <div class="compassE">
+                        E
+                    </div>
+
+                    <div class="compassW">
+                        W
+                    </div>
+
+                </div>
+
+                <p
+                    class="small"
+                    style="text-align:center">
+
+                    LEVEL 1 — The campsite
+                    is NORTH.
+
                 </p>
 
                 <div class="directions">
 
-                    <button class="choice directionChoice" data-direction="NW">
-                        <strong>↖ NORTH-WEST</strong>
-                        <span>
-                            Toward the higher ridge.
-                        </span>
-                    </button>
+                    <button
+                        class="choice directionChoice"
+                        data-level="1"
+                        data-correct="true">
 
-                    <button class="choice directionChoice" data-direction="NE">
-                        <strong>↗ NORTH-EAST</strong>
-                        <span>
-                            Toward the tree line.
-                        </span>
-                    </button>
+                        <strong>
+                            ↑ NORTH
+                        </strong>
 
-                    <button class="choice directionChoice" data-direction="SW">
-                        <strong>↙ SOUTH-WEST</strong>
-                        <span>
-                            Toward the open shoreline.
-                        </span>
-                    </button>
-
-                    <button class="choice directionChoice" data-direction="SE">
-                        <strong>↘ SOUTH-EAST</strong>
                         <span>
                             Toward the campsite.
                         </span>
+
+                    </button>
+
+                    <button
+                        class="choice directionChoice"
+                        data-level="1"
+                        data-correct="false">
+
+                        <strong>
+                            ↓ SOUTH
+                        </strong>
+
+                        <span>
+                            Away from camp.
+                        </span>
+
                     </button>
 
                 </div>
 
-                <div class="feedback" id="feedback3">
-                    Trust your bearings.
+
+                <!-- NAV LEVEL 2 -->
+
+                <div
+                    class="hidden"
+                    id="navLevel2">
+
+                    <div
+                        class="sceneCard">
+
+                        <div class="sceneMoon"></div>
+                        <div class="sceneHorizon"></div>
+                        <div class="sceneTent"></div>
+
+                        <div class="sceneTree tleft"></div>
+                        <div class="sceneTree tright"></div>
+
+                    </div>
+
+                    <p
+                        class="small"
+                        style="text-align:center">
+
+                        LEVEL 2 — The water is
+                        EAST of your position.
+
+                    </p>
+
+                    <div class="directions">
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="2"
+                            data-correct="true">
+
+                            <strong>
+                                → EAST
+                            </strong>
+
+                            <span>
+                                Toward the water.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="2"
+                            data-correct="false">
+
+                            <strong>
+                                ← WEST
+                            </strong>
+
+                            <span>
+                                Toward the hills.
+                            </span>
+
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <button class="btn hidden" id="finishBtn">
-                    COMPLETE MISSION
-                </button>
+
+                <!-- NAV LEVEL 3 -->
+
+                <div
+                    class="hidden"
+                    id="navLevel3">
+
+                    <div
+                        class="sceneCard">
+
+                        <div class="sceneMoon"></div>
+                        <div class="sceneHorizon"></div>
+                        <div class="sceneTent"></div>
+
+                        <div class="sceneTree tleft"></div>
+                        <div class="sceneTree tright"></div>
+
+                    </div>
+
+                    <p
+                        class="small"
+                        style="text-align:center">
+
+                        LEVEL 3 — The shoreline
+                        runs south-west.
+
+                    </p>
+
+                    <div class="directions">
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="3"
+                            data-correct="true">
+
+                            <strong>
+                                ↙ SOUTH-WEST
+                            </strong>
+
+                            <span>
+                                Follow the shoreline.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="3"
+                            data-correct="false">
+
+                            <strong>
+                                ↗ NORTH-EAST
+                            </strong>
+
+                            <span>
+                                Move inland.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NAV LEVEL 4 -->
+
+                <div
+                    class="hidden"
+                    id="navLevel4">
+
+                    <div
+                        class="sceneCard">
+
+                        <div class="sceneMoon"></div>
+                        <div class="sceneHorizon"></div>
+                        <div class="sceneTent"></div>
+
+                        <div class="sceneTree tleft"></div>
+                        <div class="sceneTree tright"></div>
+
+                    </div>
+
+                    <p
+                        class="small"
+                        style="text-align:center">
+
+                        LEVEL 4 — You are
+                        west of camp.
+
+                    </p>
+
+                    <div class="directions">
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="4"
+                            data-correct="true">
+
+                            <strong>
+                                → EAST
+                            </strong>
+
+                            <span>
+                                Camp is directly
+                                east of you.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="4"
+                            data-correct="false">
+
+                            <strong>
+                                ← WEST
+                            </strong>
+
+                            <span>
+                                Further away from camp.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NAV LEVEL 5 -->
+
+                <div
+                    class="hidden"
+                    id="navLevel5">
+
+                    <div
+                        class="sceneCard">
+
+                        <div class="sceneMoon"></div>
+                        <div class="sceneHorizon"></div>
+                        <div class="sceneTent"></div>
+
+                        <div class="sceneTree tleft"></div>
+                        <div class="sceneTree tright"></div>
+
+                    </div>
+
+                    <p
+                        class="small"
+                        style="text-align:center">
+
+                        LEVEL 5 — Final bearing:
+                        camp is SOUTH-EAST.
+
+                    </p>
+
+                    <div class="directions">
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="5"
+                            data-correct="true">
+
+                            <strong>
+                                ↘ SOUTH-EAST
+                            </strong>
+
+                            <span>
+                                The final bearing
+                                takes you home.
+                            </span>
+
+                        </button>
+
+                        <button
+                            class="choice directionChoice"
+                            data-level="5"
+                            data-correct="false">
+
+                            <strong>
+                                ↖ NORTH-WEST
+                            </strong>
+
+                            <span>
+                                The opposite direction.
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="feedback"
+                    id="feedback3">
+
+                    Trust your bearings.
+
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- FINAL -->
-        <section class="panel finalCard hidden" id="finalScreen">
+        <!-- =================================================
+             FINAL SCREEN
+             ================================================= -->
 
-            <div class="resultIcon">🏕️</div>
+        <section
+            class="panel finalCard hidden"
+            id="finalScreen">
+
+            <div class="finalIcon">
+                🏆
+            </div>
 
             <div class="eyebrow">
                 MISSION COMPLETE
             </div>
 
             <div class="finalTitle">
+
                 YOU DID IT,<br>
-                <span class="gold">MASTER ANGLER.</span>
+
+                <span class="gold">
+                    MASTER ANGLER.
+                </span>
+
             </div>
 
             <p class="subtitle">
+
                 Three challenges.
-                One final adventure.
+                One final expedition.
                 And you made it all the way to the end.
+
             </p>
 
             <div class="finalDetails">
 
                 <div>
-                    📍 <strong>EAST COAST PARK</strong>
+                    📍
+                    <strong>
+                        EAST COAST PARK
+                    </strong>
                 </div>
 
                 <div>
-                    📅 <strong>21–22 AUGUST 2026</strong>
+                    📅
+                    <strong>
+                        21–22 AUGUST 2026
+                    </strong>
                 </div>
 
                 <div>
-                    ⏰ <strong>3:00 PM</strong>
+                    ⏰
+                    <strong>
+                        3:00 PM
+                    </strong>
                 </div>
 
             </div>
 
             <p class="subtitle">
-                Pack your bags.<br>
-                Bring your fishing gear.<br>
+
+                <strong>
+                    Pack your bags.
+                </strong>
+                <br>
+
+                Bring your fishing gear.
+                <br>
+
                 And come ready for an adventure with me. ❤️
+
             </p>
 
-            <p class="gold" style="
-                font-weight:900;
-                letter-spacing:2px;
-                margin-top:25px;
-            ">
+            <div class="countdown">
+
                 THE COUNTDOWN BEGINS… ⏳
-            </p>
+
+            </div>
 
         </section>
 
     </main>
+
 </div>
 
 
 <script>
 /* =========================================================
-   MISSION 3 — SAME GAME / IMPROVED AUDIO ENGINE
-   No external assets.
-   No MP3.
-   No game.js.
-   No style.css.
+   MISSION 3
+   ALL JAVASCRIPT INSIDE INDEX.HTML
+
+   AUDIO:
+   - adventure rhythm
+   - percussion
+   - night ambience
+   - water ambience
+   - success sounds
+   - mistake sound
+   - final completion sound
+
+   IMPORTANT:
+   AudioContext is created/resumed FROM THE START BUTTON.
+   This is intentional for iPhone Safari and MacBook browsers.
    ========================================================= */
 
-(() => {
+(function(){
 
-    "use strict";
-
-    const startScreen =
-        document.getElementById("startScreen");
-
-    const gameScreen =
-        document.getElementById("gameScreen");
-
-    const finalScreen =
-        document.getElementById("finalScreen");
-
-    const startBtn =
-        document.getElementById("startBtn");
-
-    const challenge1 =
-        document.getElementById("challenge1");
-
-    const challenge2 =
-        document.getElementById("challenge2");
-
-    const challenge3 =
-        document.getElementById("challenge3");
-
-    const progressFill =
-        document.getElementById("progressFill");
-
-    const feedback1 =
-        document.getElementById("feedback1");
-
-    const feedback2 =
-        document.getElementById("feedback2");
-
-    const feedback3 =
-        document.getElementById("feedback3");
-
-    const next1 =
-        document.getElementById("next1");
-
-    const next2 =
-        document.getElementById("next2");
-
-    const finishBtn =
-        document.getElementById("finishBtn");
-
-    const shelterSlider =
-        document.getElementById("shelterSlider");
-
-    const shelterValue =
-        document.getElementById("shelterValue");
-
-    const needle =
-        document.getElementById("needle");
-
-    const audioStatus =
-        document.getElementById("audioStatus");
+"use strict";
 
 
-    /* =========================================================
-       AUDIO
-       MACBOOK / DESKTOP OPTIMIZED
-       ========================================================= */
+/* =========================================================
+   DOM
+   ========================================================= */
 
-    let audioContext = null;
-    let masterGain = null;
-    let ambienceGain = null;
-    let musicGain = null;
-    let fxGain = null;
+const startBtn =
+    document.getElementById("startBtn");
 
-    let audioStarted = false;
+const startScreen =
+    document.getElementById("startScreen");
 
-    let musicTimer = null;
-    let percussionTimer = null;
-    let fireTimer = null;
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const finalScreen =
+    document.getElementById("finalScreen");
+
+const soundButton =
+    document.getElementById("soundButton");
+
+const audioLabel =
+    document.getElementById("audioLabel");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const successFlash =
+    document.getElementById("successFlash");
 
 
-    function createNoiseBuffer(ctx,seconds=2){
+/* =========================================================
+   AUDIO ENGINE — MACBOOK / LAPTOP VERSION
+   ONLY THE AUDIO ENGINE IS CHANGED.
 
-        const buffer =
-            ctx.createBuffer(
-                1,
-                Math.floor(ctx.sampleRate*seconds),
-                ctx.sampleRate
-            );
+   Uses Web Audio API only. No external files.
+   The START button creates/resumes the AudioContext so
+   Chrome/Safari/Edge on macOS can unlock sound immediately.
+   ========================================================= */
 
-        const data =
-            buffer.getChannelData(0);
+let audioCtx = null;
+let masterGain = null;
+let musicGain = null;
+let ambienceGain = null;
+let fxGain = null;
 
-        for(let i=0;i<data.length;i++){
+let audioStarted = false;
+let audioEnabled = true;
 
-            data[i] =
-                Math.random()*2-1;
+let musicTimer = null;
+let beatTimer = null;
+let shimmerTimer = null;
+let fireTimer = null;
+
+let noiseBuffer = null;
+let ambienceStarted = false;
+
+
+function initAudio(){
+
+    if(audioCtx){
+
+        if(audioCtx.state === "suspended"){
+
+            audioCtx
+                .resume()
+                .catch(function(){});
 
         }
 
-        return buffer;
+        return;
     }
 
 
-    function makeNoise(
-        ctx,
-        buffer,
-        type,
-        frequency,
-        volume,
-        destination
-    ){
+    const AC =
+        window.AudioContext ||
+        window.webkitAudioContext;
 
-        const source =
-            ctx.createBufferSource();
 
-        source.buffer=buffer;
-        source.loop=true;
+    if(!AC){
 
-        const filter =
-            ctx.createBiquadFilter();
+        audioLabel.textContent =
+            "AUDIO UNAVAILABLE";
 
-        filter.type=type;
-        filter.frequency.value=frequency;
-
-        const gain =
-            ctx.createGain();
-
-        gain.gain.value=volume;
-
-        source.connect(filter);
-        filter.connect(gain);
-        gain.connect(destination);
-
-        source.start();
-
-        return source;
+        return;
     }
 
 
-    function playTone(
-        freq,
-        duration,
-        volume,
-        type="sine",
-        destination=fxGain,
-        slideTo=null
-    ){
+    try{
 
-        if(!audioContext || !destination){
+        audioCtx =
+            new AC({
+                latencyHint:"interactive"
+            });
+
+    }catch(e){
+
+        try{
+
+            audioCtx =
+                new AC();
+
+        }catch(err){
+
+            audioLabel.textContent =
+                "AUDIO UNAVAILABLE";
+
             return;
-        }
-
-        const now =
-            audioContext.currentTime;
-
-        const osc =
-            audioContext.createOscillator();
-
-        const gain =
-            audioContext.createGain();
-
-        osc.type=type;
-
-        osc.frequency.setValueAtTime(
-            freq,
-            now
-        );
-
-        if(slideTo){
-
-            osc.frequency
-                .exponentialRampToValueAtTime(
-                    Math.max(20,slideTo),
-                    now+duration
-                );
 
         }
 
-        gain.gain.setValueAtTime(
-            .0001,
-            now
-        );
-
-        gain.gain
-            .exponentialRampToValueAtTime(
-                Math.max(.0002,volume),
-                now+.018
-            );
-
-        gain.gain
-            .exponentialRampToValueAtTime(
-                .0001,
-                now+duration
-            );
-
-        osc.connect(gain);
-        gain.connect(destination);
-
-        osc.start(now);
-
-        osc.stop(
-            now+duration+.04
-        );
     }
 
 
-    function startAudio(){
+    masterGain =
+        audioCtx.createGain();
 
-        /*
-         * If audio already exists, simply resume it.
-         */
-        if(audioStarted){
+    musicGain =
+        audioCtx.createGain();
 
-            if(
-                audioContext &&
-                audioContext.state==="suspended"
-            ){
+    ambienceGain =
+        audioCtx.createGain();
 
-                audioContext
-                    .resume()
-                    .catch(()=>{});
-
-            }
-
-            return;
-        }
-
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-
-        if(!AudioContext){
-
-            audioStatus.textContent =
-                "SOUND NOT SUPPORTED";
-
-            return;
-        }
-
-
-        /*
-         * IMPORTANT:
-         *
-         * This function is called directly from
-         * the START button click.
-         *
-         * This satisfies browser autoplay
-         * restrictions.
-         */
-        audioStarted=true;
-
-        audioContext =
-            new AudioContext();
-
-
-        /*
-         * Master bus
-         */
-        masterGain =
-            audioContext.createGain();
-
-
-        /*
-         * Separate ambience, music and effects
-         */
-        ambienceGain =
-            audioContext.createGain();
-
-        musicGain =
-            audioContext.createGain();
-
-        fxGain =
-            audioContext.createGain();
-
-
-        /*
-         * MacBook-friendly volume.
-         *
-         * Previous version was extremely quiet.
-         */
-        masterGain.gain.value=.62;
-
-        ambienceGain.gain.value=.36;
-
-        musicGain.gain.value=.30;
-
-        fxGain.gain.value=.72;
-
-
-        ambienceGain.connect(
-            masterGain
-        );
-
-        musicGain.connect(
-            masterGain
-        );
-
-        fxGain.connect(
-            masterGain
-        );
-
-        masterGain.connect(
-            audioContext.destination
-        );
-
-
-        /*
-         * Resume immediately.
-         */
-        audioContext
-            .resume()
-            .catch(()=>{});
-
-
-        const noiseBuffer =
-            createNoiseBuffer(
-                audioContext,
-                2
-            );
-
-
-        /* =====================================================
-           🌲 NIGHT WIND
-           ===================================================== */
-
-        makeNoise(
-            audioContext,
-            noiseBuffer,
-            "lowpass",
-            850,
-            .17,
-            ambienceGain
-        );
-
-
-        /* =====================================================
-           🌊 WATER
-           ===================================================== */
-
-        makeNoise(
-            audioContext,
-            noiseBuffer,
-            "bandpass",
-            1050,
-            .095,
-            ambienceGain
-        );
-
-
-        /*
-         * Lower distant water layer
-         */
-        makeNoise(
-            audioContext,
-            noiseBuffer,
-            "lowpass",
-            380,
-            .09,
-            ambienceGain
-        );
-
-
-        /* =====================================================
-           🎸 ADVENTURE MUSIC
-           ===================================================== */
-
-        const chords = [
-
-            [196,246.94,293.66],
-
-            [174.61,220,261.63],
-
-            [146.83,220,293.66],
-
-            [164.81,246.94,329.63]
-
-        ];
-
-        let chordIndex=0;
-
-
-        function playChord(){
-
-            const chord =
-                chords[
-                    chordIndex % chords.length
-                ];
-
-            chordIndex++;
-
-
-            chord.forEach(
-                (freq,i)=>{
-
-                    setTimeout(()=>{
-
-                        playTone(
-                            freq,
-                            .85,
-                            i===0 ? .095 : .065,
-                            "triangle",
-                            musicGain
-                        );
-
-                    },i*35);
-
-                }
-            );
-
-
-            /*
-             * Small melody note
-             */
-            const melody =
-                [392,440,493.88,440]
-                [(chordIndex-1)%4];
-
-
-            setTimeout(()=>{
-
-                playTone(
-                    melody,
-                    .32,
-                    .055,
-                    "sine",
-                    musicGain
-                );
-
-            },360);
-        }
-
-
-        playChord();
-
-
-        musicTimer =
-            setInterval(
-                playChord,
-                1500
-            );
-
-
-        /* =====================================================
-           🥁 LIGHT PERCUSSION
-           ===================================================== */
-
-        let beat=0;
-
-
-        function percussion(){
-
-            const step =
-                beat%8;
-
-
-            /*
-             * Kick
-             */
-            if(
-                step===0 ||
-                step===4
-            ){
-
-                playTone(
-                    105,
-                    .16,
-                    .12,
-                    "sine",
-                    musicGain,
-                    55
-                );
-
-            }
-
-
-            /*
-             * Light click
-             */
-            if(
-                step===2 ||
-                step===6
-            ){
-
-                playTone(
-                    720,
-                    .055,
-                    .035,
-                    "square",
-                    musicGain,
-                    520
-                );
-
-            }
-
-
-            beat++;
-        }
-
-
-        percussion();
-
-
-        percussionTimer =
-            setInterval(
-                percussion,
-                375
-            );
-
-
-        /* =====================================================
-           🔥 CAMPFIRE CRACKLE
-           ===================================================== */
-
-        function fireCrackle(){
-
-            if(!audioContext){
-                return;
-            }
-
-            const now =
-                audioContext.currentTime;
-
-
-            const osc =
-                audioContext.createOscillator();
-
-            const gain =
-                audioContext.createGain();
-
-
-            osc.type="triangle";
-
-            osc.frequency.value =
-                220+
-                Math.random()*500;
-
-
-            gain.gain.setValueAtTime(
-                .0001,
-                now
-            );
-
-            gain.gain
-                .exponentialRampToValueAtTime(
-                    .075,
-                    now+.012
-                );
-
-            gain.gain
-                .exponentialRampToValueAtTime(
-                    .0001,
-                    now+.11
-                );
-
-
-            osc.connect(gain);
-
-            gain.connect(
-                ambienceGain
-            );
-
-
-            osc.start(now);
-
-            osc.stop(
-                now+.13
-            );
-
-
-            fireTimer =
-                setTimeout(
-                    fireCrackle,
-                    1000+
-                    Math.random()*2300
-                );
-        }
-
-
-        fireCrackle();
-
-
-        audioStatus.textContent =
-            "● NIGHT AMBIENCE + MUSIC";
-
-
-        /*
-         * Safari / Chrome can occasionally create
-         * a suspended context.
-         */
-        audioContext
-            .resume()
-            .catch(()=>{});
-    }
-
-
-    /* =========================================================
-       SOUND EFFECTS
-       ========================================================= */
-
-    function sound(type){
-
-        if(!audioContext){
-            return;
-        }
-
-
-        /*
-         * 🔔 SUCCESS
-         */
-        if(type==="success"){
-
-            [
-                523.25,
-                659.25,
-                783.99
-            ].forEach(
-                (freq,i)=>{
-
-                    setTimeout(()=>{
-
-                        playTone(
-                            freq,
-                            .22,
-                            .20,
-                            "sine",
-                            fxGain
-                        );
-
-                    },i*90);
-
-                }
-            );
-
-            return;
-        }
-
-
-        /*
-         * ⚠️ WRONG
-         */
-        if(type==="wrong"){
-
-            playTone(
-                180,
-                .22,
-                .15,
-                "triangle",
-                fxGain,
-                105
-            );
-
-
-            setTimeout(()=>{
-
-                playTone(
-                    120,
-                    .16,
-                    .08,
-                    "sine",
-                    fxGain,
-                    90
-                );
-
-            },70);
-
-
-            return;
-        }
-
-
-        /*
-         * Normal button click
-         */
-        playTone(
-            420,
-            .08,
-            .085,
-            "sine",
-            fxGain,
-            300
-        );
-    }
-
-
-    /* =========================================================
-       AUDIO RECOVERY
-       ========================================================= */
-
-    document.addEventListener(
-        "visibilitychange",
-        ()=>{
-
-            if(
-                !document.hidden &&
-                audioContext &&
-                audioContext.state==="suspended"
-            ){
-
-                audioContext
-                    .resume()
-                    .catch(()=>{});
-
-            }
-
-        }
-    );
-
-
-    window.addEventListener(
-        "pageshow",
-        ()=>{
-
-            if(
-                audioContext &&
-                audioContext.state==="suspended"
-            ){
-
-                audioContext
-                    .resume()
-                    .catch(()=>{});
-
-            }
-
-        }
-    );
+    fxGain =
+        audioCtx.createGain();
 
 
     /*
-     * Any later interaction can resume audio
-     * if the browser temporarily suspends it.
+     * Clearer MacBook mix.
      */
-    [
-        "pointerdown",
-        "touchstart",
-        "keydown"
-    ].forEach(
-        eventName=>{
+    masterGain.gain.value =
+        0.78;
 
-            document.addEventListener(
-                eventName,
-                ()=>{
+    musicGain.gain.value =
+        0.46;
 
-                    if(
-                        audioContext &&
-                        audioContext.state==="suspended"
-                    ){
+    ambienceGain.gain.value =
+        0.30;
 
-                        audioContext
-                            .resume()
-                            .catch(()=>{});
+    fxGain.gain.value =
+        0.78;
 
-                    }
+
+    musicGain.connect(
+        masterGain
+    );
+
+    ambienceGain.connect(
+        masterGain
+    );
+
+    fxGain.connect(
+        masterGain
+    );
+
+    masterGain.connect(
+        audioCtx.destination
+    );
+
+
+    createNoiseBuffer();
+
+    audioStarted =
+        true;
+
+
+    /*
+     * Resume while still inside
+     * the user gesture.
+     */
+    audioCtx
+        .resume()
+        .catch(function(){});
+
+}
+
+
+function createNoiseBuffer(){
+
+    if(!audioCtx){
+        return;
+    }
+
+
+    const length =
+        Math.floor(
+            audioCtx.sampleRate * 4
+        );
+
+
+    noiseBuffer =
+        audioCtx.createBuffer(
+            1,
+            length,
+            audioCtx.sampleRate
+        );
+
+
+    const data =
+        noiseBuffer.getChannelData(0);
+
+
+    let last = 0;
+
+
+    for(
+        let i=0;
+        i<length;
+        i++
+    ){
+
+        const white =
+            Math.random()*2-1;
+
+        last =
+            last*0.985 +
+            white*0.015;
+
+        data[i] =
+            last*4.0;
+
+    }
+
+}
+
+
+function tone(
+    frequency,
+    duration,
+    volume,
+    type,
+    destination,
+    slideTo
+){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    const now =
+        audioCtx.currentTime;
+
+
+    const osc =
+        audioCtx.createOscillator();
+
+
+    const gain =
+        audioCtx.createGain();
+
+
+    osc.type =
+        type || "sine";
+
+
+    osc.frequency.setValueAtTime(
+        frequency,
+        now
+    );
+
+
+    if(slideTo){
+
+        osc.frequency
+            .exponentialRampToValueAtTime(
+                Math.max(
+                    20,
+                    slideTo
+                ),
+                now+duration
+            );
+
+    }
+
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        now
+    );
+
+
+    gain.gain
+        .exponentialRampToValueAtTime(
+            Math.max(
+                volume,
+                0.001
+            ),
+            now+0.012
+        );
+
+
+    gain.gain
+        .exponentialRampToValueAtTime(
+            0.0001,
+            now+duration
+        );
+
+
+    osc.connect(gain);
+
+    gain.connect(
+        destination ||
+        masterGain
+    );
+
+
+    osc.start(now);
+
+    osc.stop(
+        now+
+        duration+
+        0.05
+    );
+
+}
+
+
+function adventureChord(index){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    const chords = [
+
+        [196,246.94,293.66],
+
+        [174.61,220,261.63],
+
+        [146.83,220,293.66],
+
+        [164.81,246.94,329.63]
+
+    ];
+
+
+    const chord =
+        chords[
+            index %
+            chords.length
+        ];
+
+
+    chord.forEach(
+        function(freq,i){
+
+            setTimeout(
+                function(){
+
+                    tone(
+                        freq,
+                        1.15,
+                        i===0
+                            ? 0.095
+                            : 0.062,
+                        "triangle",
+                        musicGain
+                    );
 
                 },
-                {passive:true}
+                i*65
+            );
+
+        }
+    );
+
+}
+
+
+function percussion(strong){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    const now =
+        audioCtx.currentTime;
+
+
+    const osc =
+        audioCtx.createOscillator();
+
+
+    const gain =
+        audioCtx.createGain();
+
+
+    osc.type =
+        "sine";
+
+
+    osc.frequency.setValueAtTime(
+        strong ? 115 : 90,
+        now
+    );
+
+
+    osc.frequency
+        .exponentialRampToValueAtTime(
+            strong ? 48 : 42,
+            now+0.17
+        );
+
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        now
+    );
+
+
+    gain.gain
+        .exponentialRampToValueAtTime(
+            strong ? 0.18 : 0.10,
+            now+0.008
+        );
+
+
+    gain.gain
+        .exponentialRampToValueAtTime(
+            0.0001,
+            now+0.20
+        );
+
+
+    osc.connect(gain);
+
+    gain.connect(
+        musicGain
+    );
+
+
+    osc.start(now);
+
+    osc.stop(
+        now+0.22
+    );
+
+
+    if(strong){
+
+        setTimeout(
+            function(){
+
+                tone(
+                    1350,
+                    0.055,
+                    0.035,
+                    "square",
+                    musicGain,
+                    700
+                );
+
+            },
+            105
+        );
+
+    }
+
+}
+
+
+function startAmbience(){
+
+    if(
+        !audioCtx ||
+        !noiseBuffer ||
+        ambienceStarted
+    ){
+
+        return;
+
+    }
+
+
+    ambienceStarted =
+        true;
+
+
+    /*
+     * 🌲 Soft night wind.
+     */
+
+    const windSource =
+        audioCtx.createBufferSource();
+
+    const windFilter =
+        audioCtx.createBiquadFilter();
+
+    const windGain =
+        audioCtx.createGain();
+
+
+    windSource.buffer =
+        noiseBuffer;
+
+    windSource.loop =
+        true;
+
+
+    windFilter.type =
+        "lowpass";
+
+    windFilter.frequency.value =
+        760;
+
+
+    windGain.gain.value =
+        0.20;
+
+
+    windSource.connect(
+        windFilter
+    );
+
+    windFilter.connect(
+        windGain
+    );
+
+    windGain.connect(
+        ambienceGain
+    );
+
+
+    windSource.start();
+
+
+    /*
+     * 🌊 Water ambience.
+     */
+
+    const waterSource =
+        audioCtx.createBufferSource();
+
+    const waterFilter =
+        audioCtx.createBiquadFilter();
+
+    const waterGain =
+        audioCtx.createGain();
+
+
+    waterSource.buffer =
+        noiseBuffer;
+
+    waterSource.loop =
+        true;
+
+
+    waterFilter.type =
+        "bandpass";
+
+    waterFilter.frequency.value =
+        1150;
+
+    waterFilter.Q.value =
+        0.65;
+
+
+    waterGain.gain.value =
+        0.10;
+
+
+    waterSource.connect(
+        waterFilter
+    );
+
+    waterFilter.connect(
+        waterGain
+    );
+
+    waterGain.connect(
+        ambienceGain
+    );
+
+
+    waterSource.start();
+
+
+    /*
+     * 🌊 Small water shimmer.
+     */
+
+    shimmerTimer =
+        setInterval(
+            function(){
+
+                if(
+                    !audioCtx ||
+                    !audioEnabled
+                ){
+
+                    return;
+
+                }
+
+
+                tone(
+                    480+
+                    Math.random()*650,
+                    0.28,
+                    0.022,
+                    "sine",
+                    ambienceGain
+                );
+
+            },
+            1250
+        );
+
+
+    /*
+     * 🔥 Occasional campfire crackle.
+     */
+
+    function fireCrackle(){
+
+        if(
+            !audioCtx ||
+            !audioEnabled
+        ){
+
+            return;
+
+        }
+
+
+        tone(
+            170+
+            Math.random()*600,
+            0.07,
+            0.06,
+            "triangle",
+            ambienceGain
+        );
+
+
+        fireTimer =
+            setTimeout(
+                fireCrackle,
+                1000+
+                Math.random()*2500
+            );
+
+    }
+
+
+    fireCrackle();
+
+}
+
+
+function startAdventureMusic(){
+
+    if(
+        !audioCtx ||
+        musicTimer
+    ){
+
+        return;
+
+    }
+
+
+    let chordIndex =
+        0;
+
+    let beat =
+        0;
+
+
+    const melody = [
+
+        392,
+        440,
+        523.25,
+        440,
+
+        392,
+        329.63,
+        392,
+        493.88,
+
+        523.25,
+        493.88,
+        440,
+        392,
+
+        329.63,
+        392,
+        440,
+        523.25
+
+    ];
+
+
+    adventureChord(
+        chordIndex++
+    );
+
+
+    musicTimer =
+        setInterval(
+            function(){
+
+                if(!audioEnabled){
+                    return;
+                }
+
+
+                if(
+                    beat % 16 === 0
+                ){
+
+                    adventureChord(
+                        chordIndex++
+                    );
+
+                }
+
+
+                tone(
+                    melody[
+                        beat %
+                        melody.length
+                    ],
+                    0.34,
+                    0.052,
+                    "triangle",
+                    musicGain
+                );
+
+
+                beat++;
+
+            },
+            500
+        );
+
+
+    beatTimer =
+        setInterval(
+            function(){
+
+                if(!audioEnabled){
+                    return;
+                }
+
+
+                const step =
+                    Math.floor(
+                        beat/2
+                    ) % 4;
+
+
+                percussion(
+                    step===0 ||
+                    step===2
+                );
+
+            },
+            500
+        );
+
+}
+
+
+function successSound(){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    tone(
+        523.25,
+        0.18,
+        0.17,
+        "triangle",
+        fxGain
+    );
+
+
+    setTimeout(
+        function(){
+
+            tone(
+                659.25,
+                0.20,
+                0.17,
+                "triangle",
+                fxGain
+            );
+
+        },
+        90
+    );
+
+
+    setTimeout(
+        function(){
+
+            tone(
+                783.99,
+                0.38,
+                0.20,
+                "triangle",
+                fxGain
+            );
+
+        },
+        190
+    );
+
+}
+
+
+function mistakeSound(){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    tone(
+        185,
+        0.18,
+        0.15,
+        "sawtooth",
+        fxGain,
+        120
+    );
+
+
+    setTimeout(
+        function(){
+
+            tone(
+                115,
+                0.25,
+                0.12,
+                "sawtooth",
+                fxGain,
+                80
+            );
+
+        },
+        100
+    );
+
+}
+
+
+function levelUpSound(){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    [
+        392,
+        523.25,
+        659.25,
+        783.99
+    ].forEach(
+        function(freq,i){
+
+            setTimeout(
+                function(){
+
+                    tone(
+                        freq,
+                        0.27,
+                        0.12,
+                        "triangle",
+                        fxGain
+                    );
+
+                },
+                i*72
+            );
+
+        }
+    );
+
+}
+
+
+function finalSound(){
+
+    if(
+        !audioCtx ||
+        !audioEnabled
+    ){
+
+        return;
+
+    }
+
+
+    const notes = [
+
+        261.63,
+        329.63,
+        392,
+
+        523.25,
+        659.25,
+        783.99,
+
+        1046.50
+
+    ];
+
+
+    notes.forEach(
+        function(freq,i){
+
+            setTimeout(
+                function(){
+
+                    tone(
+                        freq,
+                        0.72,
+                        0.16,
+                        "triangle",
+                        fxGain
+                    );
+
+                },
+                i*120
             );
 
         }
     );
 
 
-    /* =========================================================
-       START GAME
-       ========================================================= */
+    setTimeout(
+        function(){
 
-    startBtn.addEventListener(
-        "click",
-        ()=>{
+            tone(
+                1318.51,
+                1.0,
+                0.09,
+                "sine",
+                fxGain
+            );
 
-            /*
-             * FIRST THING:
-             * unlock audio from the physical
-             * user click.
-             */
-            startAudio();
+        },
+        780
+    );
 
-
-            startScreen
-                .classList
-                .add("hidden");
+}
 
 
-            gameScreen
-                .classList
-                .remove("hidden");
+function showSuccess(text){
+
+    successFlash.textContent =
+        text ||
+        "✓ NICE ONE!";
 
 
-            sound("click");
-
-        }
+    successFlash.classList.add(
+        "show"
     );
 
 
-    /* =========================================================
-       CHALLENGE 1
-       ========================================================= */
+    setTimeout(
+        function(){
 
-    let challenge1Complete=false;
+            successFlash.classList.remove(
+                "show"
+            );
 
+        },
+        600
+    );
 
-    document
-        .querySelectorAll(".waterChoice")
-        .forEach(
-            button=>{
-
-                button.addEventListener(
-                    "click",
-                    ()=>{
-
-                        if(
-                            challenge1Complete
-                        ){
-                            return;
-                        }
+}
 
 
-                        const correct =
-                            button.dataset.correct ===
-                            "true";
+function startAudio(){
+
+    initAudio();
 
 
-                        document
-                            .querySelectorAll(
-                                ".waterChoice"
-                            )
-                            .forEach(
-                                b=>{
-                                    b.classList.remove(
-                                        "correct",
-                                        "wrong"
-                                    );
-                                }
-                            );
+    if(!audioCtx){
+        return;
+    }
 
 
-                        if(correct){
-
-                            challenge1Complete=true;
-
-                            button.classList.add(
-                                "correct"
-                            );
+    audioEnabled =
+        true;
 
 
-                            feedback1.innerHTML =
-                                "✓ Good call. A steady, predictable current gives you more control and fewer surprises.";
+    masterGain.gain.value =
+        0.78;
+
+    musicGain.gain.value =
+        0.46;
+
+    ambienceGain.gain.value =
+        0.30;
+
+    fxGain.gain.value =
+        0.78;
 
 
-                            sound("success");
+    /*
+     * Critical:
+     * resume during the START button gesture.
+     */
+
+    audioCtx
+        .resume()
+        .catch(function(){});
 
 
-                            next1
-                                .classList
-                                .remove("hidden");
-
-                        }else{
-
-                            button.classList.add(
-                                "wrong"
-                            );
+    soundButton.textContent =
+        "🔊";
 
 
-                            feedback1.innerHTML =
-                                "Not quite. Look at the water again. You want predictable movement rather than turbulence or reverse flow.";
+    audioLabel.textContent =
+        "● ADVENTURE SOUNDTRACK";
 
 
-                            sound("wrong");
+    startAmbience();
 
-                        }
+    startAdventureMusic();
 
-                    }
-                );
+}
 
+
+/*
+ * macOS browsers may suspend
+ * audio after tab switching.
+ */
+
+document.addEventListener(
+    "visibilitychange",
+    function(){
+
+        if(
+            !document.hidden &&
+            audioCtx &&
+            audioEnabled
+        ){
+
+            audioCtx
+                .resume()
+                .catch(function(){});
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "focus",
+    function(){
+
+        if(
+            audioCtx &&
+            audioEnabled
+        ){
+
+            audioCtx
+                .resume()
+                .catch(function(){});
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        if(
+            audioCtx &&
+            audioEnabled
+        ){
+
+            audioCtx
+                .resume()
+                .catch(function(){});
+
+        }
+
+    }
+);
+
+
+/*
+ * Any real user interaction can wake
+ * a suspended context.
+ */
+
+[
+    "pointerdown",
+    "keydown",
+    "touchstart"
+].forEach(
+    function(name){
+
+        document.addEventListener(
+            name,
+            function(){
+
+                if(
+                    audioCtx &&
+                    audioEnabled &&
+                    audioCtx.state ===
+                    "suspended"
+                ){
+
+                    audioCtx
+                        .resume()
+                        .catch(function(){});
+
+                }
+
+            },
+            {
+                passive:true
             }
         );
 
-
-    next1.addEventListener(
-        "click",
-        ()=>{
-
-            challenge1
-                .classList
-                .add("hidden");
-
-            challenge2
-                .classList
-                .remove("hidden");
+    }
+);
 
 
-            progressFill.style.width =
-                "66.666%";
+/* =========================================================
+   SOUND BUTTON
+   ========================================================= */
 
+soundButton.addEventListener(
+    "click",
+    function(){
 
-            sound("click");
+        if(!audioCtx){
+
+            startAudio();
+
+            return;
 
         }
+
+
+        if(audioEnabled){
+
+            audioEnabled =
+                false;
+
+
+            masterGain.gain.value =
+                0;
+
+
+            soundButton.textContent =
+                "🔇";
+
+
+            audioLabel.textContent =
+                "SOUND OFF";
+
+        }else{
+
+            audioEnabled =
+                true;
+
+
+            masterGain.gain.value =
+                .78;
+
+
+            audioCtx
+                .resume()
+                .catch(function(){});
+
+
+            soundButton.textContent =
+                "🔊";
+
+
+            audioLabel.textContent =
+                "● ADVENTURE SOUNDTRACK";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   START GAME
+   ========================================================= */
+
+startBtn.addEventListener(
+    "click",
+    function(){
+
+        /*
+         * IMPORTANT:
+         * This is the direct user gesture.
+         */
+
+        startAudio();
+
+
+        startScreen.classList.add(
+            "hidden"
+        );
+
+
+        gameScreen.classList.remove(
+            "hidden"
+        );
+
+
+        document
+            .getElementById("screen")
+            .scrollTop = 0;
+
+
+        startChallenge1();
+
+    }
+);
+
+
+/* =========================================================
+   CHALLENGE 1
+   ========================================================= */
+
+let waterLevel =
+    1;
+
+
+const waterFeedback =
+    document.getElementById(
+        "feedback1"
     );
 
 
-    /* =========================================================
-       CHALLENGE 2
-       ========================================================= */
+function startChallenge1(){
 
-    let selectedGear=null;
-    let challenge2Complete=false;
+    waterLevel =
+        1;
 
 
-    shelterSlider.addEventListener(
-        "input",
-        ()=>{
+    progressBar.style.width =
+        "0%";
 
-            shelterValue.textContent =
-                shelterSlider.value+
-                "%";
 
+    for(
+        let i=1;
+        i<=5;
+        i++
+    ){
+
+        const scene =
+            document.getElementById(
+                "waterScene"+i
+            );
+
+        const choices =
+            document.getElementById(
+                "waterChoices"+i
+            );
+
+
+        if(scene){
+            scene.classList.toggle(
+                "hidden",
+                i!==1
+            );
         }
-    );
 
 
-    document
-        .querySelectorAll(".gearChoice")
-        .forEach(
-            button=>{
+        if(choices){
+            choices.classList.toggle(
+                "hidden",
+                i!==1
+            );
+        }
 
-                button.addEventListener(
-                    "click",
-                    ()=>{
-
-                        document
-                            .querySelectorAll(
-                                ".gearChoice"
-                            )
-                            .forEach(
-                                b=>{
-                                    b.classList.remove(
-                                        "correct",
-                                        "wrong"
-                                    );
-                                }
-                            );
+    }
 
 
-                        selectedGear =
-                            button.dataset.value;
+    waterFeedback.textContent =
+        "Study the water before making your decision.";
 
+}
+
+
+document
+    .querySelectorAll(
+        ".waterChoice"
+    )
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const level =
+                        Number(
+                            button.dataset.level
+                        );
+
+
+                    if(
+                        level !==
+                        waterLevel
+                    ){
+
+                        return;
+
+                    }
+
+
+                    const correct =
+                        button.dataset.correct ===
+                        "true";
+
+
+                    document
+                        .querySelectorAll(
+                            '.waterChoice[data-level="'+
+                            level+
+                            '"]'
+                        )
+                        .forEach(
+                            function(b){
+
+                                b.classList.remove(
+                                    "correct",
+                                    "wrong"
+                                );
+
+                            }
+                        );
+
+
+                    if(correct){
 
                         button.classList.add(
                             "correct"
                         );
 
 
-                        checkChallenge2();
+                        successSound();
+
+
+                        showSuccess(
+                            "✓ WATER READ!"
+                        );
+
+
+                        waterFeedback.textContent =
+                            "✓ Correct. Your reading of the water is getting sharper.";
+
+
+                        progressBar.style.width =
+                            (
+                                level /
+                                5 *
+                                33
+                            )+
+                            "%";
+
+
+                        setTimeout(
+                            function(){
+
+                                if(
+                                    level <
+                                    5
+                                ){
+
+                                    waterLevel =
+                                        level+1;
+
+
+                                    for(
+                                        let i=1;
+                                        i<=5;
+                                        i++
+                                    ){
+
+                                        const scene =
+                                            document.getElementById(
+                                                "waterScene"+i
+                                            );
+
+                                        const choices =
+                                            document.getElementById(
+                                                "waterChoices"+i
+                                            );
+
+
+                                        if(scene){
+
+                                            scene.classList.toggle(
+                                                "hidden",
+                                                i!==waterLevel
+                                            );
+
+                                        }
+
+
+                                        if(choices){
+
+                                            choices.classList.toggle(
+                                                "hidden",
+                                                i!==waterLevel
+                                            );
+
+                                        }
+
+                                    }
+
+
+                                    levelUpSound();
+
+
+                                    waterFeedback.textContent =
+                                        "New water clue. Take another look.";
+
+                                }else{
+
+                                    progressBar.style.width =
+                                        "33%";
+
+
+                                    setTimeout(
+                                        function(){
+
+                                            challenge1Complete();
+
+                                        },
+                                        350
+                                    );
+
+                                }
+
+                            },
+                            800
+                        );
+
+                    }else{
+
+                        button.classList.add(
+                            "wrong"
+                        );
+
+
+                        mistakeSound();
+
+
+                        waterFeedback.textContent =
+                            "Not quite. Slow down and read the movement of the water again.";
 
                     }
-                );
 
-            }
-        );
+                }
+            );
+
+        }
+    );
 
 
-    function checkChallenge2(){
+function challenge1Complete(){
 
-        const shelter =
-            Number(
-                shelterSlider.value
+    challenge1
+        .classList
+        .add("hidden");
+
+
+    challenge2
+        .classList
+        .remove("hidden");
+
+
+    startChallenge2();
+
+}
+
+
+/* =========================================================
+   CHALLENGE 2
+   ========================================================= */
+
+let gearLevel =
+    1;
+
+
+function startChallenge2(){
+
+    gearLevel =
+        1;
+
+
+    for(
+        let i=1;
+        i<=5;
+        i++
+    ){
+
+        const card =
+            document.getElementById(
+                "gearLevel"+i
             );
 
 
-        /*
-         * Correct setup:
-         *
-         * Stability + moderate/high
-         * wind protection.
-         */
-        if(
-            selectedGear==="stability" &&
-            shelter>=60 &&
-            shelter<=90
-        ){
+        if(card){
 
-            challenge2Complete=true;
+            card.classList.toggle(
+                "hidden",
+                i!==1
+            );
 
-
-            feedback2.innerHTML =
-                "✓ Exactly. Secure the shelter properly without overbuilding. Stability beats comfort when the weather turns.";
-
-
-            sound("success");
-
-
-            next2
-                .classList
-                .remove("hidden");
-
-        }else{
-
-            feedback2.innerHTML =
-                "Think like you're actually setting up camp. Secure the important equipment and give yourself enough wind protection.";
-
-
-            sound("click");
         }
+
     }
 
 
-    next2.addEventListener(
-        "click",
-        ()=>{
+    feedback2.textContent =
+        "Prepare for the conditions, not the appearance.";
 
-            challenge2
-                .classList
-                .add("hidden");
+}
 
 
-            challenge3
-                .classList
-                .remove("hidden");
+document
+    .querySelectorAll(
+        ".gearChoice"
+    )
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const level =
+                        Number(
+                            button.dataset.level
+                        );
 
 
-            progressFill.style.width =
-                "100%";
+                    if(
+                        level !==
+                        gearLevel
+                    ){
+
+                        return;
+
+                    }
 
 
-            sound("click");
+                    const correct =
+                        button.dataset.correct ===
+                        "true";
 
 
-            /*
-             * Compass movement.
-             */
-            let angle=-12;
+                    document
+                        .querySelectorAll(
+                            '.gearChoice[data-level="'+
+                            level+
+                            '"]'
+                        )
+                        .forEach(
+                            function(b){
 
-            let direction=1;
+                                b.classList.remove(
+                                    "correct",
+                                    "wrong"
+                                );
 
-
-            const compassTimer =
-                setInterval(
-                    ()=>{
-
-                        angle +=
-                            direction*2;
-
-
-                        if(
-                            angle>12 ||
-                            angle<-12
-                        ){
-
-                            direction*=-1;
-
-                        }
+                            }
+                        );
 
 
-                        needle.style.transform =
-                            "translate(-50%,-50%) rotate("+
-                            angle+
-                            "deg)";
+                    if(correct){
 
-                    },
-                    180
-                );
+                        button.classList.add(
+                            "correct"
+                        );
 
 
-            setTimeout(
-                ()=>{
-                    clearInterval(
-                        compassTimer
-                    );
-                },
-                3500
+                        successSound();
+
+
+                        showSuccess(
+                            "✓ GOOD SETUP!"
+                        );
+
+
+                        feedback2.textContent =
+                            "✓ Correct. You're adapting your setup to the conditions.";
+
+
+                        progressBar.style.width =
+                            (
+                                33 +
+                                (level /
+                                5 *
+                                33)
+                            )+
+                            "%";
+
+
+                        setTimeout(
+                            function(){
+
+                                if(
+                                    level <
+                                    5
+                                ){
+
+                                    gearLevel =
+                                        level+1;
+
+
+                                    for(
+                                        let i=1;
+                                        i<=5;
+                                        i++
+                                    ){
+
+                                        const card =
+                                            document.getElementById(
+                                                "gearLevel"+i
+                                            );
+
+
+                                        if(card){
+
+                                            card.classList.toggle(
+                                                "hidden",
+                                                i!==gearLevel
+                                            );
+
+                                        }
+
+                                    }
+
+
+                                    levelUpSound();
+
+
+                                    feedback2.textContent =
+                                        "The conditions are getting harder. Think ahead.";
+
+                                }else{
+
+                                    progressBar.style.width =
+                                        "66%";
+
+
+                                    setTimeout(
+                                        function(){
+
+                                            challenge2Complete();
+
+                                        },
+                                        350
+                                    );
+
+                                }
+
+                            },
+                            800
+                        );
+
+                    }else{
+
+                        button.classList.add(
+                            "wrong"
+                        );
+
+
+                        mistakeSound();
+
+
+                        feedback2.textContent =
+                            "Not quite. Think practically: protect the important equipment first.";
+
+                    }
+
+                }
             );
 
         }
     );
 
 
-    /* =========================================================
-       CHALLENGE 3
-       ========================================================= */
+function challenge2Complete(){
 
-    let challenge3Complete=false;
+    challenge2
+        .classList
+        .add("hidden");
+
+
+    challenge3
+        .classList
+        .remove("hidden");
+
+
+    startChallenge3();
+
+}
+
+
+/* =========================================================
+   CHALLENGE 3
+   ========================================================= */
+
+let navLevel =
+    1;
+
+
+function startChallenge3(){
+
+    navLevel =
+        1;
+
+
+    progressBar.style.width =
+        "66%";
 
 
     document
-        .querySelectorAll(".directionChoice")
-        .forEach(
-            button=>{
+        .getElementById("navLevel2")
+        .classList
+        .add("hidden");
 
-                button.addEventListener(
-                    "click",
-                    ()=>{
+    document
+        .getElementById("navLevel3")
+        .classList
+        .add("hidden");
 
-                        if(
-                            challenge3Complete
-                        ){
-                            return;
-                        }
+    document
+        .getElementById("navLevel4")
+        .classList
+        .add("hidden");
 
-
-                        const direction =
-                            button.dataset.direction;
-
-
-                        document
-                            .querySelectorAll(
-                                ".directionChoice"
-                            )
-                            .forEach(
-                                b=>{
-                                    b.classList.remove(
-                                        "correct",
-                                        "wrong"
-                                    );
-                                }
-                            );
+    document
+        .getElementById("navLevel5")
+        .classList
+        .add("hidden");
 
 
-                        if(direction==="SE"){
-
-                            challenge3Complete=true;
-
-
-                            button.classList.add(
-                                "correct"
-                            );
+    document
+        .getElementById("navScene1")
+        .classList
+        .remove("hidden");
 
 
-                            needle.style.transform =
-                                "translate(-50%,-50%) rotate(135deg)";
+    feedback3.textContent =
+        "Trust your bearings.";
+
+}
 
 
-                            feedback3.innerHTML =
-                                "✓ Bearing locked. South-east takes you back toward the campsite. You can see the warm glow of the fire through the trees.";
+document
+    .querySelectorAll(
+        ".directionChoice"
+    )
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const level =
+                        Number(
+                            button.dataset.level
+                        );
 
 
-                            sound("success");
+                    if(
+                        level !==
+                        navLevel
+                    ){
 
-
-                            finishBtn
-                                .classList
-                                .remove("hidden");
-
-                        }else{
-
-                            button.classList.add(
-                                "wrong"
-                            );
-
-
-                            feedback3.innerHTML =
-                                "Wrong bearing. Check the clue again: the campsite is south-east. Don't let the darkness throw you off.";
-
-
-                            sound("wrong");
-
-                        }
+                        return;
 
                     }
-                );
-
-            }
-        );
 
 
-    /* =========================================================
-       FINISH
-       ========================================================= */
-
-    finishBtn.addEventListener(
-        "click",
-        ()=>{
-
-            sound("success");
+                    const correct =
+                        button.dataset.correct ===
+                        "true";
 
 
-            gameScreen
-                .classList
-                .add("hidden");
+                    document
+                        .querySelectorAll(
+                            '.directionChoice[data-level="'+
+                            level+
+                            '"]'
+                        )
+                        .forEach(
+                            function(b){
+
+                                b.classList.remove(
+                                    "correct",
+                                    "wrong"
+                                );
+
+                            }
+                        );
 
 
-            finalScreen
-                .classList
-                .remove("hidden");
+                    if(correct){
+
+                        button.classList.add(
+                            "correct"
+                        );
 
 
-            /*
-             * Lower the ambience slightly for
-             * the final birthday reveal.
-             */
-            if(masterGain){
-
-                masterGain.gain
-                    .cancelScheduledValues(
-                        audioContext.currentTime
-                    );
+                        successSound();
 
 
-                masterGain.gain
-                    .setTargetAtTime(
-                        .48,
-                        audioContext.currentTime,
-                        .5
-                    );
+                        showSuccess(
+                            "✓ BEARING LOCKED!"
+                        );
 
-            }
+
+                        feedback3.textContent =
+                            "✓ Correct. You read the surroundings properly.";
+
+
+                        progressBar.style.width =
+                            (
+                                66 +
+                                (level /
+                                5 *
+                                34)
+                            )+
+                            "%";
+
+
+                        setTimeout(
+                            function(){
+
+                                if(
+                                    level <
+                                    5
+                                ){
+
+                                    navLevel =
+                                        level+1;
+
+
+                                    for(
+                                        let i=2;
+                                        i<=5;
+                                        i++
+                                    ){
+
+                                        const scene =
+                                            document.getElementById(
+                                                "navLevel"+i
+                                            );
+
+
+                                        if(scene){
+
+                                            scene.classList.toggle(
+                                                "hidden",
+                                                i!==navLevel
+                                            );
+
+                                        }
+
+                                    }
+
+
+                                    if(
+                                        navLevel===2
+                                    ){
+
+                                        document
+                                            .getElementById(
+                                                "navScene1"
+                                            )
+                                            .classList
+                                            .add(
+                                                "hidden"
+                                            );
+
+                                    }
+
+
+                                    levelUpSound();
+
+
+                                    feedback3.textContent =
+                                        "The route is changing. Keep reading the clues.";
+
+                                }else{
+
+                                    progressBar.style.width =
+                                        "100%";
+
+
+                                    setTimeout(
+                                        function(){
+
+                                            completeMission();
+
+                                        },
+                                        400
+                                    );
+
+                                }
+
+                            },
+                            800
+                        );
+
+                    }else{
+
+                        button.classList.add(
+                            "wrong"
+                        );
+
+
+                        mistakeSound();
+
+
+                        feedback3.textContent =
+                            "Wrong bearing. Recheck the clue and try again.";
+
+                    }
+
+                }
+            );
 
         }
     );
 
 
-})();
+/* =========================================================
+   COMPLETE MISSION
+   ========================================================= */
 
+function completeMission(){
+
+    finalSound();
+
+
+    showSuccess(
+        "🏆 MISSION COMPLETE!"
+    );
+
+
+    setTimeout(
+        function(){
+
+            gameScreen.classList.add(
+                "hidden"
+            );
+
+
+            finalScreen.classList.remove(
+                "hidden"
+            );
+
+
+            document
+                .getElementById("screen")
+                .scrollTop = 0;
+
+
+            audioLabel.textContent =
+                "🏆 MISSION COMPLETE";
+
+        },
+        700
+    );
+
+}
+
+
+/* =========================================================
+   ORIENTATION
+   ========================================================= */
+
+window.addEventListener(
+    "orientationchange",
+    function(){
+
+        setTimeout(
+            function(){
+
+                document
+                    .getElementById("screen")
+                    .scrollTop = 0;
+
+            },
+            250
+        );
+
+    }
+);
+
+
+/* =========================================================
+   PREVENT DOUBLE-TAP ZOOM
+   ========================================================= */
+
+let lastTouch =
+    0;
+
+
+document.addEventListener(
+    "touchend",
+    function(event){
+
+        const now =
+            Date.now();
+
+
+        if(
+            now-lastTouch <= 300
+        ){
+
+            event.preventDefault();
+
+        }
+
+
+        lastTouch =
+            now;
+
+    },
+    {
+        passive:false
+    }
+);
+
+
+})();
 </script>
 
 </body>
