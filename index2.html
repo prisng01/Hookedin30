@@ -1039,16 +1039,17 @@ h2{
 }
 
 /* =========================================================
-   COMPASS
+   COMPASS (INTERACTIVE)
    ========================================================= */
 
 .compass{
     position:relative;
 
-    width:166px;
-    height:166px;
+    width:180px;
 
-    margin:20px auto;
+    height:180px;
+
+    margin:18px auto;
 
     border-radius:50%;
 
@@ -1068,6 +1069,14 @@ h2{
         rgba(0,0,0,.4),
         inset 0 0 25px
         rgba(255,255,255,.025);
+
+    touch-action:none;
+    cursor:grab;
+    user-select:none;
+}
+
+.compass:active{
+    cursor:grabbing;
 }
 
 .compass:before{
@@ -1136,8 +1145,8 @@ h2{
     left:50%;
     top:50%;
 
-    width:3px;
-    height:110px;
+    width:4px;
+    height:120px;
 
     transform:
         translate(-50%,-50%)
@@ -1145,8 +1154,7 @@ h2{
 
     transform-origin:center;
 
-    transition:
-        transform .6s ease;
+    pointer-events:none;
 }
 
 .needle:before{
@@ -1154,17 +1162,17 @@ h2{
 
     position:absolute;
 
-    left:-5px;
+    left:-6px;
     top:0;
 
     border-left:
-        6px solid transparent;
+        8px solid transparent;
 
     border-right:
-        6px solid transparent;
+        8px solid transparent;
 
     border-bottom:
-        55px solid #d6a840;
+        60px solid #d6a840;
 }
 
 .needle:after{
@@ -1172,26 +1180,62 @@ h2{
 
     position:absolute;
 
-    left:-5px;
+    left:-6px;
     bottom:0;
 
     border-left:
-        6px solid transparent;
+        8px solid transparent;
 
     border-right:
-        6px solid transparent;
+        8px solid transparent;
 
     border-top:
-        55px solid #596962;
+        60px solid #596962;
 }
 
-.directions{
-    display:grid;
+.angleDisplayContainer{
+    text-align:center;
+    margin:10px 0;
+}
 
-    grid-template-columns:
-        1fr 1fr;
+.angleDisplay{
+    display:inline-block;
+    padding:8px 16px;
+    border-radius:12px;
+    background:#071612;
+    border:1px solid rgba(225,183,91,0.3);
+    color:#e5b84f;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:1px;
+}
 
-    gap:9px;
+.navLevelCard{
+    text-align:left;
+}
+
+.navLevelCard p{
+    margin:8px 0;
+}
+
+.targetBadge{
+    display:inline-block;
+    margin-top:6px;
+    padding:6px 12px;
+    background:rgba(227,180,75,0.12);
+    border:1px solid rgba(227,180,75,0.3);
+    border-radius:8px;
+    color:#e3b75c;
+    font-weight:700;
+    font-size:12px;
+}
+
+.instructionsHint{
+    color:#8fa199;
+    font-size:11px;
+    text-align:center;
+    margin-top:-6px;
+    margin-bottom:12px;
 }
 
 /* =========================================================
@@ -1344,8 +1388,12 @@ h2{
     }
 
     .compass{
-        width:145px;
-        height:145px;
+        width:150px;
+        height:150px;
+    }
+
+    .needle{
+        height:100px;
     }
 }
 
@@ -2138,7 +2186,7 @@ h2{
 
 
             <!-- =================================================
-                 CHALLENGE 3
+                 CHALLENGE 3 (INTERACTIVE ROTATION)
                  ================================================= -->
 
             <div
@@ -2153,29 +2201,11 @@ h2{
                     NIGHT NAVIGATION
                 </h2>
 
-                <p class="subtitle">
-                    Darkness has settled over camp.
-                    Trust the clues around you.
-                </p>
-
-
-                <!-- LEVEL 1 -->
+                <!-- INTERACTIVE COMPASS -->
 
                 <div
-                    class="sceneCard"
-                    id="navScene1">
-
-                    <div class="sceneMoon"></div>
-                    <div class="sceneHorizon"></div>
-                    <div class="sceneTent"></div>
-
-                    <div class="sceneTree tleft"></div>
-                    <div class="sceneTree tright"></div>
-
-                </div>
-
-                <div
-                    class="compass">
+                    class="compass"
+                    id="compassDial">
 
                     <div
                         class="needle"
@@ -2192,46 +2222,35 @@ h2{
 
                 </div>
 
-                <p
-                    class="small"
-                    style="text-align:center">
+                <div class="instructionsHint">
+                    👆 Drag dial around to rotate needle
+                </div>
 
-                    LEVEL 1 — The campsite
-                    is NORTH.
+                <div class="angleDisplayContainer">
+                    <div class="angleDisplay" id="angleDisplay">
+                        CURRENT BEARING: 0°
+                    </div>
+                </div>
 
-                </p>
 
-                <div class="directions">
+                <!-- NAV LEVEL 1 -->
 
-                    <button
-                        class="choice directionChoice"
-                        data-level="1"
-                        data-correct="true">
+                <div
+                    class="navLevelCard"
+                    id="navLevel1">
 
-                        <strong>
-                            ↑ NORTH
-                        </strong>
+                    <p class="gold">
+                        🟢 LEVEL 1 — EASY: NORTH
+                    </p>
 
-                        <span>
-                            Toward the campsite.
-                        </span>
+                    <p class="subtitle">
+                        Your compass is out of alignment.<br>
+                        Rotate the needle until you find NORTH.
+                    </p>
 
-                    </button>
-
-                    <button
-                        class="choice directionChoice"
-                        data-level="1"
-                        data-correct="false">
-
-                        <strong>
-                            ↓ SOUTH
-                        </strong>
-
-                        <span>
-                            Away from camp.
-                        </span>
-
-                    </button>
+                    <div class="targetBadge">
+                        🎯 Target: 0° / N
+                    </div>
 
                 </div>
 
@@ -2239,62 +2258,21 @@ h2{
                 <!-- NAV LEVEL 2 -->
 
                 <div
-                    class="hidden"
+                    class="navLevelCard hidden"
                     id="navLevel2">
 
-                    <div
-                        class="sceneCard">
-
-                        <div class="sceneMoon"></div>
-                        <div class="sceneHorizon"></div>
-                        <div class="sceneTent"></div>
-
-                        <div class="sceneTree tleft"></div>
-                        <div class="sceneTree tright"></div>
-
-                    </div>
-
-                    <p
-                        class="small"
-                        style="text-align:center">
-
-                        LEVEL 2 — The water is
-                        EAST of your position.
-
+                    <p class="gold">
+                        🟢 LEVEL 2 — EASY+: SOUTH
                     </p>
 
-                    <div class="directions">
+                    <p class="subtitle">
+                        You’ve lost your trail marker.<br>
+                        The marker tells you to head SOUTH.<br>
+                        Set your compass to the correct direction.
+                    </p>
 
-                        <button
-                            class="choice directionChoice"
-                            data-level="2"
-                            data-correct="true">
-
-                            <strong>
-                                → EAST
-                            </strong>
-
-                            <span>
-                                Toward the water.
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="choice directionChoice"
-                            data-level="2"
-                            data-correct="false">
-
-                            <strong>
-                                ← WEST
-                            </strong>
-
-                            <span>
-                                Toward the hills.
-                            </span>
-
-                        </button>
-
+                    <div class="targetBadge">
+                        🎯 Target: 180° / S
                     </div>
 
                 </div>
@@ -2303,62 +2281,21 @@ h2{
                 <!-- NAV LEVEL 3 -->
 
                 <div
-                    class="hidden"
+                    class="navLevelCard hidden"
                     id="navLevel3">
 
-                    <div
-                        class="sceneCard">
-
-                        <div class="sceneMoon"></div>
-                        <div class="sceneHorizon"></div>
-                        <div class="sceneTent"></div>
-
-                        <div class="sceneTree tleft"></div>
-                        <div class="sceneTree tright"></div>
-
-                    </div>
-
-                    <p
-                        class="small"
-                        style="text-align:center">
-
-                        LEVEL 3 — The shoreline
-                        runs south-west.
-
+                    <p class="gold">
+                        🟡 LEVEL 3 — MEDIUM: NORTHEAST
                     </p>
 
-                    <div class="directions">
+                    <p class="subtitle">
+                        The campsite trail splits ahead.<br>
+                        Your map tells you the trail continues NORTHEAST.<br>
+                        Rotate the needle to the correct bearing.
+                    </p>
 
-                        <button
-                            class="choice directionChoice"
-                            data-level="3"
-                            data-correct="true">
-
-                            <strong>
-                                ↙ SOUTH-WEST
-                            </strong>
-
-                            <span>
-                                Follow the shoreline.
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="choice directionChoice"
-                            data-level="3"
-                            data-correct="false">
-
-                            <strong>
-                                ↗ NORTH-EAST
-                            </strong>
-
-                            <span>
-                                Move inland.
-                            </span>
-
-                        </button>
-
+                    <div class="targetBadge">
+                        🎯 Target: 45° / NE
                     </div>
 
                 </div>
@@ -2367,63 +2304,21 @@ h2{
                 <!-- NAV LEVEL 4 -->
 
                 <div
-                    class="hidden"
+                    class="navLevelCard hidden"
                     id="navLevel4">
 
-                    <div
-                        class="sceneCard">
-
-                        <div class="sceneMoon"></div>
-                        <div class="sceneHorizon"></div>
-                        <div class="sceneTent"></div>
-
-                        <div class="sceneTree tleft"></div>
-                        <div class="sceneTree tright"></div>
-
-                    </div>
-
-                    <p
-                        class="small"
-                        style="text-align:center">
-
-                        LEVEL 4 — You are
-                        west of camp.
-
+                    <p class="gold">
+                        🟠 LEVEL 4 — HARD: NORTHWEST
                     </p>
 
-                    <div class="directions">
+                    <p class="subtitle">
+                        🌲 The trail is getting darker.<br>
+                        Your map shows the next checkpoint at NORTHWEST.<br>
+                        Find the correct bearing before continuing.
+                    </p>
 
-                        <button
-                            class="choice directionChoice"
-                            data-level="4"
-                            data-correct="true">
-
-                            <strong>
-                                → EAST
-                            </strong>
-
-                            <span>
-                                Camp is directly
-                                east of you.
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="choice directionChoice"
-                            data-level="4"
-                            data-correct="false">
-
-                            <strong>
-                                ← WEST
-                            </strong>
-
-                            <span>
-                                Further away from camp.
-                            </span>
-
-                        </button>
-
+                    <div class="targetBadge">
+                        🎯 Target: 315° / NW
                     </div>
 
                 </div>
@@ -2432,73 +2327,42 @@ h2{
                 <!-- NAV LEVEL 5 -->
 
                 <div
-                    class="hidden"
+                    class="navLevelCard hidden"
                     id="navLevel5">
 
-                    <div
-                        class="sceneCard">
-
-                        <div class="sceneMoon"></div>
-                        <div class="sceneHorizon"></div>
-                        <div class="sceneTent"></div>
-
-                        <div class="sceneTree tleft"></div>
-                        <div class="sceneTree tright"></div>
-
-                    </div>
-
-                    <p
-                        class="small"
-                        style="text-align:center">
-
-                        LEVEL 5 — Final bearing:
-                        camp is SOUTH-EAST.
-
+                    <p class="gold">
+                        🔴 LEVEL 5 — EXPERT: EAST
                     </p>
 
-                    <div class="directions">
+                    <p class="subtitle">
+                        🌅 FINAL BEARING<br><br>
+                        You've reached the final checkpoint.<br>
+                        Your map has one last instruction:<br>
+                        <em>“Head EAST.”</em><br><br>
+                        The destination is waiting somewhere beyond the trail.<br>
+                        Turn your compass needle to the correct bearing.
+                    </p>
 
-                        <button
-                            class="choice directionChoice"
-                            data-level="5"
-                            data-correct="true">
-
-                            <strong>
-                                ↘ SOUTH-EAST
-                            </strong>
-
-                            <span>
-                                The final bearing
-                                takes you home.
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="choice directionChoice"
-                            data-level="5"
-                            data-correct="false">
-
-                            <strong>
-                                ↖ NORTH-WEST
-                            </strong>
-
-                            <span>
-                                The opposite direction.
-                            </span>
-
-                        </button>
-
+                    <div class="targetBadge">
+                        🎯 Target: 90° / EAST
                     </div>
 
                 </div>
+
+
+                <button
+                    class="btn"
+                    id="confirmBearingBtn"
+                    style="margin-top:16px;">
+                    CONFIRM BEARING
+                </button>
 
 
                 <div
                     class="feedback"
                     id="feedback3">
 
-                    Trust your bearings.
+                    Drag the compass to rotate the needle to the target bearing.
 
                 </div>
 
@@ -2645,14 +2509,21 @@ const progressBar =
 const successFlash =
     document.getElementById("successFlash");
 
+const needle =
+    document.getElementById("needle");
+
+const compassDial =
+    document.getElementById("compassDial");
+
+const angleDisplay =
+    document.getElementById("angleDisplay");
+
+const confirmBearingBtn =
+    document.getElementById("confirmBearingBtn");
+
 
 /* =========================================================
    AUDIO ENGINE — MACBOOK / LAPTOP VERSION
-   ONLY THE AUDIO ENGINE IS CHANGED.
-
-   Uses Web Audio API only. No external files.
-   The START button creates/resumes the AudioContext so
-   Chrome/Safari/Edge on macOS can unlock sound immediately.
    ========================================================= */
 
 let audioCtx = null;
@@ -2742,9 +2613,6 @@ function initAudio(){
         audioCtx.createGain();
 
 
-    /*
-     * Clearer MacBook mix.
-     */
     masterGain.gain.value =
         0.78;
 
@@ -2781,10 +2649,6 @@ function initAudio(){
         true;
 
 
-    /*
-     * Resume while still inside
-     * the user gesture.
-     */
     audioCtx
         .resume()
         .catch(function(){});
@@ -3111,10 +2975,6 @@ function startAmbience(){
         true;
 
 
-    /*
-     * 🌲 Soft night wind.
-     */
-
     const windSource =
         audioCtx.createBufferSource();
 
@@ -3158,10 +3018,6 @@ function startAmbience(){
 
     windSource.start();
 
-
-    /*
-     * 🌊 Water ambience.
-     */
 
     const waterSource =
         audioCtx.createBufferSource();
@@ -3210,10 +3066,6 @@ function startAmbience(){
     waterSource.start();
 
 
-    /*
-     * 🌊 Small water shimmer.
-     */
-
     shimmerTimer =
         setInterval(
             function(){
@@ -3241,10 +3093,6 @@ function startAmbience(){
             1250
         );
 
-
-    /*
-     * 🔥 Occasional campfire crackle.
-     */
 
     function fireCrackle(){
 
@@ -3655,11 +3503,6 @@ function startAudio(){
         0.78;
 
 
-    /*
-     * Critical:
-     * resume during the START button gesture.
-     */
-
     audioCtx
         .resume()
         .catch(function(){});
@@ -3679,11 +3522,6 @@ function startAudio(){
 
 }
 
-
-/*
- * macOS browsers may suspend
- * audio after tab switching.
- */
 
 document.addEventListener(
     "visibilitychange",
@@ -3742,11 +3580,6 @@ window.addEventListener(
     }
 );
 
-
-/*
- * Any real user interaction can wake
- * a suspended context.
- */
 
 [
     "pointerdown",
@@ -3810,7 +3643,7 @@ soundButton.addEventListener(
 
 
             soundButton.textContent =
-                "🔇";
+                "071";
 
 
             audioLabel.textContent =
@@ -3851,11 +3684,6 @@ soundButton.addEventListener(
 startBtn.addEventListener(
     "click",
     function(){
-
-        /*
-         * IMPORTANT:
-         * This is the direct user gesture.
-         */
 
         startAudio();
 
@@ -4367,234 +4195,145 @@ function challenge2Complete(){
 
 
 /* =========================================================
-   CHALLENGE 3
+   CHALLENGE 3 (INTERACTIVE ROTATION MECHANICS)
    ========================================================= */
 
-let navLevel =
-    1;
+let navLevel = 1;
+let currentAngle = 0; // Current angle in degrees (0 - 359)
+let isDraggingCompass = false;
+
+const navTargets = {
+    1: { angle: 0, label: "0° (NORTH)" },
+    2: { angle: 180, label: "180° (SOUTH)" },
+    3: { angle: 45, label: "45° (NORTHEAST)" },
+    4: { angle: 315, label: "315° (NORTHWEST)" },
+    5: { angle: 90, label: "90° (EAST)" }
+};
+
+function updateCompassUI(){
+    needle.style.transform = `translate(-50%,-50%) rotate(${currentAngle}deg)`;
+    angleDisplay.textContent = `CURRENT BEARING: ${currentAngle}°`;
+}
+
+function calculateAngleFromEvent(e){
+    const rect = compassDial.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+    const dx = clientX - centerX;
+    const dy = clientY - centerY;
+
+    // Calculate angle in degrees from positive Y-axis (top/North) clockwise
+    let rad = Math.atan2(dx, -dy);
+    let deg = Math.round(rad * (180 / Math.PI));
+
+    if(deg < 0){
+        deg += 360;
+    }
+
+    return deg % 360;
+}
+
+function handlePointerDown(e){
+    isDraggingCompass = true;
+    currentAngle = calculateAngleFromEvent(e);
+    updateCompassUI();
+}
+
+function handlePointerMove(e){
+    if(!isDraggingCompass) return;
+    currentAngle = calculateAngleFromEvent(e);
+    updateCompassUI();
+}
+
+function handlePointerUp(){
+    isDraggingCompass = false;
+}
+
+// Touch and Mouse listeners for Compass Dial
+compassDial.addEventListener("mousedown", handlePointerDown);
+compassDial.addEventListener("touchstart", handlePointerDown, { passive: true });
+
+window.addEventListener("mousemove", handlePointerMove);
+window.addEventListener("touchmove", handlePointerMove, { passive: true });
+
+window.addEventListener("mouseup", handlePointerUp);
+window.addEventListener("touchend", handlePointerUp);
 
 
 function startChallenge3(){
 
-    navLevel =
-        1;
+    navLevel = 1;
+    currentAngle = 180; // Start offset so user has to rotate it
+    updateCompassUI();
 
+    progressBar.style.width = "66%";
 
-    progressBar.style.width =
-        "66%";
+    for(let i=1; i<=5; i++){
+        const levelCard = document.getElementById("navLevel"+i);
+        if(levelCard){
+            levelCard.classList.toggle("hidden", i!==1);
+        }
+    }
 
-
-    document
-        .getElementById("navLevel2")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("navLevel3")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("navLevel4")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("navLevel5")
-        .classList
-        .add("hidden");
-
-
-    document
-        .getElementById("navScene1")
-        .classList
-        .remove("hidden");
-
-
-    feedback3.textContent =
-        "Trust your bearings.";
+    feedback3.textContent = "Drag the compass dial to adjust the needle angle.";
 
 }
 
 
-document
-    .querySelectorAll(
-        ".directionChoice"
-    )
-    .forEach(
-        function(button){
+confirmBearingBtn.addEventListener("click", function(){
 
-            button.addEventListener(
-                "click",
-                function(){
+    const target = navTargets[navLevel];
+    if(!target) return;
 
-                    const level =
-                        Number(
-                            button.dataset.level
-                        );
+    // Tolerance allowance: +/- 12 degrees for easy touch navigation
+    const diff = Math.abs(currentAngle - target.angle);
+    const normalizedDiff = Math.min(diff, 360 - diff);
 
+    if(normalizedDiff <= 12){
+        // Correct alignment!
+        successSound();
+        showSuccess("✓ BEARING LOCKED!");
 
-                    if(
-                        level !==
-                        navLevel
-                    ){
-
-                        return;
-
-                    }
-
-
-                    const correct =
-                        button.dataset.correct ===
-                        "true";
-
-
-                    document
-                        .querySelectorAll(
-                            '.directionChoice[data-level="'+
-                            level+
-                            '"]'
-                        )
-                        .forEach(
-                            function(b){
-
-                                b.classList.remove(
-                                    "correct",
-                                    "wrong"
-                                );
-
-                            }
-                        );
-
-
-                    if(correct){
-
-                        button.classList.add(
-                            "correct"
-                        );
-
-
-                        successSound();
-
-
-                        showSuccess(
-                            "✓ BEARING LOCKED!"
-                        );
-
-
-                        feedback3.textContent =
-                            "✓ Correct. You read the surroundings properly.";
-
-
-                        progressBar.style.width =
-                            (
-                                66 +
-                                (level /
-                                5 *
-                                34)
-                            )+
-                            "%";
-
-
-                        setTimeout(
-                            function(){
-
-                                if(
-                                    level <
-                                    5
-                                ){
-
-                                    navLevel =
-                                        level+1;
-
-
-                                    for(
-                                        let i=2;
-                                        i<=5;
-                                        i++
-                                    ){
-
-                                        const scene =
-                                            document.getElementById(
-                                                "navLevel"+i
-                                            );
-
-
-                                        if(scene){
-
-                                            scene.classList.toggle(
-                                                "hidden",
-                                                i!==navLevel
-                                            );
-
-                                        }
-
-                                    }
-
-
-                                    if(
-                                        navLevel===2
-                                    ){
-
-                                        document
-                                            .getElementById(
-                                                "navScene1"
-                                            )
-                                            .classList
-                                            .add(
-                                                "hidden"
-                                            );
-
-                                    }
-
-
-                                    levelUpSound();
-
-
-                                    feedback3.textContent =
-                                        "The route is changing. Keep reading the clues.";
-
-                                }else{
-
-                                    progressBar.style.width =
-                                        "100%";
-
-
-                                    setTimeout(
-                                        function(){
-
-                                            completeMission();
-
-                                        },
-                                        400
-                                    );
-
-                                }
-
-                            },
-                            800
-                        );
-
-                    }else{
-
-                        button.classList.add(
-                            "wrong"
-                        );
-
-
-                        mistakeSound();
-
-
-                        feedback3.textContent =
-                            "Wrong bearing. Recheck the clue and try again.";
-
-                    }
-
-                }
-            );
-
+        if(navLevel === 5) {
+            feedback3.innerHTML = "🧭 → 🌅<br><strong>COMPASS LOCKED</strong><br>90° — EAST<br>You found the way.<br>And something tells me you're going to like where this direction takes you... ❤️";
+        } else {
+            feedback3.textContent = `✓ Correct! Bearing locked at ${target.label}.`;
         }
-    );
+
+        progressBar.style.width = (66 + (navLevel / 5 * 34)) + "%";
+
+        setTimeout(function(){
+            if(navLevel < 5){
+                navLevel++;
+
+                for(let i=1; i<=5; i++){
+                    const card = document.getElementById("navLevel"+i);
+                    if(card){
+                        card.classList.toggle("hidden", i!==navLevel);
+                    }
+                }
+
+                levelUpSound();
+                feedback3.textContent = "Target updated. Rotate the needle to the next bearing.";
+            } else {
+                progressBar.style.width = "100%";
+                setTimeout(function(){
+                    completeMission();
+                }, 1800);
+            }
+        }, navLevel === 5 ? 2000 : 800);
+
+    } else {
+        // Wrong angle alignment
+        mistakeSound();
+        feedback3.textContent = `Not aligned. Target is ${target.label}. Current setting is ${currentAngle}°. Try dragging again!`;
+    }
+
+});
 
 
 /* =========================================================
