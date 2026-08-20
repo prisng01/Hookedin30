@@ -829,6 +829,8 @@ $("toG2").onclick = ()=>{
 
 renderRounds();
 updateScanner();
+
+
 /* =========================================================
    GAME 02 — THE FINAL CATCH
 ========================================================= */
@@ -857,7 +859,7 @@ const phases = [
 
   [
     "5. THE LANDING",
-    "One last push. Land your legendary catch!"
+    "One last push. You've got this!"
   ]
 
 ];
@@ -866,21 +868,12 @@ const phases = [
 let g2 = {
   started:false,
   phase:0,
-
   line:100,
   stamina:100,
-
   pos:50,
-
   hold:false,
-
   ticks:0,
-
-  timer:null,
-
-  landing:false,
-
-  caught:false
+  timer:null
 };
 
 
@@ -890,48 +883,21 @@ let g2 = {
 
 function startG2(){
 
-  clearInterval(g2.timer);
+  if(g2.started) return;
 
-
-  g2 = {
-
-    started:true,
-
-    phase:0,
-
-    line:100,
-
-    stamina:100,
-
-    pos:50,
-
-    hold:false,
-
-    ticks:0,
-
-    timer:null,
-
-    landing:false,
-
-    caught:false
-
-  };
-
+  g2.started = true;
+  g2.phase = 0;
+  g2.line = 100;
+  g2.stamina = 100;
+  g2.pos = 50;
+  g2.ticks = 0;
 
   $("reel").disabled = false;
   $("release").disabled = false;
 
-
-  if($("catch")){
-
-    $("catch")
-      .classList.add("hidden");
-
-  }
-
+  $("catch").classList.add("hidden");
 
   updateG2();
-
   g2Loop();
 
 }
@@ -943,27 +909,11 @@ function startG2(){
 
 function updateG2(){
 
-  if(!g2.started && !g2.landing){
-    return;
-  }
-
-
-  const phase =
-    Math.max(
-      0,
-      Math.min(
-        4,
-        g2.phase
-      )
-    );
-
-
   $("phaseTitle").textContent =
-    phases[phase][0];
-
+    phases[g2.phase][0];
 
   $("phaseDesc").textContent =
-    phases[phase][1];
+    phases[g2.phase][1];
 
 
   $("marker").style.left =
@@ -978,7 +928,6 @@ function updateG2(){
 
   $("lineText").textContent =
     Math.round(g2.line) + "%";
-
 
   $("lineSide").textContent =
     Math.round(g2.line) + "%";
@@ -999,28 +948,22 @@ function updateG2(){
 
 
   for(
-    let i = 1;
-    i <= 5;
+    let i=1;
+    i<=5;
     i++
   ){
 
-    const box =
-      $("p" + i);
-
-    if(!box) continue;
-
-
-    box.className =
+    $("p"+i).className =
       "pbox " +
 
       (
-        i - 1 < phase
+        i-1 < g2.phase
           ? "done "
           : ""
       ) +
 
       (
-        i - 1 === phase
+        i-1 === g2.phase
           ? "active"
           : ""
       );
@@ -1036,39 +979,20 @@ function updateG2(){
 
 function g2Loop(){
 
-  clearInterval(
-    g2.timer
-  );
-
+  clearInterval(g2.timer);
 
   g2.timer =
     setInterval(()=>{
 
-      if(
-        !g2.started ||
-        g2.landing
-      ){
-        return;
-      }
+      if(!g2.started) return;
 
-
-      /*
-         Fish movement.
-
-         The fish constantly moves left/right.
-         The player must use REEL while the marker
-         is inside the green zone.
-      */
 
       g2.pos +=
-
-        Math.sin(
-          Date.now() / 400
-        ) * 2.8 +
+        Math.sin(Date.now()/400) * 2.8 +
 
         (
           g2.hold
-            ? (50 - g2.pos) * 0.18
+            ? (50-g2.pos)*.18
             : 0
         );
 
@@ -1083,60 +1007,29 @@ function g2Loop(){
         );
 
 
-      /*
-         Green zone = 43–57%.
-      */
-
       const perfect =
         g2.pos >= 43 &&
         g2.pos <= 57;
 
 
-      /*
-         REEL:
-
-         Correct tension:
-         Wear the fish down.
-
-         Incorrect tension:
-         Damage the line.
-      */
-
       if(g2.hold){
 
         if(perfect){
 
-          g2.stamina -= 0.85;
-
-          /*
-             Successful control slightly
-             restores line health.
-          */
-
-          g2.line =
-            Math.min(
-              100,
-              g2.line + 0.08
-            );
+          g2.stamina -= 0.75;
 
         }
         else{
 
-          g2.line -= 0.65;
+          g2.line -= 0.8;
 
         }
 
       }
       else{
 
-        /*
-           Not reeling allows the fish
-           to recover slightly and keeps
-           tension unpredictable.
-        */
-
         g2.line +=
-          Math.random() * 0.25;
+          Math.random() * 0.35;
 
       }
 
@@ -1161,13 +1054,16 @@ function g2Loop(){
       g2.ticks++;
 
 
-      /*
-         Line breaks.
-      */
+      if(g2.stamina <= 0){
 
-      if(
-        g2.line <= 0
-      ){
+        finishG2();
+
+        return;
+
+      }
+
+
+      if(g2.line <= 0){
 
         loseG2();
 
@@ -1176,33 +1072,9 @@ function g2Loop(){
       }
 
 
-      /*
-         Fish becomes tired.
-
-         IMPORTANT:
-         Do NOT automatically award the catch.
-
-         Instead enter the landing phase.
-      */
-
-      if(
-        g2.stamina <= 0
-      ){
-
-        beginLanding();
-
-        return;
-
-      }
-
-
-      /*
-         Advance phases gradually.
-      */
-
       if(
         g2.ticks % 65 === 0 &&
-        g2.phase < 3
+        g2.phase < 4
       ){
 
         g2.phase++;
@@ -1222,63 +1094,24 @@ function g2Loop(){
 ========================================================= */
 
 $("reel").onpointerdown = e=>{
-
   e.preventDefault();
-
-  if(
-    !g2.started ||
-    g2.landing
-  ){
-    return;
-  }
-
-
   g2.hold = true;
-
-
-  try{
-
-    $("reel")
-      .setPointerCapture(
-        e.pointerId
-      );
-
-  }
-  catch(error){
-
-    /* Pointer capture is optional. */
-
-  }
-
+  $("reel").setPointerCapture?.(e.pointerId);
 };
-
 
 $("reel").onpointerup = e=>{
-
   e.preventDefault();
-
   g2.hold = false;
-
 };
-
 
 $("reel").onpointercancel = ()=>{
-
   g2.hold = false;
-
 };
 
-
 $("reel").onpointerleave = e=>{
-
-  if(
-    e.pointerType === "mouse"
-  ){
-
+  if(e.pointerType === "mouse"){
     g2.hold = false;
-
   }
-
 };
 
 
@@ -1288,28 +1121,13 @@ $("reel").onpointerleave = e=>{
 
 $("release").onclick = ()=>{
 
-  if(
-    !g2.started ||
-    g2.landing
-  ){
-    return;
-  }
-
-
   g2.hold = false;
-
-
-  /*
-     Releasing reduces tension and gives
-     the player a small safety recovery.
-  */
 
   g2.line =
     Math.min(
       100,
-      g2.line + 4
+      g2.line + 5
     );
-
 
   updateG2();
 
@@ -1317,309 +1135,71 @@ $("release").onclick = ()=>{
 
 
 /* =========================================================
-   BEGIN LANDING
+   FINISH GAME 2
 ========================================================= */
 
-function beginLanding(){
+function finishG2(){
 
-  clearInterval(
-    g2.timer
-  );
-
+  clearInterval(g2.timer);
 
   g2.started = false;
 
-  g2.landing = true;
-
-  g2.hold = false;
-
-  g2.phase = 4;
-
-  g2.stamina = 0;
-
-
   $("reel").disabled = true;
-
   $("release").disabled = true;
 
-
   $("phaseTitle").textContent =
-    "5. THE LANDING";
-
+    "LEGENDARY CATCH";
 
   $("phaseDesc").textContent =
-    "The legendary fish is exhausted. Land it now!";
+    "You wore it down. Now land it.";
 
+  $("catch").classList.remove("hidden");
 
-  $("stamina").style.width =
-    "0%";
-
-
-  /*
-     Reveal the landing control.
-  */
-
-  if($("catch")){
-
-    $("catch")
-      .classList.remove(
-        "hidden"
-      );
-
-  }
-
-
-  updateG2();
+  $("stamina").style.width = "0%";
 
 }
 
 
 /* =========================================================
-   LAND THE FISH
-========================================================= */
-
-function landFish(){
-
-  if(
-    !g2.landing ||
-    g2.caught
-  ){
-    return;
-  }
-
-
-  g2.caught = true;
-
-  g2.landing = false;
-
-
-  clearInterval(
-    g2.timer
-  );
-
-
-  /*
-     Successful legendary catch.
-  */
-
-  $("phaseTitle").textContent =
-    "🐟 LEGENDARY CATCH!";
-
-
-  $("phaseDesc").textContent =
-    "You landed the legendary fish!";
-
-
-  $("lineText").textContent =
-    "100%";
-
-
-  $("lineSide").textContent =
-    "100%";
-
-
-  $("lineBar").style.width =
-    "100%";
-
-
-  $("stamina").style.width =
-    "0%";
-
-
-  /*
-     Disable all Game 02 controls.
-  */
-
-  $("reel").disabled = true;
-
-  $("release").disabled = true;
-
-
-  if($("catch")){
-
-    $("catch")
-      .classList.add(
-        "hidden"
-      );
-
-  }
-
-
-  /*
-     Display catch information.
-  */
-
-  const weight =
-    $("catchWeight");
-
-  const length =
-    $("catchLength");
-
-  const difficulty =
-    $("catchDifficulty");
-
-
-  if(weight){
-
-    weight.textContent =
-      "30.0 KG";
-
-  }
-
-
-  if(length){
-
-    length.textContent =
-      "112 CM";
-
-  }
-
-
-  if(difficulty){
-
-    difficulty.textContent =
-      "★★★★★";
-
-  }
-
-
-  /*
-     Game 02 always awards 500 XP
-     after a successful landing.
-  */
-
-  const xp =
-    $("catchXP");
-
-
-  if(xp){
-
-    xp.textContent =
-      "+500 XP";
-
-  }
-
-
-  /*
-     Continue button becomes available.
-  */
-
-  if($("toG3")){
-
-    $("toG3")
-      .disabled = false;
-
-  }
-
-}
-
-
-/* =========================================================
-   GAME 2 FAILURE — LINE SNAPS
+   GAME 2 FAILURE
 ========================================================= */
 
 function loseG2(){
 
-  clearInterval(
-    g2.timer
-  );
-
+  clearInterval(g2.timer);
 
   g2.started = false;
 
-  g2.landing = false;
-
-  g2.hold = false;
-
-
-  $("lineText").textContent =
-    "0%";
-
-
-  $("lineSide").textContent =
-    "0%";
-
-
-  $("lineBar").style.width =
-    "0%";
-
+  $("lineText").textContent = "0%";
+  $("lineSide").textContent = "0%";
 
   $("phaseTitle").textContent =
     "THE LINE SNAPPED";
 
-
   $("phaseDesc").textContent =
     "The fish got away. Take another shot.";
 
-
   $("reel").disabled = true;
-
   $("release").disabled = true;
 
 
-  /*
-     Reset after a short delay.
-  */
-
   setTimeout(()=>{
 
-    g2 = {
+    g2.started = false;
 
-      started:true,
-
-      phase:0,
-
-      line:100,
-
-      stamina:100,
-
-      pos:50,
-
-      hold:false,
-
-      ticks:0,
-
-      timer:null,
-
-      landing:false,
-
-      caught:false
-
-    };
-
+    g2.line = 100;
+    g2.stamina = 100;
+    g2.pos = 50;
+    g2.phase = 0;
+    g2.ticks = 0;
 
     $("reel").disabled = false;
-
     $("release").disabled = false;
 
-
-    if($("catch")){
-
-      $("catch")
-        .classList.add(
-          "hidden"
-        );
-
-    }
-
-
     updateG2();
-
     g2Loop();
 
   },1800);
-
-}
-
-
-/* =========================================================
-   LANDING BUTTON
-========================================================= */
-
-if($("catch")){
-
-  $("catch").onclick =
-    landFish;
 
 }
 
@@ -1630,35 +1210,15 @@ if($("catch")){
 
 $("toG3").onclick = ()=>{
 
-  /*
-     Only allow the player to continue
-     after successfully landing the fish.
-  */
-
-  if(!g2.caught){
-
-    return;
-
-  }
-
-
-  clearInterval(
-    g2.timer
-  );
-
-
-  g2.started = false;
-
-  g2.landing = false;
-
-  g2.hold = false;
-
+  clearInterval(g2.timer);
 
   show("game3");
 
   startCamp();
 
 };
+
+
 /* =========================================================
    GAME 03 — CAMP AFTER DARK
 ========================================================= */
@@ -1992,6 +1552,8 @@ document.querySelectorAll(".hot")
     };
 
   });
+
+
 /* =========================================================
    WEATHER TIMER
 ========================================================= */
@@ -2003,66 +1565,69 @@ function startWeatherTimer(){
   camp.weatherStarted = true;
   camp.weatherTime = 30;
 
-  clearInterval(camp.weatherTimer);
 
-  $("weatherMsg").textContent =
-    "🌧️ Rain is coming. Secure your campsite before the storm hits!";
+  clearInterval(
+    camp.weatherTimer
+  );
 
-  camp.weatherTimer = setInterval(()=>{
 
-    camp.weatherTime--;
+  camp.weatherTimer =
+    setInterval(()=>{
 
-    const remaining =
-      Math.max(0, camp.weatherTime);
+      camp.weatherTime--;
 
-    $("weatherTime").textContent =
-      "00:" +
-      String(remaining).padStart(2,"0");
 
-    $("weatherBar").style.width =
-      (remaining / 30 * 100) + "%";
+      $("weatherTime").textContent =
+        "00:" +
+        String(
+          camp.weatherTime
+        ).padStart(2,"0");
 
-    if(remaining <= 15){
 
-      $("storm")
-        .classList.add("active");
+      $("weatherBar").style.width =
+        (
+          camp.weatherTime / 30 * 100
+        ) + "%";
 
-      $("weatherMsg").textContent =
-        "⚠️ Storm approaching. Secure everything!";
 
-    }
+      if(camp.weatherTime <= 15){
 
-    if(
-      remaining <= 5 &&
-      remaining > 0
-    ){
+        $("storm").classList.add("active");
 
-      $("weatherMsg").textContent =
-        `⚠️ ${remaining}... Secure the essentials!`;
+        $("weatherMsg").textContent =
+          "⚠️ Storm approaching. Secure everything!";
 
-    }
+      }
 
-    if(remaining <= 0){
 
-      clearInterval(
-        camp.weatherTimer
-      );
+      if(camp.weatherTime <= 5){
 
-      finishWeather();
+        $("weatherMsg").textContent =
+          `⚠️ ${camp.weatherTime}...`;
 
-    }
+      }
 
-  },1000);
+
+      if(camp.weatherTime <= 0){
+
+        clearInterval(
+          camp.weatherTimer
+        );
+
+        finishWeather();
+
+      }
+
+    },1000);
 
 }
 
 
 /* =========================================================
-   WEATHER ITEM HANDLERS
+   WEATHER ACTIONS
 ========================================================= */
 
-document
-  .querySelectorAll(".weatherItem")
+document.querySelectorAll(".weatherItem")
   .forEach(button=>{
 
     button.onclick = ()=>{
@@ -2070,55 +1635,42 @@ document
       const type =
         button.dataset.weather;
 
-      if(
-        !type ||
-        camp.weather[type]
-      ){
-        return;
-      }
 
-      camp.weather[type] =
-        true;
+      if(camp.weather[type]) return;
+
+
+      camp.weather[type] = true;
 
       button.disabled = true;
-
-      button.classList.add(
-        "selected"
-      );
+      button.classList.add("selected");
 
 
       const messages = {
 
         tent:
-          "⛺ Tent secured. Rainfly and pegs are ready.",
+          "⛺ Rainfly secured.",
 
         food:
-          "📦 Food & gear secured from the rain.",
+          "📦 Supplies protected.",
 
         fishing:
-          "🎣 Fishing gear secured and protected."
+          "🎣 Fishing gear secured."
 
       };
 
 
       $("weatherMsg").textContent =
-        messages[type] ||
-        "Essential secured.";
+        messages[type];
 
 
       updatePreparedness(3);
 
 
-      const allSecured =
-
+      if(
         camp.weather.tent &&
-
         camp.weather.food &&
-
-        camp.weather.fishing;
-
-
-      if(allSecured){
+        camp.weather.fishing
+      ){
 
         $("weatherMsg").innerHTML =
           "<b>✓ ALL ESSENTIALS SECURED</b><br>You are ready for the storm.";
@@ -2136,99 +1688,27 @@ document
 
 function updatePreparedness(amount){
 
-  const bar =
-    $("ready");
-
-  if(!bar) return;
+  const bar = $("ready");
 
   const current =
     parseFloat(
       bar.style.width
     ) || 90;
 
+
   const value =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        current + amount
-      )
+    Math.min(
+      100,
+      current + amount
     );
+
 
   bar.style.width =
     value + "%";
 
 
-  if($("readyT")){
-
-    $("readyT").textContent =
-      Math.round(value) + "%";
-
-  }
-
-}
-
-
-/* =========================================================
-   CAMP XP
-========================================================= */
-
-function calculateCampXP(){
-
-  const fireScore =
-    camp.fireComplete
-      ? 150
-      : 0;
-
-
-  const campSecureCount =
-    Object
-      .values(camp.secured)
-      .filter(Boolean)
-      .length;
-
-
-  const securityScore =
-
-    campSecureCount === 3
-      ? 100
-
-      : campSecureCount === 2
-        ? 75
-
-        : campSecureCount === 1
-          ? 50
-
-          : 0;
-
-
-  const weatherSecureCount =
-    Object
-      .values(camp.weather)
-      .filter(Boolean)
-      .length;
-
-
-  const weatherScore =
-
-    weatherSecureCount === 3
-      ? 150
-
-      : weatherSecureCount === 2
-        ? 100
-
-        : weatherSecureCount === 1
-          ? 50
-
-          : 0;
-
-
-  return Math.min(
-    400,
-    fireScore +
-    securityScore +
-    weatherScore
-  );
+  $("readyT").textContent =
+    Math.round(value) + "%";
 
 }
 
@@ -2239,62 +1719,54 @@ function calculateCampXP(){
 
 function finishWeather(){
 
-  if(camp.weatherFinished) return;
+  $("storm").classList.remove("active");
 
-  camp.weatherFinished =
-    true;
+  const securedCount = [
+    camp.weather.tent,
+    camp.weather.food,
+    camp.weather.fishing
+  ].filter(Boolean).length;
 
-  clearInterval(
-    camp.weatherTimer
-  );
-
-
-  $("storm")
-    .classList.remove(
-      "active"
-    );
-
-
+  /*
+    Camp XP is based on the player's actual storm preparation:
+    3/3 = 400 XP
+    2/3 = 300 XP
+    1/3 = 200 XP
+    0/3 = 100 XP
+  */
   camp.campXP =
-    calculateCampXP();
+    securedCount === 3 ? 400 :
+    securedCount === 2 ? 300 :
+    securedCount === 1 ? 200 : 100;
 
-
-  const allCamp =
-
-    camp.fireComplete &&
-
-    camp.secured.tent &&
-
-    camp.secured.food &&
-
-    camp.secured.gear &&
-
-    camp.weather.tent &&
-
-    camp.weather.food &&
-
-    camp.weather.fishing;
-
-
-  if(allCamp){
+  if(securedCount === 3){
 
     $("weatherMsg").innerHTML =
-      "<b>🌧️ THE STORM HAS PASSED.</b><br>Every essential was secured. You were ready.";
+      "<b>🌧️ CAMP SECURED!</b><br>The storm came. You were ready.";
+
+  }
+  else if(securedCount === 2){
+
+    $("weatherMsg").innerHTML =
+      "<b>🌧️ STORM SURVIVED.</b><br>Most of the campsite was secured.";
+
+  }
+  else if(securedCount === 1){
+
+    $("weatherMsg").innerHTML =
+      "<b>🌧️ STORM SURVIVED.</b><br>One essential was secured.";
 
   }
   else{
 
     $("weatherMsg").innerHTML =
-      "<b>🌧️ THE STORM HAS PASSED.</b><br>You survived the night, but not everything was secured.";
+      "<b>🌧️ THE STORM HIT.</b><br>You survived, but the campsite was exposed.";
 
   }
 
-
   setTimeout(()=>{
-
     completeCamp();
-
-  },1200);
+  },1500);
 
 }
 
@@ -2309,70 +1781,83 @@ function completeCamp(){
     camp.weatherTimer
   );
 
-
-  $("storm")
-    .classList.remove(
-      "active"
-    );
-
+  $("storm").classList.remove("active");
 
   document
     .querySelector(".tasks")
-    ?.classList.add(
-      "hidden"
-    );
-
+    ?.classList.add("hidden");
 
   $("campComplete")
-    ?.classList.remove(
-      "hidden"
-    );
-
+    .classList.remove("hidden");
 
   document
     .querySelector(".campHero")
-    ?.classList.add(
-      "complete"
+    ?.classList.add("complete");
+
+  const securedCount = [
+    camp.weather.tent,
+    camp.weather.food,
+    camp.weather.fishing
+  ].filter(Boolean).length;
+
+  const finalPreparedness =
+    Math.min(
+      100,
+      90 +
+      (camp.fireComplete ? 10 : 0) +
+      (securedCount * 3)
     );
 
+  $("healthT").textContent = "100%";
+  $("energyT").textContent = "70%";
+  $("readyT").textContent =
+    `${Math.min(100, finalPreparedness)}%`;
 
-  const perfect =
-    camp.campXP === 400;
-
-
-  if($("healthT"))
-    $("healthT").textContent =
-      "100%";
-
-
-  if($("energyT"))
-    $("energyT").textContent =
-      perfect
-        ? "85%"
-        : "70%";
-
-
-  if($("readyT"))
-    $("readyT").textContent =
-      perfect
-        ? "100%"
-        : "90%";
-
-
-  if($("campXP"))
+  if($("campXP")){
     $("campXP").textContent =
       `+${camp.campXP} XP`;
+  }
 
+  const campTitle =
+    $("campComplete").querySelector("h1");
 
-  if($("campXPDisplay"))
-    $("campXPDisplay").textContent =
-      `+${camp.campXP} XP`;
+  const campCopy =
+    $("campComplete").querySelector(".copy");
+
+  const campNight =
+    camp.fireComplete &&
+    securedCount === 3;
+
+  if(campTitle){
+    campTitle.textContent =
+      campNight
+        ? "CAMP SECURED!"
+        : "NIGHT SURVIVED!";
+  }
+
+  if(campCopy){
+    campCopy.innerHTML =
+      campNight
+        ? `
+          The storm came.<br>
+          You were ready.<br><br>
+          The tent is safe.<br>
+          The gear is protected.<br>
+          The fire is still glowing.
+        `
+        : `
+          The storm came.<br>
+          You made it through the night.<br><br>
+          Some parts of the campsite were left exposed,<br>
+          but you kept the expedition going.
+        `;
+  }
 
 }
 
 
 /* =========================================================
-   GAME 03 → FINAL REPORT
+   CAMP → FINAL REPORT
 ========================================================= */
 
 $("toFinal").onclick = ()=>{
@@ -2385,65 +1870,26 @@ $("toFinal").onclick = ()=>{
 
 
 /* =========================================================
-   FINAL EXPEDITION REPORT
+   FINAL REPORT
 ========================================================= */
 
 function updateFinal(){
 
-  const waterXP =
-    totalWaterXP;
-
-  const catchXP =
-    500;
-
-  const campXP =
-    camp.campXP || 0;
-
-
   const total =
-    waterXP +
-    catchXP +
-    campXP;
+    totalWaterXP +
+    500 +
+    camp.campXP;
 
-
-  if($("finalWater")){
-
-    $("finalWater").textContent =
-      `+${waterXP} XP`;
-
-  }
-
-
-  if($("finalCatch")){
-
-    $("finalCatch").textContent =
-      `+${catchXP} XP`;
-
-  }
-
+  $("finalWater").textContent =
+    `+${totalWaterXP} XP`;
 
   if($("finalCamp")){
-
     $("finalCamp").textContent =
-      `+${campXP} XP`;
-
+      `+${camp.campXP} XP`;
   }
 
-
-  if($("totalXP")){
-
-    $("totalXP").textContent =
-      `${total.toLocaleString()} XP`;
-
-  }
-
-
-  if($("finalScore")){
-
-    $("finalScore").textContent =
-      `${total.toLocaleString()} XP`;
-
-  }
+  $("totalXP").textContent =
+    `${total.toLocaleString()} XP`;
 
 }
 
