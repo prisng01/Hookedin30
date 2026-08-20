@@ -1422,6 +1422,9 @@ h2{
 
 <body>
 
+<!-- MISSION COMPLETE AUDIO SOURCE -->
+<audio id="missionCompleteAudio" src="missionCompleteAudio.mp3" preload="auto"></audio>
+
 <div id="app">
 
     <div class="stars">
@@ -2421,7 +2424,7 @@ h2{
                 Bring your fishing gear.
                 <br>
 
-                And come ready for an Outdoor Camping Adventure with me !❤️
+                And come ready for an adventure with me. ❤️
 
             </p>
 
@@ -3624,11 +3627,17 @@ soundButton.addEventListener(
 
 
             soundButton.textContent =
-                "071";
+                "🔇";
 
 
             audioLabel.textContent =
                 "SOUND OFF";
+
+            // Pause MP3 if currently playing
+            const mp3Audio = document.getElementById("missionCompleteAudio");
+            if(mp3Audio){
+                mp3Audio.pause();
+            }
 
         }else{
 
@@ -4324,6 +4333,17 @@ confirmBearingBtn.addEventListener("click", function(){
 function completeMission(){
 
     finalSound();
+
+    // Trigger MP3 audio playback if audio is enabled
+    if(audioEnabled){
+        const mp3Audio = document.getElementById("missionCompleteAudio");
+        if(mp3Audio){
+            mp3Audio.currentTime = 0;
+            mp3Audio.play().catch(function(err){
+                console.log("MP3 playback prevented:", err);
+            });
+        }
+    }
 
 
     showSuccess(
