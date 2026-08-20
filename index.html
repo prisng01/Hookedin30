@@ -2,1188 +2,2203 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#06100d">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+
+<meta name="theme-color" content="#061412">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>MISSION 3 — THE FINAL EXPEDITION</title>
+
+<title>Mission 3 — The Final Adventure</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020807;color:#f5f1e7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{min-height:100svh}
-button{font:inherit}
-.hidden{display:none!important}
-
-:root{
- --bg:#03100d;
- --panel:rgba(8,20,16,.92);
- --gold:#f5b923;
- --gold2:#ffd86b;
- --green:#163d2c;
- --green2:#245b40;
- --text:#f5f1e7;
- --muted:#aebbb2;
- --danger:#ff6b57;
- --success:#69df9b;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-body:before{
- content:"";
- position:fixed;inset:0;pointer-events:none;
- background:
- radial-gradient(circle at 75% 17%,rgba(255,214,117,.14),transparent 18%),
- radial-gradient(circle at 20% 75%,rgba(22,104,73,.18),transparent 30%),
- linear-gradient(180deg,#02070a 0%,#04141a 45%,#07130e 100%);
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+    background:#030b0b;
+    color:#f4f0df;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    overflow:hidden;
 }
+
+body{
+    min-height:100dvh;
+}
+
+button{
+    font:inherit;
+}
+
+#app{
+    position:relative;
+    width:100%;
+    height:100dvh;
+    min-height:100dvh;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 75% 14%,rgba(245,210,123,.08),transparent 22%),
+        linear-gradient(
+            180deg,
+            #02070d 0%,
+            #06151b 45%,
+            #071c17 72%,
+            #020b09 100%
+        );
+}
+
+/* ---------------- STARS ---------------- */
 
 .stars{
- position:fixed;inset:0;pointer-events:none;opacity:.7;
- background-image:
- radial-gradient(circle,#fff 1px,transparent 1.5px),
- radial-gradient(circle,#b7c9d0 1px,transparent 1.5px);
- background-size:115px 95px,180px 145px;
- background-position:20px 10px,70px 35px;
- animation:drift 28s linear infinite;
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.65;
+    background-image:
+        radial-gradient(circle at 10% 13%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 26% 23%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 43% 11%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 61% 20%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 79% 10%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 91% 29%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 16% 40%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 35% 48%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 57% 40%,#fff 0 1px,transparent 2px),
+        radial-gradient(circle at 82% 48%,#fff 0 1px,transparent 2px);
 }
-@keyframes drift{to{background-position:140px 110px,0 120px}}
+
+/* ---------------- MOON ---------------- */
 
 .moon{
- position:fixed;right:9%;top:10%;width:72px;height:72px;border-radius:50%;
- background:#fff0b9;box-shadow:0 0 42px rgba(255,224,145,.22);
+    position:absolute;
+    width:72px;
+    height:72px;
+    right:12%;
+    top:8%;
+    border-radius:50%;
+    background:#fff1bd;
+    box-shadow:0 0 35px rgba(255,227,151,.22);
 }
+
 .moon:after{
- content:"";position:absolute;right:-8px;top:-6px;width:72px;height:72px;border-radius:50%;
- background:#07151b;
+    content:"";
+    position:absolute;
+    width:72px;
+    height:72px;
+    left:18px;
+    top:-5px;
+    border-radius:50%;
+    background:#06151b;
 }
+
+/* ---------------- MOUNTAINS ---------------- */
 
 .mountains{
- position:fixed;bottom:0;left:0;width:100%;height:30%;
- background:
- linear-gradient(145deg,transparent 0 38%,#03120e 38.2% 54%,transparent 54.2%) 0 20%/55% 100%,
- linear-gradient(35deg,transparent 0 43%,#04130e 43.2% 58%,transparent 58.2%) 45% 15%/70% 100%;
- opacity:.9;pointer-events:none;
+    position:absolute;
+    bottom:14%;
+    left:0;
+    width:100%;
+    height:28%;
+    pointer-events:none;
 }
 
-.screen{
- position:relative;z-index:2;width:100%;height:100%;overflow-y:auto;
- padding:clamp(14px,4vw,28px);
- padding-top:max(16px,env(safe-area-inset-top));
- padding-bottom:max(20px,env(safe-area-inset-bottom));
+.mountain{
+    position:absolute;
+    bottom:0;
+    width:0;
+    height:0;
+    border-left:90px solid transparent;
+    border-right:90px solid transparent;
+    border-bottom:120px solid #04110e;
 }
 
-.wrap{width:min(720px,100%);margin:auto}
-.panel{
- width:100%;margin:auto;
- background:linear-gradient(180deg,rgba(12,27,21,.96),rgba(4,15,12,.95));
- border:1px solid rgba(245,185,35,.22);
- border-radius:26px;
- padding:clamp(20px,5vw,34px);
- box-shadow:0 25px 80px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.04);
-}
-.center{text-align:center}
-.eyebrow{
- display:inline-block;border:1px solid rgba(245,185,35,.45);
- border-radius:999px;padding:8px 13px;color:var(--gold2);
- font-size:11px;font-weight:800;letter-spacing:2px;
-}
-h1{font-size:clamp(38px,12vw,74px);line-height:.9;margin:26px 0 16px;letter-spacing:-2px}
-h1 span,.gold{color:var(--gold)}
-h2{font-size:clamp(25px,7vw,40px);margin:10px 0}
-p{color:var(--muted);line-height:1.6}
-.lead{font-size:16px}
-.small{font-size:12px;color:#91a29a}
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(245,185,35,.5),transparent);margin:22px 0}
+.m1{left:-35px;}
+.m2{left:18%;transform:scale(1.25);}
+.m3{left:50%;transform:scale(.9);}
+.m4{right:-30px;transform:scale(1.3);}
 
-.startIcon{font-size:56px;margin-top:5px;filter:drop-shadow(0 0 20px rgba(245,185,35,.2))}
-.startBtn,.revealBtn{
- width:100%;border:0;border-radius:18px;padding:18px 16px;
- background:linear-gradient(135deg,#ffd22d,#f1a800);
- color:#201804;font-weight:900;letter-spacing:1.4px;
- box-shadow:0 9px 28px rgba(245,185,35,.2);
- cursor:pointer;
-}
-.startBtn:active,.choice:active,.revealBtn:active{transform:scale(.985)}
+/* ---------------- GROUND ---------------- */
 
-.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:14px}
-.progress{height:7px;background:#13231d;border-radius:10px;overflow:hidden;flex:1}
-.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d99818,#ffe17b);transition:width .4s}
-.soundBtn{
- background:#10221b;border:1px solid #28473a;color:#e8eee9;
- border-radius:12px;padding:8px 10px;font-size:12px
+.ground{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:25%;
+    background:
+        linear-gradient(
+            180deg,
+            #092119,
+            #020b08
+        );
+    pointer-events:none;
 }
 
-.challengeTag{color:var(--gold2);font-size:11px;font-weight:900;letter-spacing:2px}
-.levelLine{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
-.levelBadge{font-size:11px;font-weight:800;padding:6px 9px;border-radius:9px;background:#12261d}
-.diff{font-size:10px;font-weight:900;letter-spacing:1px}
-.easy{color:#73e6a1}.medium{color:#ffd15c}.hard{color:#ff9d50}.expert{color:#ff695a}
-
-.scene{
- position:relative;height:190px;border-radius:20px;overflow:hidden;margin:18px 0;
- border:1px solid rgba(255,255,255,.07);
- background:#09212a;
-}
-.waterScene{
- background:
- linear-gradient(180deg,#09222a 0 48%,#0b4650 48% 100%);
-}
-.waterScene:before{
- content:"";position:absolute;inset:45% -10% 0;
- background:repeating-radial-gradient(ellipse at 50% 0,#58a9a0 0 2px,transparent 3px 18px);
- opacity:.35;transform:scaleY(.65);
-}
-.waterScene:after{
- content:"";position:absolute;left:-10%;right:-10%;top:55%;height:3px;
- background:#b7e8df;box-shadow:80px 30px #73c6bf,230px 12px #c8f1e8,410px 35px #78beb8;
- opacity:.55;animation:wave 2.6s ease-in-out infinite alternate;
-}
-@keyframes wave{to{transform:translateX(25px)}}
-
-.riverCurrent{position:absolute;left:5%;right:5%;top:35%;height:90px;border-radius:50%;border-top:7px solid rgba(187,239,230,.7);transform:rotate(-7deg)}
-.eddy{
- position:absolute;width:75px;height:75px;border:5px solid rgba(218,248,238,.65);
- border-radius:50%;right:18%;top:62px;animation:spin 2.5s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.campScene{
- background:linear-gradient(180deg,#08141d 0 57%,#0a2819 57%);
-}
-.tent{
- position:absolute;left:50%;bottom:20px;transform:translateX(-50%);
- width:130px;height:90px;background:linear-gradient(135deg,#c66c32,#ef9b42);
- clip-path:polygon(50% 0,100% 100%,0 100%);
-}
-.tent:after{content:"";position:absolute;left:48%;bottom:0;width:24px;height:50px;background:#6c321f}
-.tree{position:absolute;bottom:15px;width:0;height:0;border-left:30px solid transparent;border-right:30px solid transparent;border-bottom:90px solid #0a321f}
-.tree:after{content:"";position:absolute;left:-24px;top:30px;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:70px solid #0d4227}
-.t1{left:7%}.t2{right:7%;transform:scale(.7)}
+/* ---------------- CAMP FIRE ---------------- */
 
 .fire{
- position:absolute;left:50%;bottom:8px;width:45px;height:45px;transform:translateX(-50%);
- background:radial-gradient(circle at 50% 70%,#fff2a0 0 13%,#ffb31a 14% 40%,#e94c1c 41% 65%,transparent 66%);
- border-radius:50%;animation:flicker .35s infinite alternate;
+    position:absolute;
+    left:8%;
+    bottom:14%;
+    width:42px;
+    height:52px;
+    pointer-events:none;
 }
-@keyframes flicker{to{transform:translateX(-50%) scale(1.08,.92)}}
 
-.nightScene{
- background:linear-gradient(180deg,#03101c,#071c1b);
+.flame{
+    position:absolute;
+    left:50%;
+    bottom:5px;
+    width:22px;
+    height:34px;
+    transform:translateX(-50%) rotate(45deg);
+    border-radius:4px 70% 4px 70%;
+    background:#ffb43d;
+    box-shadow:0 0 22px rgba(255,143,30,.45);
+    animation:flame 1.5s ease-in-out infinite alternate;
 }
-.compass{
- position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
- width:112px;height:112px;border:3px solid #d5bd79;border-radius:50%;
- background:radial-gradient(circle,#172d28,#071512);
- box-shadow:0 0 25px rgba(245,185,35,.12);
-}
-.needle{position:absolute;left:50%;top:50%;width:4px;height:82px;transform:translate(-50%,-50%) rotate(0deg);transform-origin:center;border-radius:4px;background:linear-gradient(#e34c3c 0 50%,#dce4dd 50%)}
-.compass b{position:absolute;left:50%;top:8px;transform:translateX(-50%);color:#f06a55}
 
-.choiceGrid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:15px}
+.flame2{
+    position:absolute;
+    left:50%;
+    bottom:3px;
+    width:13px;
+    height:23px;
+    transform:translateX(-50%) rotate(45deg);
+    border-radius:4px 70% 4px 70%;
+    background:#fff0a6;
+}
+
+@keyframes flame{
+    from{transform:translateX(-50%) rotate(42deg) scale(.9);}
+    to{transform:translateX(-50%) rotate(49deg) scale(1.08);}
+}
+
+/* ---------------- UI ---------------- */
+
+#screen{
+    position:absolute;
+    inset:0;
+    z-index:10;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:
+        max(18px,env(safe-area-inset-top))
+        14px
+        max(18px,env(safe-area-inset-bottom));
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.panel{
+    width:min(100%,520px);
+    margin:auto 0;
+    padding:24px 20px;
+    border-radius:24px;
+    border:1px solid rgba(255,213,119,.18);
+    background:rgba(3,13,12,.90);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5),
+        inset 0 1px rgba(255,255,255,.04);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+}
+
+.hidden{
+    display:none!important;
+}
+
+.eyebrow{
+    display:inline-block;
+    padding:8px 12px;
+    border:1px solid rgba(238,190,77,.45);
+    border-radius:999px;
+    color:#e9bd59;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:2px;
+    margin-bottom:18px;
+}
+
+h1{
+    margin:0;
+    font-size:clamp(34px,10vw,58px);
+    line-height:.95;
+    letter-spacing:-2px;
+}
+
+h2{
+    margin:8px 0 12px;
+    font-size:28px;
+    line-height:1.05;
+}
+
+.gold{
+    color:#e6b84e;
+}
+
+.subtitle{
+    color:#c8d0ca;
+    line-height:1.55;
+    font-size:15px;
+}
+
+.small{
+    font-size:12px;
+    color:#8e9d97;
+    line-height:1.5;
+}
+
+/* ---------------- BUTTONS ---------------- */
+
+.btn{
+    width:100%;
+    min-height:54px;
+    margin-top:12px;
+    border:0;
+    border-radius:15px;
+    padding:14px 16px;
+    background:#d9a941;
+    color:#07100d;
+    font-weight:900;
+    font-size:15px;
+    letter-spacing:.3px;
+    box-shadow:0 7px 0 #8b6620;
+    transition:transform .12s ease,box-shadow .12s ease;
+    cursor:pointer;
+}
+
+.btn:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #8b6620;
+}
+
+.btn.secondary{
+    background:#152a25;
+    color:#edf0e6;
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:none;
+}
+
+/* ---------------- STATUS ---------------- */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.badge{
+    font-size:10px;
+    letter-spacing:1.4px;
+    color:#e5bb63;
+}
+
+.audioStatus{
+    font-size:10px;
+    color:#81958c;
+}
+
+/* ---------------- CHALLENGE ---------------- */
+
+.challengeNumber{
+    color:#dcae47;
+    font-size:12px;
+    letter-spacing:2px;
+    font-weight:800;
+}
+
+.progress{
+    width:100%;
+    height:5px;
+    background:#162823;
+    border-radius:99px;
+    margin:16px 0 22px;
+    overflow:hidden;
+}
+
+.progressFill{
+    height:100%;
+    width:33.333%;
+    background:#d9aa45;
+    transition:width .35s ease;
+}
+
+.choiceGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
 .choice{
- border:1px solid #2b4a3c;background:linear-gradient(180deg,#132a20,#0c1d17);
- color:#edf3ed;border-radius:15px;padding:15px;text-align:left;cursor:pointer;
- transition:.18s;min-height:58px;
+    min-height:105px;
+    border-radius:17px;
+    border:1px solid rgba(255,255,255,.09);
+    background:#0b1b17;
+    color:#edf0e6;
+    padding:14px;
+    text-align:left;
+    cursor:pointer;
+    transition:.15s ease;
 }
-.choice strong{display:block;color:#fff;font-size:15px;margin-bottom:3px}
-.choice span{font-size:12px;color:#9fb0a7}
-.choice.correct{border-color:#5ed99a;background:#103523}
-.choice.wrong{border-color:#ef705c;background:#321913;animation:shake .25s}
-@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+.choice:active{
+    transform:scale(.97);
+}
+
+.choice strong{
+    display:block;
+    margin-bottom:7px;
+    color:#e5bd6b;
+}
+
+.choice span{
+    display:block;
+    font-size:12px;
+    line-height:1.4;
+    color:#aebbb5;
+}
+
+.choice.correct{
+    border-color:#74bd8b;
+    background:#0d281c;
+}
+
+.choice.wrong{
+    border-color:#b85c50;
+    background:#2a1513;
+}
 
 .feedback{
- min-height:42px;margin-top:13px;padding:11px;border-radius:12px;
- background:#0a1914;color:#b8c6bf;font-size:13px;
+    min-height:48px;
+    margin-top:16px;
+    padding:12px;
+    border-radius:13px;
+    background:#071511;
+    color:#bac7c0;
+    font-size:13px;
+    line-height:1.45;
 }
-.feedback.good{color:#75e4a2;border:1px solid rgba(105,223,155,.25)}
-.feedback.bad{color:#ff9b88;border:1px solid rgba(255,107,87,.2)}
 
-.levelComplete{
- text-align:center;padding:15px;margin-top:12px;border-radius:15px;
- background:rgba(95,221,151,.08);color:#8ff0b3;font-weight:800
+/* ---------------- WATER ---------------- */
+
+.waterScene{
+    position:relative;
+    height:135px;
+    margin:16px 0;
+    border-radius:17px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    background:
+        linear-gradient(
+            180deg,
+            #6d8e96 0%,
+            #315c67 35%,
+            #0a3039 100%
+        );
 }
 
-.finalIcon{font-size:65px;margin-top:4px}
-.finalTitle{font-size:clamp(35px,10vw,60px);font-weight:950;line-height:.95;margin:18px 0}
-.revealBox{
- margin-top:18px;padding:22px;border-radius:20px;
- background:linear-gradient(135deg,rgba(245,185,35,.11),rgba(28,75,52,.2));
- border:1px solid rgba(245,185,35,.28);
+.waterScene:before,
+.waterScene:after{
+    content:"";
+    position:absolute;
+    left:-10%;
+    width:120%;
+    height:22px;
+    border-top:2px solid rgba(221,242,235,.5);
+    border-radius:50%;
 }
-.revealBox h2{color:#ffd96a}
-.detail{padding:11px 0;font-size:15px}
-.finalMessage{margin:22px 0;line-height:2;font-size:16px}
-.countdown{margin-top:22px;color:#ffd15b;font-weight:950;letter-spacing:2px;font-size:14px}
 
-.toast{
- position:fixed;z-index:50;left:50%;bottom:max(20px,env(safe-area-inset-bottom));
- transform:translate(-50%,30px);opacity:0;pointer-events:none;
- background:#12251d;border:1px solid #355a47;padding:10px 15px;border-radius:999px;
- font-size:12px;transition:.25s;white-space:nowrap;
+.waterScene:before{
+    top:37px;
+    transform:skewY(-2deg);
 }
-.toast.show{transform:translate(-50%,0);opacity:1}
 
-@media(min-width:600px){
- .choiceGrid{grid-template-columns:1fr 1fr}
- .scene{height:225px}
+.waterScene:after{
+    top:82px;
+    transform:skewY(2deg);
+}
+
+.currentArrow{
+    position:absolute;
+    left:20%;
+    top:55%;
+    font-size:28px;
+    color:rgba(255,255,255,.65);
+    animation:drift 2s ease-in-out infinite alternate;
+}
+
+@keyframes drift{
+    from{transform:translateX(0);}
+    to{transform:translateX(35px);}
+}
+
+/* ---------------- GEAR ---------------- */
+
+.gearCard{
+    margin-top:16px;
+    padding:15px;
+    border-radius:16px;
+    background:#0a1b16;
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.slider{
+    width:100%;
+    accent-color:#d8aa46;
+    margin-top:12px;
+}
+
+.readout{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    font-size:12px;
+    color:#aab9b2;
+}
+
+/* ---------------- NAVIGATION ---------------- */
+
+.compass{
+    width:170px;
+    height:170px;
+    margin:20px auto;
+    border-radius:50%;
+    border:2px solid rgba(218,181,91,.45);
+    background:
+        radial-gradient(circle,#0c211c 0 52%,#071510 53% 100%);
+    position:relative;
+    box-shadow:0 0 35px rgba(0,0,0,.35);
+}
+
+.compass:before{
+    content:"N";
+    position:absolute;
+    top:8px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#dfb552;
+    font-weight:900;
+}
+
+.compass:after{
+    content:"S";
+    position:absolute;
+    bottom:8px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#8d9a94;
+    font-weight:900;
+}
+
+.needle{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:3px;
+    height:112px;
+    transform-origin:center;
+    transform:translate(-50%,-50%) rotate(0deg);
+}
+
+.needle:before{
+    content:"";
+    position:absolute;
+    left:-5px;
+    top:0;
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-bottom:55px solid #d7a842;
+}
+
+.needle:after{
+    content:"";
+    position:absolute;
+    left:-5px;
+    bottom:0;
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-top:55px solid #586a64;
+}
+
+.directions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+/* ---------------- RESULT ---------------- */
+
+.resultIcon{
+    font-size:48px;
+    margin-bottom:8px;
+}
+
+.finalTitle{
+    font-size:clamp(38px,11vw,64px);
+    line-height:.9;
+    margin:10px 0 18px;
+}
+
+.finalCard{
+    text-align:center;
+}
+
+.finalDetails{
+    margin:22px 0;
+    padding:18px;
+    border-radius:17px;
+    background:#081914;
+    border:1px solid rgba(226,181,77,.18);
+}
+
+.finalDetails div{
+    margin:8px 0;
+    color:#b9c5bf;
+}
+
+.finalDetails strong{
+    color:#e5bb61;
+}
+
+/* ---------------- MOBILE ---------------- */
+
+@media(max-width:380px){
+
+    .panel{
+        padding:20px 15px;
+    }
+
+    h1{
+        font-size:36px;
+    }
+
+    h2{
+        font-size:25px;
+    }
+
+    .choiceGrid{
+        gap:8px;
+    }
+
+    .choice{
+        min-height:98px;
+        padding:11px;
+    }
+
+    .choice span{
+        font-size:11px;
+    }
+}
+
+@media(min-width:700px){
+
+    #screen{
+        padding:30px;
+    }
+
+    .panel{
+        padding:32px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *:before,
+    *:after{
+        animation:none!important;
+        transition:none!important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
-<div class="moon"></div>
-<div class="mountains"></div>
+<div id="app">
 
-<div class="screen">
-<div class="wrap">
+    <div class="stars"></div>
+    <div class="moon"></div>
 
-<!-- START -->
-<section class="panel center" id="startScreen">
+    <div class="mountains">
+        <div class="mountain m1"></div>
+        <div class="mountain m2"></div>
+        <div class="mountain m3"></div>
+        <div class="mountain m4"></div>
+    </div>
 
- <div class="startIcon">🏕️</div>
+    <div class="ground"></div>
 
- <div class="eyebrow">MISSION 3 • FINAL ADVENTURE</div>
+    <div class="fire">
+        <div class="flame"></div>
+        <div class="flame2"></div>
+    </div>
 
- <h1>THE LAST<br><span>EXPEDITION</span></h1>
+    <main id="screen">
 
- <p class="lead">
- You've made it this far, Master Angler.
- </p>
+        <!-- START -->
+        <section class="panel" id="startScreen">
 
- <p>
- The campsite is quiet. The water is moving.
- Night is settling in.
- </p>
+            <div class="eyebrow">MISSION 3 • FINAL ADVENTURE</div>
 
- <p>
- Three final challenges stand between you and the finish.
- </p>
+            <h1>
+                THE LAST<br>
+                <span class="gold">EXPEDITION</span>
+            </h1>
 
- <div class="divider"></div>
+            <p class="subtitle">
+                You've made it this far, Master Angler.
+                Tonight, the campsite is quiet, the water is moving,
+                and three final challenges stand between you and the finish.
+            </p>
 
- <p class="small">🎵 Turn your volume up — the expedition has its own soundtrack.</p>
+            <p class="small">
+                Best played with sound on.
+                Designed for iPhone.
+            </p>
 
- <button class="startBtn" id="startBtn">
- START THE FINAL MISSION
- </button>
+            <button class="btn" id="startBtn">
+                START THE FINAL MISSION
+            </button>
 
-</section>
-
-
-<!-- GAME -->
-<section class="panel hidden" id="gameScreen">
-
- <div class="topbar">
-   <div class="progress"><i id="progressBar"></i></div>
-   <button class="soundBtn" id="soundBtn">🔊 SOUND ON</button>
- </div>
-
- <div id="gameContent"></div>
-
-</section>
+        </section>
 
 
-<!-- FINAL -->
-<section class="panel center hidden" id="finalScreen">
+        <!-- GAME -->
+        <section class="panel hidden" id="gameScreen">
 
- <div class="finalIcon">🏆</div>
+            <div class="topbar">
+                <div class="badge">MISSION 3 / FINAL</div>
+                <div class="audioStatus" id="audioStatus">
+                    AMBIENCE READY
+                </div>
+            </div>
 
- <div class="eyebrow">MISSION COMPLETE!</div>
+            <div class="progress">
+                <div class="progressFill" id="progressFill"></div>
+            </div>
 
- <div class="finalTitle">
- YOU DID IT,<br>
- <span class="gold">MASTER ANGLER.</span>
- </div>
+            <!-- CHALLENGE 1 -->
+            <div id="challenge1">
 
- <p class="lead">
- You've conquered every challenge.
- </p>
+                <div class="challengeNumber">
+                    CHALLENGE 01 — READ THE WATER
+                </div>
 
- <p>
- But your final surprise is still locked...
- </p>
+                <h2>
+                    Pick the safest water condition
+                </h2>
 
- <button class="revealBtn" id="revealBtn">
- 🔓 TAP TO REVEAL
- </button>
+                <p class="subtitle">
+                    You're approaching an unfamiliar stretch of water.
+                    Look at the surface and choose the condition that
+                    would give you the best chance of a controlled approach.
+                </p>
 
- <div class="revealBox hidden" id="revealBox">
+                <div class="waterScene">
+                    <div class="currentArrow">→ →</div>
+                </div>
 
-   <h2>🏆 MISSION COMPLETE!</h2>
+                <div class="choiceGrid">
 
-   <p>
-    <strong>You did it, birthday boy. ❤️</strong><br>
-    Your final surprise has been unlocked…
-   </p>
+                    <button class="choice waterChoice" data-correct="false">
+                        <strong>Whitewater</strong>
+                        <span>
+                            Fast broken water and obvious turbulence.
+                        </span>
+                    </button>
 
-   <div class="divider"></div>
+                    <button class="choice waterChoice" data-correct="true">
+                        <strong>Steady Current</strong>
+                        <span>
+                            Consistent flow with a clean surface and
+                            manageable movement.
+                        </span>
+                    </button>
 
-   <h2>🏕️ YOUR BIRTHDAY ADVENTURE AWAITS</h2>
+                    <button class="choice waterChoice" data-correct="false">
+                        <strong>Strong Eddy</strong>
+                        <span>
+                            Water is visibly rotating back against the flow.
+                        </span>
+                    </button>
 
-   <div class="detail">📍 <strong>EAST COAST PARK</strong></div>
-   <div class="detail">📅 <strong>21–22 AUGUST 2026</strong></div>
-   <div class="detail">⏰ <strong>3:00 PM</strong></div>
+                    <button class="choice waterChoice" data-correct="false">
+                        <strong>Breaking Surge</strong>
+                        <span>
+                            Repeated waves are crashing against the edge.
+                        </span>
+                    </button>
 
-   <div class="finalMessage">
-    <strong>Pack your bags.</strong><br>
-    <strong>Bring your fishing gear.</strong><br>
-    <strong>And come ready for an adventure with me. ❤️</strong>
-   </div>
+                </div>
 
-   <div class="countdown">
-    THE COUNTDOWN BEGINS… ⏳
-   </div>
+                <div class="feedback" id="feedback1">
+                    Study the water before making your decision.
+                </div>
 
- </div>
+                <button class="btn hidden" id="next1">
+                    CONTINUE
+                </button>
 
-</section>
+            </div>
 
+
+            <!-- CHALLENGE 2 -->
+            <div id="challenge2" class="hidden">
+
+                <div class="challengeNumber">
+                    CHALLENGE 02 — BUILD THE RIGHT SETUP
+                </div>
+
+                <h2>
+                    The weather is changing.
+                </h2>
+
+                <p class="subtitle">
+                    A breeze is picking up at camp. You have one chance
+                    to prepare your setup properly before nightfall.
+                </p>
+
+                <div class="gearCard">
+
+                    <strong>Wind protection</strong>
+
+                    <p class="small">
+                        How much shelter would you choose?
+                    </p>
+
+                    <input
+                        id="shelterSlider"
+                        class="slider"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="50"
+                    >
+
+                    <div class="readout">
+                        <span>Minimal</span>
+                        <strong id="shelterValue">50%</strong>
+                        <span>Heavy</span>
+                    </div>
+
+                </div>
+
+                <div class="gearCard">
+
+                    <strong>Equipment priority</strong>
+
+                    <p class="small">
+                        Choose what matters most before the weather gets worse.
+                    </p>
+
+                    <div class="choiceGrid">
+
+                        <button class="choice gearChoice" data-value="comfort">
+                            <strong>Comfort</strong>
+                            <span>
+                                Extra camp luxuries.
+                            </span>
+                        </button>
+
+                        <button class="choice gearChoice" data-value="stability">
+                            <strong>Stability</strong>
+                            <span>
+                                Secure shelter and essential equipment.
+                            </span>
+                        </button>
+
+                        <button class="choice gearChoice" data-value="speed">
+                            <strong>Speed</strong>
+                            <span>
+                                Pack light and move quickly.
+                            </span>
+                        </button>
+
+                        <button class="choice gearChoice" data-value="appearance">
+                            <strong>Appearance</strong>
+                            <span>
+                                Keep everything looking perfect.
+                            </span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="feedback" id="feedback2">
+                    Prepare for the conditions, not the appearance.
+                </div>
+
+                <button class="btn hidden" id="next2">
+                    CONTINUE
+                </button>
+
+            </div>
+
+
+            <!-- CHALLENGE 3 -->
+            <div id="challenge3" class="hidden">
+
+                <div class="challengeNumber">
+                    CHALLENGE 03 — NIGHT NAVIGATION
+                </div>
+
+                <h2>
+                    Find your way back to camp.
+                </h2>
+
+                <p class="subtitle">
+                    Darkness has settled in. Your phone battery is low,
+                    so you're relying on the compass and the landmarks
+                    around you.
+                </p>
+
+                <div class="compass">
+
+                    <div class="needle" id="needle"></div>
+
+                </div>
+
+                <p class="small" style="text-align:center;">
+                    The campsite is approximately SOUTH-EAST.
+                </p>
+
+                <div class="directions">
+
+                    <button class="choice directionChoice" data-direction="NW">
+                        <strong>↖ NORTH-WEST</strong>
+                        <span>
+                            Toward the higher ridge.
+                        </span>
+                    </button>
+
+                    <button class="choice directionChoice" data-direction="NE">
+                        <strong>↗ NORTH-EAST</strong>
+                        <span>
+                            Toward the tree line.
+                        </span>
+                    </button>
+
+                    <button class="choice directionChoice" data-direction="SW">
+                        <strong>↙ SOUTH-WEST</strong>
+                        <span>
+                            Toward the open shoreline.
+                        </span>
+                    </button>
+
+                    <button class="choice directionChoice" data-direction="SE">
+                        <strong>↘ SOUTH-EAST</strong>
+                        <span>
+                            Toward the campsite.
+                        </span>
+                    </button>
+
+                </div>
+
+                <div class="feedback" id="feedback3">
+                    Trust your bearings.
+                </div>
+
+                <button class="btn hidden" id="finishBtn">
+                    COMPLETE MISSION
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- FINAL -->
+        <section class="panel finalCard hidden" id="finalScreen">
+
+            <div class="resultIcon">🏕️</div>
+
+            <div class="eyebrow">
+                MISSION COMPLETE
+            </div>
+
+            <div class="finalTitle">
+                YOU DID IT,<br>
+                <span class="gold">MASTER ANGLER.</span>
+            </div>
+
+            <p class="subtitle">
+                Three challenges.
+                One final adventure.
+                And you made it all the way to the end.
+            </p>
+
+            <div class="finalDetails">
+
+                <div>
+                    📍 <strong>EAST COAST PARK</strong>
+                </div>
+
+                <div>
+                    📅 <strong>21–22 AUGUST 2026</strong>
+                </div>
+
+                <div>
+                    ⏰ <strong>3:00 PM</strong>
+                </div>
+
+            </div>
+
+            <p class="subtitle">
+                Pack your bags.<br>
+                Bring your fishing gear.<br>
+                And come ready for an adventure with me. ❤️
+            </p>
+
+            <p class="gold" style="
+                font-weight:900;
+                letter-spacing:2px;
+                margin-top:25px;
+            ">
+                THE COUNTDOWN BEGINS… ⏳
+            </p>
+
+        </section>
+
+    </main>
 </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 
 <script>
-/* ==========================================================
-   MISSION 3 — COMPLETE SINGLE FILE GAME
+/* =========================================================
+   MISSION 3 — SAME GAME / IMPROVED AUDIO ENGINE
    No external assets.
+   No MP3.
    No game.js.
    No style.css.
-   Audio generated with Web Audio API.
-   ========================================================== */
+   ========================================================= */
 
+(() => {
 
-/* ==========================================================
-   AUDIO ENGINE — iPHONE SAFARI FRIENDLY
-   ========================================================== */
+    "use strict";
 
-let audioCtx=null;
-let master=null;
-let musicBus=null;
-let ambienceBus=null;
-let fxBus=null;
-let audioOn=false;
-let musicTimer=null;
-let percTimer=null;
+    const startScreen =
+        document.getElementById("startScreen");
 
-function initAudio(){
+    const gameScreen =
+        document.getElementById("gameScreen");
 
- if(audioOn){
-   if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
-   return;
- }
+    const finalScreen =
+        document.getElementById("finalScreen");
 
- const AC=window.AudioContext||window.webkitAudioContext;
+    const startBtn =
+        document.getElementById("startBtn");
 
- if(!AC){
-   document.getElementById("soundBtn").textContent="🔇 AUDIO N/A";
-   return;
- }
+    const challenge1 =
+        document.getElementById("challenge1");
 
- audioCtx=new AC();
+    const challenge2 =
+        document.getElementById("challenge2");
 
- master=audioCtx.createGain();
- musicBus=audioCtx.createGain();
- ambienceBus=audioCtx.createGain();
- fxBus=audioCtx.createGain();
+    const challenge3 =
+        document.getElementById("challenge3");
 
- master.gain.value=.78;
- musicBus.gain.value=.42;
- ambienceBus.gain.value=.42;
- fxBus.gain.value=.85;
+    const progressFill =
+        document.getElementById("progressFill");
 
- musicBus.connect(master);
- ambienceBus.connect(master);
- fxBus.connect(master);
- master.connect(audioCtx.destination);
+    const feedback1 =
+        document.getElementById("feedback1");
 
- audioOn=true;
+    const feedback2 =
+        document.getElementById("feedback2");
 
- audioCtx.resume();
+    const feedback3 =
+        document.getElementById("feedback3");
 
- startAmbience();
- startMusic();
+    const next1 =
+        document.getElementById("next1");
 
- document.getElementById("soundBtn").textContent="🔊 SOUND ON";
-}
+    const next2 =
+        document.getElementById("next2");
 
+    const finishBtn =
+        document.getElementById("finishBtn");
 
-/* noise */
-function noiseBuffer(seconds=2){
- const b=audioCtx.createBuffer(
-   1,
-   audioCtx.sampleRate*seconds,
-   audioCtx.sampleRate
- );
- const d=b.getChannelData(0);
- for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
- return b;
-}
+    const shelterSlider =
+        document.getElementById("shelterSlider");
 
-function noise(type,volume,filterFreq){
- const s=audioCtx.createBufferSource();
- s.buffer=window.__noise||(window.__noise=noiseBuffer());
+    const shelterValue =
+        document.getElementById("shelterValue");
 
- s.loop=true;
+    const needle =
+        document.getElementById("needle");
 
- const f=audioCtx.createBiquadFilter();
- f.type=type;
- f.frequency.value=filterFreq;
+    const audioStatus =
+        document.getElementById("audioStatus");
 
- const g=audioCtx.createGain();
- g.gain.value=volume;
 
- s.connect(f);
- f.connect(g);
- g.connect(ambienceBus);
+    /* =========================================================
+       AUDIO
+       MACBOOK / DESKTOP OPTIMIZED
+       ========================================================= */
 
- s.start();
+    let audioContext = null;
+    let masterGain = null;
+    let ambienceGain = null;
+    let musicGain = null;
+    let fxGain = null;
 
- return s;
-}
+    let audioStarted = false;
 
+    let musicTimer = null;
+    let percussionTimer = null;
+    let fireTimer = null;
 
-/* 🌊 water + 🌲 wind */
-function startAmbience(){
 
- noise("lowpass",.20,900);
- noise("bandpass",.045,1700);
- noise("lowpass",.11,1200);
+    function createNoiseBuffer(ctx,seconds=2){
 
- /* subtle night air */
- noise("highpass",.018,2600);
-}
+        const buffer =
+            ctx.createBuffer(
+                1,
+                Math.floor(ctx.sampleRate*seconds),
+                ctx.sampleRate
+            );
 
+        const data =
+            buffer.getChannelData(0);
 
-/* 🎸 adventure rhythm */
-function startMusic(){
+        for(let i=0;i<data.length;i++){
 
- const notes=[
-   220,261.63,329.63,392,
-   329.63,293.66,261.63,196
- ];
+            data[i] =
+                Math.random()*2-1;
 
- let n=0;
+        }
 
- function note(){
+        return buffer;
+    }
 
-   if(!audioCtx||!audioOn)return;
 
-   const now=audioCtx.currentTime;
-   const f=notes[n%notes.length];
+    function makeNoise(
+        ctx,
+        buffer,
+        type,
+        frequency,
+        volume,
+        destination
+    ){
 
-   tone(f,.36,.11,"triangle",musicBus);
-   if(n%2===0) tone(f*2,.26,.035,"sine",musicBus);
+        const source =
+            ctx.createBufferSource();
 
-   n++;
- }
+        source.buffer=buffer;
+        source.loop=true;
 
- note();
- musicTimer=setInterval(note,520);
+        const filter =
+            ctx.createBiquadFilter();
 
- let beat=0;
+        filter.type=type;
+        filter.frequency.value=frequency;
 
- function percussion(){
+        const gain =
+            ctx.createGain();
 
-   if(!audioCtx||!audioOn)return;
+        gain.gain.value=volume;
 
-   if(beat%4===0||beat%4===2) kick();
-   if(beat%2===1) tick();
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(destination);
 
-   beat++;
- }
+        source.start();
 
- percussion();
- percTimer=setInterval(percussion,520);
-}
+        return source;
+    }
 
 
-function tone(freq,duration,volume,type,bus,slide=null){
+    function playTone(
+        freq,
+        duration,
+        volume,
+        type="sine",
+        destination=fxGain,
+        slideTo=null
+    ){
 
- if(!audioCtx)return;
+        if(!audioContext || !destination){
+            return;
+        }
 
- const o=audioCtx.createOscillator();
- const g=audioCtx.createGain();
- const now=audioCtx.currentTime;
+        const now =
+            audioContext.currentTime;
 
- o.type=type||"sine";
- o.frequency.setValueAtTime(freq,now);
+        const osc =
+            audioContext.createOscillator();
 
- if(slide)
-   o.frequency.exponentialRampToValueAtTime(slide,now+duration);
+        const gain =
+            audioContext.createGain();
 
- g.gain.setValueAtTime(.0001,now);
- g.gain.exponentialRampToValueAtTime(volume,now+.015);
- g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+        osc.type=type;
 
- o.connect(g);
- g.connect(bus||fxBus);
+        osc.frequency.setValueAtTime(
+            freq,
+            now
+        );
 
- o.start(now);
- o.stop(now+duration+.03);
-}
+        if(slideTo){
 
+            osc.frequency
+                .exponentialRampToValueAtTime(
+                    Math.max(20,slideTo),
+                    now+duration
+                );
 
-function kick(){
- tone(120,.20,.13,"sine",musicBus,55);
-}
+        }
 
-function tick(){
- tone(900,.06,.035,"square",musicBus,650);
-}
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
 
+        gain.gain
+            .exponentialRampToValueAtTime(
+                Math.max(.0002,volume),
+                now+.018
+            );
 
-/* 🔔 success */
-function successSound(){
+        gain.gain
+            .exponentialRampToValueAtTime(
+                .0001,
+                now+duration
+            );
 
- if(!audioCtx||!audioOn)return;
+        osc.connect(gain);
+        gain.connect(destination);
 
- [523.25,659.25,783.99].forEach((f,i)=>{
-   setTimeout(()=>{
-     tone(f,.22,.20,"sine",fxBus);
-   },i*100);
- });
-}
+        osc.start(now);
 
+        osc.stop(
+            now+duration+.04
+        );
+    }
 
-/* ⚠️ mistake */
-function wrongSound(){
 
- if(!audioCtx||!audioOn)return;
+    function startAudio(){
 
- tone(220,.25,.17,"triangle",fxBus,125);
-}
+        /*
+         * If audio already exists, simply resume it.
+         */
+        if(audioStarted){
 
+            if(
+                audioContext &&
+                audioContext.state==="suspended"
+            ){
 
-/* button */
-function clickSound(){
- if(audioCtx&&audioOn) tone(440,.08,.08,"sine",fxBus,300);
-}
+                audioContext
+                    .resume()
+                    .catch(()=>{});
 
+            }
 
-/* 🏆 completion */
-function completionSound(){
+            return;
+        }
 
- if(!audioCtx||!audioOn)return;
 
- [
-  [261.63,0],
-  [329.63,120],
-  [392,240],
-  [523.25,380],
-  [659.25,520],
-  [783.99,700],
-  [1046.5,900]
- ].forEach(x=>{
-   setTimeout(()=>{
-     tone(x[0],x[0]===1046.5?.65:.30,.22,"sine",fxBus);
-   },x[1]);
- });
-}
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
 
 
-/* iPhone Safari resume */
-document.addEventListener("visibilitychange",()=>{
- if(!document.hidden&&audioCtx&&audioCtx.state==="suspended"){
-   audioCtx.resume();
- }
-});
+        if(!AudioContext){
 
-window.addEventListener("pageshow",()=>{
- if(audioCtx&&audioCtx.state==="suspended"){
-   audioCtx.resume();
- }
-});
-
-
-/* ==========================================================
-   GAME DATA
-   ========================================================== */
-
-
-/* CHALLENGE 1 — READ THE WATER */
-const waterLevels=[
-
- {
-  diff:"EASY",
-  title:"Calm or rough?",
-  scene:"water",
-  text:"You're approaching a stretch of water. Which surface is safer for a controlled cast?",
-  choices:[
-   ["🌊 Choppy, broken surface","More wind exposure and unstable water.",false],
-   ["💧 Calm, organised surface","Stable water with predictable movement.",true],
-   ["⚡ Whitewater breaking everywhere","Too turbulent for a controlled position.",false]
-  ],
-  hint:"Look for the surface with the least chaotic movement."
- },
-
- {
-  diff:"EASY+",
-  title:"Read the current.",
-  scene:"current",
-  text:"Watch the floating surface pattern. Which direction is the main current moving?",
-  choices:[
-   ["↗️ Toward the right bank","The surface lines are moving away from you to the right.",true],
-   ["⬅️ Directly upstream","The visible flow is not moving against the main current.",false],
-   ["🔄 Straight downward","There is no evidence of a straight vertical flow.",false]
-  ],
-  hint:"Follow the long surface lines rather than isolated ripples."
- },
-
- {
-  diff:"MEDIUM",
-  title:"Find the eddy.",
-  scene:"eddy",
-  text:"One area has water rotating back against the main flow. Where would you identify the eddy?",
-  choices:[
-   ["🌀 Behind the obstruction","Water can curl back into a circular return flow.",true],
-   ["🌊 In the fastest straight flow","Fast direct flow is not the return pocket.",false],
-   ["💦 On the exposed outer edge","The outer edge is more exposed to current.",false]
-  ],
-  hint:"Look for circular or reverse movement beside the main flow."
- },
-
- {
-  diff:"HARD",
-  title:"Choose the safest position.",
-  scene:"current",
-  text:"You want stable footing and a controlled presentation. Which position makes the most sense?",
-  choices:[
-   ["🪨 Low, stable bank with clear footing","Stable footing and predictable water are preferable.",true],
-   ["⚠️ Slippery rock beside fast water","Poor footing and stronger current increase risk.",false],
-   ["🌊 Stand directly in the strongest current","Unnecessary exposure to fast water.",false]
-  ],
-  hint:"A good position balances water access with safe footing."
- },
-
- {
-  diff:"EXPERT",
-  title:"Read EVERYTHING.",
-  scene:"eddy",
-  text:"You see calmer water beside faster flow, an eddy behind structure, and unstable whitewater downstream. Which area gives the best combination?",
-  choices:[
-   ["🌀 The sheltered transition beside the eddy","Combines current change, calmer water and a controlled position.",true],
-   ["🌊 The strongest whitewater","High turbulence makes the approach less predictable.",false],
-   ["⚠️ The narrow slippery edge","Poor footing outweighs the potential water advantage.",false]
-  ],
-  hint:"Combine current speed, shelter, water transition and footing."
- }
-
-];
-
-
-/* CHALLENGE 2 — CAMPCRAFT */
-const campLevels=[
-
- {
-  diff:"EASY",
-  title:"Choose the fire position.",
-  scene:"camp",
-  text:"The evening wind is picking up. Where should a campfire be positioned?",
-  choices:[
-   ["🔥 Away from the tent and vegetation","Creates a safer separation from flammable material.",true],
-   ["🏕️ Directly beside the tent","Too close to sleeping fabric.",false],
-   ["🌲 Under low branches","Overhead vegetation can catch sparks.",false]
-  ],
-  hint:"Think about sparks, wind and combustible materials."
- },
-
- {
-  diff:"EASY+",
-  title:"The weather changes.",
-  scene:"camp",
-  text:"Clouds are building and the wind has increased. What should you secure first?",
-  choices:[
-   ["🪢 Tent lines and loose equipment","Prevent wind from turning equipment into hazards.",true],
-   ["🎒 Leave everything outside","Loose objects can move or get wet.",false],
-   ["🔥 Increase the fire immediately","Wind and fire require more caution, not less.",false]
-  ],
-  hint:"Secure the things that can move before the weather reaches you."
- },
-
- {
-  diff:"MEDIUM",
-  title:"Night temperature drops.",
-  scene:"camp",
-  text:"The temperature is falling after sunset. What is the smartest move?",
-  choices:[
-   ["🧥 Add a dry insulating layer","Dry insulation helps conserve body heat.",true],
-   ["💦 Wear damp clothing to bed","Moisture increases heat loss.",false],
-   ["🌬️ Sleep exposed to the wind","Wind increases convective heat loss.",false]
-  ],
-  hint:"Dry insulation is your friend after sunset."
- },
-
- {
-  diff:"HARD",
-  title:"Protect the campsite.",
-  scene:"camp",
-  text:"Before turning in, you need to leave the site organised. What matters most?",
-  choices:[
-   ["🧹 Secure food, rubbish and equipment","Keeps the campsite clean and reduces unwanted wildlife interest.",true],
-   ["🍖 Leave food beside the tent","Food should not be left beside the sleeping area.",false],
-   ["🔥 Leave the fire unattended","An unattended fire is unsafe.",false]
-  ],
-  hint:"Think about wildlife, fire safety and a clean campsite."
- },
-
- {
-  diff:"EXPERT",
-  title:"Final camp decision.",
-  scene:"camp",
-  text:"A gusty night is coming. The tent is secured, the fire is burning and gear is outside. What is the best final action?",
-  choices:[
-   ["🛡️ Extinguish the fire and secure loose gear","Reduces fire risk and prevents equipment from becoming airborne.",true],
-   ["🔥 Feed the fire higher","More flame in gusty conditions increases risk.",false],
-   ["🎒 Leave gear outside for convenience","Loose gear can be damaged or scattered.",false]
-  ],
-  hint:"Before sleep, remove the hazards you can control."
- }
-
-];
-
-
-/* CHALLENGE 3 — NIGHT NAVIGATION */
-const navLevels=[
-
- {
-  diff:"EASY",
-  title:"Find north.",
-  scene:"night",
-  text:"The compass is stable. Which direction should you use as your reference when navigating back to camp?",
-  choices:[
-   ["🧭 North","Use a fixed directional reference before choosing a bearing.",true],
-   ["🎲 Any direction","Random direction is not navigation.",false],
-   ["🌙 Follow the brightest star","Visual cues alone are unreliable.",false]
-  ],
-  hint:"Start with a known compass direction."
- },
-
- {
-  diff:"EASY+",
-  title:"Take a bearing.",
-  scene:"night",
-  text:"Your camp is northeast of your position. Which general bearing should you follow?",
-  choices:[
-   ["↗️ Northeast","NE is the correct quadrant.",true],
-   ["↙️ Southwest","That takes you generally away.",false],
-   ["⬇️ South","That does not match the destination.",false]
-  ],
-  hint:"Northeast sits between north and east."
- },
-
- {
-  diff:"MEDIUM",
-  title:"Stay on course.",
-  scene:"night",
-  text:"A trail splits. One route follows your planned bearing and the other bends away. Which should you choose?",
-  choices:[
-   ["🧭 The route that maintains your bearing","Consistency helps prevent gradual navigation drift.",true],
-   ["🌲 The route that looks prettier","Appearance doesn't confirm direction.",false],
-   ["🚶 The shortest-looking route","Shortest does not necessarily mean correct.",false]
-  ],
-  hint:"Don't abandon your bearing simply because another path looks easier."
- },
-
- {
-  diff:"HARD",
-  title:"Correct the drift.",
-  scene:"night",
-  text:"You realise you've drifted slightly east of your intended track. What is the sensible correction?",
-  choices:[
-   ["↖️ Adjust gradually back toward the planned line","A controlled correction is better than a dramatic turn.",true],
-   ["🔄 Turn completely around","That overcorrects the problem.",false],
-   ["➡️ Continue farther east","That increases the drift.",false]
-  ],
-  hint:"Small navigation errors are best corrected deliberately."
- },
-
- {
-  diff:"EXPERT",
-  title:"The final bearing.",
-  scene:"night",
-  text:"It's dark. Your compass is stable, the campsite lies northeast, and your current route is drifting east. What should you do?",
-  choices:[
-   ["🧭 Re-establish the NE bearing and follow it steadily","Combines the compass reference, destination and drift correction.",true],
-   ["🌙 Ignore the compass and follow the moon","The moon is not a reliable bearing reference.",false],
-   ["🏃 Move faster in the current direction","Speed does not correct a wrong bearing.",false]
-  ],
-  hint:"Use every reliable navigation clue together."
- }
-];
-
-
-/* ==========================================================
-   GAME STATE
-   ========================================================== */
-
-const startScreen=document.getElementById("startScreen");
-const gameScreen=document.getElementById("gameScreen");
-const finalScreen=document.getElementById("finalScreen");
-const gameContent=document.getElementById("gameContent");
-const progressBar=document.getElementById("progressBar");
-const toast=document.getElementById("toast");
-
-let challenge=0;
-let level=0;
-let locked=false;
-
-
-/* ==========================================================
-   HELPERS
-   ========================================================== */
-
-function showToast(text){
-
- toast.textContent=text;
- toast.classList.add("show");
-
- setTimeout(()=>{
-   toast.classList.remove("show");
- },1500);
-}
-
-
-function totalProgress(){
- return challenge*5+level;
-}
-
-
-function sceneHTML(type){
-
- if(type==="water"){
-  return `
-   <div class="scene waterScene">
-    <div class="riverCurrent"></div>
-   </div>
-  `;
- }
-
- if(type==="current"){
-  return `
-   <div class="scene waterScene">
-    <div class="riverCurrent"></div>
-    <div class="riverCurrent" style="top:82%;transform:rotate(8deg);opacity:.4"></div>
-   </div>
-  `;
- }
-
- if(type==="eddy"){
-  return `
-   <div class="scene waterScene">
-    <div class="riverCurrent"></div>
-    <div class="eddy"></div>
-   </div>
-  `;
- }
-
- if(type==="camp"){
-  return `
-   <div class="scene campScene">
-    <div class="tree t1"></div>
-    <div class="tree t2"></div>
-    <div class="tent"></div>
-    <div class="fire"></div>
-   </div>
-  `;
- }
-
- return `
-  <div class="scene nightScene">
-   <div class="compass">
-    <b>N</b>
-    <div class="needle"></div>
-   </div>
-  </div>
- `;
-}
-
-
-/* ==========================================================
-   RENDER CURRENT LEVEL
-   ========================================================== */
-
-function render(){
-
- let data;
-
- if(challenge===0)data=waterLevels[level];
- if(challenge===1)data=campLevels[level];
- if(challenge===2)data=navLevels[level];
-
- const labels=[
-  "CHALLENGE 01 — READ THE WATER",
-  "CHALLENGE 02 — CAMPCRAFT",
-  "CHALLENGE 03 — NIGHT NAVIGATION"
- ];
-
- const levelClass=
-   data.diff==="EASY"||data.diff==="EASY+"?"easy":
-   data.diff==="MEDIUM"?"medium":
-   data.diff==="HARD"?"hard":"expert";
-
- progressBar.style.width=
-   ((totalProgress()/15)*100)+"%";
-
- gameContent.innerHTML=`
-
-  <div class="challengeTag">
-   ${labels[challenge]}
-  </div>
-
-  <div class="levelLine">
-   <div class="levelBadge">LEVEL ${level+1} / 5</div>
-   <div class="diff ${levelClass}">${data.diff}</div>
-  </div>
-
-  <h2>${data.title}</h2>
-
-  <p>${data.text}</p>
-
-  ${sceneHTML(data.scene)}
-
-  <div class="small">
-   Observe the scene before choosing.
-  </div>
-
-  <div class="choiceGrid">
-   ${data.choices.map((c,i)=>`
-    <button class="choice" data-index="${i}">
-     <strong>${c[0]}</strong>
-     <span>${c[1]}</span>
-    </button>
-   `).join("")}
-  </div>
-
-  <div class="feedback" id="feedback">
-   Choose carefully. There is no penalty for taking your time.
-  </div>
- `;
-
- document.querySelectorAll(".choice").forEach(btn=>{
-   btn.addEventListener("click",()=>{
-     choose(Number(btn.dataset.index),btn);
-   });
- });
-}
-
-
-/* ==========================================================
-   ANSWER
-   ========================================================== */
-
-function choose(index,button){
-
- if(locked)return;
-
- const sets=
-   challenge===0?waterLevels:
-   challenge===1?campLevels:
-   navLevels;
-
- const data=sets[level];
- const correct=data.choices[index][2];
- const feedback=document.getElementById("feedback");
-
- if(!correct){
-
-   button.classList.add("wrong");
-   wrongSound();
-
-   feedback.className="feedback bad";
-   feedback.innerHTML=
-     "⚠️ <strong>Not quite.</strong> "+data.hint;
-
-   setTimeout(()=>{
-     button.classList.remove("wrong");
-   },450);
-
-   return;
- }
-
- locked=true;
-
- button.classList.add("correct");
- successSound();
-
- feedback.className="feedback good";
- feedback.innerHTML=
-   "✓ <strong>Correct.</strong> Reading the situation properly.";
-
- showToast(
-   level===4 ?
-   "🏆 LEVEL MASTERED" :
-   "✓ CORRECT — NEXT LEVEL"
- );
-
- setTimeout(()=>{
-
-   level++;
-   locked=false;
-
-   if(level>=5){
-
-     level=0;
-     challenge++;
-
-     if(challenge>=3){
-
-       finishGame();
-       return;
-
-     }
-
-     showToast("🔥 NEXT CHALLENGE UNLOCKED");
-
-   }
-
-   render();
-
- },800);
-}
-
-
-/* ==========================================================
-   START
-   ========================================================== */
-
-document.getElementById("startBtn").addEventListener("click",()=>{
-
- initAudio();
- clickSound();
-
- startScreen.classList.add("hidden");
- gameScreen.classList.remove("hidden");
-
- challenge=0;
- level=0;
+            audioStatus.textContent =
+                "SOUND NOT SUPPORTED";
 
- render();
-
-});
+            return;
+        }
 
 
-/* ==========================================================
-   SOUND BUTTON
-   ========================================================== */
+        /*
+         * IMPORTANT:
+         *
+         * This function is called directly from
+         * the START button click.
+         *
+         * This satisfies browser autoplay
+         * restrictions.
+         */
+        audioStarted=true;
 
-document.getElementById("soundBtn").addEventListener("click",()=>{
+        audioContext =
+            new AudioContext();
 
- if(!audioCtx){
 
-   initAudio();
-   return;
+        /*
+         * Master bus
+         */
+        masterGain =
+            audioContext.createGain();
 
- }
 
- audioOn=!audioOn;
+        /*
+         * Separate ambience, music and effects
+         */
+        ambienceGain =
+            audioContext.createGain();
 
- if(audioOn){
+        musicGain =
+            audioContext.createGain();
 
-   audioCtx.resume();
+        fxGain =
+            audioContext.createGain();
 
-   if(master)
-     master.gain.setTargetAtTime(
-       .78,
-       audioCtx.currentTime,
-       .03
-     );
 
-   document.getElementById("soundBtn").textContent=
-     "🔊 SOUND ON";
+        /*
+         * MacBook-friendly volume.
+         *
+         * Previous version was extremely quiet.
+         */
+        masterGain.gain.value=.62;
 
- }else{
+        ambienceGain.gain.value=.36;
 
-   if(master)
-     master.gain.setTargetAtTime(
-       0,
-       audioCtx.currentTime,
-       .03
-     );
+        musicGain.gain.value=.30;
 
-   document.getElementById("soundBtn").textContent=
-     "🔇 SOUND OFF";
+        fxGain.gain.value=.72;
 
- }
 
-});
+        ambienceGain.connect(
+            masterGain
+        );
 
+        musicGain.connect(
+            masterGain
+        );
 
-/* ==========================================================
-   FINISH
-   ========================================================== */
+        fxGain.connect(
+            masterGain
+        );
 
-function finishGame(){
+        masterGain.connect(
+            audioContext.destination
+        );
 
- gameScreen.classList.add("hidden");
- finalScreen.classList.remove("hidden");
 
- progressBar.style.width="100%";
+        /*
+         * Resume immediately.
+         */
+        audioContext
+            .resume()
+            .catch(()=>{});
 
- completionSound();
 
- window.scrollTo({
-   top:0,
-   behavior:"smooth"
- });
+        const noiseBuffer =
+            createNoiseBuffer(
+                audioContext,
+                2
+            );
 
-}
 
+        /* =====================================================
+           🌲 NIGHT WIND
+           ===================================================== */
 
-/* ==========================================================
-   FINAL REVEAL
-   ========================================================== */
+        makeNoise(
+            audioContext,
+            noiseBuffer,
+            "lowpass",
+            850,
+            .17,
+            ambienceGain
+        );
 
-document.getElementById("revealBtn").addEventListener("click",()=>{
 
- const btn=document.getElementById("revealBtn");
- const box=document.getElementById("revealBox");
+        /* =====================================================
+           🌊 WATER
+           ===================================================== */
 
- btn.classList.add("hidden");
- box.classList.remove("hidden");
+        makeNoise(
+            audioContext,
+            noiseBuffer,
+            "bandpass",
+            1050,
+            .095,
+            ambienceGain
+        );
 
- completionSound();
 
- if(navigator.vibrate){
-   navigator.vibrate([30,50,70]);
- }
+        /*
+         * Lower distant water layer
+         */
+        makeNoise(
+            audioContext,
+            noiseBuffer,
+            "lowpass",
+            380,
+            .09,
+            ambienceGain
+        );
 
- showToast("❤️ SURPRISE UNLOCKED");
 
-});
+        /* =====================================================
+           🎸 ADVENTURE MUSIC
+           ===================================================== */
 
+        const chords = [
 
-/* ==========================================================
-   PREVENT ACCIDENTAL DOUBLE TAP / ZOOM
-   ========================================================== */
+            [196,246.94,293.66],
 
-document.addEventListener("dblclick",e=>{
- e.preventDefault();
-},{passive:false});
+            [174.61,220,261.63],
 
+            [146.83,220,293.66],
 
-/* ==========================================================
-   SAFARI AUDIO RESUME ON USER INTERACTION
-   ========================================================== */
+            [164.81,246.94,329.63]
 
-["touchstart","pointerdown","keydown"].forEach(evt=>{
+        ];
 
- document.addEventListener(evt,()=>{
+        let chordIndex=0;
 
-   if(
-     audioCtx &&
-     audioOn &&
-     audioCtx.state==="suspended"
-   ){
-     audioCtx.resume();
-   }
 
- },{passive:true});
+        function playChord(){
 
-});
+            const chord =
+                chords[
+                    chordIndex % chords.length
+                ];
+
+            chordIndex++;
+
+
+            chord.forEach(
+                (freq,i)=>{
+
+                    setTimeout(()=>{
+
+                        playTone(
+                            freq,
+                            .85,
+                            i===0 ? .095 : .065,
+                            "triangle",
+                            musicGain
+                        );
+
+                    },i*35);
+
+                }
+            );
+
+
+            /*
+             * Small melody note
+             */
+            const melody =
+                [392,440,493.88,440]
+                [(chordIndex-1)%4];
+
+
+            setTimeout(()=>{
+
+                playTone(
+                    melody,
+                    .32,
+                    .055,
+                    "sine",
+                    musicGain
+                );
+
+            },360);
+        }
+
+
+        playChord();
+
+
+        musicTimer =
+            setInterval(
+                playChord,
+                1500
+            );
+
+
+        /* =====================================================
+           🥁 LIGHT PERCUSSION
+           ===================================================== */
+
+        let beat=0;
+
+
+        function percussion(){
+
+            const step =
+                beat%8;
+
+
+            /*
+             * Kick
+             */
+            if(
+                step===0 ||
+                step===4
+            ){
+
+                playTone(
+                    105,
+                    .16,
+                    .12,
+                    "sine",
+                    musicGain,
+                    55
+                );
+
+            }
+
+
+            /*
+             * Light click
+             */
+            if(
+                step===2 ||
+                step===6
+            ){
+
+                playTone(
+                    720,
+                    .055,
+                    .035,
+                    "square",
+                    musicGain,
+                    520
+                );
+
+            }
+
+
+            beat++;
+        }
+
+
+        percussion();
+
+
+        percussionTimer =
+            setInterval(
+                percussion,
+                375
+            );
+
+
+        /* =====================================================
+           🔥 CAMPFIRE CRACKLE
+           ===================================================== */
+
+        function fireCrackle(){
+
+            if(!audioContext){
+                return;
+            }
+
+            const now =
+                audioContext.currentTime;
+
+
+            const osc =
+                audioContext.createOscillator();
+
+            const gain =
+                audioContext.createGain();
+
+
+            osc.type="triangle";
+
+            osc.frequency.value =
+                220+
+                Math.random()*500;
+
+
+            gain.gain.setValueAtTime(
+                .0001,
+                now
+            );
+
+            gain.gain
+                .exponentialRampToValueAtTime(
+                    .075,
+                    now+.012
+                );
+
+            gain.gain
+                .exponentialRampToValueAtTime(
+                    .0001,
+                    now+.11
+                );
+
+
+            osc.connect(gain);
+
+            gain.connect(
+                ambienceGain
+            );
+
+
+            osc.start(now);
+
+            osc.stop(
+                now+.13
+            );
+
+
+            fireTimer =
+                setTimeout(
+                    fireCrackle,
+                    1000+
+                    Math.random()*2300
+                );
+        }
+
+
+        fireCrackle();
+
+
+        audioStatus.textContent =
+            "● NIGHT AMBIENCE + MUSIC";
+
+
+        /*
+         * Safari / Chrome can occasionally create
+         * a suspended context.
+         */
+        audioContext
+            .resume()
+            .catch(()=>{});
+    }
+
+
+    /* =========================================================
+       SOUND EFFECTS
+       ========================================================= */
+
+    function sound(type){
+
+        if(!audioContext){
+            return;
+        }
+
+
+        /*
+         * 🔔 SUCCESS
+         */
+        if(type==="success"){
+
+            [
+                523.25,
+                659.25,
+                783.99
+            ].forEach(
+                (freq,i)=>{
+
+                    setTimeout(()=>{
+
+                        playTone(
+                            freq,
+                            .22,
+                            .20,
+                            "sine",
+                            fxGain
+                        );
+
+                    },i*90);
+
+                }
+            );
+
+            return;
+        }
+
+
+        /*
+         * ⚠️ WRONG
+         */
+        if(type==="wrong"){
+
+            playTone(
+                180,
+                .22,
+                .15,
+                "triangle",
+                fxGain,
+                105
+            );
+
+
+            setTimeout(()=>{
+
+                playTone(
+                    120,
+                    .16,
+                    .08,
+                    "sine",
+                    fxGain,
+                    90
+                );
+
+            },70);
+
+
+            return;
+        }
+
+
+        /*
+         * Normal button click
+         */
+        playTone(
+            420,
+            .08,
+            .085,
+            "sine",
+            fxGain,
+            300
+        );
+    }
+
+
+    /* =========================================================
+       AUDIO RECOVERY
+       ========================================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        ()=>{
+
+            if(
+                !document.hidden &&
+                audioContext &&
+                audioContext.state==="suspended"
+            ){
+
+                audioContext
+                    .resume()
+                    .catch(()=>{});
+
+            }
+
+        }
+    );
+
+
+    window.addEventListener(
+        "pageshow",
+        ()=>{
+
+            if(
+                audioContext &&
+                audioContext.state==="suspended"
+            ){
+
+                audioContext
+                    .resume()
+                    .catch(()=>{});
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Any later interaction can resume audio
+     * if the browser temporarily suspends it.
+     */
+    [
+        "pointerdown",
+        "touchstart",
+        "keydown"
+    ].forEach(
+        eventName=>{
+
+            document.addEventListener(
+                eventName,
+                ()=>{
+
+                    if(
+                        audioContext &&
+                        audioContext.state==="suspended"
+                    ){
+
+                        audioContext
+                            .resume()
+                            .catch(()=>{});
+
+                    }
+
+                },
+                {passive:true}
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       START GAME
+       ========================================================= */
+
+    startBtn.addEventListener(
+        "click",
+        ()=>{
+
+            /*
+             * FIRST THING:
+             * unlock audio from the physical
+             * user click.
+             */
+            startAudio();
+
+
+            startScreen
+                .classList
+                .add("hidden");
+
+
+            gameScreen
+                .classList
+                .remove("hidden");
+
+
+            sound("click");
+
+        }
+    );
+
+
+    /* =========================================================
+       CHALLENGE 1
+       ========================================================= */
+
+    let challenge1Complete=false;
+
+
+    document
+        .querySelectorAll(".waterChoice")
+        .forEach(
+            button=>{
+
+                button.addEventListener(
+                    "click",
+                    ()=>{
+
+                        if(
+                            challenge1Complete
+                        ){
+                            return;
+                        }
+
+
+                        const correct =
+                            button.dataset.correct ===
+                            "true";
+
+
+                        document
+                            .querySelectorAll(
+                                ".waterChoice"
+                            )
+                            .forEach(
+                                b=>{
+                                    b.classList.remove(
+                                        "correct",
+                                        "wrong"
+                                    );
+                                }
+                            );
+
+
+                        if(correct){
+
+                            challenge1Complete=true;
+
+                            button.classList.add(
+                                "correct"
+                            );
+
+
+                            feedback1.innerHTML =
+                                "✓ Good call. A steady, predictable current gives you more control and fewer surprises.";
+
+
+                            sound("success");
+
+
+                            next1
+                                .classList
+                                .remove("hidden");
+
+                        }else{
+
+                            button.classList.add(
+                                "wrong"
+                            );
+
+
+                            feedback1.innerHTML =
+                                "Not quite. Look at the water again. You want predictable movement rather than turbulence or reverse flow.";
+
+
+                            sound("wrong");
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    next1.addEventListener(
+        "click",
+        ()=>{
+
+            challenge1
+                .classList
+                .add("hidden");
+
+            challenge2
+                .classList
+                .remove("hidden");
+
+
+            progressFill.style.width =
+                "66.666%";
+
+
+            sound("click");
+
+        }
+    );
+
+
+    /* =========================================================
+       CHALLENGE 2
+       ========================================================= */
+
+    let selectedGear=null;
+    let challenge2Complete=false;
+
+
+    shelterSlider.addEventListener(
+        "input",
+        ()=>{
+
+            shelterValue.textContent =
+                shelterSlider.value+
+                "%";
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(".gearChoice")
+        .forEach(
+            button=>{
+
+                button.addEventListener(
+                    "click",
+                    ()=>{
+
+                        document
+                            .querySelectorAll(
+                                ".gearChoice"
+                            )
+                            .forEach(
+                                b=>{
+                                    b.classList.remove(
+                                        "correct",
+                                        "wrong"
+                                    );
+                                }
+                            );
+
+
+                        selectedGear =
+                            button.dataset.value;
+
+
+                        button.classList.add(
+                            "correct"
+                        );
+
+
+                        checkChallenge2();
+
+                    }
+                );
+
+            }
+        );
+
+
+    function checkChallenge2(){
+
+        const shelter =
+            Number(
+                shelterSlider.value
+            );
+
+
+        /*
+         * Correct setup:
+         *
+         * Stability + moderate/high
+         * wind protection.
+         */
+        if(
+            selectedGear==="stability" &&
+            shelter>=60 &&
+            shelter<=90
+        ){
+
+            challenge2Complete=true;
+
+
+            feedback2.innerHTML =
+                "✓ Exactly. Secure the shelter properly without overbuilding. Stability beats comfort when the weather turns.";
+
+
+            sound("success");
+
+
+            next2
+                .classList
+                .remove("hidden");
+
+        }else{
+
+            feedback2.innerHTML =
+                "Think like you're actually setting up camp. Secure the important equipment and give yourself enough wind protection.";
+
+
+            sound("click");
+        }
+    }
+
+
+    next2.addEventListener(
+        "click",
+        ()=>{
+
+            challenge2
+                .classList
+                .add("hidden");
+
+
+            challenge3
+                .classList
+                .remove("hidden");
+
+
+            progressFill.style.width =
+                "100%";
+
+
+            sound("click");
+
+
+            /*
+             * Compass movement.
+             */
+            let angle=-12;
+
+            let direction=1;
+
+
+            const compassTimer =
+                setInterval(
+                    ()=>{
+
+                        angle +=
+                            direction*2;
+
+
+                        if(
+                            angle>12 ||
+                            angle<-12
+                        ){
+
+                            direction*=-1;
+
+                        }
+
+
+                        needle.style.transform =
+                            "translate(-50%,-50%) rotate("+
+                            angle+
+                            "deg)";
+
+                    },
+                    180
+                );
+
+
+            setTimeout(
+                ()=>{
+                    clearInterval(
+                        compassTimer
+                    );
+                },
+                3500
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       CHALLENGE 3
+       ========================================================= */
+
+    let challenge3Complete=false;
+
+
+    document
+        .querySelectorAll(".directionChoice")
+        .forEach(
+            button=>{
+
+                button.addEventListener(
+                    "click",
+                    ()=>{
+
+                        if(
+                            challenge3Complete
+                        ){
+                            return;
+                        }
+
+
+                        const direction =
+                            button.dataset.direction;
+
+
+                        document
+                            .querySelectorAll(
+                                ".directionChoice"
+                            )
+                            .forEach(
+                                b=>{
+                                    b.classList.remove(
+                                        "correct",
+                                        "wrong"
+                                    );
+                                }
+                            );
+
+
+                        if(direction==="SE"){
+
+                            challenge3Complete=true;
+
+
+                            button.classList.add(
+                                "correct"
+                            );
+
+
+                            needle.style.transform =
+                                "translate(-50%,-50%) rotate(135deg)";
+
+
+                            feedback3.innerHTML =
+                                "✓ Bearing locked. South-east takes you back toward the campsite. You can see the warm glow of the fire through the trees.";
+
+
+                            sound("success");
+
+
+                            finishBtn
+                                .classList
+                                .remove("hidden");
+
+                        }else{
+
+                            button.classList.add(
+                                "wrong"
+                            );
+
+
+                            feedback3.innerHTML =
+                                "Wrong bearing. Check the clue again: the campsite is south-east. Don't let the darkness throw you off.";
+
+
+                            sound("wrong");
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       FINISH
+       ========================================================= */
+
+    finishBtn.addEventListener(
+        "click",
+        ()=>{
+
+            sound("success");
+
+
+            gameScreen
+                .classList
+                .add("hidden");
+
+
+            finalScreen
+                .classList
+                .remove("hidden");
+
+
+            /*
+             * Lower the ambience slightly for
+             * the final birthday reveal.
+             */
+            if(masterGain){
+
+                masterGain.gain
+                    .cancelScheduledValues(
+                        audioContext.currentTime
+                    );
+
+
+                masterGain.gain
+                    .setTargetAtTime(
+                        .48,
+                        audioContext.currentTime,
+                        .5
+                    );
+
+            }
+
+        }
+    );
+
+
+})();
 
 </script>
 
