@@ -1,29 +1,67 @@
 /* =========================================================
-   GLOBAL HELPERS
+   HOOKED IN 30
+   MISSION 03 — THE FINAL EXPEDITION
+   GAME.JS
+   Matched to the supplied index.html
 ========================================================= */
 
-const $ = id => document.getElementById(id);
+"use strict";
 
-function show(id){
-  document.querySelectorAll(".screen").forEach(screen=>{
-    screen.classList.remove("active");
-  });
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
 
-  $(id).classList.add("active");
+const $ = (id) => document.getElementById(id);
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+const $$ = (selector) => {
+    return Array.from(document.querySelectorAll(selector));
+};
+
+function showScreen(id) {
+    $$(".game-screen").forEach((screen) => {
+        screen.classList.remove("active");
+    });
+
+    const screen = $(id);
+
+    if (screen) {
+        screen.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function setText(id, value) {
+    const element = $(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+function addXP(amount) {
+    game.xp += amount;
+    setText("xp-value", game.xp);
 }
 
 
 /* =========================================================
-   MISSION INTRO
+   GLOBAL GAME STATE
 ========================================================= */
 
-$("begin").onclick = ()=>{
-  show("game1");
+const game = {
+    xp: 0,
+
+    game1XP: 0,
+    game2XP: 0,
+    game3XP: 0,
+
+    game1Complete: false,
+    game2Complete: false,
+    game3Complete: false
 };
 
 
@@ -31,1871 +69,2164 @@ $("begin").onclick = ()=>{
    GAME 01 — READ THE WATER
 ========================================================= */
 
-const rounds = [
+const waterRounds = [
+    {
+        number: 1,
+        title: "ROUND 1 — FIND THE FEEDING ZONE",
+        difficulty: "EASY",
+        correct: "B",
+        xp: 100,
 
-  {
-    title:"ROUND 1 — FIND THE FEEDING ZONE",
-    diff:"EASY",
-    xp:100,
-    correct:"B",
-
-    scan:{
-      current:"→ Moderate",
-      depth:"4–6 m",
-      temp:"25.8°C • OPTIMAL",
-      surface:"HIGH",
-      bait:"🐟 HIGH",
-      structure:"Rocky / submerged rocks"
+        scanner: {
+            current: "MODERATE",
+            depth: "3.2 M",
+            temp: "24°C",
+            surface: "ACTIVE",
+            bait: "HIGH",
+            structure: "LOW"
+        }
     },
 
-    choices:[
-      [
-        "A",
-        "CALM WATER",
-        [
-          "Smooth surface",
-          "No activity"
-        ],
-        "calm"
-      ],
+    {
+        number: 2,
+        title: "ROUND 2 — READ THE CURRENT",
+        difficulty: "MEDIUM",
+        correct: "B",
+        xp: 150,
 
-      [
-        "B",
-        "SURFACE ACTIVITY",
-        [
-          "Ripples on surface",
-          "Birds feeding",
-          "Baitfish around"
-        ],
-        "feed"
-      ],
-
-      [
-        "C",
-        "STRONG CURRENT",
-        [
-          "Heavy current",
-          "Waves crashing"
-        ],
-        "surf"
-      ]
-    ]
-  },
-
-
-  {
-    title:"ROUND 2 — READ THE CURRENT",
-    diff:"MEDIUM",
-    xp:150,
-    correct:"B",
-
-    scan:{
-      current:"→ Moderate → Strong",
-      depth:"5–6 m",
-      temp:"24.9°C",
-      surface:"MODERATE",
-      bait:"🐟 MODERATE",
-      structure:"HIGH"
+        scanner: {
+            current: "BREAK",
+            depth: "4.8 M",
+            temp: "23°C",
+            surface: "CALM",
+            bait: "MEDIUM",
+            structure: "HIGH"
+        }
     },
 
-    choices:[
-      [
-        "A",
-        "FAST CURRENT",
-        [
-          "Water moving fast",
-          "Hard to hold"
-        ],
-        "fast"
-      ],
+    {
+        number: 3,
+        title: "ROUND 3 — THE FINAL READ",
+        difficulty: "HARD",
+        correct: "B",
+        xp: 300,
 
-      [
-        "B",
-        "CURRENT BREAK",
-        [
-          "Fast meets slow",
-          "Fish can rest",
-          "Food flows in"
-        ],
-        "break"
-      ],
-
-      [
-        "C",
-        "DEAD WATER",
-        [
-          "Very little flow",
-          "Less food"
-        ],
-        "dead"
-      ]
-    ]
-  },
-
-
-  {
-    title:"ROUND 3 — THE FINAL READ",
-    diff:"HARD",
-    xp:300,
-    correct:"B",
-
-    scan:{
-      current:"→ Moderate",
-      depth:"6–9 m",
-      temp:"24.3°C",
-      surface:"LOW",
-      bait:"🐟 MODERATE",
-      structure:"HIGH"
-    },
-
-    choices:[
-      [
-        "A",
-        "OPEN WATER",
-        [
-          "Deep and dark",
-          "No structure"
-        ],
-        "open"
-      ],
-
-      [
-        "B",
-        "ROCKY EDGE",
-        [
-          "Structure nearby",
-          "Subtle current",
-          "Occasional ripples"
-        ],
-        "rocky"
-      ],
-
-      [
-        "C",
-        "HEAVY SURF",
-        [
-          "Too much noise",
-          "Chaotic water"
-        ],
-        "heavy"
-      ]
-    ]
-  }
-
+        scanner: {
+            current: "SUBTLE",
+            depth: "6.1 M",
+            temp: "22°C",
+            surface: "RIPPLED",
+            bait: "MEDIUM",
+            structure: "HIGH"
+        }
+    }
 ];
 
-
-let totalWaterXP = 0;
-
-let g1 = {
-  started:false,
-  round:0,
-  choice:null,
-  charges:3,
-  scanned:false,
-  scores:[0,0,0],
-  timer:null,
-  time:0,
-  done:false
+const game1 = {
+    started: false,
+    round: 0,
+    selectedChoice: null,
+    scannerCharges: 3,
+    scanned: false,
+    roundXP: [0, 0, 0],
+    awaitingResult: false
 };
 
 
 /* =========================================================
-   WATER SCENE
+   START EXPEDITION
 ========================================================= */
 
-function scene(type,night){
-
-  let x = "";
-
-  if(type === "feed"){
-    x += `
-      <i class="bird b1">⌁</i>
-      <i class="bird b2">⌁</i>
-      <i class="bird b3">⌁</i>
-      <i class="ripple ri1"></i>
-      <i class="ripple ri2"></i>
-    `;
-  }
-
-  if([
-    "surf",
-    "fast",
-    "break",
-    "rocky",
-    "heavy"
-  ].includes(type)){
-    x += `
-      <i class="rock r1"></i>
-      <i class="rock r2"></i>
-    `;
-  }
-
-  if(type === "break" || type === "rocky"){
-    x += `
-      <i class="ripple ri1"></i>
-      <i class="ripple ri2"></i>
-    `;
-  }
-
-  if(night){
-    x += `<i class="moon"></i>`;
-  }
-
-  return `
-    <div class="scene">
-      ${x}
-    </div>
-  `;
+function beginExpedition() {
+    showScreen("screen-game1-intro");
 }
 
 
 /* =========================================================
-   RENDER WATER ROUNDS
+   START GAME 01
 ========================================================= */
 
-function renderRounds(){
-
-  $("rounds").innerHTML = rounds.map((r,i)=>{
-
-    const active =
-      g1.started &&
-      i === g1.round;
-
-    return `
-      <article class="round ${active ? "" : "locked"}">
-
-        <div class="roundHead">
-
-          <span>
-            ${r.title}
-          </span>
-
-          <small>
-            ${r.diff}
-          </small>
-
-        </div>
-
-
-        <div class="roundMeta">
-
-          <span>
-            WHERE WOULD YOU CAST?
-          </span>
-
-          <span>
-            CAST ${i+1} / 3
-          </span>
-
-        </div>
-
-
-        <div
-          style="
-            text-align:center;
-            font-size:9px;
-            font-weight:900;
-            margin:10px 0;
-          "
-        >
-          CHOOSE THE BEST SPOT
-        </div>
-
-
-        <div class="choices">
-
-          ${r.choices.map(c=>`
-
-            <button
-              class="choice"
-              data-r="${i}"
-              data-c="${c[0]}"
-              ${active ? "" : "disabled"}
-            >
-
-              <b
-                style="
-                  position:absolute;
-                  z-index:5;
-                  margin:6px;
-                  width:21px;
-                  height:21px;
-                  border-radius:50%;
-                  background:#000b;
-                  text-align:center;
-                  padding-top:3px;
-                  font-size:9px;
-                "
-              >
-                ${c[0]}
-              </b>
-
-              ${scene(c[3],i===2)}
-
-              <div class="choiceText">
-
-                <b>
-                  ${c[1]}
-                </b>
-
-                <ul>
-                  ${c[2]
-                    .map(v=>`<li>${v}</li>`)
-                    .join("")
-                  }
-                </ul>
-
-              </div>
-
-            </button>
-
-          `).join("")}
-
-        </div>
-
-
-        <div class="roundBottom">
-
-          <div class="look">
-            LOOK FOR:<br>
-            ⌁ CURRENT • ◇ STRUCTURE
-            • 🐟 BAIT • BIRDS
-          </div>
-
-          <button
-            class="cast"
-            data-cast="${i}"
-            disabled
-          >
-            CAST HERE
-          </button>
-
-        </div>
-
-
-        <div
-          class="result"
-          id="result${i}"
-        >
-          Awaiting your read...
-        </div>
-
-      </article>
-    `;
-
-  }).join("");
-
-
-  document.querySelectorAll("[data-c]").forEach(button=>{
-    button.onclick = ()=>{
-      selectWater(
-        Number(button.dataset.r),
-        button.dataset.c
-      );
-    };
-  });
-
-
-  document.querySelectorAll("[data-cast]").forEach(button=>{
-    button.onclick = ()=>{
-      castWater(
-        Number(button.dataset.cast)
-      );
-    };
-  });
-
+function startGame1() {
+    showScreen("screen-game1-how");
 }
 
 
 /* =========================================================
-   SCANNER
+   READY FOR GAME 01
 ========================================================= */
 
-function updateScanner(data=null){
+function readyGame1() {
+    game1.started = true;
+    game1.round = 0;
+    game1.selectedChoice = null;
+    game1.scannerCharges = 3;
+    game1.scanned = false;
+    game1.roundXP = [0, 0, 0];
+    game1.awaitingResult = false;
 
-  const ids = [
-    "scanCurrent",
-    "scanDepth",
-    "scanTemp",
-    "scanSurface",
-    "scanBait",
-    "scanStructure"
-  ];
+    renderWaterRound();
 
-  ids.forEach((id,i)=>{
-    $(id).textContent =
-      data
-        ? Object.values(data)[i]
-        : "—";
-  });
-
-
-  document.querySelectorAll(".charge").forEach((charge,i)=>{
-    charge.classList.toggle(
-      "off",
-      i >= g1.charges
-    );
-  });
-
-
-  $("scanBtn").disabled =
-    !g1.started ||
-    g1.scanned ||
-    g1.charges < 1;
-
-
-  if(g1.scanned){
-
-    $("scanBtn").textContent =
-      "SCANNER USED THIS ROUND";
-
-  }
-  else if(g1.charges){
-
-    $("scanBtn").textContent =
-      "USE SCANNER — 1 CHARGE";
-
-  }
-  else{
-
-    $("scanBtn").textContent =
-      "NO CHARGES LEFT";
-
-  }
-
+    showScreen("screen-game1");
 }
 
 
 /* =========================================================
-   START WATER
+   RENDER WATER ROUND
 ========================================================= */
 
-function startWater(){
+function renderWaterRound() {
+    const round = waterRounds[game1.round];
 
-  if(g1.started) return;
-
-  g1.started = true;
-  g1.round = 0;
-  g1.charges = 3;
-  g1.scores = [0,0,0];
-  g1.done = false;
-
-  $("startWater").disabled = true;
-  $("startWater2").disabled = true;
-
-  activateRound(0);
-}
-
-
-/* =========================================================
-   ACTIVATE ROUND
-========================================================= */
-
-function activateRound(i){
-
-  clearInterval(g1.timer);
-
-  g1.round = i;
-  g1.choice = null;
-  g1.scanned = false;
-
-  g1.time =
-    rounds[i].diff === "EASY"
-      ? 30
-      : rounds[i].diff === "MEDIUM"
-        ? 40
-        : 45;
-
-  renderRounds();
-  updateScanner();
-
-
-  g1.timer = setInterval(()=>{
-
-    g1.time--;
-
-    if(g1.time <= 0){
-
-      clearInterval(g1.timer);
-
-      resolveWater(
-        i,
-        null,
-        true
-      );
-
+    if (!round) {
+        finishGame1();
+        return;
     }
 
-  },1000);
+    game1.selectedChoice = null;
+    game1.scanned = false;
+    game1.awaitingResult = false;
 
+    setText("round-number", round.number);
+    setText("round-difficulty", round.difficulty);
+    setText("round-title", round.title);
+    setText(
+        "cast-count",
+        `CAST ${round.number} / 3`
+    );
+
+    setText(
+        "cast-status",
+        "Awaiting your read..."
+    );
+
+    setText(
+        "scanner-current",
+        "—"
+    );
+
+    setText(
+        "scanner-depth",
+        "—"
+    );
+
+    setText(
+        "scanner-temp",
+        "—"
+    );
+
+    setText(
+        "scanner-surface",
+        "—"
+    );
+
+    setText(
+        "scanner-bait",
+        "—"
+    );
+
+    setText(
+        "scanner-structure",
+        "—"
+    );
+
+    updateScannerCharges();
+
+    const castButton = $("cast-btn");
+
+    if (castButton) {
+        castButton.disabled = true;
+    }
+
+    $$(".choice-btn").forEach((button) => {
+        button.disabled = false;
+        button.classList.remove(
+            "selected",
+            "correct",
+            "wrong"
+        );
+    });
 }
 
 
 /* =========================================================
-   SELECT WATER
+   WATER CHOICE
 ========================================================= */
 
-function selectWater(i,c){
+function selectWaterChoice(choice) {
 
-  if(i !== g1.round) return;
+    if (
+        !game1.started ||
+        game1.awaitingResult
+    ) {
+        return;
+    }
 
-  g1.choice = c;
+    game1.selectedChoice = choice;
 
-  document
-    .querySelectorAll(`[data-r="${i}"]`)
-    .forEach(button=>{
-      button.classList.toggle(
-        "selected",
-        button.dataset.c === c
-      );
+    $$(".choice-btn").forEach((button) => {
+
+        button.classList.remove("selected");
+
+        if (
+            button.dataset.choice === choice
+        ) {
+            button.classList.add("selected");
+        }
     });
 
+    const castButton = $("cast-btn");
 
-  const cast =
-    document.querySelector(
-      `[data-cast="${i}"]`
+    if (castButton) {
+        castButton.disabled = false;
+    }
+
+    setText(
+        "cast-status",
+        `You selected ${choice}. Cast when ready.`
     );
-
-  cast.disabled = false;
-
-  cast.textContent =
-    `CAST ${c} HERE`;
-
 }
 
 
 /* =========================================================
-   RESOLVE WATER
+   USE SCANNER
 ========================================================= */
 
-function resolveWater(
-  i,
-  c,
-  timeout=false
-){
+function useScanner() {
 
-  if(i !== g1.round || g1.done){
-    return;
-  }
+    if (
+        !game1.started ||
+        game1.awaitingResult ||
+        game1.scanned ||
+        game1.scannerCharges <= 0
+    ) {
+        return;
+    }
 
-  const r = rounds[i];
+    const round = waterRounds[game1.round];
 
-  const correct =
-    c === r.correct;
+    if (!round) {
+        return;
+    }
 
-  g1.scores[i] =
-    correct
-      ? r.xp
-      : 0;
+    game1.scannerCharges--;
+    game1.scanned = true;
 
-
-  totalWaterXP =
-    g1.scores.reduce(
-      (a,b)=>a+b,
-      0
+    setText(
+        "scanner-current",
+        round.scanner.current
     );
 
-
-  $("g1xpTop").textContent =
-    totalWaterXP;
-
-  $("g1score").textContent =
-    `${totalWaterXP} / 550`;
-
-
-  $(`s${i+1}`).textContent =
-    correct
-      ? "✓"
-      : "×";
-
-
-  const result =
-    $(`result${i}`);
-
-  result.className =
-    "result " +
-    (
-      correct
-        ? "ok"
-        : "bad"
+    setText(
+        "scanner-depth",
+        round.scanner.depth
     );
 
+    setText(
+        "scanner-temp",
+        round.scanner.temp
+    );
 
-  result.innerHTML =
-    correct
-      ? `
-        <b>
-          ${
-            i === 2
-              ? "PERFECT READ!"
-              : "GOOD READ!"
-          }
-        </b>
+    setText(
+        "scanner-surface",
+        round.scanner.surface
+    );
 
-        <span>
-          +${r.xp} XP
-        </span>
-      `
-      : `
-        <b>
-          ${
-            timeout
-              ? "TIME'S UP"
-              : "NO BITE."
-          }
-        </b>
+    setText(
+        "scanner-bait",
+        round.scanner.bait
+    );
 
-        <span>
-          +0 XP
-        </span>
-      `;
+    setText(
+        "scanner-structure",
+        round.scanner.structure
+    );
+
+    updateScannerCharges();
+}
 
 
-  document
-    .querySelectorAll(`[data-r="${i}"]`)
-    .forEach(button=>{
+/* =========================================================
+   UPDATE SCANNER CHARGES
+========================================================= */
 
-      button.disabled = true;
+function updateScannerCharges() {
 
-      if(
-        correct &&
-        button.dataset.c === r.correct
-      ){
-        button.classList.add("correct");
-      }
+    const display = $("scanner-charge-display");
 
-      if(
-        !correct &&
-        button.dataset.c === c
-      ){
-        button.classList.add("wrong");
-      }
+    if (!display) {
+        return;
+    }
 
+    const charges = display.querySelectorAll("span");
+
+    charges.forEach((charge, index) => {
+
+        if (index < game1.scannerCharges) {
+            charge.style.opacity = "1";
+        } else {
+            charge.style.opacity = "0.2";
+        }
+    });
+}
+
+
+/* =========================================================
+   CAST WATER
+========================================================= */
+
+function castWater() {
+
+    if (
+        !game1.started ||
+        game1.awaitingResult ||
+        !game1.selectedChoice
+    ) {
+        return;
+    }
+
+    game1.awaitingResult = true;
+
+    const round = waterRounds[game1.round];
+
+    const selected = game1.selectedChoice;
+
+    const correct =
+        selected === round.correct;
+
+    const earnedXP =
+        correct
+            ? round.xp
+            : 0;
+
+    game1.roundXP[game1.round] = earnedXP;
+
+    if (correct) {
+        game1.game1XP += earnedXP;
+        addXP(earnedXP);
+    }
+
+    $$(".choice-btn").forEach((button) => {
+
+        button.disabled = true;
+
+        if (
+            button.dataset.choice === round.correct
+        ) {
+            button.classList.add("correct");
+        }
+
+        if (
+            button.dataset.choice === selected &&
+            !correct
+        ) {
+            button.classList.add("wrong");
+        }
     });
 
-
-  if(correct){
-
-    $("goodTitle").textContent =
-      i === 2
-        ? "PERFECT READ!"
-        : "GOOD READ!";
-
-
-    $("goodText").textContent =
-      i === 1
-        ? "You understood the current break."
-        : i === 2
-          ? "You found the right holding spot."
-          : "You found the feeding zone.";
-
-
-    $("goodXP").textContent =
-      `+${r.xp} XP`;
-
-  }
-  else{
-
-    $("badTitle").textContent =
-      timeout
-        ? "TIME'S UP."
-        : "NO BITE.";
-
-
-    $("badText").textContent =
-      timeout
-        ? "Trust your instincts next time."
-        : "Read the clues and look for the strongest signs.";
-
-  }
-
-
-  updateScanner();
-
-
-  setTimeout(()=>{
-
-    if(i < 2){
-
-      activateRound(i+1);
-
-    }
-    else{
-
-      finishWater();
-
-    }
-
-  },950);
-
-}
-
-
-/* =========================================================
-   CAST
-========================================================= */
-
-function castWater(i){
-
-  if(g1.choice){
-
-    clearInterval(g1.timer);
-
-    resolveWater(
-      i,
-      g1.choice
+    setText(
+        "cast-status",
+        correct
+            ? "Perfect read. You found the right spot."
+            : "No bite. Read the clues and trust your instincts."
     );
 
-  }
-
-}
-
-
-/* =========================================================
-   FINISH WATER
-========================================================= */
-
-function finishWater(){
-
-  g1.done = true;
-
-  updateScanner();
-
-
-  $("g1message").innerHTML =
-    totalWaterXP === 550
-      ? `
-        You didn't just see the water.
-        <br>
-        <b>
-          You understood it.
-        </b>
-      `
-      : `
-        Water reading complete.
-        <br>
-        <b>
-          Instincts confirmed.
-        </b>
-      `;
-
-
-  $("toG2").disabled = false;
-
-  renderRounds();
-
-}
-
-
-/* =========================================================
-   WATER BUTTONS
-========================================================= */
-
-$("startWater").onclick =
-  startWater;
-
-$("startWater2").onclick =
-  startWater;
-
-
-$("scanBtn").onclick = ()=>{
-
-  if(
-    g1.charges > 0 &&
-    !g1.scanned
-  ){
-
-    g1.charges--;
-    g1.scanned = true;
-
-    updateScanner(
-      rounds[g1.round].scan
+    setText(
+        "game1-result-icon",
+        correct ? "🎣" : "🌊"
     );
 
-  }
+    setText(
+        "game1-result-title",
+        correct
+            ? "PERFECT READ!"
+            : "NO BITE."
+    );
 
-};
+    setText(
+        "game1-result-text",
+        correct
+            ? "You found the right spot."
+            : "Read the clues and trust your instincts."
+    );
+
+    setText(
+        "game1-round-xp",
+        earnedXP
+    );
+
+    const nextButton = $("game1-next-btn");
+
+    if (nextButton) {
+
+        if (game1.round < 2) {
+            nextButton.textContent =
+                "NEXT ROUND";
+        } else {
+            nextButton.textContent =
+                "VIEW WATER READING SCORE";
+        }
+    }
+
+    setTimeout(() => {
+        showScreen("screen-game1-result");
+    }, 500);
+}
 
 
-$("toG2").onclick = ()=>{
+/* =========================================================
+   NEXT WATER ROUND
+========================================================= */
 
-  show("game2");
+function nextWaterRound() {
 
-  startG2();
+    if (!game1.awaitingResult) {
+        return;
+    }
 
-};
+    if (game1.round < 2) {
+
+        game1.round++;
+        renderWaterRound();
+
+        showScreen("screen-game1");
+
+    } else {
+
+        finishGame1();
+    }
+}
 
 
-renderRounds();
-updateScanner();
+/* =========================================================
+   FINISH GAME 01
+========================================================= */
+
+function finishGame1() {
+
+    game1.game1XP =
+        game1.roundXP.reduce(
+            (total, value) => total + value,
+            0
+        );
+
+    game.game1XP = game1.game1XP;
+
+    game1.game1XP =
+        Math.min(game1.game1XP, 550);
+
+    game1.game1XP =
+        game1.roundXP[0] +
+        game1.roundXP[1] +
+        game1.roundXP[2];
+
+    game.game1Complete = true;
+
+    setText(
+        "round1-score",
+        `+${game1.roundXP[0]} XP`
+    );
+
+    setText(
+        "round2-score",
+        `+${game1.roundXP[1]} XP`
+    );
+
+    setText(
+        "round3-score",
+        `+${game1.roundXP[2]} XP`
+    );
+
+    setText(
+        "game1-total-xp",
+        game1.game1XP
+    );
+
+    showScreen("screen-game1-complete");
+}
 
 
 /* =========================================================
    GAME 02 — THE FINAL CATCH
 ========================================================= */
 
-const phases = [
+const game2 = {
+    started: false,
+    completed: false,
 
-  [
-    "1. THE BITE",
-    "The fish is interested... Be ready!"
-  ],
+    phase: 0,
 
-  [
-    "2. THE RUN",
-    "It's making a run! Don't panic."
-  ],
+    lineHealth: 100,
+    stamina: 100,
 
-  [
-    "3. THE FIGHT",
-    "Keep the tension steady!"
-  ],
+    tension: 50,
 
-  [
-    "4. WEAR IT DOWN",
-    "It's getting tired. Don't give up!"
-  ],
+    holding: false,
 
-  [
-    "5. THE LANDING",
-    "One last push. You've got this!"
-  ]
+    timer: null,
 
+    lastTime: 0
+};
+
+const game2Phases = [
+    {
+        name: "1. THE BITE",
+        message: "The fish is interested... Be ready!"
+    },
+
+    {
+        name: "2. THE RUN",
+        message: "It's making a run! Don't panic."
+    },
+
+    {
+        name: "3. THE FIGHT",
+        message: "Keep the tension steady!"
+    },
+
+    {
+        name: "4. WEAR DOWN",
+        message: "It's getting tired. Don't force it."
+    },
+
+    {
+        name: "5. THE LANDING",
+        message: "One last push. Land the legendary catch!"
+    }
 ];
 
 
-let g2 = {
-  started:false,
-  phase:0,
-  line:100,
-  stamina:100,
-  pos:50,
-  hold:false,
-  ticks:0,
-  timer:null
-};
-
-
 /* =========================================================
-   START GAME 2
+   START GAME 02
 ========================================================= */
 
-function startG2(){
+function startGame2() {
 
-  if(g2.started) return;
+    game2.started = true;
+    game2.completed = false;
 
-  g2.started = true;
-  g2.phase = 0;
-  g2.line = 100;
-  g2.stamina = 100;
-  g2.pos = 50;
-  g2.ticks = 0;
+    game2.phase = 0;
+    game2.lineHealth = 100;
+    game2.stamina = 100;
+    game2.tension = 50;
+    game2.holding = false;
 
-  $("reel").disabled = false;
-  $("release").disabled = false;
+    clearInterval(game2.timer);
 
-  $("catch").classList.add("hidden");
+    updateGame2();
 
-  updateG2();
-  g2Loop();
+    showScreen("screen-game2");
 
+    game2.timer =
+        setInterval(
+            game2Loop,
+            100
+        );
 }
 
 
 /* =========================================================
-   UPDATE GAME 2
+   GAME 02 LOOP
 ========================================================= */
 
-function updateG2(){
+function game2Loop() {
 
-  $("phaseTitle").textContent =
-    phases[g2.phase][0];
+    if (
+        !game2.started ||
+        game2.completed
+    ) {
+        return;
+    }
 
-  $("phaseDesc").textContent =
-    phases[g2.phase][1];
+    if (game2.holding) {
 
+        game2.tension += 1.6;
+        game2.stamina -= 0.85;
 
-  $("marker").style.left =
-    Math.max(
-      2,
-      Math.min(
-        98,
-        g2.pos
-      )
-    ) + "%";
+    } else {
 
+        game2.tension -= 1.0;
+        game2.stamina += 0.05;
+    }
 
-  $("lineText").textContent =
-    Math.round(g2.line) + "%";
-
-  $("lineSide").textContent =
-    Math.round(g2.line) + "%";
-
-
-  $("lineBar").style.width =
-    Math.max(
-      0,
-      g2.line
-    ) + "%";
-
-
-  $("stamina").style.width =
-    Math.max(
-      0,
-      g2.stamina
-    ) + "%";
-
-
-  for(
-    let i=1;
-    i<=5;
-    i++
-  ){
-
-    $("p"+i).className =
-      "pbox " +
-
-      (
-        i-1 < g2.phase
-          ? "done "
-          : ""
-      ) +
-
-      (
-        i-1 === g2.phase
-          ? "active"
-          : ""
-      );
-
-  }
-
-}
-
-
-/* =========================================================
-   GAME 2 LOOP
-========================================================= */
-
-function g2Loop(){
-
-  clearInterval(g2.timer);
-
-  g2.timer =
-    setInterval(()=>{
-
-      if(!g2.started) return;
-
-
-      g2.pos +=
-        Math.sin(Date.now()/400) * 2.8 +
-
-        (
-          g2.hold
-            ? (50-g2.pos)*.18
-            : 0
-        );
-
-
-      g2.pos =
+    game2.tension =
         Math.max(
-          2,
-          Math.min(
-            98,
-            g2.pos
-          )
+            0,
+            Math.min(
+                100,
+                game2.tension
+            )
         );
 
-
-      const perfect =
-        g2.pos >= 43 &&
-        g2.pos <= 57;
-
-
-      if(g2.hold){
-
-        if(perfect){
-
-          g2.stamina -= 0.75;
-
-        }
-        else{
-
-          g2.line -= 0.8;
-
-        }
-
-      }
-      else{
-
-        g2.line +=
-          Math.random() * 0.35;
-
-      }
-
-
-      g2.line =
+    game2.stamina =
         Math.max(
-          0,
-          Math.min(
-            100,
-            g2.line
-          )
+            0,
+            Math.min(
+                100,
+                game2.stamina
+            )
         );
 
 
-      g2.stamina =
+    /*
+     * Ideal tension is 40–60.
+     */
+
+    if (
+        game2.tension >= 40 &&
+        game2.tension <= 60
+    ) {
+
+        game2.stamina -= 0.45;
+
+    } else if (
+        game2.tension < 20 ||
+        game2.tension > 80
+    ) {
+
+        game2.lineHealth -= 1.2;
+
+    } else {
+
+        game2.lineHealth -= 0.15;
+    }
+
+
+    /*
+     * Small natural movement.
+     */
+
+    if (!game2.holding) {
+
+        game2.tension +=
+            Math.sin(Date.now() / 400) * 0.5;
+    }
+
+
+    game2.lineHealth =
         Math.max(
-          0,
-          g2.stamina
+            0,
+            Math.min(
+                100,
+                game2.lineHealth
+            )
         );
 
 
-      g2.ticks++;
+    /*
+     * Progress through the five phases.
+     */
+
+    const progress =
+        100 - game2.stamina;
+
+    let newPhase = 0;
+
+    if (progress >= 80) {
+        newPhase = 4;
+    } else if (progress >= 60) {
+        newPhase = 3;
+    } else if (progress >= 40) {
+        newPhase = 2;
+    } else if (progress >= 20) {
+        newPhase = 1;
+    }
 
 
-      if(g2.stamina <= 0){
+    if (newPhase !== game2.phase) {
+        game2.phase = newPhase;
+    }
 
-        finishG2();
+
+    /*
+     * Fish is lost.
+     */
+
+    if (game2.lineHealth <= 0) {
+
+        clearInterval(game2.timer);
+
+        game2.started = false;
+
+        game2.lineHealth = 100;
+        game2.stamina = 100;
+
+        setText(
+            "game2-message",
+            "The line snapped! Try again."
+        );
+
+        setTimeout(() => {
+            startGame2();
+        }, 1200);
 
         return;
+    }
 
-      }
 
+    /*
+     * Legendary fish landed.
+     */
 
-      if(g2.line <= 0){
+    if (
+        game2.stamina <= 0 &&
+        game2.tension >= 35 &&
+        game2.tension <= 70
+    ) {
 
-        loseG2();
+        completeGame2();
 
         return;
-
-      }
-
-
-      if(
-        g2.ticks % 65 === 0 &&
-        g2.phase < 4
-      ){
-
-        g2.phase++;
-
-      }
+    }
 
 
-      updateG2();
-
-    },100);
-
+    updateGame2();
 }
 
 
 /* =========================================================
-   REEL BUTTON
+   UPDATE GAME 02 UI
 ========================================================= */
 
-$("reel").onpointerdown = e=>{
-  e.preventDefault();
-  g2.hold = true;
-  $("reel").setPointerCapture?.(e.pointerId);
-};
+function updateGame2() {
 
-$("reel").onpointerup = e=>{
-  e.preventDefault();
-  g2.hold = false;
-};
+    const phase =
+        game2Phases[game2.phase];
 
-$("reel").onpointercancel = ()=>{
-  g2.hold = false;
-};
+    if (phase) {
 
-$("reel").onpointerleave = e=>{
-  if(e.pointerType === "mouse"){
-    g2.hold = false;
-  }
-};
+        setText(
+            "game2-message",
+            phase.message
+        );
+    }
+
+
+    const indicator =
+        $("tension-indicator");
+
+    if (indicator) {
+
+        indicator.style.left =
+            `${game2.tension}%`;
+    }
+
+
+    setText(
+        "line-health-value",
+        `${Math.round(game2.lineHealth)}%`
+    );
+
+    const lineBar =
+        $("line-health-bar");
+
+    if (lineBar) {
+
+        lineBar.style.width =
+            `${game2.lineHealth}%`;
+    }
+
+
+    const staminaBar =
+        $("fish-stamina-bar");
+
+    if (staminaBar) {
+
+        staminaBar.style.width =
+            `${game2.stamina}%`;
+    }
+
+
+    $$(".progress-step")
+        .forEach((step) => {
+
+            const stepNumber =
+                Number(
+                    step.dataset.step
+                );
+
+            step.classList.remove(
+                "active",
+                "complete"
+            );
+
+            if (
+                stepNumber - 1 <
+                game2.phase
+            ) {
+
+                step.classList.add(
+                    "complete"
+                );
+
+            } else if (
+                stepNumber - 1 ===
+                game2.phase
+            ) {
+
+                step.classList.add(
+                    "active"
+                );
+            }
+        });
+}
+
+
+/* =========================================================
+   HOLD / REEL
+========================================================= */
+
+function holdReel() {
+
+    if (
+        !game2.started ||
+        game2.completed
+    ) {
+        return;
+    }
+
+    game2.holding = true;
+}
 
 
 /* =========================================================
    RELEASE
 ========================================================= */
 
-$("release").onclick = ()=>{
+function releaseLine() {
 
-  g2.hold = false;
+    game2.holding = false;
+}
 
-  g2.line =
-    Math.min(
-      100,
-      g2.line + 5
+
+/* =========================================================
+   STOP HOLDING WHEN MOUSE / TOUCH RELEASES
+========================================================= */
+
+function setupFishingHoldButton() {
+
+    const button =
+        $("hold-reel-btn");
+
+    if (!button) {
+        return;
+    }
+
+    button.addEventListener(
+        "mousedown",
+        holdReel
     );
 
-  updateG2();
+    button.addEventListener(
+        "mouseup",
+        releaseLine
+    );
 
-};
+    button.addEventListener(
+        "mouseleave",
+        releaseLine
+    );
 
+    button.addEventListener(
+        "touchstart",
+        (event) => {
 
-/* =========================================================
-   FINISH GAME 2
-========================================================= */
+            event.preventDefault();
+            holdReel();
+        },
+        {
+            passive: false
+        }
+    );
 
-function finishG2(){
+    button.addEventListener(
+        "touchend",
+        (event) => {
 
-  clearInterval(g2.timer);
-
-  g2.started = false;
-
-  $("reel").disabled = true;
-  $("release").disabled = true;
-
-  $("phaseTitle").textContent =
-    "LEGENDARY CATCH";
-
-  $("phaseDesc").textContent =
-    "You wore it down. Now land it.";
-
-  $("catch").classList.remove("hidden");
-
-  $("stamina").style.width = "0%";
-
+            event.preventDefault();
+            releaseLine();
+        },
+        {
+            passive: false
+        }
+    );
 }
 
 
 /* =========================================================
-   GAME 2 FAILURE
+   COMPLETE GAME 02
 ========================================================= */
 
-function loseG2(){
+function completeGame2() {
 
-  clearInterval(g2.timer);
-
-  g2.started = false;
-
-  $("lineText").textContent = "0%";
-  $("lineSide").textContent = "0%";
-
-  $("phaseTitle").textContent =
-    "THE LINE SNAPPED";
-
-  $("phaseDesc").textContent =
-    "The fish got away. Take another shot.";
-
-  $("reel").disabled = true;
-  $("release").disabled = true;
-
-
-  setTimeout(()=>{
-
-    g2.started = false;
-
-    g2.line = 100;
-    g2.stamina = 100;
-    g2.pos = 50;
-    g2.phase = 0;
-    g2.ticks = 0;
-
-    $("reel").disabled = false;
-    $("release").disabled = false;
-
-    updateG2();
-    g2Loop();
-
-  },1800);
-
-}
-
-
-/* =========================================================
-   GAME 2 → GAME 3
-========================================================= */
-
-$("toG3").onclick = ()=>{
-
-  clearInterval(g2.timer);
-
-  show("game3");
-
-  startCamp();
-
-};
-
-
-/* =========================================================
-   GAME 03 — CAMP AFTER DARK
-========================================================= */
-
-let camp = {
-  fireOrder:[],
-  fireComplete:false,
-  campXP:400,
-
-  secured:{
-    tent:false,
-    food:false,
-    gear:false
-  },
-
-  weather:{
-    tent:false,
-    food:false,
-    fishing:false
-  },
-
-  weatherStarted:false,
-  weatherTime:30,
-  weatherTimer:null
-};
-
-
-/* =========================================================
-   START CAMP
-========================================================= */
-
-function startCamp(){
-
-  camp = {
-
-    fireOrder:[],
-    fireComplete:false,
-    campXP:400,
-
-    secured:{
-      tent:false,
-      food:false,
-      gear:false
-    },
-
-    weather:{
-      tent:false,
-      food:false,
-      fishing:false
-    },
-
-    weatherStarted:false,
-    weatherTime:30,
-    weatherTimer:null
-
-  };
-
-
-  $("campComplete")
-    .classList.add("hidden");
-
-
-  $("storm")
-    .classList.remove("active");
-
-
-  $("weatherTime")
-    .textContent = "00:30";
-
-
-  $("weatherBar")
-    .style.width = "100%";
-
-
-  $("healthT")
-    .textContent = "100%";
-
-  $("energyT")
-    .textContent = "85%";
-
-  $("readyT")
-    .textContent = "90%";
-
-
-  $("health")
-    .style.width = "100%";
-
-  $("energy")
-    .style.width = "85%";
-
-  $("ready")
-    .style.width = "90%";
-
-
-  document.querySelectorAll(".fireItem")
-    .forEach(button=>{
-      button.disabled = false;
-      button.classList.remove(
-        "selected",
-        "correct",
-        "wrong"
-      );
-    });
-
-
-  document.querySelectorAll(".weatherItem")
-    .forEach(button=>{
-      button.disabled = false;
-      button.classList.remove("selected");
-    });
-
-
-  document.querySelectorAll(".hot")
-    .forEach(button=>{
-      button.disabled = false;
-      button.classList.remove("selected");
-    });
-
-
-  ["slot1","slot2","slot3","slot4"]
-    .forEach((id,i)=>{
-      $(id).textContent =
-        ["1st","2nd","3rd","4th"][i];
-    });
-
-
-  $("fireMsg").textContent =
-    "Start small, then build bigger.";
-
-  $("campMsg").textContent =
-    "Secure everything before the weather turns.";
-
-  $("weatherMsg").textContent =
-    "Focus on the essentials. Don't get caught in the rain!";
-
-
-  $("lightFire").disabled = true;
-
-}
-
-
-/* =========================================================
-   FIRE BUILDING
-========================================================= */
-
-const fireCorrect = [
-  "tinder",
-  "starter",
-  "kindling",
-  "wood"
-];
-
-
-document.querySelectorAll(".fireItem")
-  .forEach(button=>{
-
-    button.onclick = ()=>{
-
-      if(camp.fireComplete) return;
-
-
-      const value =
-        button.dataset.fire;
-
-
-      if(value === "water"){
-
-        $("fireMsg").textContent =
-          "💧 Really? We were trying to START the fire. 😂";
-
-        button.classList.add("wrong");
-
-        setTimeout(()=>{
-          button.classList.remove("wrong");
-        },600);
-
+    if (game2.completed) {
         return;
+    }
 
-      }
+    game2.completed = true;
+    game2.started = false;
+
+    clearInterval(game2.timer);
+
+    game2.lineHealth =
+        Math.max(
+            1,
+            game2.lineHealth
+        );
+
+    game2.stamina = 0;
+
+    game.game2XP = 500;
+    game.game2Complete = true;
+
+    addXP(500);
+
+    updateGame2();
+
+    showScreen(
+        "screen-game2-complete"
+    );
+}
 
 
-      const next =
-        fireCorrect[
-          camp.fireOrder.length
+/* =========================================================
+   GAME 03
+========================================================= */
+
+const game3 = {
+    started: false,
+
+    fireOrder: [],
+
+    fireCorrectOrder: [
+        "dry-leaves",
+        "kindling",
+        "dry-wood",
+        "fire-starter"
+    ],
+
+    campZones: new Set(),
+
+    stormItems: new Set(),
+
+    stormTime: 30,
+
+    stormTimer: null,
+
+    completed: false
+};
+
+
+/* =========================================================
+   START GAME 03 INTRO
+========================================================= */
+
+function showGame3Intro() {
+
+    showScreen(
+        "screen-game3-intro"
+    );
+}
+
+
+/* =========================================================
+   START GAME 03
+========================================================= */
+
+function startGame3() {
+
+    game3.started = true;
+
+    game3.fireOrder = [];
+
+    game3.campZones.clear();
+
+    game3.stormItems.clear();
+
+    game3.stormTime = 30;
+
+    game3.completed = false;
+
+    clearInterval(
+        game3.stormTimer
+    );
+
+
+    /*
+     * Reset fire buttons.
+     */
+
+    $$(".fire-item")
+        .forEach((button) => {
+
+            button.disabled = false;
+
+            button.classList.remove(
+                "selected",
+                "correct",
+                "wrong"
+            );
+        });
+
+
+    /*
+     * Reset camp buttons.
+     */
+
+    $$(".camp-zone")
+        .forEach((button) => {
+
+            button.disabled = false;
+
+            button.classList.remove(
+                "selected"
+            );
+        });
+
+
+    /*
+     * Reset storm buttons.
+     */
+
+    $$(".storm-item")
+        .forEach((button) => {
+
+            button.disabled = false;
+
+            button.classList.remove(
+                "selected"
+            );
+        });
+
+
+    const lightButton =
+        $("light-fire-btn");
+
+    if (lightButton) {
+        lightButton.disabled = true;
+    }
+
+
+    const secureButton =
+        $("secure-camp-btn");
+
+    if (secureButton) {
+        secureButton.disabled = true;
+    }
+
+
+    const stormButton =
+        $("survive-storm-btn");
+
+    if (stormButton) {
+        stormButton.disabled = true;
+    }
+
+
+    resetFireDisplay();
+
+    setText(
+        "storm-time",
+        "00:30"
+    );
+
+
+    /*
+     * Task visibility.
+     */
+
+    const task1 =
+        $("game3-task1");
+
+    const task2 =
+        $("game3-task2");
+
+    const task3 =
+        $("game3-task3");
+
+
+    if (task1) {
+        task1.classList.add(
+            "active-task"
+        );
+    }
+
+    if (task2) {
+        task2.classList.remove(
+            "active-task"
+        );
+    }
+
+    if (task3) {
+        task3.classList.remove(
+            "active-task"
+        );
+    }
+
+
+    /*
+     * Reset status.
+     */
+
+    setText(
+        "health-value",
+        "100%"
+    );
+
+    setText(
+        "energy-value",
+        "85%"
+    );
+
+    setText(
+        "preparedness-value",
+        "90%"
+    );
+
+
+    showScreen(
+        "screen-game3"
+    );
+}
+
+
+/* =========================================================
+   FIRE ITEM
+========================================================= */
+
+function selectFireItem(item) {
+
+    if (!game3.started) {
+        return;
+    }
+
+    const expected =
+        game3.fireCorrectOrder[
+            game3.fireOrder.length
         ];
 
 
-      if(value === next){
+    /*
+     * Correct item.
+     */
 
-        camp.fireOrder.push(value);
+    if (item === expected) {
 
-        button.disabled = true;
-        button.classList.add("correct");
+        game3.fireOrder.push(item);
 
+        const button =
+            document.querySelector(
+                `.fire-item[data-fire-item="${item}"]`
+            );
 
-        const slot =
-          $("slot"+camp.fireOrder.length);
+        if (button) {
 
-        slot.textContent =
-          value === "tinder"
-            ? "🍂"
-            : value === "kindling"
-              ? "🪵"
-              : value === "wood"
-                ? "🪵"
-                : "🔥";
+            button.classList.add(
+                "correct"
+            );
 
-
-        if(camp.fireOrder.length === 4){
-
-          camp.fireComplete = true;
-
-          $("lightFire").disabled = false;
-
-          $("fireMsg").innerHTML =
-            "<b>Perfect build.</b> The fire is ready.";
-
-        }
-        else{
-
-          $("fireMsg").textContent =
-            camp.fireOrder.length === 1
-              ? "Good start. Add the fire starter."
-              : camp.fireOrder.length === 2
-                ? "Now add the kindling."
-                : "Almost there. Add the dry wood.";
-
+            button.disabled = true;
         }
 
-      }
-      else{
+        updateFireOrderDisplay();
 
-        $("fireMsg").textContent =
-          "⚠️ Not yet. Think: small → medium → large.";
 
-        button.classList.add("wrong");
+        /*
+         * Four correct items.
+         */
 
-        setTimeout(()=>{
-          button.classList.remove("wrong");
-        },600);
+        if (
+            game3.fireOrder.length === 4
+        ) {
 
-      }
+            const lightButton =
+                $("light-fire-btn");
 
-    };
+            if (lightButton) {
+                lightButton.disabled = false;
+            }
+        }
 
-  });
+        return;
+    }
+
+
+    /*
+     * Wrong item.
+     */
+
+    const wrongButton =
+        document.querySelector(
+            `.fire-item[data-fire-item="${item}"]`
+        );
+
+    if (wrongButton) {
+
+        wrongButton.classList.add(
+            "wrong"
+        );
+
+        setTimeout(() => {
+
+            wrongButton.classList.remove(
+                "wrong"
+            );
+
+        }, 500);
+    }
+}
+
+
+/* =========================================================
+   FIRE ORDER DISPLAY
+========================================================= */
+
+function updateFireOrderDisplay() {
+
+    const display =
+        $("fire-order-display");
+
+    if (!display) {
+        return;
+    }
+
+    const slots =
+        display.querySelectorAll("span");
+
+    slots.forEach(
+        (slot, index) => {
+
+            const item =
+                game3.fireOrder[index];
+
+            if (!item) {
+                slot.textContent =
+                    `${index + 1}st`;
+                return;
+            }
+
+            const names = {
+                "dry-leaves": "DRY LEAVES",
+                "kindling": "KINDLING",
+                "dry-wood": "DRY WOOD",
+                "fire-starter": "FIRE STARTER"
+            };
+
+            slot.textContent =
+                names[item];
+        }
+    );
+}
+
+
+/* =========================================================
+   RESET FIRE DISPLAY
+========================================================= */
+
+function resetFireDisplay() {
+
+    const display =
+        $("fire-order-display");
+
+    if (!display) {
+        return;
+    }
+
+    const labels = [
+        "1st",
+        "2nd",
+        "3rd",
+        "4th"
+    ];
+
+    display
+        .querySelectorAll("span")
+        .forEach(
+            (slot, index) => {
+
+                slot.textContent =
+                    labels[index];
+            }
+        );
+}
 
 
 /* =========================================================
    LIGHT FIRE
 ========================================================= */
 
-$("lightFire").onclick = ()=>{
+function lightFire() {
 
-  if(!camp.fireComplete) return;
+    if (
+        game3.fireOrder.length !== 4
+    ) {
+        return;
+    }
 
-  $("lightFire").disabled = true;
+    const task1 =
+        $("game3-task1");
 
-  document
-    .querySelector(".fire")
-    ?.classList.add("lit");
+    const task2 =
+        $("game3-task2");
 
+    if (task1) {
+        task1.classList.remove(
+            "active-task"
+        );
+    }
 
-  $("fireMsg").innerHTML =
-    "<b>🔥 FIRE LIT!</b><br>Warm. Safe. Ready for the night.";
-
-
-  updatePreparedness(10);
-
-  startWeatherTimer();
-
-};
-
-
-/* =========================================================
-   CAMP HOTSPOTS
-========================================================= */
-
-document.querySelectorAll(".hot")
-  .forEach(button=>{
-
-    button.onclick = ()=>{
-
-      const type =
-        button.dataset.hot;
+    if (task2) {
+        task2.classList.add(
+            "active-task"
+        );
+    }
 
 
-      if(camp.secured[type]) return;
+    /*
+     * Energy cost.
+     */
+
+    setText(
+        "energy-value",
+        "80%"
+    );
 
 
-      camp.secured[type] = true;
+    /*
+     * Enable camp task.
+     */
 
-      button.disabled = true;
-      button.classList.add("selected");
+    const secureButton =
+        $("secure-camp-btn");
 
+    if (secureButton) {
 
-      const messages = {
-
-        tent:
-          "⛺ Tent secured. Check the pegs and rainfly.",
-
-        food:
-          "📦 Food and supplies are protected.",
-
-        gear:
-          "🎣 Fishing gear secured from the weather."
-
-      };
-
-
-      $("campMsg").textContent =
-        messages[type];
-
-
-      updatePreparedness(5);
-
-
-      if(
-        camp.secured.tent &&
-        camp.secured.food &&
-        camp.secured.gear
-      ){
-
-        $("campMsg").innerHTML =
-          "<b>🏕️ CAMP SECURED!</b><br>Everything is ready for the night.";
-
-        updatePreparedness(10);
-
-      }
-
-    };
-
-  });
+        secureButton.disabled =
+            game3.campZones.size !== 3;
+    }
+}
 
 
 /* =========================================================
-   WEATHER TIMER
+   CAMP ZONE SELECTION
 ========================================================= */
 
-function startWeatherTimer(){
+function selectCampZone(zone) {
 
-  if(camp.weatherStarted) return;
+    if (!game3.started) {
+        return;
+    }
 
-  camp.weatherStarted = true;
-  camp.weatherTime = 30;
+    game3.campZones.add(zone);
 
-
-  clearInterval(
-    camp.weatherTimer
-  );
-
-
-  camp.weatherTimer =
-    setInterval(()=>{
-
-      camp.weatherTime--;
-
-
-      $("weatherTime").textContent =
-        "00:" +
-        String(
-          camp.weatherTime
-        ).padStart(2,"0");
-
-
-      $("weatherBar").style.width =
-        (
-          camp.weatherTime / 30 * 100
-        ) + "%";
-
-
-      if(camp.weatherTime <= 15){
-
-        $("storm").classList.add("active");
-
-        $("weatherMsg").textContent =
-          "⚠️ Storm approaching. Secure everything!";
-
-      }
-
-
-      if(camp.weatherTime <= 5){
-
-        $("weatherMsg").textContent =
-          `⚠️ ${camp.weatherTime}...`;
-
-      }
-
-
-      if(camp.weatherTime <= 0){
-
-        clearInterval(
-          camp.weatherTimer
+    const button =
+        document.querySelector(
+            `.camp-zone[data-zone="${zone}"]`
         );
 
-        finishWeather();
+    if (button) {
+        button.classList.add(
+            "selected"
+        );
+    }
 
-      }
 
-    },1000);
+    if (
+        game3.campZones.size >= 3
+    ) {
 
+        const secureButton =
+            $("secure-camp-btn");
+
+        if (secureButton) {
+            secureButton.disabled = false;
+        }
+    }
 }
 
 
 /* =========================================================
-   WEATHER ACTIONS
+   SECURE CAMP
 ========================================================= */
 
-document.querySelectorAll(".weatherItem")
-  .forEach(button=>{
+function secureCamp() {
 
-    button.onclick = ()=>{
-
-      const type =
-        button.dataset.weather;
-
-
-      if(camp.weather[type]) return;
+    if (
+        game3.campZones.size < 3
+    ) {
+        return;
+    }
 
 
-      camp.weather[type] = true;
-
-      button.disabled = true;
-      button.classList.add("selected");
-
-
-      const messages = {
-
-        tent:
-          "⛺ Rainfly secured.",
-
-        food:
-          "📦 Supplies protected.",
-
-        fishing:
-          "🎣 Fishing gear secured."
-
-      };
+    $$(".camp-zone")
+        .forEach(
+            (button) => {
+                button.disabled = true;
+            }
+        );
 
 
-      $("weatherMsg").textContent =
-        messages[type];
+    const task2 =
+        $("game3-task2");
+
+    const task3 =
+        $("game3-task3");
+
+    if (task2) {
+        task2.classList.remove(
+            "active-task"
+        );
+    }
+
+    if (task3) {
+        task3.classList.add(
+            "active-task"
+        );
+    }
 
 
-      updatePreparedness(3);
-
-
-      if(
-        camp.weather.tent &&
-        camp.weather.food &&
-        camp.weather.fishing
-      ){
-
-        $("weatherMsg").innerHTML =
-          "<b>✓ ALL ESSENTIALS SECURED</b><br>You are ready for the storm.";
-
-      }
-
-    };
-
-  });
-
-
-/* =========================================================
-   PREPAREDNESS
-========================================================= */
-
-function updatePreparedness(amount){
-
-  const bar = $("ready");
-
-  const current =
-    parseFloat(
-      bar.style.width
-    ) || 90;
-
-
-  const value =
-    Math.min(
-      100,
-      current + amount
+    setText(
+        "preparedness-value",
+        "95%"
     );
 
 
-  bar.style.width =
-    value + "%";
-
-
-  $("readyT").textContent =
-    Math.round(value) + "%";
-
+    startStorm();
 }
 
 
 /* =========================================================
-   WEATHER FINISH
+   START STORM
 ========================================================= */
 
-function finishWeather(){
+function startStorm() {
 
-  $("storm").classList.remove("active");
+    game3.stormTime = 30;
 
-  const securedCount = [
-    camp.weather.tent,
-    camp.weather.food,
-    camp.weather.fishing
-  ].filter(Boolean).length;
-
-  /*
-    Camp XP is based on the player's actual storm preparation:
-    3/3 = 400 XP
-    2/3 = 300 XP
-    1/3 = 200 XP
-    0/3 = 100 XP
-  */
-  camp.campXP =
-    securedCount === 3 ? 400 :
-    securedCount === 2 ? 300 :
-    securedCount === 1 ? 200 : 100;
-
-  if(securedCount === 3){
-
-    $("weatherMsg").innerHTML =
-      "<b>🌧️ CAMP SECURED!</b><br>The storm came. You were ready.";
-
-  }
-  else if(securedCount === 2){
-
-    $("weatherMsg").innerHTML =
-      "<b>🌧️ STORM SURVIVED.</b><br>Most of the campsite was secured.";
-
-  }
-  else if(securedCount === 1){
-
-    $("weatherMsg").innerHTML =
-      "<b>🌧️ STORM SURVIVED.</b><br>One essential was secured.";
-
-  }
-  else{
-
-    $("weatherMsg").innerHTML =
-      "<b>🌧️ THE STORM HIT.</b><br>You survived, but the campsite was exposed.";
-
-  }
-
-  setTimeout(()=>{
-    completeCamp();
-  },1500);
-
-}
-
-
-/* =========================================================
-   COMPLETE CAMP
-========================================================= */
-
-function completeCamp(){
-
-  clearInterval(
-    camp.weatherTimer
-  );
-
-  $("storm").classList.remove("active");
-
-  document
-    .querySelector(".tasks")
-    ?.classList.add("hidden");
-
-  $("campComplete")
-    .classList.remove("hidden");
-
-  document
-    .querySelector(".campHero")
-    ?.classList.add("complete");
-
-  const securedCount = [
-    camp.weather.tent,
-    camp.weather.food,
-    camp.weather.fishing
-  ].filter(Boolean).length;
-
-  const finalPreparedness =
-    Math.min(
-      100,
-      90 +
-      (camp.fireComplete ? 10 : 0) +
-      (securedCount * 3)
+    setText(
+        "storm-time",
+        "00:30"
     );
 
-  $("healthT").textContent = "100%";
-  $("energyT").textContent = "70%";
-  $("readyT").textContent =
-    `${Math.min(100, finalPreparedness)}%`;
+    const stormButton =
+        $("survive-storm-btn");
 
-  if($("campXP")){
-    $("campXP").textContent =
-      `+${camp.campXP} XP`;
-  }
+    if (stormButton) {
+        stormButton.disabled =
+            game3.stormItems.size < 3;
+    }
 
-  const campTitle =
-    $("campComplete").querySelector("h1");
 
-  const campCopy =
-    $("campComplete").querySelector(".copy");
+    clearInterval(
+        game3.stormTimer
+    );
 
-  const campNight =
-    camp.fireComplete &&
-    securedCount === 3;
 
-  if(campTitle){
-    campTitle.textContent =
-      campNight
-        ? "CAMP SECURED!"
-        : "NIGHT SURVIVED!";
-  }
+    game3.stormTimer =
+        setInterval(() => {
 
-  if(campCopy){
-    campCopy.innerHTML =
-      campNight
-        ? `
-          The storm came.<br>
-          You were ready.<br><br>
-          The tent is safe.<br>
-          The gear is protected.<br>
-          The fire is still glowing.
-        `
-        : `
-          The storm came.<br>
-          You made it through the night.<br><br>
-          Some parts of the campsite were left exposed,<br>
-          but you kept the expedition going.
-        `;
-  }
+            game3.stormTime--;
 
+            setText(
+                "storm-time",
+                `00:${String(
+                    Math.max(
+                        0,
+                        game3.stormTime
+                    )
+                ).padStart(2, "0")}`
+            );
+
+
+            /*
+             * If player has secured all
+             * essentials, they can survive.
+             */
+
+            if (
+                game3.stormItems.size === 3
+            ) {
+
+                const button =
+                    $("survive-storm-btn");
+
+                if (button) {
+                    button.disabled = false;
+                }
+            }
+
+
+            /*
+             * Timer reaches zero.
+             */
+
+            if (
+                game3.stormTime <= 0
+            ) {
+
+                clearInterval(
+                    game3.stormTimer
+                );
+
+                /*
+                 * Give the player a chance
+                 * to complete if all items
+                 * were selected.
+                 */
+
+                if (
+                    game3.stormItems.size === 3
+                ) {
+
+                    surviveStorm();
+
+                } else {
+
+                    /*
+                     * Restart the storm timer
+                     * rather than trapping the game.
+                     */
+
+                    game3.stormTime = 30;
+
+                    setText(
+                        "storm-time",
+                        "00:30"
+                    );
+                }
+            }
+
+        }, 1000);
 }
 
 
 /* =========================================================
-   CAMP → FINAL REPORT
+   STORM ITEM
 ========================================================= */
 
-$("toFinal").onclick = ()=>{
+function selectStormItem(item) {
 
-  show("final");
+    if (!game3.started) {
+        return;
+    }
 
-  updateFinal();
+    game3.stormItems.add(item);
 
-};
+    const button =
+        document.querySelector(
+            `.storm-item[data-storm-item="${item}"]`
+        );
+
+    if (button) {
+
+        button.classList.add(
+            "selected"
+        );
+    }
+
+
+    if (
+        game3.stormItems.size >= 3
+    ) {
+
+        const surviveButton =
+            $("survive-storm-btn");
+
+        if (surviveButton) {
+            surviveButton.disabled = false;
+        }
+    }
+}
+
+
+/* =========================================================
+   SURVIVE STORM
+========================================================= */
+
+function surviveStorm() {
+
+    if (
+        game3.stormItems.size < 3
+    ) {
+        return;
+    }
+
+    clearInterval(
+        game3.stormTimer
+    );
+
+
+    $$(".storm-item")
+        .forEach(
+            (button) => {
+                button.disabled = true;
+            }
+        );
+
+
+    game3.completed = true;
+    game3.started = false;
+
+    game.game3XP = 400;
+    game.game3Complete = true;
+
+    addXP(400);
+
+
+    setText(
+        "health-value",
+        "100%"
+    );
+
+    setText(
+        "energy-value",
+        "75%"
+    );
+
+    setText(
+        "preparedness-value",
+        "100%"
+    );
+
+
+    showScreen(
+        "screen-game3-complete"
+    );
+}
 
 
 /* =========================================================
    FINAL REPORT
 ========================================================= */
 
-function updateFinal(){
+function showFinalReport() {
 
-  const total =
-    totalWaterXP +
-    500 +
-    camp.campXP;
+    const finalXP =
+        game.game1XP +
+        game.game2XP +
+        game.game3XP;
 
-  $("finalWater").textContent =
-    `+${totalWaterXP} XP`;
 
-  if($("finalCamp")){
-    $("finalCamp").textContent =
-      `+${camp.campXP} XP`;
-  }
+    /*
+     * The intended maximum is:
+     *
+     * Game 01 = 550
+     * Game 02 = 500
+     * Game 03 = 400
+     *
+     * Total = 1,450 XP
+     */
 
-  $("totalXP").textContent =
-    `${total.toLocaleString()} XP`;
+    setText(
+        "final-xp",
+        `${finalXP.toLocaleString()} XP`
+    );
 
+
+    showScreen(
+        "screen-final"
+    );
 }
 
 
 /* =========================================================
-   INITIAL STATE
+   RESTART
 ========================================================= */
 
-show("intro");
+function restartGame() {
+
+    clearInterval(
+        game2.timer
+    );
+
+    clearInterval(
+        game3.stormTimer
+    );
+
+
+    game.xp = 0;
+
+    game.game1XP = 0;
+    game.game2XP = 0;
+    game.game3XP = 0;
+
+    game.game1Complete = false;
+    game.game2Complete = false;
+    game.game3Complete = false;
+
+
+    game1.started = false;
+    game1.round = 0;
+    game1.selectedChoice = null;
+    game1.scannerCharges = 3;
+    game1.scanned = false;
+    game1.roundXP = [0, 0, 0];
+    game1.awaitingResult = false;
+
+
+    game2.started = false;
+    game2.completed = false;
+    game2.phase = 0;
+    game2.lineHealth = 100;
+    game2.stamina = 100;
+    game2.tension = 50;
+    game2.holding = false;
+
+
+    game3.started = false;
+    game3.fireOrder = [];
+    game3.campZones.clear();
+    game3.stormItems.clear();
+    game3.stormTime = 30;
+    game3.completed = false;
+
+
+    setText(
+        "xp-value",
+        "0"
+    );
+
+
+    showScreen(
+        "screen-mission"
+    );
+}
+
+
+/* =========================================================
+   BUTTON EVENT LISTENERS
+========================================================= */
+
+function setupEventListeners() {
+
+    /*
+     * MISSION INTRO
+     */
+
+    const beginButton =
+        $("begin-expedition-btn");
+
+    if (beginButton) {
+
+        beginButton.addEventListener(
+            "click",
+            beginExpedition
+        );
+    }
+
+
+    /*
+     * GAME 01 INTRO
+     */
+
+    const startGame1Button =
+        $("start-game1-btn");
+
+    if (startGame1Button) {
+
+        startGame1Button.addEventListener(
+            "click",
+            startGame1
+        );
+    }
+
+
+    /*
+     * GAME 01 HOW TO PLAY
+     */
+
+    const readyButton =
+        $("game1-ready-btn");
+
+    if (readyButton) {
+
+        readyButton.addEventListener(
+            "click",
+            readyGame1
+        );
+    }
+
+
+    /*
+     * SCANNER
+     */
+
+    const scannerButton =
+        $("use-scanner-btn");
+
+    if (scannerButton) {
+
+        scannerButton.addEventListener(
+            "click",
+            useScanner
+        );
+    }
+
+
+    /*
+     * WATER CHOICES
+     */
+
+    $$(".choice-btn")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectWaterChoice(
+                        button.dataset.choice
+                    );
+                }
+            );
+        });
+
+
+    /*
+     * CAST
+     */
+
+    const castButton =
+        $("cast-btn");
+
+    if (castButton) {
+
+        castButton.addEventListener(
+            "click",
+            castWater
+        );
+    }
+
+
+    /*
+     * NEXT WATER ROUND
+     */
+
+    const nextWaterButton =
+        $("game1-next-btn");
+
+    if (nextWaterButton) {
+
+        nextWaterButton.addEventListener(
+            "click",
+            nextWaterRound
+        );
+    }
+
+
+    /*
+     * CONTINUE TO GAME 02
+     */
+
+    const game2Button =
+        $("continue-game2-btn");
+
+    if (game2Button) {
+
+        game2Button.addEventListener(
+            "click",
+            startGame2
+        );
+    }
+
+
+    /*
+     * GAME 02 RELEASE
+     */
+
+    const releaseButton =
+        $("release-btn");
+
+    if (releaseButton) {
+
+        releaseButton.addEventListener(
+            "click",
+            releaseLine
+        );
+    }
+
+
+    /*
+     * GAME 02 HOLD / REEL
+     */
+
+    setupFishingHoldButton();
+
+
+    /*
+     * CONTINUE TO GAME 03
+     */
+
+    const game3IntroButton =
+        $("continue-game3-btn");
+
+    if (game3IntroButton) {
+
+        game3IntroButton.addEventListener(
+            "click",
+            showGame3Intro
+        );
+    }
+
+
+    /*
+     * START GAME 03
+     */
+
+    const startGame3Button =
+        $("start-game3-btn");
+
+    if (startGame3Button) {
+
+        startGame3Button.addEventListener(
+            "click",
+            startGame3
+        );
+    }
+
+
+    /*
+     * FIRE ITEMS
+     */
+
+    $$(".fire-item")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectFireItem(
+                        button.dataset.fireItem
+                    );
+                }
+            );
+        });
+
+
+    /*
+     * LIGHT FIRE
+     */
+
+    const lightFireButton =
+        $("light-fire-btn");
+
+    if (lightFireButton) {
+
+        lightFireButton.addEventListener(
+            "click",
+            lightFire
+        );
+    }
+
+
+    /*
+     * CAMP ZONES
+     */
+
+    $$(".camp-zone")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectCampZone(
+                        button.dataset.zone
+                    );
+                }
+            );
+        });
+
+
+    /*
+     * SECURE CAMP
+     */
+
+    const secureCampButton =
+        $("secure-camp-btn");
+
+    if (secureCampButton) {
+
+        secureCampButton.addEventListener(
+            "click",
+            secureCamp
+        );
+    }
+
+
+    /*
+     * STORM ITEMS
+     */
+
+    $$(".storm-item")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectStormItem(
+                        button.dataset.stormItem
+                    );
+                }
+            );
+        });
+
+
+    /*
+     * SURVIVE STORM
+     */
+
+    const surviveStormButton =
+        $("survive-storm-btn");
+
+    if (surviveStormButton) {
+
+        surviveStormButton.addEventListener(
+            "click",
+            surviveStorm
+        );
+    }
+
+
+    /*
+     * FINAL REPORT
+     */
+
+    const finalReportButton =
+        $("final-report-btn");
+
+    if (finalReportButton) {
+
+        finalReportButton.addEventListener(
+            "click",
+            showFinalReport
+        );
+    }
+
+
+    /*
+     * RESTART
+     */
+
+    const restartButton =
+        $("restart-btn");
+
+    if (restartButton) {
+
+        restartButton.addEventListener(
+            "click",
+            restartGame
+        );
+    }
+}
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+function initialiseGame() {
+
+    /*
+     * Make sure only the mission screen
+     * is visible initially.
+     */
+
+    $$(".game-screen")
+        .forEach((screen) => {
+
+            screen.classList.remove(
+                "active"
+            );
+        });
+
+
+    const missionScreen =
+        $("screen-mission");
+
+    if (missionScreen) {
+
+        missionScreen.classList.add(
+            "active"
+        );
+    }
+
+
+    /*
+     * Initial HUD.
+     */
+
+    setText(
+        "xp-value",
+        "0"
+    );
+
+    setText(
+        "level-value",
+        "30"
+    );
+
+
+    /*
+     * Set initial scanner values.
+     */
+
+    setText(
+        "scanner-current",
+        "—"
+    );
+
+    setText(
+        "scanner-depth",
+        "—"
+    );
+
+    setText(
+        "scanner-temp",
+        "—"
+    );
+
+    setText(
+        "scanner-surface",
+        "—"
+    );
+
+    setText(
+        "scanner-bait",
+        "—"
+    );
+
+    setText(
+        "scanner-structure",
+        "—"
+    );
+
+
+    updateScannerCharges();
+}
+
+
+/* =========================================================
+   DOM READY
+========================================================= */
+
+if (
+    document.readyState === "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            setupEventListeners();
+            initialiseGame();
+
+        }
+    );
+
+} else {
+
+    setupEventListeners();
+    initialiseGame();
+}
